@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="dist/index.js" type="module"></script>
+  <title>Document</title>
+  <style>
+    #list {
+      list-style: none;
+      padding: 0;
+    }
+
+    #contentTable {
+      border: 1px solid black;
+      border-collapse: collapse;
+      word-wrap: break-word;
+      min-width: 500px;
+      max-width: 500px;
+    }
+  </style>
+</head>
+<body>
+  <button id="folderButton">Folder</button>
+  <button id="contentFileButton">Content</button>
+  <button id="configFileButton">Config</button>
+  <button id="pdfFileButton">Pdf</button>
+  <button id="googleDocButton">GoogleDoc</button>
+
+  <form id="input-form">
+    <input type="text" id="input-repo">
+    <input type="text" id="input-loca">
+    </br><button type="submit">Go</button>
+    <input type="text" id="input-user">
+  </form>
+  <ul id="list"></ul>
+  <ul id="list2"></ul>
+  <div id="divone"></div>
+  <table id="contentTable"></table>
+  
+</body>
+</html>
