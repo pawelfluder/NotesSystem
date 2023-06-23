@@ -1,0 +1,15 @@
+
+
+
+
+//tittle
+	rebuildplugin
+
+//delete plugin folders and packages
+	rmdir /s /Q "D:\git\NGT_Source\Source\PluginReferenceImpl\IEDPlugin\.vs"
+	rmdir /s /Q "D:\GIT\NGT_Source\Source\PluginReferenceImpl\IEDPlugin\bin"
+	cd /d "D:\GIT\NGT_Source\Source\PluginReferenceImpl\IEDPlugin"
+	CleanupPackages
+
+//restore plugin nuget packages
+	D:\UseFullFiles\nuget.exe restore

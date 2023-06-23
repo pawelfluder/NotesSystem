@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Repetition\EmbeddedResources\21-09-30_Notki-info_GameStatistics.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Repetition\EmbeddedResources\21-09-30_Notki-info_GameStatistics.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\03_project_winder-export\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj" />
+    <ProjectReference Include="..\..\..\03_project_winder-export\SharpGoogleDocs\SharpGoogleDocsProg\SharpGoogleDocsProg.csproj" />
+    <ProjectReference Include="..\..\..\03_project_winder-export\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj" />
+    <ProjectReference Include="..\..\SharpTextHeaderAnalyzer\SharpTextHeaderAnalyzerProg\SharpTextHeaderAnalyzerProg.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="PdfSharpCore" Version="1.2.12" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Template\GridOfferTemplate.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Header\" />
+  </ItemGroup>
+</Project>

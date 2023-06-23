@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+    <PublishTrimmed>true</PublishTrimmed>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <PublishSingleFile>true</PublishSingleFile>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.Drive.v3" Version="1.49.0.2138" />
+  </ItemGroup>
+
+</Project>
