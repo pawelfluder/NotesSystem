@@ -1,0 +1,73 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpNotesExporterTests", "SharpNotesExporterTests.csproj", "{F521C65F-A953-483E-A875-4334A31DF661}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpFileServiceProg", "..\..\..\..\17_projects\03_projects\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj", "{9FCF81A9-4F79-43D8-AC32-9A347194FC33}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpConfigProg", "..\..\..\..\17_projects\03_projects\SharpConfig\SharpConfigProg\SharpConfigProg.csproj", "{E159D521-BA18-46A7-9C44-F85BF3848C70}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGoogleDocsProg", "..\..\..\..\17_projects\03_projects\SharpGoogleDocs\SharpGoogleDocsProg\SharpGoogleDocsProg.csproj", "{254D9186-92F6-4B41-8954-4D3A4A0B7744}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGoogleDriveProg", "..\..\..\..\17_projects\03_projects\SharpGoogleDrive\SharpGoogleDriveProg\SharpGoogleDriveProg.csproj", "{07FBF269-1244-4701-AAC3-FD9CE77CAB6E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpTextHeaderAnalyzerProg", "..\..\SharpTextHeaderAnalyzer\SharpTextHeaderAnalyzerProg\SharpTextHeaderAnalyzerProg.csproj", "{6D759A39-6A70-4524-8837-154547C9D64F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpNotesExporterProg", "..\SharpNotesExporterProg\SharpNotesExporterProg.csproj", "{EDABCB2E-D298-466C-9ADC-037B940D1AA9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpFileServiceTests", "..\..\..\..\17_projects\03_projects\SharpFileService\SharpFileServiceTests\SharpFileServiceTests.csproj", "{55D589DF-0617-4596-969D-E94C5F5BB635}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpRepoServiceProg", "..\..\..\..\17_projects\03_projects\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj", "{0BEC41CB-478A-4D91-87A4-D769A15B3D62}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F521C65F-A953-483E-A875-4334A31DF661}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F521C65F-A953-483E-A875-4334A31DF661}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F521C65F-A953-483E-A875-4334A31DF661}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F521C65F-A953-483E-A875-4334A31DF661}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FCF81A9-4F79-43D8-AC32-9A347194FC33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FCF81A9-4F79-43D8-AC32-9A347194FC33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FCF81A9-4F79-43D8-AC32-9A347194FC33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FCF81A9-4F79-43D8-AC32-9A347194FC33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E159D521-BA18-46A7-9C44-F85BF3848C70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E159D521-BA18-46A7-9C44-F85BF3848C70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E159D521-BA18-46A7-9C44-F85BF3848C70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E159D521-BA18-46A7-9C44-F85BF3848C70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{254D9186-92F6-4B41-8954-4D3A4A0B7744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{254D9186-92F6-4B41-8954-4D3A4A0B7744}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{254D9186-92F6-4B41-8954-4D3A4A0B7744}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{254D9186-92F6-4B41-8954-4D3A4A0B7744}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07FBF269-1244-4701-AAC3-FD9CE77CAB6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07FBF269-1244-4701-AAC3-FD9CE77CAB6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07FBF269-1244-4701-AAC3-FD9CE77CAB6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07FBF269-1244-4701-AAC3-FD9CE77CAB6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D759A39-6A70-4524-8837-154547C9D64F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D759A39-6A70-4524-8837-154547C9D64F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D759A39-6A70-4524-8837-154547C9D64F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D759A39-6A70-4524-8837-154547C9D64F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDABCB2E-D298-466C-9ADC-037B940D1AA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDABCB2E-D298-466C-9ADC-037B940D1AA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDABCB2E-D298-466C-9ADC-037B940D1AA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDABCB2E-D298-466C-9ADC-037B940D1AA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55D589DF-0617-4596-969D-E94C5F5BB635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55D589DF-0617-4596-969D-E94C5F5BB635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55D589DF-0617-4596-969D-E94C5F5BB635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55D589DF-0617-4596-969D-E94C5F5BB635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BEC41CB-478A-4D91-87A4-D769A15B3D62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BEC41CB-478A-4D91-87A4-D769A15B3D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BEC41CB-478A-4D91-87A4-D769A15B3D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BEC41CB-478A-4D91-87A4-D769A15B3D62}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3E6FEA99-30B6-4541-B762-2E0544916515}
+	EndGlobalSection
+EndGlobal

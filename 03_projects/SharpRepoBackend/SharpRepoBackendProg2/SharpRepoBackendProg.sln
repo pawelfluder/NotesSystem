@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpConfigProg", "..\..\SharpConfig\SharpConfigProg\SharpConfigProg.csproj", "{F57737C1-E166-49D9-924B-1E1B89CE38AD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpRepoServiceProg", "..\..\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj", "{5D3492BD-D882-4E63-B576-4E8E08E5042E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpButtonActionsTests", "..\..\SharpButtonActions\SharpButtonActionsTests\SharpButtonActionsTests.csproj", "{8BAB2098-6561-4C83-8F03-E8744A909224}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpButtonActionsProg", "..\..\SharpButtonActions\SharpButtonActionsProg\SharpButtonActionsProg.csproj", "{380C1514-0B16-4546-8EFA-7C5248B75738}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpPdfServiceProg", "..\..\SharpPdfService\SharpPdfServiceProg\SharpPdfServiceProg.csproj", "{530D6D43-F4E3-41DC-9456-7BE302C16F0D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpTextHeaderAnalyzerProg", "..\..\SharpTextHeaderAnalyzer\SharpTextHeaderAnalyzerProg\SharpTextHeaderAnalyzerProg.csproj", "{5BB90C28-684C-401B-9729-50299402E4A8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpNotesExporterProg", "..\..\SharpNotesExporter\SharpNotesExporterProg\SharpNotesExporterProg.csproj", "{54E2FA08-4F36-4892-9ADB-43C6C4E6B32F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpFileServiceProg", "..\..\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj", "{9BBF8977-0802-4A24-87C0-323D50BF67DD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGoogleDriveProg", "..\..\SharpGoogleDrive\SharpGoogleDriveProg\SharpGoogleDriveProg.csproj", "{57AD352F-D1A9-43F4-BBD5-2B330B4AABDB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGoogleDocsProg", "..\..\SharpGoogleDocs\SharpGoogleDocsProg\SharpGoogleDocsProg.csproj", "{891A1552-ED96-4BA3-AAD7-30205DA29493}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpRepoBackendProg2", "SharpRepoBackendProg2.csproj", "{0F5408AA-DA98-4098-BEB0-CFEBE0F0C256}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F57737C1-E166-49D9-924B-1E1B89CE38AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F57737C1-E166-49D9-924B-1E1B89CE38AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F57737C1-E166-49D9-924B-1E1B89CE38AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F57737C1-E166-49D9-924B-1E1B89CE38AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D3492BD-D882-4E63-B576-4E8E08E5042E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D3492BD-D882-4E63-B576-4E8E08E5042E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D3492BD-D882-4E63-B576-4E8E08E5042E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D3492BD-D882-4E63-B576-4E8E08E5042E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BAB2098-6561-4C83-8F03-E8744A909224}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BAB2098-6561-4C83-8F03-E8744A909224}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BAB2098-6561-4C83-8F03-E8744A909224}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BAB2098-6561-4C83-8F03-E8744A909224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{380C1514-0B16-4546-8EFA-7C5248B75738}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{380C1514-0B16-4546-8EFA-7C5248B75738}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{380C1514-0B16-4546-8EFA-7C5248B75738}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{380C1514-0B16-4546-8EFA-7C5248B75738}.Release|Any CPU.Build.0 = Release|Any CPU
+		{530D6D43-F4E3-41DC-9456-7BE302C16F0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{530D6D43-F4E3-41DC-9456-7BE302C16F0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{530D6D43-F4E3-41DC-9456-7BE302C16F0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{530D6D43-F4E3-41DC-9456-7BE302C16F0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BB90C28-684C-401B-9729-50299402E4A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BB90C28-684C-401B-9729-50299402E4A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BB90C28-684C-401B-9729-50299402E4A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BB90C28-684C-401B-9729-50299402E4A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54E2FA08-4F36-4892-9ADB-43C6C4E6B32F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54E2FA08-4F36-4892-9ADB-43C6C4E6B32F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54E2FA08-4F36-4892-9ADB-43C6C4E6B32F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54E2FA08-4F36-4892-9ADB-43C6C4E6B32F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BBF8977-0802-4A24-87C0-323D50BF67DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BBF8977-0802-4A24-87C0-323D50BF67DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BBF8977-0802-4A24-87C0-323D50BF67DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BBF8977-0802-4A24-87C0-323D50BF67DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57AD352F-D1A9-43F4-BBD5-2B330B4AABDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57AD352F-D1A9-43F4-BBD5-2B330B4AABDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57AD352F-D1A9-43F4-BBD5-2B330B4AABDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57AD352F-D1A9-43F4-BBD5-2B330B4AABDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{891A1552-ED96-4BA3-AAD7-30205DA29493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{891A1552-ED96-4BA3-AAD7-30205DA29493}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{891A1552-ED96-4BA3-AAD7-30205DA29493}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{891A1552-ED96-4BA3-AAD7-30205DA29493}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F5408AA-DA98-4098-BEB0-CFEBE0F0C256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F5408AA-DA98-4098-BEB0-CFEBE0F0C256}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F5408AA-DA98-4098-BEB0-CFEBE0F0C256}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F5408AA-DA98-4098-BEB0-CFEBE0F0C256}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A75F24CF-583A-45CA-9E23-1A85F04DD6F2}
+	EndGlobalSection
+EndGlobal
