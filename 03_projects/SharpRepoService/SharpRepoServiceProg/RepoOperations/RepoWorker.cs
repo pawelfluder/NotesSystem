@@ -40,7 +40,7 @@ namespace SharpRepoServiceProg.RepoOperations
             configFileName = "nazwa.txt";
             repoConfigName = "repoConfig.txt";
             allRepoPathsList = new List<string>();
-            InitializeSearchFoldersPaths(searchFoldersPaths);
+            //InitializeSearchFoldersPaths(searchFoldersPaths);
         }
 
         public RepoServiceMethods(IFileService fileService)
@@ -207,7 +207,7 @@ namespace SharpRepoServiceProg.RepoOperations
                 var folders = Directory.GetDirectories(searchFolder).Select(x => CorrectPath(x));
                 foreach (var folder in folders)
                 {
-                    if (IsRepoConfig(folder))
+                    if (true || IsRepoConfig(folder))
                     {
                         allRepoPathsList.Add(folder);
                     }

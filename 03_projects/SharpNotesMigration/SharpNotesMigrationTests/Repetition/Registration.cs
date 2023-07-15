@@ -18,10 +18,10 @@ namespace SharpNotesMigrationTests.Repetition
             RegisterByFunc(OutBorder1.FileService);
 
             RegisterByFunc(
-                OutBorder2.NewConfigService,
+                OutBorder2.ConfigService,
                 container.Resolve<IFileService>());
 
-            RegisterByFunc<RepoService, IFileService>(OutBorder3.RepoService,
+            RegisterByFunc<IRepoService, IFileService>(OutBorder3.RepoService,
                 container.Resolve<IFileService>());
 
             RegisterByFunc<IMigrationService, IFileService, RepoService>

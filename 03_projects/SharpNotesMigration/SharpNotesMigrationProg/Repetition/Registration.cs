@@ -12,7 +12,7 @@ namespace SharpRepoBackendProg.Repetition
         {
             RegisterByFunc<IFileService>(Border1.FileService);
             RegisterByFunc<IConfigService, IFileService>(
-                Border2.NewConfigService,
+                Border2.ConfigService,
                 container.Resolve<IFileService>());
         }
     }
