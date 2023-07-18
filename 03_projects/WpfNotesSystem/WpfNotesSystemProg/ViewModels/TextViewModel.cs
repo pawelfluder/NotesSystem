@@ -1,11 +1,11 @@
-﻿using SharpRepoBackendProg;
+﻿using SharpRepoBackendProg.Repetition;
 using SharpRepoBackendProg.Service;
-using System.Windows;
 using System.Windows.Input;
+using WpfNotesSystem;
 
-namespace WpfNotesSystem
+namespace WpfNotesSystemProg.ViewModels
 {
-    public class MainViewModel
+    public class TextViewModel : BaseViewModel
     {
         private readonly IBackendService backendService;
         private ICommand folderCommand;
@@ -18,9 +18,9 @@ namespace WpfNotesSystem
 
         public (string repo, string loca) CurrentAddress { get; set; }
 
-        public MainViewModel(IBackendService backendService)
+        public TextViewModel()
         {
-            this.backendService = backendService;
+            this.backendService = OutBorder.BackendService();
             CurrentAddress = ("Sprawy", "01-02");
         }
 

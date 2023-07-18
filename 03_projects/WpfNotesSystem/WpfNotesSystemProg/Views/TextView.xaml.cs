@@ -7,19 +7,21 @@ using System.Windows.Controls;
 using Unity;
 using WpfNotesSystem.Creator;
 using WpfNotesSystem.Repetition;
+using WpfNotesSystemProg.ViewModels;
 using OutBorder1 = SharpRepoBackendProg.Repetition.OutBorder;
 
-namespace WpfNotesSystem
+namespace WpfNotesSystemProg.Views
 {
-    public partial class MainWindow : Window
+    public partial class TextView : Window
     {
         private readonly IBackendService backendService;
 
-        public MainWindow()
+        public TextView()
         {
             InitializeComponent();
+            DataContext = new TextViewModel();
             backendService = OutBorder1.BackendService();
-            DataContext = new MainViewModel(backendService);
+            
 
 
 
@@ -35,7 +37,7 @@ namespace WpfNotesSystem
 
         private void CreateContent((string Repo, string Loca) address)
         {
-            var myGrid = this.FindName("ContentGrid") as Grid;
+            var myGrid = FindName("ContentGrid") as Grid;
             ClearGrid(myGrid);
 
             var item = backendService.RepoApi(address.Item1, address.Item2);
@@ -75,11 +77,11 @@ namespace WpfNotesSystem
 
         private void GoButtonClick(object sender, RoutedEventArgs e)
         {
-            var repoTextBox = this.FindName("RepoName") as TextBox;
-            var locaTextBox = this.FindName("Location") as TextBox;
+            var repoTextBox = FindName("RepoName") as TextBox;
+            var locaTextBox = FindName("Location") as TextBox;
 
             var address = (repoTextBox.Text, locaTextBox.Text);
-            var viewModel = (DataContext as MainViewModel);
+            var viewModel = DataContext as TextViewModel;
             viewModel.CurrentAddress = address;
             CreateContent(address);
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace WpfNotesSystem
+namespace WpfNotesSystemProg
 {
     public class CommandHandler : ICommand
     {
