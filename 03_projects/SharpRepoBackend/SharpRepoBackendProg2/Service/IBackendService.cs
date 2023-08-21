@@ -4,5 +4,6 @@
     {
         string CommandApi(string cmdName, string repo, string loca);
         string RepoApi(string repo, string loca);
+        string RepoApi(string methodName, params string[] args);
     }
 }

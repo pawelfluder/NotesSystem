@@ -6,9 +6,10 @@
         interface IMigrator02 { };
         interface IMigrator03
         {
-            List<(string, string, string)> BeforeAfter { get; }
+            List<(int, string, string, string)> Changes { get; }
             void MigrateOneAddress((string Repo, string Loca) address);
             void MigrateOneRepo(string repoPath);
+            void SetAgree(bool agree);
         };
     }
 }

@@ -13,15 +13,16 @@ using SharpRepoBackendProg.Repetition;
 using PdfService.PdfService;
 using System.Diagnostics;
 using static SharpRepoServiceProg.Service.IRepoService;
+using SharpRepoServiceProg.RepoOperations;
 
 namespace SharpRepoBackendProg.Service
 {
-    internal class BackendService : IBackendService
+    public class BackendService : IBackendService
     {
         private readonly IFileService fileService;
         private readonly IPdfService2 pdfService;
         private readonly GoogleDriveService driveService;
-        private readonly RepoService repoService;
+        private readonly IRepoService repoService;
         private readonly HeaderNotesService headerNotesService;
         private readonly ButtonActionsService buttonActionService;
         private readonly NotesExporterService notesExporterService;
@@ -34,7 +35,9 @@ namespace SharpRepoBackendProg.Service
             configService = MyBorder.Container.Resolve<IConfigService>();
             driveService = MyBorder.NewGoogleDriveService();
             configService.Prepare(typeof(IPreparer.INotesSystem));
-            repoService = new RepoService(fileService, configService.GetRepoSearchPaths());
+            var searchPaths = configService.GetRepoSearchPaths();
+            repoService = MyBorder.Container.Resolve<IRepoService>();
+            repoService.Initialize(searchPaths);
             headerNotesService = new HeaderNotesService();
             buttonActionService = new ButtonActionsService();
             notesExporterService = new NotesExporterService(repoService);
@@ -45,12 +48,30 @@ namespace SharpRepoBackendProg.Service
             var loca2 = loca.Replace("-", "/");
             try
             {
-                var repoRootPaths = repoService.Methods.GetAllReposPaths();
-                var name = repoService.Methods.GetLocalName((repo, loca2));
-                var content = repoService.Methods.ReadTextLines((repo, loca2));
-                var data = new Data(name, content);
-                var json = JsonConvert.SerializeObject(data);
+                var address = (repo, loca2);
+                var item = repoService.Methods.GetItem(address);
+                var json = JsonConvert.SerializeObject(item);
                 return json;
+
+                //var type = repoService.Methods.GetType(address);
+                //if (type == "Text")
+                //{
+                //    var name = repoService.Methods.GetLocalName(address);
+                //    var content = repoService.Methods.GetTextLines(address);
+                //    var data = new Data(name, content);
+                //    var json = JsonConvert.SerializeObject(data);
+                //    return json;
+                //}
+                //else
+                //{
+
+                //    var indexesQNames = repoService.Methods.GetAllIndexesQNames(address);
+                //    var data = indexesQNames.ToDictionary(x => x.Item1, x => x.Item2);
+                //    var json = JsonConvert.SerializeObject(data);
+                //    return json;
+                //}
+
+                return default;
             }
             catch
             {
@@ -63,62 +84,66 @@ namespace SharpRepoBackendProg.Service
 
         public string CommandApi(string cmdName, string repo, string loca)
         {
-            var loca2 = loca.Replace("-", "/");
-            var itemPath = repoService.Methods.GetElemPath((repo, loca2));
-
-            if (cmdName == IBackendService.ApiMethods.OpenFolder.ToString())
+            try
             {
-                buttonActionService.OpenFolder(itemPath);
+                var loca2 = loca.Replace("-", "/");
+                var itemPath = repoService.Methods.GetElemPath((repo, loca2));
 
-                var url = "https://docs.google.com/document/d/18H_5aGqmrch7M_WCJ49PcA0doRxbLCC_bmULwraspe4";
-                var result2 = new Dictionary<string, string> { { "url", url } };
-                var json = JsonConvert.SerializeObject(result2);
-                return json;
-            }
+                if (cmdName == IBackendService.ApiMethods.OpenFolder.ToString())
+                {
+                    buttonActionService.OpenFolder(itemPath);
 
-            if (cmdName == IBackendService.ApiMethods.OpenContent.ToString())
-            {
-                buttonActionService.OpenContent(itemPath);
-            }
+                    var url = "https://docs.google.com/document/d/18H_5aGqmrch7M_WCJ49PcA0doRxbLCC_bmULwraspe4";
+                    var result2 = new Dictionary<string, string> { { "url", url } };
+                    var json = JsonConvert.SerializeObject(result2);
+                    return json;
+                }
 
-            if (cmdName == IBackendService.ApiMethods.OpenConfig.ToString())
-            {
-                buttonActionService.OpenConfigFile(itemPath);
-            }
+                if (cmdName == IBackendService.ApiMethods.OpenContent.ToString())
+                {
+                    buttonActionService.OpenContent(itemPath);
+                }
 
-            if (cmdName == IBackendService.ApiMethods.CreatePdf.ToString())
-            {
-                CreatePdf((repo, loca2));
-            }
+                if (cmdName == IBackendService.ApiMethods.OpenConfig.ToString())
+                {
+                    buttonActionService.OpenConfigFile(itemPath);
+                }
 
-            if (cmdName == IBackendService.ApiMethods.OpenPdf.ToString())
-            {
-                var pdfPath = CreatePdf((repo, loca2));
-                var success = pdfService.Open(pdfPath);
-                return success.ToString();
-            }
+                if (cmdName == IBackendService.ApiMethods.CreatePdf.ToString())
+                {
+                    CreatePdf((repo, loca2));
+                }
 
-            if (cmdName == IBackendService.ApiMethods.CreateGoogledoc.ToString())
-            {
-                var url = CreateGoogledoc((repo, loca2));
-                var result = new Dictionary<string, string> { { "url", url } };
-                var jsonResult = JsonConvert.SerializeObject(result);
-                return jsonResult;
-            }
+                if (cmdName == IBackendService.ApiMethods.OpenPdf.ToString())
+                {
+                    var pdfPath = CreatePdf((repo, loca2));
+                    var success = pdfService.Open(pdfPath);
+                    return success.ToString();
+                }
 
-            if (cmdName == IBackendService.ApiMethods.OpenGoogledoc.ToString())
-            {
-                var url = CreateGoogledoc((repo, loca2));
-                OpenGoogledoc(url);
-            }
+                if (cmdName == IBackendService.ApiMethods.CreateGoogledoc.ToString())
+                {
+                    var url = CreateGoogledoc((repo, loca2));
+                    var result = new Dictionary<string, string> { { "url", url } };
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return jsonResult;
+                }
 
-            if (cmdName == IBackendService.ApiMethods.RunPrinter.ToString())
-            {
-                //var pdfPath = CreatePdf((repo, loca2));
-                var pdfPath = itemPath + "/" + "lista.pdf";
-                pdfService.RunPrinter(pdfPath);
-                return string.Empty;
+                if (cmdName == IBackendService.ApiMethods.OpenGoogledoc.ToString())
+                {
+                    var url = CreateGoogledoc((repo, loca2));
+                    OpenGoogledoc(url);
+                }
+
+                if (cmdName == IBackendService.ApiMethods.RunPrinter.ToString())
+                {
+                    //var pdfPath = CreatePdf((repo, loca2));
+                    var pdfPath = itemPath + "/" + "lista.pdf";
+                    pdfService.RunPrinter(pdfPath);
+                    return string.Empty;
+                }
             }
+            catch { }
 
             return JsonConvert.SerializeObject("completed!");
         }
@@ -135,41 +160,37 @@ namespace SharpRepoBackendProg.Service
         private string CreateGoogledoc((string repo, string loca) address)
         {
             var name = repoService.Methods.GetLocalName(address);
-            var id = repoService.Methods.GetConfigKeyValue(
+            var id = repoService.Methods.TryGetConfigValue(
                 address, ConfigKeys.googleDocId.ToString());
-            var documentAlreadyExisted = id != null;
+            var documentExists = id != null;
 
-            if (!documentAlreadyExisted)
+            if (!documentExists)
             {
                 var docIdQName = CreateNewDocFile(name);
                 id = docIdQName.id;
-            }
-
-            if (documentAlreadyExisted)
-            {
-                // todo
-                // notesExporterService.SetDocFileName(name)
-            }
-
-            notesExporterService.ExportNotesToGoogleDoc(
-                address.repo, address.loca, id.ToString());
-
-            if (!documentAlreadyExisted)
-            {
                 repoService.Methods.CreateConfigKey(
                     address, ConfigKeys.googleDocId.ToString(),
                     id);
+                documentExists = true;
             }
 
-            var url = $"https://docs.google.com/document/d/{id}";
-            return url;
+            if (documentExists)
+            {
+                notesExporterService.ExportNotesToGoogleDoc(
+                    address.repo, address.loca, id.ToString());
+
+                var url = $"https://docs.google.com/document/d/{id}";
+                return url;
+            }
+
+            return default;
         }
 
         private string CreatePdf((string Repo, string Loca) address)
         {
             var itemPath = repoService.Methods.GetElemPath(address);
             var pdfService = MyBorder.Container.Resolve<IPdfService2>();
-            var textLines = repoService.Methods.ReadTextLines((address.Repo, address.Loca));
+            var textLines = repoService.Methods.GetTextLines((address.Repo, address.Loca));
             var elementsList = headerNotesService.GetElements2(textLines.Skip(4).ToArray());
             var pdfFilePath = itemPath + "/" + "lista.pdf";
             var pdfCreated = pdfService.Export(elementsList, pdfFilePath);
@@ -187,6 +208,20 @@ namespace SharpRepoBackendProg.Service
         {
             // todo
             return (default, default);
+        }
+
+        public string RepoApi(string methodName, params string[] args)
+        {
+            try
+            {
+                var result = typeof(RepoServiceMethods).GetMethod(methodName).Invoke(
+                    repoService.Methods,
+                    args);
+                return result.ToString();
+            }
+            catch { }
+
+            return default;
         }
     }
 }

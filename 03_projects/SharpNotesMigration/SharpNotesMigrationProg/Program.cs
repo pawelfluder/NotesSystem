@@ -15,7 +15,8 @@ namespace SharpNotesMigrationProg
             var fileService = MyBorder.Container.Resolve<IFileService>();
             var configService = MyBorder.Container.Resolve<IConfigService>();
             configService.Prepare(typeof(IPreparer.IOnlyRootPaths));
-            var repoService = new RepoService(fileService, configService.GetRepoSearchPaths());
+            var repoService = MyBorder.Container.Resolve<IRepoService>();
+            repoService.Initialize(configService.GetRepoSearchPaths());
             var migrationService = new MigrationService(fileService, repoService);
             migrationService.MigrateAll();
         }

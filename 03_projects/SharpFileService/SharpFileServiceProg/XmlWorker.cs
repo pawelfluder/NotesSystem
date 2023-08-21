@@ -13,7 +13,7 @@ namespace FileServiceCoreApp
     {
         private readonly AppendNotepadWorkspace appendNotepadWorkspace;
 
-        public XmlWorker(FileService2 fileService)
+        public XmlWorker(IFileService fileService)
         {
             this.appendNotepadWorkspace = new AppendNotepadWorkspace();
         }
@@ -54,7 +54,7 @@ namespace FileServiceCoreApp
             {
                 var projectElement = appendNotepadWorkspace.Do(path);
                 notepadPlusElement.Add(projectElement);
-            }
+            } 
 
             var xmlDocument = ToXmlNode(notepadPlusElement);
             return xmlDocument;

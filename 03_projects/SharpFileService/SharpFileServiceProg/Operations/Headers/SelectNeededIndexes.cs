@@ -13,28 +13,44 @@ namespace SharpFileServiceProg.Operations.Headers
             conversion = new HeadersOperationsConversion();
         }
 
-        public List<(string, int)> GetNeededIndexes(
-        List<int> cellsIndexes,
-        List<(string Type, int Level, object Value)> convertedList)
+        public List<(string Type, int Index)> GetNeededIndexes(
+            List<int> cellsIndexes,
+            List<(string Type, int Level, object Value)> convertedList)
         {
-            var columnCount = convertedList.Select(x => x.Level).Max();
-            var neededIndexes = new List<(string, int)>();
-            var j = -1;
-            for (int i = 0; i < cellsIndexes.Count; i++)
+            try
             {
-                var rem = i % columnCount;
-                int div = i / columnCount;
-                if (rem == 0) { j++; }
-
-                var elem = convertedList[j];
-                var isTaken = IsTaken(elem, rem);
-                if (isTaken)
+                var columnCount = convertedList.Select(x => x.Level).Max();
+                var neededIndexes = new List<(string, int)>();
+                var j = -1;
+                for (int i = 0; i < cellsIndexes.Count; i++)
                 {
-                    neededIndexes.Add((elem.Type, cellsIndexes[i]));
-                }
-            }
+                    var rem = i % columnCount;
+                    int div = i / columnCount;
+                    if (rem == 0) { j++; }
 
-            return neededIndexes;
+                    (string Type, int Level, object Value) elem = default;
+                    try
+                    {
+                        elem = convertedList[j];
+                    }
+                    catch (Exception ex) { }
+
+                    var isTaken = IsTaken(elem, rem);
+                    if (isTaken)
+                    {
+                        try
+                        {
+                            neededIndexes.Add((elem.Type, cellsIndexes[i]));
+                        }
+                        catch (Exception ex) { }
+                    }
+                }
+
+                return neededIndexes;
+            }
+            catch (Exception ex){ }
+
+            return default;
         }
 
         private bool IsTaken(

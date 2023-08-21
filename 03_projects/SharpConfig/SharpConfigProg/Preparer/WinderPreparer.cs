@@ -50,6 +50,7 @@ namespace SharpConfigProg.Preparer
                 paths = new Dictionary<string, object>()
                 {
                     { "pathConfigPath", configFilePath},
+                    { "winderAppDataPath", "02_appData"},
                     { "driverPath", "driver"},
                     { "browserPath", synchFolderPath + "/" + "02_Portable_Programs/11_Firefox/14_paweltinder_firefox/App/Firefox/firefox.exe"},
                     { "profilePath", synchFolderPath + "/" + "02_Portable_Programs/11_Firefox/14_paweltinder_firefox/Data/profile"},
@@ -82,6 +83,7 @@ namespace SharpConfigProg.Preparer
                 paths = new Dictionary<string, object>()
                 {
                     { "pathConfigPath", configFilePath},
+                    { "winderAppDataPath", "02_appData"},
                     { "driverPath", "driver"},
                     { "browserPath", agentToolsDir + "/" + "14_paweltinder_firefox/App/Firefox/firefox.exe"},
                     { "profilePath", agentToolsDir + "/" + "14_paweltinder_firefox/Data/profile"},

@@ -49,7 +49,7 @@ namespace SharpNotesExporter
         string docId,
         bool createTwoColumns = false)
         {
-            var textLines = repoService.Methods.ReadTextLines((repo, loca));
+            var textLines = repoService.Methods.GetTextLines((repo, loca));
             var name = repoService.Methods.GetLocalName((repo, loca));
             var elementsList = headerNotesService.GetElements2(textLines.Skip(4).ToArray());
 
@@ -60,8 +60,12 @@ namespace SharpNotesExporter
 
             // stack 1
             docsService.StackWkr.LoadDocument(docId);
-            if (docsService.StackWkr.LastIndex != 1) { docsService.StackWkr.StackDeleteAllContentRequest(); };
-            
+            if (docsService.StackWkr.LastIndex != 1)
+            {
+                docsService.StackWkr.StackDeleteAllContentRequest();
+            }
+            var s9 = docsService.StackWkr.ExecuteStack();
+
             docsService.StackWkr.StackInsertTextRequest(1, name);
             var s1 = docsService.StackWkr.ExecuteStack();
             docsService.StackWkr.StackInsertTableRequest(tableSize);
@@ -78,8 +82,6 @@ namespace SharpNotesExporter
             var finalIndexes = headersOp.Select.FinalIndexes(neededIndexes, convertedList);
 
             // stack 2
-
-
             //var finalIndexes = GetFinalIndexes3(tableIndexes, elementsList);
             //var headersIndexes = GetOnlyHeaderIndexes(tableIndexes, elementsList);
             var tableMainIndex = docsService.StackWkr.GetFirstTableIndex();

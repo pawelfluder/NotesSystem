@@ -8,36 +8,36 @@ namespace SharpNotesMigrationProg.Migrations
     internal class Migrator03 : IMigrator, IMigrationService.IMigrator03
     {
         private readonly IFileService fileService;
-        private readonly RepoService repoService;
+        private readonly IRepoService repoService;
         private readonly IFileService.IYamlOperations yamlOperations;
         private string pattern1;
         private string pattern2;
         private string pattern3;
         private string pattern4;
         private string keyName;
-        private bool agree = false;
+        private bool agree;
 
-        public List<(string, string, string)> BeforeAfter { get; private set; }
+        public List<(int, string, string, string)> Changes { get; private set; }
 
         public Migrator03(
             IFileService fileService,
-            RepoService repoService)
+            IRepoService repoService)
         {
             this.fileService = fileService;
             this.repoService = repoService;
             yamlOperations = fileService.Yaml.Custom03;
-            BeforeAfter = new List<(string, string, string)>();
+            Changes = new List<(int, string, string, string)>();
 
             SetPatterns();
         }
 
         private void SetPatterns()
         {
+            keyName = "name";
             var str1 = "{0}:";
             var str2 = "\"{0}\":";
             var str3 = "'{0}':";
-            var str4 = "\\\"name\\\":";
-            keyName = "name";
+            var str4 = "\\\"{0}\\\":";
 
             pattern1 = string.Format(str1, keyName);
             pattern2 = string.Format(str2, keyName);
@@ -65,34 +65,37 @@ namespace SharpNotesMigrationProg.Migrations
 
         public void MigrateOneAddress((string Repo, string Loca) address)
         {
-            var before = string.Empty;
-            var clear = string.Empty;
-            var after = string.Empty;
-            
-            
             if (!IsJustOneLine(address, out var nameLine))
             {
                 HandleError();
             }
 
+            var before = nameLine;
+            var clear = "nothing";
+            var after = "nothing";
+            var changeType = 0;
+
             var isAlreadyMigrated = IsAlreadyMigrated(nameLine);
+            var hasDuplicates = HasDuplicates(nameLine);
 
             if (isAlreadyMigrated &&
-                HasDuplicates(nameLine))
+                hasDuplicates)
             {
                 before = nameLine;
                 nameLine = ClearFromDuplicates3(nameLine);
                 clear = nameLine;
                 after = MigrateStringToYamlDict(address, nameLine);
+                changeType = 2;
             }
 
             if (!isAlreadyMigrated)
             {
                 before = nameLine;
                 after = MigrateStringToYamlDict(address, nameLine);
+                changeType = 1;
             }
 
-            BeforeAfter.Add((before, clear, after));
+            Changes.Add((changeType, before, clear, after));
         }
 
         private bool IsJustOneLine((string, string) address, out string line)
@@ -113,12 +116,12 @@ namespace SharpNotesMigrationProg.Migrations
             var match1 = Regex.Match(nameLine, pattern1);
             var match2 = Regex.Match(nameLine, pattern2);
             var match3 = Regex.Match(nameLine, pattern3);
-            var match4 = Regex.Match(nameLine, pattern4);
+            //var match4 = Regex.Match(nameLine, pattern4);
 
             var count = match1.Captures.Count +
                 match2.Captures.Count +
-                match3.Captures.Count +
-                match4.Captures.Count;
+                match3.Captures.Count;
+                //match4.Captures.Count;
 
             if (count >= 2)
             {
@@ -136,7 +139,9 @@ namespace SharpNotesMigrationProg.Migrations
             {
                 success = yamlOperations.TryDeserialize<Dictionary<string, object>>
                     (nameLine, out var dict);
-                if (success) { nameLine = dict.Values.First().ToString(); }
+                if (dict == null) { break; }
+                if (!success) { break; }
+                nameLine = dict.Values.First().ToString();
             }
 
             return nameLine;
@@ -226,11 +231,6 @@ namespace SharpNotesMigrationProg.Migrations
             return newLines;
         }
 
-        private void CorrectPlainToDobuleQuoted((string Repo, string Loca) address)
-        {
-            throw new NotImplementedException();
-        }
-
         private bool IsPlainFormat(string nameLine)
         {
             var gg1 = !nameLine.Contains(": ");
@@ -271,6 +271,11 @@ namespace SharpNotesMigrationProg.Migrations
         private void HandleError()
         {
             throw new NotImplementedException();
+        }
+
+        public void SetAgree(bool agree)
+        {
+            this.agree = agree;
         }
     }
 }

@@ -29,6 +29,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpNotesMigrationProg", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpNotesMigrationTests", "..\..\SharpNotesMigration\SharpNotesMigrationTests\SharpNotesMigrationTests.csproj", "{CC85002D-039B-439C-89A1-4FB1340E5B04}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpFileServiceTests", "..\..\SharpFileService\SharpFileServiceTests\SharpFileServiceTests.csproj", "{7F0C0466-648B-4099-BED2-44B9D86CD0BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfNotesSystemProg3", "..\..\WpfNotesSystem3\WpfNotesSystemProg3\WpfNotesSystemProg3.csproj", "{28291B50-D985-4171-9A3A-9B9DD0CA24AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,14 @@ Global
 		{CC85002D-039B-439C-89A1-4FB1340E5B04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC85002D-039B-439C-89A1-4FB1340E5B04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC85002D-039B-439C-89A1-4FB1340E5B04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F0C0466-648B-4099-BED2-44B9D86CD0BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F0C0466-648B-4099-BED2-44B9D86CD0BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F0C0466-648B-4099-BED2-44B9D86CD0BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F0C0466-648B-4099-BED2-44B9D86CD0BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28291B50-D985-4171-9A3A-9B9DD0CA24AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28291B50-D985-4171-9A3A-9B9DD0CA24AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28291B50-D985-4171-9A3A-9B9DD0CA24AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28291B50-D985-4171-9A3A-9B9DD0CA24AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

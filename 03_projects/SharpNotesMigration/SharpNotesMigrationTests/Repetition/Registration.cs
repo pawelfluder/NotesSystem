@@ -24,15 +24,15 @@ namespace SharpNotesMigrationTests.Repetition
             RegisterByFunc<IRepoService, IFileService>(OutBorder3.RepoService,
                 container.Resolve<IFileService>());
 
-            RegisterByFunc<IMigrationService, IFileService, RepoService>
+            RegisterByFunc<IMigrationService, IFileService, IRepoService>
                 (OutBorder4.MigrationService,
                 container.Resolve<IFileService>(),
-                container.Resolve<RepoService>());
+                container.Resolve<IRepoService>());
 
-            RegisterByFunc<IMigrationService.IMigrator03, IFileService, RepoService>
+            RegisterByFunc<IMigrationService.IMigrator03, IFileService, IRepoService>
                 (OutBorder4.Migrator03,
                 container.Resolve<IFileService>(),
-                container.Resolve<RepoService>());
+                container.Resolve<IRepoService>());
         }
     }
 }

@@ -76,5 +76,10 @@ namespace SharpConfigProg.Service
                     .Prepare());
             }
         }
+
+        public void AddSetting(string key, object value)
+        {
+            SettingsDict.Add(key, value);
+        }
     }
 }

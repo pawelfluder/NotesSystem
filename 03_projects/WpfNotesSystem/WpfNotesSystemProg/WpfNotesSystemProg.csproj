@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Unity" Version="5.11.10" />
     <PackageReference Include="Unity.Container" Version="5.11.11" />
   </ItemGroup>
 

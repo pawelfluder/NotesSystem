@@ -116,7 +116,7 @@ namespace SharpFileServiceProg.Operations.Yaml
 
         private void HandleError(Exception ex)
         {
-            throw ex;
+            //throw ex;
         }
 
         public bool TryDeserialize<T>(string yamlText, out T result)

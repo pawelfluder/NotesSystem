@@ -1,31 +1,45 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SharpFileServiceProg.Service;
 using SharpRepoServiceCoreProj;
 using SharpRepoServiceProg.RepoOperations;
 
 namespace SharpRepoServiceProg.Service
 {
-    public class RepoService : IRepoService
+    internal class RepoService : IRepoService
     {
         private readonly ServerInfo serverInfo;
         private readonly LocalInfo localInfo;
+        private bool initialized;
+        private RepoServiceMethods methods;
 
-        public RepoServiceMethods Methods { get; private set; }
-
-        public RepoService(
-            IFileService fileService,
-            List<string> localRootPaths)
+        internal RepoService(
+            IFileService fileService)
         {
-            localInfo = new LocalInfo(localRootPaths);
+            localInfo = new LocalInfo(null);
             serverInfo = null;
             Methods = new RepoServiceMethods(fileService, serverInfo, localInfo);
         }
 
-        public RepoService(IFileService fileService)
+        public RepoServiceMethods Methods
         {
-            serverInfo = new ServerInfo();
-            localInfo = new LocalInfo(new List<string>());
-            Methods = new RepoServiceMethods(fileService, serverInfo, localInfo);
+            get
+            {
+                if (!initialized) { throw new Exception(); }
+                return methods;
+            }
+            private set => methods = value;
+        }
+
+        public void Initialize(List<string> searchPaths)
+        {
+            if (initialized) { throw new Exception(); }
+            methods.Initialize(searchPaths);
+            initialized = true;
+            if (!(methods.GetReposCount() > 0))
+            {
+                throw new Exception();
+            }
         }
     }
 }

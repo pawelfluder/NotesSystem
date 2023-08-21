@@ -1,10 +1,12 @@
 ﻿using PdfService.PdfService;
 using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
+using SharpRepoServiceProg.Service;
 using Unity;
 using OutBorder1 = SharpFileServiceProg.Repetition.OutBorder;
 using OutBorder2 = SharpConfigProg.Repetition.OutBorder;
-using OutBorder3 = SharpPdfServiceProg.Repetition.OutBorder;
+using OutBorder3 = SharpRepoServiceProg.Repetition.OutBorder;
+using OutBorder4 = SharpPdfServiceProg.Repetition.OutBorder;
 
 namespace SharpNotesMigrationTests.Repetition
 {
@@ -17,7 +19,10 @@ namespace SharpNotesMigrationTests.Repetition
                 OutBorder2.ConfigService,
                 container.Resolve<IFileService>());
 
-            RegisterByFunc<IPdfService2>(OutBorder3.PdfService);
+            RegisterByFunc<IRepoService, IFileService>(
+                OutBorder3.RepoService,
+                container.Resolve<IFileService>());
+            RegisterByFunc<IPdfService2>(OutBorder4.PdfService);
         }
 
         //protected override void Registrations()

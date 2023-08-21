@@ -1,10 +1,13 @@
 using SharpConfigProg.Preparer;
 using SharpConfigProg.Service;
+using SharpFileServiceProg.Service;
 using SharpNotesMigrationProg.Service;
 using SharpNotesMigrationTests.Repetition;
 using SharpRepoServiceProg.Service;
 using System.ComponentModel;
 using Unity;
+
+using OutBorder01 = SharpRepoServiceProg.Repetition.OutBorder;
 
 namespace SharpNotesMigrationTests
 {
@@ -13,10 +16,12 @@ namespace SharpNotesMigrationTests
     {
         public void Prepare(Type type)
         {
+            var fileSerice = MyBorder.Container.Resolve<IFileService>();
             var configService = MyBorder.Container.Resolve<IConfigService>();
             configService.Prepare(type);
-            var repoService = MyBorder.Container.Resolve<RepoService>();
-            repoService.Methods.InitializeSearchFoldersPaths(configService.GetRepoSearchPaths());
+            var repoService = MyBorder.Container.Resolve<IRepoService>();
+            repoService.Initialize(configService.GetRepoSearchPaths());
+            //repoService.Methods.InitializeRootPaths();
         }
 
         [TestMethod]
@@ -43,7 +48,7 @@ namespace SharpNotesMigrationTests
             migrator03.MigrateOneAddress((repo, loca));
 
             // assert
-            var beforeAfter = migrator03.BeforeAfter;
+            var beforeAfter = migrator03.Changes;
         }
 
         [TestMethod]
@@ -52,19 +57,24 @@ namespace SharpNotesMigrationTests
             // arrange
             Prepare(typeof(IPreparer.INotesSystem));
             var migrator03 = MyBorder.Container.Resolve<IMigrationService.IMigrator03>();
-            var repoServer = MyBorder.Container.Resolve<RepoService>();
-            var repoPath = repoServer.Methods.GetRepoPath("Notki");
+            migrator03.SetAgree(true);
+            var repoServer = MyBorder.Container.Resolve<IRepoService>();
+            //var repoName = "Notki";
+            var repoName = "02_appData";
+            var repoPath = repoServer.Methods.GetRepoPath(repoName);
 
             // act
             migrator03.MigrateOneRepo(repoPath);
 
             // assert
-            var beforeAfter = migrator03.BeforeAfter;
+            
+            var beforeAfter = migrator03.Changes;
             beforeAfter.ForEach((x) =>
             {
                 Console.WriteLine(x.Item1);
                 Console.WriteLine(x.Item2);
                 Console.WriteLine(x.Item3);
+                Console.WriteLine(x.Item4);
                 Console.WriteLine();
             });
         }

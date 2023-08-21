@@ -9,11 +9,11 @@ namespace SharpNotesMigrationProg.Service
     {
         private readonly IFileService fileService;
         private readonly IConfigService configService;
-        private readonly RepoService repoService;
+        private readonly IRepoService repoService;
 
         public MigrationService(
             IFileService fileService,
-            RepoService repoService)
+            IRepoService repoService)
         {
             this.fileService = fileService;
             this.repoService = repoService;

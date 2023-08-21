@@ -9,14 +9,14 @@ namespace SharpNotesMigrationProg.Repetition
     {
         public static IMigrationService MigrationService(
             IFileService fileService,
-            RepoService repoService)
+            IRepoService repoService)
         {
             return new MigrationService(fileService, repoService);
         }
 
         public static IMigrationService.IMigrator03 Migrator03(
             IFileService fileService,
-            RepoService repoService)
+            IRepoService repoService)
         {
             return new Migrator03(fileService, repoService);
         }
