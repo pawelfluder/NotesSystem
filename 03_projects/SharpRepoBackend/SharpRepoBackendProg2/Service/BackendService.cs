@@ -14,6 +14,7 @@ using PdfService.PdfService;
 using System.Diagnostics;
 using static SharpRepoServiceProg.Service.IRepoService;
 using SharpRepoServiceProg.RepoOperations;
+using System.Text.Json.Nodes;
 
 namespace SharpRepoBackendProg.Service
 {
@@ -50,8 +51,8 @@ namespace SharpRepoBackendProg.Service
             {
                 var address = (repo, loca2);
                 var item = repoService.Methods.GetItem(address);
-                var json = JsonConvert.SerializeObject(item);
-                return json;
+                //var json = JsonConvert.SerializeObject(item);
+                return item;
 
                 //var type = repoService.Methods.GetType(address);
                 //if (type == "Text")
@@ -76,9 +77,11 @@ namespace SharpRepoBackendProg.Service
             catch
             {
                 var error = "Exception! Item not found";
-                var result = new Dictionary<string, string> { { "error", error } };
-                var jsonResult = JsonConvert.SerializeObject(result);
-                return jsonResult;
+                //var result = new Dictionary<string, string> { { "error", error } };
+                var result = new JsonObject();
+                result.Add("error", error);
+                //var jsonResult = JsonConvert.SerializeObject(result);
+                return result.ToJsonString();
             }
         }
 

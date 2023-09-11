@@ -1,18 +1,22 @@
-﻿using SharpFileServiceProg.Service;
+﻿using Namotion.Reflection;
+using Newtonsoft.Json;
+using SharpFileServiceProg.Service;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.Json.Nodes;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
 using Unity;
 using WpfNotesSystem.Creator;
 using WpfNotesSystem.Repetition;
+using WpfNotesSystemProg3.Models;
 
 namespace WpfNotesSystemProg.Converter
 {
-    [ValueConversion(typeof(Dictionary<string, object>), typeof(Grid))]
+    [ValueConversion(typeof(ItemModel2), typeof(Grid))]
     public class HeadersDictConverter : MarkupExtension, IValueConverter
     {
         private object converter;
@@ -35,47 +39,47 @@ namespace WpfNotesSystemProg.Converter
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            var itemModel = value as ItemModel2;
             Grid myGrid = null;
             try
             {
-                var dict = value as Dictionary<string, object>;
-                var type = dict["Type"].ToString();
+                var type = itemModel.Type;
                 if (type == "Text")
                 {
-                    myGrid = ConvertTextItem(dict);
+                    myGrid = ConvertTextItem(itemModel);
                 }
                 if (type == "Folder")
                 {
-                    myGrid = ConvertFolderItem(dict);
+                    myGrid = ConvertFolderItem(itemModel);
                 }
             }
             catch { }
             return myGrid;
         }
 
-        private Grid ConvertFolderItem(Dictionary<string, object> dict)
+        private Grid ConvertFolderItem(ItemModel2 itemModel)
         {
             var grid = new Grid();
-            var name = dict["Name"].ToString();
-            var body = dict["Body"];
-            var tmp = body as List<object>;
+            //var body = itemModel.Body as Dictionary<string, string>;
+            var indexQnameDict = JsonConvert
+                .DeserializeObject<Dictionary<string, string>>(itemModel.Body.ToString());
             //var indexQnameList = tmp.ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value);
             //var indexQnameList = tmp.Select(kv => (kv.Key, kv.Value)).ToDictionary(x => x.Key);
 
             var creator = new FolderBodyCreator(grid);
-            //creator.Run(indexQnameList);
+            creator.Run(indexQnameDict);
             return grid;
         }
 
-        private Grid ConvertTextItem(Dictionary<string, object> dict)
+        private Grid ConvertTextItem(ItemModel2 dict)
         {
             var grid = new Grid();
-            var name = dict["Name"].ToString();
-            var content = dict["Body"];
 
             var creator = new ContentCreator(grid);
             var contentManager = new ContentManager(fileService);
-            contentManager.Run(creator, content);
+            var lines = JsonConvert
+                .DeserializeObject<List<object>>(dict.Body.ToString());
+            contentManager.Run(creator, lines);
             return grid;
         }
 

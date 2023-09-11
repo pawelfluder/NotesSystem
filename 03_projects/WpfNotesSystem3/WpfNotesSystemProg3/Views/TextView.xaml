@@ -31,7 +31,10 @@
         <Button Content="GoogleDoc" Grid.Row="0" Grid.Column="4" Command="{Binding GoogledocCommand}"/>
       <Button Content="RunPrinter" Grid.Row="0" Grid.Column="5" Command="{Binding RunPrinterCommand}"/>
 
-      <ContentControl Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="8" Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}" />
-
+      <ScrollViewer HorizontalScrollBarVisibility="Auto" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="8">
+         
+            <ContentControl Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}" />
+        
+      </ScrollViewer>
    </Grid>
 </UserControl>

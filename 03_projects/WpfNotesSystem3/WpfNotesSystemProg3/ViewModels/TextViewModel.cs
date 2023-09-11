@@ -1,4 +1,5 @@
-﻿using SharpFileServiceProg.Service;
+﻿using Newtonsoft.Json;
+using SharpFileServiceProg.Service;
 using SharpRepoBackendProg.Repetition;
 using SharpRepoBackendProg.Service;
 using SwitchingViewsMVVM.ViewModels;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using Unity;
 using WpfNotesSystem.Repetition;
+using WpfNotesSystemProg3.Models;
 
 namespace SwitchingViewsMVVM.ViewModels
 {
@@ -134,19 +136,15 @@ namespace SwitchingViewsMVVM.ViewModels
         {
             CurrentAddress = address;
             //backendService.RepoApi(CurrentAddress.repo, CurrentAddress.loca);
-            var item = backendService.RepoApi(address.Item1, address.Item2);
-            
-            var headersDict = fileService.Yaml.Custom03
-                .Deserialize<Dictionary<string, object>>(item);
+            var jsonString = backendService.RepoApi(address.Item1, address.Item2);
+            object error = null;
+            var jObj = JsonConvert.DeserializeObject<ItemModel2>(jsonString);
 
-            headersDict.TryGetValue("error", out var error);
-            if (error != null) { return; }
-
-            HeadersDict = headersDict;
+            HeadersDict = jObj;
         }
 
-        private Dictionary<string, object> headersDict;
-        public Dictionary<string, object> HeadersDict
+        private ItemModel2 headersDict;
+        public ItemModel2 HeadersDict
         {
             get => headersDict;
             private set

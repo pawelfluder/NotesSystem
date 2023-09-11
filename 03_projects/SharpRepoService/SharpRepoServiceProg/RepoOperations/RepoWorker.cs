@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json.Nodes;
 using static SharpRepoServiceProg.Service.IRepoService;
 
 namespace SharpRepoServiceProg.RepoOperations
@@ -256,27 +257,35 @@ namespace SharpRepoServiceProg.RepoOperations
             return contentsList;
         }
 
-        public Dictionary<string, object> GetItem(
+        public string GetItem(
             (string repo, string loca) address)
         {
             var type = GetItemType(address);
-            object body = null;
+            JsonValue body = null;
             if (type == "Text")
             {
-                body = GetTextLines(address);
+                body = JsonValue.Create(
+                    GetTextLines(address));
             }
 
             if (type == "Folder")
             {
-                body = GetAllIndexesQNames(address);
+                body = JsonValue.Create(
+                    GetAllIndexesQNames(address));
             }
+            var name = GetName(address);
 
-            var item = new Dictionary<string, object>();
-            var name = GetLocalName(address);
-            item.Add("Name", name);
-            item.Add("Body", body);
-            item.Add("Type", type);
-            return item;
+            JsonObject jObj = new JsonObject();
+            jObj.Add("type", type);
+            jObj.Add("name", name);
+            jObj.Add("body", body);
+
+            //var item = new Dictionary<string, object>();
+            //var name = GetLocalName(address);
+            //item.Add("Name", name);
+            //item.Add("Body", body);
+            //item.Add("Type", type);
+            return jObj.ToJsonString();
         }
 
         [MethodLogger]
@@ -349,7 +358,7 @@ namespace SharpRepoServiceProg.RepoOperations
 
 
         [MethodLogger]
-        public List<(string, string)> GetAllIndexesQNames(
+        public Dictionary<string, string> GetAllIndexesQNames(
             (string repo, string loca) address)
         {
             var repoPath = GetLocalPath(address);
@@ -357,13 +366,13 @@ namespace SharpRepoServiceProg.RepoOperations
             var subLocasList = GetDirectories(repoPath)
                 .Select(x => SelectDirToSection(address.loca, x)).ToList();
             
-            var names = new List<(string, string)>();
+            var names = new Dictionary<string, string>();
             foreach (var subLoca in subLocasList)
             {
                 var subAddress = (address.repo, subLoca);
                 var name = GetName(subAddress);
                 var indexString = subLoca.Substring(subLoca.Length - 2, 2);
-                names.Add((indexString, name));
+                names.Add(indexString, name);
             }
 
             return names;

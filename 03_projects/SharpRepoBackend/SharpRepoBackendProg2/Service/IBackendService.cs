@@ -1,4 +1,6 @@
-﻿namespace SharpRepoBackendProg.Service
+﻿using System.Text.Json.Nodes;
+
+namespace SharpRepoBackendProg.Service
 {
     public partial interface IBackendService
     {

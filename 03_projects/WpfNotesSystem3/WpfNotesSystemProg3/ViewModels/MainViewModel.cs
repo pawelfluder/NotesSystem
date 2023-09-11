@@ -43,11 +43,14 @@ namespace SwitchingViewsMVVM.ViewModels
 
         public void GoAction((string Repo, string Loca) address)
         {
+            Address = address;
             var type = backendService.RepoApi("GetItemType", address.Item1, address.Item2);
             if (type == "Text") { SelectedViewModel = MyBorder.Container.Resolve<TextViewModel>(); }
             if (type == "Folder") { SelectedViewModel = MyBorder.Container.Resolve<HomeViewModel>(); }
             SelectedViewModel.GoAction(type, address);
         }
+
+        public (string Repo, string Loca) Address { get; private set; }
 
         public bool CanExecute
         {

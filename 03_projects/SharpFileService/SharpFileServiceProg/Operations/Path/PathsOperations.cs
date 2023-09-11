@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace SharpFileServiceProg.Operations.Files
@@ -50,6 +51,36 @@ namespace SharpFileServiceProg.Operations.Files
                     Directory.CreateDirectory(parentPath);
                 }
             }
+        }
+
+        public string GetProjectFolderPath(string projectName)
+        {
+            string startupProjectFolder = default;
+            var max = 7;
+            var currentFolder = Directory.GetCurrentDirectory();
+            var directories = Directory.GetDirectories(currentFolder);
+
+            for (var i = 0; i < max; i++)
+            {
+                directories = Directory.GetDirectories(currentFolder);
+                startupProjectFolder = directories.SingleOrDefault(x => Path.GetFileName(x) == projectName);
+
+                if (startupProjectFolder != default)
+                {
+                    return startupProjectFolder;
+                }
+
+                currentFolder = MoveDirectoriesUp(currentFolder, 1);
+            }
+
+            throw new InvalidOperationException();
+        }
+
+        public string GetStartupProjectFolderPath()
+        {
+            string projectName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
+            string projectPath = GetProjectFolderPath(projectName);
+            return projectPath;
         }
     }
 }
