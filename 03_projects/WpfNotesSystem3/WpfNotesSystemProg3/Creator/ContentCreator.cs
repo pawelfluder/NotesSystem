@@ -32,7 +32,7 @@ namespace WpfNotesSystem.Creator
                 table.ColumnDefinitions.Add(col);
             }
 
-            table.Width = 500;
+            //table.Width = 500;
             //table.Height = 500;
             table.HorizontalAlignment = HorizontalAlignment.Left;
             table.VerticalAlignment = VerticalAlignment.Top;

@@ -26,21 +26,9 @@ namespace SwitchingViewsMVVM.ViewModels
         {
             //backendService.RepoApi(address.Repo, address.Loca);
             var jsonString = backendService.RepoApi(address.Item1, address.Item2);
-            ItemModel2 jObj = null;
-            object error = null;
-            try
-            {
-                jObj = JsonConvert.DeserializeObject<ItemModel2>(jsonString);
-                //error = jObj["error"];
-            }
-            catch
-            {
-
-            }
-
+            ItemModel2 jObj = jObj = JsonConvert.DeserializeObject<ItemModel2>(jsonString);            
             
-            
-            if (error != null) { return; }
+            //if (error != null) { return; }
             //var headersDict = fileService.Yaml.Custom03
             //  .Deserialize<Dictionary<string, object>>(item);
 

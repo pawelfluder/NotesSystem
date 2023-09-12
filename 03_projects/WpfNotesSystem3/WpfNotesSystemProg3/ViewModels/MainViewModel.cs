@@ -18,6 +18,7 @@ namespace SwitchingViewsMVVM.ViewModels
             UpdateViewCommand = new UpdateViewCommand(this);
             var container = MyBorder.Container;
             backendService = container.Resolve<IBackendService>();
+            GoAction(("Notki", "01"));
         }
 
         public IItemViewModel SelectedViewModel

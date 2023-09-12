@@ -13,15 +13,13 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+         <ColumnDefinition></ColumnDefinition>
+      </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
             <RowDefinition Height="15"></RowDefinition>
             <RowDefinition Height="20"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
       </Grid.RowDefinitions>
 
         <Button Content="Folder" Grid.Row="0" Grid.Column="0" Command="{Binding FolderCommand}"/>
@@ -29,12 +27,12 @@
         <Button Content="Config" Grid.Row="0" Grid.Column="2" Command="{Binding ConfigCommand}"/>
         <Button Content="Pdf" Grid.Row="0" Grid.Column="3" Command="{Binding PdfCommand}"/>
         <Button Content="GoogleDoc" Grid.Row="0" Grid.Column="4" Command="{Binding GoogledocCommand}"/>
-      <Button Content="RunPrinter" Grid.Row="0" Grid.Column="5" Command="{Binding RunPrinterCommand}"/>
+         <Button Content="RunPrinter" Grid.Row="0" Grid.Column="5" Command="{Binding RunPrinterCommand}"/>
 
-      <ScrollViewer HorizontalScrollBarVisibility="Auto" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="8">
-         
-            <ContentControl Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}" />
-        
+
+      <ScrollViewer HorizontalScrollBarVisibility="Auto" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6"
+                    MinHeight="100" MinWidth="80">
+         <ContentControl Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}" />
       </ScrollViewer>
    </Grid>
 </UserControl>

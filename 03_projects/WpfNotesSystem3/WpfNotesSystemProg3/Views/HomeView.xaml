@@ -15,20 +15,28 @@
          <ColumnDefinition></ColumnDefinition>
          <ColumnDefinition></ColumnDefinition>
          <ColumnDefinition></ColumnDefinition>
-         <ColumnDefinition></ColumnDefinition>
-         <ColumnDefinition></ColumnDefinition>
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
          <RowDefinition Height="20"></RowDefinition>
          <RowDefinition Height="15"></RowDefinition>
          <RowDefinition Height="20"></RowDefinition>
-         <RowDefinition Height="Auto"></RowDefinition>
+         <RowDefinition></RowDefinition>
       </Grid.RowDefinitions>
 
-      <Button Content="Folder" Grid.Row="0" Grid.Column="0" Command="{Binding FolderCommand}"/>
-      <Button Content="Config" Grid.Row="0" Grid.Column="2" Command="{Binding ConfigCommand}"/>
+      
+         <Button Content="Folder" Grid.Row="0" Grid.Column="0" Command="{Binding FolderCommand}"/>
+         <Button Content="Config" Grid.Row="0" Grid.Column="2" Command="{Binding ConfigCommand}"/>
+      
 
-      <ContentControl Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="8" Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}" />
+      <Border CornerRadius="6" BorderBrush="Gray" Background="LightGray" BorderThickness="2"
+              
+                    Grid.Row="3" Grid.Column="0"
+                    Grid.ColumnSpan="6" MinHeight="100" MinWidth="80">
+      <ScrollViewer HorizontalScrollBarVisibility="Auto" >
+         <ContentControl  Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}" />
 
+      </ScrollViewer>
+      </Border>
+      
    </Grid>
 </UserControl>

@@ -16,7 +16,7 @@ using WpfNotesSystemProg3.Models;
 
 namespace WpfNotesSystemProg.Converter
 {
-    [ValueConversion(typeof(ItemModel2), typeof(Grid))]
+    [ValueConversion(typeof(ItemModel2), typeof(StackPanel))]
     public class HeadersDictConverter : MarkupExtension, IValueConverter
     {
         private object converter;
@@ -41,6 +41,7 @@ namespace WpfNotesSystemProg.Converter
         {
             var itemModel = value as ItemModel2;
             Grid myGrid = null;
+            StackPanel stackPanel = null;
             try
             {
                 var type = itemModel.Type;
@@ -52,9 +53,34 @@ namespace WpfNotesSystemProg.Converter
                 {
                     myGrid = ConvertFolderItem(itemModel);
                 }
+
+                stackPanel = new StackPanel();
+                stackPanel.Children.Add(myGrid);
+                
+                var w = 150;
+                var h = 150;
+                //myGrid.MinHeight = h;
+                //myGrid.MinWidth = w;
+                if (myGrid.Height < h )//||
+                    //Double.IsNaN(myGrid.Height))
+                {
+                    myGrid.Height = h;
+                }
+                if (myGrid.Width < w )//||
+                    //Double.IsNaN(myGrid.Width))
+                {
+                    myGrid.Width = w;
+                }
+                stackPanel.Height = myGrid.Height;
+                stackPanel.Width = myGrid.Width;
+
+                stackPanel.MinHeight = h;
+                stackPanel.MinWidth = w;
+
+                //stackPanel.Width = 500;
             }
             catch { }
-            return myGrid;
+            return stackPanel;
         }
 
         private Grid ConvertFolderItem(ItemModel2 itemModel)
