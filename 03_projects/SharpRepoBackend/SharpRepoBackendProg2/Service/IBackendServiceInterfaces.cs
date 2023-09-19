@@ -12,6 +12,7 @@
             CreateGoogledoc,
             CreatePdf,
             RunPrinter,
+            GetAllRepoName,
         }
     }
 }

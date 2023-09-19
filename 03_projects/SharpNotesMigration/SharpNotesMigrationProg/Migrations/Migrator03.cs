@@ -45,12 +45,21 @@ namespace SharpNotesMigrationProg.Migrations
             pattern4 = string.Format(str4, keyName);
         }
 
-        public void Migrate()
+        public void MigrateEverything()
         {
             var allReposPath = repoService.Methods.GetAllReposPaths();
             foreach (var repoPath in allReposPath)
             {
                 MigrateOneRepo(repoPath);
+            }
+        }
+
+        public void MigrateOneFolderRecourively(string folderPath)
+        {
+            var addresses = repoService.Methods.GetAllRepoAddresses(folderPath);
+            foreach (var address in addresses)
+            {
+                MigrateOneAddress(address);
             }
         }
 
@@ -67,7 +76,8 @@ namespace SharpNotesMigrationProg.Migrations
         {
             if (!IsJustOneLine(address, out var nameLine))
             {
-                HandleError();
+                //HandleError();
+                return;
             }
 
             var before = nameLine;

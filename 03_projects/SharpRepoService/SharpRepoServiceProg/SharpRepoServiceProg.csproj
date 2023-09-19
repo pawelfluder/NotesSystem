@@ -17,4 +17,8 @@
     <ProjectReference Include="..\..\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="FileOperations\" />
+  </ItemGroup>
+
 </Project>

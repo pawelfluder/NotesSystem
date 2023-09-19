@@ -52,15 +52,43 @@ namespace SharpNotesMigrationTests
         }
 
         [TestMethod]
-        public void TestMethod3()
+        public void MigrateOneFolderRecoursively()
         {
             // arrange
             Prepare(typeof(IPreparer.INotesSystem));
             var migrator03 = MyBorder.Container.Resolve<IMigrationService.IMigrator03>();
             migrator03.SetAgree(true);
             var repoServer = MyBorder.Container.Resolve<IRepoService>();
-            //var repoName = "Notki";
-            var repoName = "02_appData";
+            var repoName = "Notki";
+            var loca = "12/02/03";
+            //var repoName = "02_appData";
+            var folderPath = repoServer.Methods.GetElemPath((repoName, loca));
+
+            // act
+            migrator03.MigrateOneFolderRecourively(folderPath);
+
+            // assert
+            var beforeAfter = migrator03.Changes;
+            beforeAfter.ForEach((x) =>
+            {
+                Console.WriteLine(x.Item1);
+                Console.WriteLine(x.Item2);
+                Console.WriteLine(x.Item3);
+                Console.WriteLine(x.Item4);
+                Console.WriteLine();
+            });
+        }
+
+        [TestMethod]
+        public void MigrateOneRepo()
+        {
+            // arrange
+            Prepare(typeof(IPreparer.INotesSystem));
+            var migrator03 = MyBorder.Container.Resolve<IMigrationService.IMigrator03>();
+            migrator03.SetAgree(true);
+            var repoServer = MyBorder.Container.Resolve<IRepoService>();
+            var repoName = "Notki";
+            //var repoName = "02_appData";
             var repoPath = repoServer.Methods.GetRepoPath(repoName);
 
             // act

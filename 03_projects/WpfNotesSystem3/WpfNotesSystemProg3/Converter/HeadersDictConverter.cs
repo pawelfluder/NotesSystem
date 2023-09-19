@@ -92,7 +92,7 @@ namespace WpfNotesSystemProg.Converter
             //var indexQnameList = tmp.ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value);
             //var indexQnameList = tmp.Select(kv => (kv.Key, kv.Value)).ToDictionary(x => x.Key);
 
-            var creator = new FolderBodyCreator(grid);
+            var creator = new FolderBodyCreator(grid, fileService);
             creator.Run(indexQnameDict);
             return grid;
         }

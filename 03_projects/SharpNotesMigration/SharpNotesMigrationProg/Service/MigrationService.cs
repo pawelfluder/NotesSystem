@@ -28,7 +28,7 @@ namespace SharpNotesMigrationProg.Service
                 migrator = new Migrator03(fileService, repoService);
             }
 
-            migrator.Migrate();
+            migrator.MigrateEverything();
         }
 
         public void MigrateAll()
@@ -40,7 +40,7 @@ namespace SharpNotesMigrationProg.Service
 
             foreach (var migrator in migrators)
             {
-                migrator.Migrate();
+                migrator.MigrateEverything();
             }
         }
     }

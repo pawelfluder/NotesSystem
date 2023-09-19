@@ -17,7 +17,7 @@ namespace SharpNotesMigrationProg.Migrations
             this.repoService = repoService;
         }
 
-        public void Migrate()
+        public void MigrateEverything()
         {
             var allReposPath = repoService.Methods.GetAllReposPaths();
             var counts = new List<(string, int)>();

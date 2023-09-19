@@ -4,7 +4,6 @@ using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
 using SharpNotesExporter;
 using SharpRepoServiceProg.Service;
-using SharpRepoSystemBackendProj;
 using TextHeaderAnalyzerCoreProj.Service;
 using SharpGoogleDriveProg.Service;
 using SharpConfigProg.Preparer;
@@ -51,44 +50,27 @@ namespace SharpRepoBackendProg.Service
             {
                 var address = (repo, loca2);
                 var item = repoService.Methods.GetItem(address);
-                //var json = JsonConvert.SerializeObject(item);
                 return item;
-
-                //var type = repoService.Methods.GetType(address);
-                //if (type == "Text")
-                //{
-                //    var name = repoService.Methods.GetLocalName(address);
-                //    var content = repoService.Methods.GetTextLines(address);
-                //    var data = new Data(name, content);
-                //    var json = JsonConvert.SerializeObject(data);
-                //    return json;
-                //}
-                //else
-                //{
-
-                //    var indexesQNames = repoService.Methods.GetAllIndexesQNames(address);
-                //    var data = indexesQNames.ToDictionary(x => x.Item1, x => x.Item2);
-                //    var json = JsonConvert.SerializeObject(data);
-                //    return json;
-                //}
-
-                return default;
             }
             catch
             {
-                var error = "Exception! Item not found";
-                //var result = new Dictionary<string, string> { { "error", error } };
-                var result = new JsonObject();
+                var error = "Exception! Item not found";var result = new JsonObject();
                 result.Add("error", error);
-                //var jsonResult = JsonConvert.SerializeObject(result);
                 return result.ToJsonString();
             }
         }
 
-        public string CommandApi(string cmdName, string repo, string loca)
+        public string CommandApi(string cmdName, string repo = "", string loca = "")
         {
             try
             {
+                if (cmdName == IBackendService.ApiMethods.GetAllRepoName.ToString())
+                {
+                    var allRepoNames = repoService.Methods.GetAllReposNames();
+                    var jsonString = JsonConvert.SerializeObject(allRepoNames);
+                    return jsonString;
+                }
+
                 var loca2 = loca.Replace("-", "/");
                 var itemPath = repoService.Methods.GetElemPath((repo, loca2));
 

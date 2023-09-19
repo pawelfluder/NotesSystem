@@ -2,8 +2,7 @@
 using System;
 namespace SharpFileServiceProg.Operations.Index
 {
-    internal class IndexOperations
-        : IFileService.IIndexWrk
+    internal class IndexOperations : IFileService.IIndexWrk
     {
         public string IndexToString(int index)
         {

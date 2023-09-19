@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace SharpFileServiceProg.Operations.Dictionaries
+﻿namespace SharpFileServiceProg.Operations.Dictionaries
 {
     public class RecursivelyMoveInDictionaries
     {

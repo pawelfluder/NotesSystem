@@ -1,19 +1,7 @@
-﻿using SharpRepoBackendProg.Service;
-using SwitchingViewsMVVM.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SwitchingViewsMVVM.ViewModels;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Unity;
 using WpfNotesSystem.Repetition;
 
@@ -33,12 +21,51 @@ namespace SwitchingViewsMVVM
 
         private void GoButtonClick(object sender, RoutedEventArgs e)
         {
-            var repoTextBox = FindName("RepoName") as TextBox;
-            var locaTextBox = FindName("Location") as TextBox;
+            var addressTextBox = FindName("Address") as TextBox;
+            var url = addressTextBox.Text;
+
+            var address = CreateAddressFromUrl(url);
 
             var mainViewModel = DataContext as MainViewModel;
-            var address = (repoTextBox.Text, locaTextBox.Text);
             mainViewModel.GoAction(address);
+        }
+
+        private (string, string) CreateAddressFromUrl(string address)
+        {
+            address = address.Trim('/');
+            var index = address.IndexOf('/');
+            if (!address.Contains('/'))
+            {
+                return (address, "");
+            }
+
+            var repo = address.Substring(0, index);
+            var loca = address.Substring(index + 1, address.Length - index - 1);
+            return (repo, loca);
+        }
+
+        private void GoButtonClick2(object sender, RoutedEventArgs e)
+        {
+            var repoTextBox = FindName("RepoName") as ComboBox;
+            var locaTextBox = FindName("Location") as TextBox;
+
+            //var repo = repoTextBox.SelectedItem.ToString();
+
+            //var mainViewModel = DataContext as MainViewModel;
+            //var address = (repo, locaTextBox.Text);
+            //mainViewModel.GoAction(address);
+        }
+
+        private void BackArrowClick(object sender, RoutedEventArgs e)
+        {
+            var mainViewModel = DataContext as MainViewModel;
+            mainViewModel.BackArrow();
+        }
+
+        private void ForwardArrowClick(object sender, RoutedEventArgs e)
+        {
+            var mainViewModel = DataContext as MainViewModel;
+            mainViewModel.ForwardArrow();
         }
     }
 }

@@ -50,7 +50,7 @@ namespace SharpRepoServiceProg.RepoOperations
         // GET
         public List<(string Repo, string Loca)> GetAllRepoAddresses(string repoPath)
         {
-            var result = new GetRepoAllAddresses(fileService).Visit(repoPath);
+            var result = fileService.File.NewRepoAddressesObtainer().Visit(repoPath);
             return result;
         }
 

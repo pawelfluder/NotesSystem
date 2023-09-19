@@ -1,5 +1,6 @@
 ﻿using SharpFileServiceProg.Operations.Files;
 using SharpFileServiceProg.Operations.Headers;
+using SharpFileServiceProg.Operations.RepoAddress;
 using static SharpFileServiceProg.Service.FileService;
 
 namespace SharpFileServiceProg.Service
@@ -11,5 +12,6 @@ namespace SharpFileServiceProg.Service
         IYamlWrk Yaml { get; }
         IPathsOperations Path { get; }
         HeadersOperations Header { get; }
+        IRepoAddressOperations RepoAddress { get; }
     }
 }

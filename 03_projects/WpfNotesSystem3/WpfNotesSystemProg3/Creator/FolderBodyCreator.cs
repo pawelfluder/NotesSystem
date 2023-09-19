@@ -1,4 +1,5 @@
-﻿using SwitchingViewsMVVM.ViewModels;
+﻿using SharpFileServiceProg.Service;
+using SwitchingViewsMVVM.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,15 @@ namespace WpfNotesSystem.Creator
 {
     public class FolderBodyCreator
     {
+        private readonly IFileService fileService;
         private readonly Grid table;
         private readonly MainViewModel mainViewModel;
 
-        public FolderBodyCreator(Grid grid)
+        public FolderBodyCreator(
+            Grid grid,
+            IFileService fileService)
         {
+            this.fileService = fileService;
             table = grid;
             mainViewModel = MyBorder.Container.Resolve<MainViewModel>();
         }
@@ -59,11 +64,11 @@ namespace WpfNotesSystem.Creator
             }
         }
 
-        public void CreateFolderLine(int j, string index, string name)
+        public void CreateFolderLine(int j, string indexString, string name)
         {
             // index
             TextBlock txt1 = new TextBlock();
-            txt1.Text = index;
+            txt1.Text = indexString;
             txt1.FontSize = 12;
             txt1.FontWeight = FontWeights.Bold;
             Grid.SetRow(txt1, j);
@@ -75,15 +80,15 @@ namespace WpfNotesSystem.Creator
 
             //hyperlink.Click += GoItem
 
-            Hyperlink hyperlink = new Hyperlink(new Run(name));
-            var address = mainViewModel.Address.Repo +
-                "/" + mainViewModel.Address.Loca +
-                "/" + index;
-            var url = "https://" + address;
-            string url2 = "https://www.Example.com";
-            var uri = new Uri(url);
+            if (mainViewModel.Address.Loca.Contains("//"))
+            {
+                throw new Exception();
+            }
 
-            hyperlink.NavigateUri = uri;
+            Hyperlink hyperlink = new Hyperlink(new Run(name));
+            var index = int.Parse(indexString);
+            hyperlink.NavigateUri = fileService.RepoAddress.
+                CreateUriFromAddress(mainViewModel.Address, index);
             hyperlink.RequestNavigate += HyperlinkRequestNavigate;
 
             TextBlock txt2 = new TextBlock();
@@ -105,15 +110,19 @@ namespace WpfNotesSystem.Creator
         {
             if (sender is Hyperlink hyperLink)
             {
-                var tmp = hyperLink.NavigateUri.OriginalString
-                    .Replace("https://", "");
-                var index = tmp.IndexOf('/');
-                var repo = tmp.Substring(0, index);
-                var loca = tmp.Substring(index + 1, tmp.Length - index - 1);
-                mainViewModel.GoAction((repo, loca));
+                var addressString = hyperLink.NavigateUri.OriginalString
+                    .Replace("https://", string.Empty);
+
+                var address = fileService.RepoAddress
+                    .CreateAddressFromString(addressString);
+                mainViewModel.GoAction(address);
+
+                //var index = tmp.IndexOf('/');
+                //var repo = tmp.Substring(0, index);
+                //var loca = tmp.Substring(index + 1, tmp.Length - index - 1);
             }
 
-        }
+        }       
 
         public void CreateLines((int, int) pos, string line, int collSpan)
         {

@@ -2,6 +2,6 @@
 {
     internal interface IMigrator
     {
-        void Migrate();
+        void MigrateEverything();
     }
 }

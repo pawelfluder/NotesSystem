@@ -14,6 +14,12 @@ namespace SharpFileServiceProg.Service
                 Action<DirectoryInfo> directoryAction);
         }
 
+        public interface IVisit<T>
+        {
+            public T Visit(
+                string path);
+        }
+
         public interface IParentVisit
         {
             public List<DirectoryInfo> Parents { get; }
