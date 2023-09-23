@@ -9,8 +9,14 @@
             OpenConfig,
             OpenPdf,
             OpenGoogledoc,
-            CreateGoogledoc,
+
+            CreateFolder,
+            CreateContent,
             CreatePdf,
+            CreateGoogledoc,
+
+            AddContent,
+
             RunPrinter,
             GetAllRepoName,
         }

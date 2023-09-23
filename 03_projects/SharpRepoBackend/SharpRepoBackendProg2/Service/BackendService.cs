@@ -133,6 +133,109 @@ namespace SharpRepoBackendProg.Service
             return JsonConvert.SerializeObject("completed!");
         }
 
+        public string CommandApi(string cmdName, string[] args)
+        {
+            try
+            {
+                // zero arguments
+                if (cmdName == IBackendService.ApiMethods.GetAllRepoName.ToString())
+                {
+                    var allRepoNames = repoService.Methods.GetAllReposNames();
+                    var jsonString = JsonConvert.SerializeObject(allRepoNames);
+                    return jsonString;
+                }
+
+                // two arguments
+                var repo = args[0];
+                var loca = args[1].Replace("-", "/");
+                var address = (repo, loca);
+                var itemPath = repoService.Methods.GetElemPath((repo, loca));
+
+                if (cmdName == IBackendService.ApiMethods.OpenFolder.ToString())
+                {
+                    buttonActionService.OpenFolder(itemPath);
+
+                    var url = "https://docs.google.com/document/d/18H_5aGqmrch7M_WCJ49PcA0doRxbLCC_bmULwraspe4";
+                    var result2 = new Dictionary<string, string> { { "url", url } };
+                    var json = JsonConvert.SerializeObject(result2);
+                    return json;
+                }
+
+                if (cmdName == IBackendService.ApiMethods.OpenContent.ToString())
+                {
+                    buttonActionService.OpenContent(itemPath);
+                }
+
+                if (cmdName == IBackendService.ApiMethods.OpenConfig.ToString())
+                {
+                    buttonActionService.OpenConfigFile(itemPath);
+                }
+
+                if (cmdName == IBackendService.ApiMethods.CreatePdf.ToString())
+                {
+                    CreatePdf((repo, loca));
+                }
+
+                if (cmdName == IBackendService.ApiMethods.OpenPdf.ToString())
+                {
+                    var pdfPath = CreatePdf((repo, loca));
+                    var success = pdfService.Open(pdfPath);
+                    return success.ToString();
+                }
+
+                if (cmdName == IBackendService.ApiMethods.CreateGoogledoc.ToString())
+                {
+                    var url = CreateGoogledoc((repo, loca));
+                    var result = new Dictionary<string, string> { { "url", url } };
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return jsonResult;
+                }
+
+                if (cmdName == IBackendService.ApiMethods.OpenGoogledoc.ToString())
+                {
+                    var url = CreateGoogledoc((repo, loca));
+                    OpenGoogledoc(url);
+                }
+
+                if (cmdName == IBackendService.ApiMethods.RunPrinter.ToString())
+                {
+                    //var pdfPath = CreatePdf((repo, loca2));
+                    var pdfPath = itemPath + "/" + "lista.pdf";
+                    pdfService.RunPrinter(pdfPath);
+                    return string.Empty;
+                }
+
+                if (cmdName == IBackendService.ApiMethods.CreateFolder.ToString())
+                {
+                    var type = args[2];
+                    var name = args[3];
+                    if (type == "Folder")
+                    {
+                        var outputItem = repoService.Methods
+                            .CreateChildFolder(address, name);
+                        return JsonConvert.SerializeObject("completed!");
+                    }
+                    if (type == "Text")
+                    {
+                        var outputItem = repoService.Methods
+                            .CreateChildText(address, name);
+                        return JsonConvert.SerializeObject("completed!");
+                    }
+                }
+
+                if (cmdName == IBackendService.ApiMethods.AddContent.ToString())
+                {
+                    var content = args[2];
+                    repoService.Methods
+                            .AppendText(address, content);
+                    return JsonConvert.SerializeObject("completed!");
+                }
+            }
+            catch { }
+
+            return JsonConvert.SerializeObject("completed!");
+        }
+
         private void OpenGoogledoc(string url)
         {
             Process.Start(new ProcessStartInfo

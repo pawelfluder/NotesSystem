@@ -30,8 +30,8 @@ namespace SharpNotesMigrationTests.Repetition
             RegisterByFunc<MainViewModel>(() => new MainViewModel());
             RegisterByFunc<TextViewModel>(
                 () => new TextViewModel());
-            RegisterByFunc<HomeViewModel>(
-                () => new HomeViewModel());
+            RegisterByFunc<FolderViewModel>(
+                () => new FolderViewModel());
         }
 
         //protected override void Registrations()

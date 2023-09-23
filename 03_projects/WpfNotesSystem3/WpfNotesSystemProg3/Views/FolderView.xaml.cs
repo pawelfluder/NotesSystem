@@ -14,12 +14,12 @@ namespace SwitchingViewsMVVM.Views
     /// <summary>
     /// Interaction logic for HomeView.xaml
     /// </summary>
-    public partial class HomeView : UserControl
+    public partial class FolderView : UserControl
     {
-        public HomeView()
+        public FolderView()
         {
             InitializeComponent();
-            DataContext = MyBorder.Container.Resolve<HomeViewModel>();
+            DataContext = MyBorder.Container.Resolve<FolderViewModel>();
         }
     }
 }

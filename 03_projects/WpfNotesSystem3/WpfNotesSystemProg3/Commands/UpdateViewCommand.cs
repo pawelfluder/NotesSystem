@@ -30,7 +30,7 @@ namespace SwitchingViewsMVVM.Commands
         {
             if(parameter.ToString() == "Home")
             {
-                viewModel.SelectedViewModel = MyBorder.Container.Resolve<HomeViewModel>();
+                viewModel.SelectedViewModel = MyBorder.Container.Resolve<FolderViewModel>();
             }
             else if(parameter.ToString() == "Account")
             {

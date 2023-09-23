@@ -6,11 +6,21 @@
              xmlns:viewmodels="clr-namespace:SwitchingViewsMVVM.ViewModels"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
-            <views:HomeView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:TextViewModel}">
-            <views:TextView/>
-        </DataTemplate>
-    </Application.Resources>
+        
+
+      <ResourceDictionary>
+         <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary 
+            Source="Styles/TempBorderStyle.xaml" />
+            <ResourceDictionary>
+               <DataTemplate DataType="{x:Type viewmodels:FolderViewModel}">
+                  <views:FolderView/>
+               </DataTemplate>
+               <DataTemplate DataType="{x:Type viewmodels:TextViewModel}">
+                  <views:TextView/>
+               </DataTemplate>
+            </ResourceDictionary>
+         </ResourceDictionary.MergedDictionaries>
+      </ResourceDictionary>
+   </Application.Resources>
 </Application>

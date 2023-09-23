@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:my="clr-namespace:WpfNotesSystemProg.Converter"
-        mc:Ignorable="d"
-        Height="450" Width="800">
+        xmlns:local="clr-namespace:SwitchingViewsMVVM"
+        mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -13,25 +13,37 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
-         <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
       </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"></RowDefinition>
-            <RowDefinition Height="15"></RowDefinition>
-            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
             <RowDefinition></RowDefinition>
       </Grid.RowDefinitions>
 
-        <Button Content="Folder" Grid.Row="0" Grid.Column="0" Command="{Binding FolderCommand}"/>
+      <Border Style="{StaticResource TextViewAllRowQCol}" Grid.ZIndex="5"
+         Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Grid.ColumnSpan="6"/>
+
+      
+
+      <!-- 0 -->
+      <Button Content="Folder" Grid.Row="0" Grid.Column="0" Command="{Binding FolderCommand}"/>
         <Button Content="Content" Grid.Row="0" Grid.Column="1" Command="{Binding ContentCommand}"/>
         <Button Content="Config" Grid.Row="0" Grid.Column="2" Command="{Binding ConfigCommand}"/>
         <Button Content="Pdf" Grid.Row="0" Grid.Column="3" Command="{Binding PdfCommand}"/>
         <Button Content="GoogleDoc" Grid.Row="0" Grid.Column="4" Command="{Binding GoogledocCommand}"/>
         <Button Content="RunPrinter" Grid.Row="0" Grid.Column="5" Command="{Binding RunPrinterCommand}"/>
 
+      <!-- 2 -->
+      <TextBox Margin="5" Text="{Binding ValueToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+         Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"></TextBox>
+      <Button Content="Add" Margin="5" Command="{Binding AddCommand}"
+         Grid.Row="2" Grid.Column="3"></Button>
 
-      <ScrollViewer HorizontalScrollBarVisibility="Auto" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6"
-                    MinHeight="100" MinWidth="80">
+      <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                    MinHeight="100" MinWidth="80"
+                    Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6">
          <ContentControl Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}" />
       </ScrollViewer>
    </Grid>

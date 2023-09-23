@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Unity;
 using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.History;
+using WpfNotesSystemProg3.ViewModelBase;
 
 namespace SwitchingViewsMVVM.ViewModels
 {
@@ -72,7 +73,7 @@ namespace SwitchingViewsMVVM.ViewModels
             AddressString = CreateUrlFromAddress(address);
             var type = backendService.RepoApi("GetItemType", address.Item1, address.Item2);
             if (type == "Text") { SelectedViewModel = MyBorder.Container.Resolve<TextViewModel>(); }
-            if (type == "Folder") { SelectedViewModel = MyBorder.Container.Resolve<HomeViewModel>(); }
+            if (type == "Folder") { SelectedViewModel = MyBorder.Container.Resolve<FolderViewModel>(); }
             SelectedViewModel.GoAction(type, address);
         }
 

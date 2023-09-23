@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
+using System.Xml.Linq;
 using static SharpRepoServiceProg.Service.IRepoService;
 
 namespace SharpRepoServiceProg.RepoOperations
@@ -573,8 +574,9 @@ namespace SharpRepoServiceProg.RepoOperations
             string itemPath,
             string content)
         {
+            var gg = string.Join("", Enumerable.Repeat("\n", 4));
             var contentFilePath = itemPath + slash + contentFileName;
-            File.WriteAllText(contentFilePath, content);
+            File.WriteAllText(contentFilePath, gg + content);
         }
 
         public void CreateConfig(
@@ -643,6 +645,16 @@ namespace SharpRepoServiceProg.RepoOperations
             File.WriteAllText(nameFilePath, content);
         }
 
+        public (string, string) CreateChildText(
+            (string Repo, string Loca) address,
+            string name)
+        {
+            var lastNumber = GetFolderLastNumber(address);
+            var newAddress = SelectAddress(address, lastNumber + 1);
+            CreateTextGenerate(newAddress, name, string.Empty);
+            return newAddress;
+        }
+
         [MethodLogger]
         public (string Repo, string Loca) CreateFolder(
             (string Repo, string Loca) address,
@@ -655,6 +667,26 @@ namespace SharpRepoServiceProg.RepoOperations
                 return existingItem;
             }
 
+            var localPath = GetElemPath(address);
+            var lastNumber = GetFolderLastNumber(localPath);
+            var indexString = IndexToString(lastNumber + 1);
+            var newLoca = indexString;
+
+            if (address.Loca != string.Empty)
+            {
+                newLoca = address.Loca + slash + newLoca;
+            }
+
+            var newAddress = (address.Repo, newLoca);
+            CreateFolderGenerate(newAddress, name);
+            return newAddress;
+        }
+
+        [MethodLogger]
+        public (string Repo, string Loca) CreateChildFolder(
+            (string Repo, string Loca) address,
+            string name)
+        {
             var localPath = GetElemPath(address);
             var lastNumber = GetFolderLastNumber(localPath);
             var indexString = IndexToString(lastNumber + 1);
@@ -739,6 +771,13 @@ namespace SharpRepoServiceProg.RepoOperations
             return newAddress;
         }
 
+        public void AppendText(
+            (string Repo, string Loca) address,
+            string content)
+        {
+            AppendTextGenerate(address, content);
+        }
+
         private void AppendTextGenerate(
             (string Repo, string Loca) address,
             string content)
@@ -750,6 +789,28 @@ namespace SharpRepoServiceProg.RepoOperations
             var newContent = oldContent + "\n" + content;
             File.WriteAllText(contentFilePath, newContent);
         }
+
+        private void AppendTextTopGenerate(
+            (string Repo, string Loca) address,
+            string content)
+        {
+            var elemPath = GetElemPath(address);
+
+            var contentFilePath = elemPath + slash + contentFileName;
+            var oldContent = GetText2(address);
+            var newContent = oldContent + "\n" + content;
+            File.WriteAllText(contentFilePath, newContent);
+        }
+
+        public string GetText3((string Repo, string Loca) address)
+        {
+            // ReadText
+            var path = GetElemPath(address) + "/" + contentFileName;
+            var lines = File.ReadAllLines(path).Skip(4);
+            var content = string.Join('\n', lines);
+            return content;
+        }
+
         // APPEND
         //-------------------------
 

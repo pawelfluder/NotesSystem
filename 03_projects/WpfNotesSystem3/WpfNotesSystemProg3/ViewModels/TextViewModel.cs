@@ -1,19 +1,17 @@
 ﻿using Newtonsoft.Json;
 using SharpFileServiceProg.Service;
-using SharpRepoBackendProg.Repetition;
 using SharpRepoBackendProg.Service;
-using SwitchingViewsMVVM.ViewModels;
-using System.Collections.Generic;
 using System.Windows.Input;
 using Unity;
 using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.Models;
+using WpfNotesSystemProg3.ViewModelBase;
+using static SharpRepoBackendProg.Service.IBackendService;
 
 namespace SwitchingViewsMVVM.ViewModels
 {
     public class TextViewModel : BaseViewModel, IItemViewModel
     {
-        //private readonly MainViewModel mainViewModel;
         private readonly IBackendService backendService;
         private ICommand folderCommand;
         private ICommand contentCommand;
@@ -22,6 +20,7 @@ namespace SwitchingViewsMVVM.ViewModels
         private ICommand googledocCommand;
         private ICommand runPrinterCommand;
         private ICommand goCommand;
+        private ICommand addCommand;
 
         public (string repo, string loca) CurrentAddress { get; set; }
 
@@ -31,9 +30,16 @@ namespace SwitchingViewsMVVM.ViewModels
         {
             //this.mainViewModel = mainViewModel;
             this.backendService = MyBorder.Container.Resolve<IBackendService>();
-            CurrentAddress = ("Sprawy", "01-02");
-
             fileService = MyBorder.Container.Resolve<IFileService>();
+            ValueToAdd = string.Empty;
+        }
+
+        public string ValueToAdd { get; set; }
+
+        public void SetValueToAdd_AndNotify(string valueToAdd)
+        {
+            ValueToAdd = valueToAdd;
+            OnPropertyChanged(nameof(ValueToAdd));
         }
 
         public ICommand FolderCommand
@@ -90,6 +96,15 @@ namespace SwitchingViewsMVVM.ViewModels
             }
         }
 
+        public ICommand AddCommand
+        {
+            get
+            {
+                return addCommand ?? (addCommand = new CommandHandler(
+                    () => AddAction(), () => CanExecute));
+            }
+        }
+
         public void FolderAction()
         {
             backendService.CommandApi(
@@ -141,6 +156,20 @@ namespace SwitchingViewsMVVM.ViewModels
             var jObj = JsonConvert.DeserializeObject<ItemModel2>(jsonString);
 
             HeadersDict = jObj;
+        }
+
+        public void AddAction()
+        {
+            if (ValueToAdd != string.Empty)
+            {
+                backendService.CommandApi(
+                    IBackendService.ApiMethods.AddContent.ToString(),
+                    CurrentAddress.repo,
+                    CurrentAddress.loca,
+                    ValueToAdd);
+                SetValueToAdd_AndNotify(string.Empty);
+                GoAction("Text", CurrentAddress);
+            }
         }
 
         private ItemModel2 headersDict;

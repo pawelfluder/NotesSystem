@@ -1,4 +1,4 @@
-﻿namespace SwitchingViewsMVVM.ViewModels
+﻿namespace WpfNotesSystemProg3.ViewModelBase
 {
     public interface IItemViewModel
     {

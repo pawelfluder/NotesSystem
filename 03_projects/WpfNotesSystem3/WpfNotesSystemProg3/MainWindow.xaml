@@ -17,6 +17,9 @@
          <RowDefinition Height="Auto" MinHeight="19.96"></RowDefinition>
       </Grid.RowDefinitions>
 
+      <Border Style="{StaticResource MainWindowContentControl}"
+            Grid.Row="1" Grid.Column="1" Grid.ZIndex="2"/>
+
       <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Orientation="Vertical" Margin="0,0,0,20">
          <Button Grid.Row="0" Grid.Column="0" 
                Margin="10" Width="100" Content="Home" Command="{Binding UpdateViewCommand}" CommandParameter="Home"/>
@@ -82,8 +85,6 @@
                Grid.Row="4" Grid.Column="0"/>
             <ComboBox Grid.Row="4" Grid.Column="1"
                ItemsSource="{Binding AllRepoList}" Name="RepoName"/>
-            
-
 
             <!--<TextBox Grid.Row="1" Grid.Column="1"
                   Name="RepoName" Height="20" Width="170" Margin="0,0,0,20"
@@ -93,7 +94,7 @@
          </Grid>
       </StackPanel>
       <ContentControl Grid.Row="1" Grid.Column="1"
-                      Content="{Binding SelectedViewModel}" Margin="0,0,0,20" Grid.RowSpan="2"/>
+         Content="{Binding SelectedViewModel}" Margin="0,0,0,20" Grid.RowSpan="2"/>
 
    </Grid>
 </Window>
