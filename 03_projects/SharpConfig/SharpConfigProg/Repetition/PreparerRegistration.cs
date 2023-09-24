@@ -4,7 +4,7 @@ using Unity;
 
 namespace SharpConfigProg.Repetition
 {
-    internal partial class PreparerRegistration : PreparerRegistrationBase
+    internal partial class PreparerRegistration : AdditionalRegistrationBase
     {
         public void Register()
         {

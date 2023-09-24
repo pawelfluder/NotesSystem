@@ -9,7 +9,7 @@ using OutBorder2 = SharpConfigProg.Repetition.OutBorder;
 using OutBorder3 = SharpRepoServiceProg.Repetition.OutBorder;
 using OutBorder4 = SharpPdfServiceProg.Repetition.OutBorder;
 
-namespace SharpNotesMigrationTests.Repetition
+namespace SharpRepoBackendProg.Repetition
 {
     internal class Registration : RegistrationBase
     {
@@ -29,13 +29,6 @@ namespace SharpNotesMigrationTests.Repetition
         protected override void Registrations()
         {
             RegisterByFunc<IFileService>(OutBorder1.FileService);
-            RegisterByFunc<IConfigService, IFileService>(
-                OutBorder2.ConfigService,
-                container.Resolve<IFileService>());
-
-            var configService = container.Resolve<IConfigService>();
-            configService.Prepare(typeof(IConfigService.INotesSystemPreparer2));
-
             RegisterByFunc<IRepoService, IFileService>(
                 OutBorder3.RepoService,
                 container.Resolve<IFileService>());

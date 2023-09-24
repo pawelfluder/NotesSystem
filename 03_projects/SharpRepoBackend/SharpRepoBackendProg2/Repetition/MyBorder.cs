@@ -2,17 +2,13 @@
 using SharpConfigProg.Service;
 using SharpGoogleDriveProg.Service;
 using Unity;
-using SharpNotesMigrationTests.Repetition;
 
 namespace SharpRepoBackendProg.Repetition
 {
     internal static class MyBorder
     {
-        //private static UnityContainer container = new Registration().Start();
-        //public static UnityContainer Container => container;
-
-        private static Registration registration = new Registration();
-        public static UnityContainer Container => registration.TryInitialize();
+        public static Registration Registration = new Registration();
+        public static UnityContainer Container => Registration.TryInitialize();
 
         public static GoogleDocsService GoogleDocsService()
         {

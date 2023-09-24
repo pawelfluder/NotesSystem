@@ -2,13 +2,22 @@
 
 namespace SharpConfigProg.Repetition
 {
-    internal partial class PreparerRegistrationBase
+    internal partial class AdditionalRegistrationBase
     {
-        public Action MethodDelegate { get; private set; }
+        public List<Action> ActionList { get; private set; }
 
-        public PreparerRegistrationBase()
+        public AdditionalRegistrationBase()
         {
+            ActionList = new List<Action>();
             AddMethodsToList();
+        }
+
+        public void Invoke()
+        {
+            foreach (var action in ActionList)
+            {
+                action.Invoke();
+            }
         }
 
         public void AddMethodsToList()
@@ -22,7 +31,7 @@ namespace SharpConfigProg.Repetition
                     methodInfo.Name.StartsWith("Register"))
                 {
                     Action methodAction = (Action)Delegate.CreateDelegate(typeof(Action), this, methodInfo);
-                    MethodDelegate += methodAction;
+                    ActionList.Add(methodAction);
                 }
             }
         }
