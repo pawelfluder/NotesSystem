@@ -1,4 +1,6 @@
-﻿namespace SharpConfigProg.Service
+﻿using SharpFileServiceProg.Service;
+
+namespace SharpConfigProg.Service
 {
     public interface IConfigService
     {

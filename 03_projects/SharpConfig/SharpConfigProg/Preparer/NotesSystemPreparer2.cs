@@ -3,11 +3,11 @@ using SharpRepoBackendProg.Repetition;
 
 namespace SharpConfigProg.Preparer
 {
-    internal class NotesSystemPreparer : IPreparer.INotesSystem
+    internal class NotesSystemPreparer2 : IPreparer.INotesSystem2
     {
         private readonly IFileService fileService;
 
-        public NotesSystemPreparer(IFileService fileService)
+        public NotesSystemPreparer2(IFileService fileService)
         {
             this.fileService = fileService;
         }
@@ -31,7 +31,7 @@ namespace SharpConfigProg.Preparer
 
         public List<object> GetRepoSearchPaths()
         {
-            var synchFolderPath = "D:/01_Synchronized/01_Programming_Files";
+            var synchFolderPath = "C:/03_synch/Dropbox";
             var tmp = Directory.GetDirectories(synchFolderPath);
             var tmp3 = tmp.Where(x => Guid.TryParse(Path.GetFileName(x), out var tmp2));
             var repoSearchPaths = tmp3.Select(x => (object)x).ToList();

@@ -10,7 +10,7 @@ namespace SharpPrepareConfigProg
         {
             var fileService = Border1.FileService();
             var service = new ConfigService(fileService);
-            service.Prepare(typeof(IPreparer.IWinder));
+            service.Prepare(typeof(IPreparer.IWinderPreparer));
         }
     }
 }

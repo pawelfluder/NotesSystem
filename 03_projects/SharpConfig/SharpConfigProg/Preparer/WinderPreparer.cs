@@ -1,9 +1,8 @@
-﻿using SharpConfigProg.Preparer;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 
 namespace SharpConfigProg.Preparer
 {
-    internal class WinderPreparer : IPreparer
+    internal class WinderPreparer : IPreparer.IWinderPreparer
     {
         private readonly string configFilePath;
 

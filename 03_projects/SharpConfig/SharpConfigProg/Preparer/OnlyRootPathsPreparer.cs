@@ -1,6 +1,6 @@
 ﻿namespace SharpConfigProg.Preparer
 {
-    internal class OnlyRootPathsPreparer : IPreparer
+    internal class OnlyRootPathsPreparer : IPreparer.IOnlyRootPathsPreparer
     {
         public Dictionary<string, object> Prepare()
         {

@@ -1,4 +1,5 @@
 ﻿using PdfService.PdfService;
+using SharpConfigProg.Preparer;
 using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
 using SharpRepoServiceProg.Service;
@@ -19,32 +20,13 @@ namespace SharpNotesMigrationTests.Repetition
                 OutBorder2.ConfigService,
                 container.Resolve<IFileService>());
 
+            var configService = container.Resolve<IConfigService>();
+            configService.Prepare(typeof(IPreparer.INotesSystem2));
+
             RegisterByFunc<IRepoService, IFileService>(
                 OutBorder3.RepoService,
                 container.Resolve<IFileService>());
             RegisterByFunc<IPdfService2>(OutBorder4.PdfService);
         }
-
-        //protected override void Registrations()
-        //{
-        //    RegisterByFunc(OutBorder1.FileService);
-
-        //    RegisterByFunc(
-        //        OutBorder2.NewConfigService,
-        //        container.Resolve<IFileService>());
-
-        //    RegisterByFunc<RepoService, IFileService>(OutBorder3.RepoService,
-        //        container.Resolve<IFileService>());
-
-        //    RegisterByFunc<IMigrationService, IFileService, RepoService>
-        //        (OutBorder4.MigrationService,
-        //        container.Resolve<IFileService>(),
-        //        container.Resolve<RepoService>());
-
-        //    RegisterByFunc<IMigrationService.IMigrator03, IFileService, RepoService>
-        //        (OutBorder4.Migrator03,
-        //        container.Resolve<IFileService>(),
-        //        container.Resolve<RepoService>());
-        //}
     }
 }

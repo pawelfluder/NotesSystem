@@ -34,7 +34,7 @@ namespace SharpRepoBackendProg.Service
             pdfService = MyBorder.Container.Resolve<IPdfService2>();
             configService = MyBorder.Container.Resolve<IConfigService>();
             driveService = MyBorder.NewGoogleDriveService();
-            configService.Prepare(typeof(IPreparer.INotesSystem));
+            //configService.Prepare(typeof(IPreparer.INotesSystem));
             var searchPaths = configService.GetRepoSearchPaths();
             repoService = MyBorder.Container.Resolve<IRepoService>();
             repoService.Initialize(searchPaths);

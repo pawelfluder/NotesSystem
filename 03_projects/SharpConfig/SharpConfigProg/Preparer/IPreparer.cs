@@ -7,9 +7,10 @@
 
     public partial interface IPreparer
     {
-        public interface ILocalProgramData { }
-        public interface IWinder { }
-        public interface IOnlyRootPaths { }
-        public interface INotesSystem { }
+        public interface ILocalProgramData : IPreparer { }
+        public interface IWinderPreparer : IPreparer { }
+        public interface IOnlyRootPathsPreparer : IPreparer { }
+        public interface INotesSystem : IPreparer { }
+        public interface INotesSystem2 : IPreparer { }
     }
 }

@@ -1,13 +1,16 @@
 ﻿using SharpConfigProg.Preparer;
+using SharpConfigProg.Repetition;
 using SharpFileServiceProg.Service;
+using Unity;
 
 namespace SharpConfigProg.Service
 {
     internal class ConfigService : IConfigService
     {
-        private readonly IFileService fileService;
         //private readonly RepoService repoService;
         private readonly IFileService.IYamlOperations yamlOperations;
+
+        public IFileService fileService;
 
         public string ConfigFilePath { get; }
         public Dictionary<string, object> SettingsDict
@@ -19,15 +22,13 @@ namespace SharpConfigProg.Service
         public ConfigService(
             IFileService fileService)
         {
-            yamlOperations = fileService.Yaml.Custom03;
-            var binPath = fileService.Path.GetBinPath();
-            SettingsDict = new Dictionary<string, object>();
-            ConfigFilePath = fileService.Path.MoveDirectoriesUp(binPath, 3) +
-                "/" + "Config" + "/" + "paths.cfg";
-            fileService.Path.CreateMissingDirectories(ConfigFilePath);
-
             this.fileService = fileService;
-            //this.repoService = repoService;
+            yamlOperations = this.fileService.Yaml.Custom03;
+            var binPath = this.fileService.Path.GetBinPath();
+            SettingsDict = new Dictionary<string, object>();
+            ConfigFilePath = this.fileService.Path.MoveDirectoriesUp(binPath, 3) +
+                "/" + "Config" + "/" + "paths.cfg";
+            this.fileService.Path.CreateMissingDirectories(ConfigFilePath);
         }
 
         public List<string> GetRepoSearchPaths()
@@ -52,29 +53,33 @@ namespace SharpConfigProg.Service
 
         public void Prepare(Type preparerClassType)
         {
-            if (preparerClassType == typeof(IPreparer.IOnlyRootPaths))
-            {
-                SetAndSerializePaths(new OnlyRootPathsPreparer()
-                    .Prepare());
-            }
+            var preparer = MyBorder.Container.Resolve(preparerClassType);
+            var paths = (preparer as IPreparer).Prepare();
+            SetAndSerializePaths(paths);
 
-            if (preparerClassType == typeof(IPreparer.IWinder))
-            {
-                SetAndSerializePaths(new WinderPreparer(ConfigFilePath)
-                    .Prepare());
-            }
+            //f (preparerClassType == typeof(IPreparer.IOnlyRootPathsPreparer))
+            //{
+            //    SetAndSerializePaths(new iOnlyRootPathsPreparer()
+            //        .Prepare());
+            //}
 
-            if (preparerClassType == typeof(IPreparer.ILocalProgramData))
-            {
-                SetAndSerializePaths(new LocalProgramDataPreparer(fileService)
-                    .Prepare());
-            }
+            //if (preparerClassType == typeof(IPreparer.IWinder))
+            //{
+            //    SetAndSerializePaths(new WinderPreparer(ConfigFilePath)
+            //        .Prepare());
+            //}
 
-            if (preparerClassType == typeof(IPreparer.INotesSystem))
-            {
-                SetAndSerializePaths(new NotesSystemPreparer(fileService)
-                    .Prepare());
-            }
+            //if (preparerClassType == typeof(IPreparer.ILocalProgramData))
+            //{
+            //    SetAndSerializePaths(new LocalProgramDataPreparer(fileService)
+            //        .Prepare());
+            //}
+
+            //if (preparerClassType == typeof(IPreparer.INotesSystem))
+            //{
+            //    SetAndSerializePaths(new NotesSystemPreparer(fileService)
+            //        .Prepare());
+            //}
         }
 
         public void AddSetting(string key, object value)

@@ -2,7 +2,7 @@
 
 namespace SharpConfigProg.Preparer
 {
-    internal class LocalProgramDataPreparer : IPreparer, IPreparer.ILocalProgramData
+    internal class LocalProgramDataPreparer : IPreparer.ILocalProgramData
     {
         private readonly IFileService fileService;
 
