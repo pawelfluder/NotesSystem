@@ -6,7 +6,6 @@ using SharpNotesExporter;
 using SharpRepoServiceProg.Service;
 using TextHeaderAnalyzerCoreProj.Service;
 using SharpGoogleDriveProg.Service;
-using SharpConfigProg.Preparer;
 using Unity;
 using SharpRepoBackendProg.Repetition;
 using PdfService.PdfService;
@@ -34,7 +33,6 @@ namespace SharpRepoBackendProg.Service
             pdfService = MyBorder.Container.Resolve<IPdfService2>();
             configService = MyBorder.Container.Resolve<IConfigService>();
             driveService = MyBorder.NewGoogleDriveService();
-            //configService.Prepare(typeof(IPreparer.INotesSystem));
             var searchPaths = configService.GetRepoSearchPaths();
             repoService = MyBorder.Container.Resolve<IRepoService>();
             repoService.Initialize(searchPaths);

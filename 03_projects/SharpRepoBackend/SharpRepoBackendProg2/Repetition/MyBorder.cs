@@ -8,12 +8,15 @@ namespace SharpRepoBackendProg.Repetition
 {
     internal static class MyBorder
     {
-        private static UnityContainer container = new Registration().Start();
-        public static UnityContainer Container => container;
+        //private static UnityContainer container = new Registration().Start();
+        //public static UnityContainer Container => container;
+
+        private static Registration registration = new Registration();
+        public static UnityContainer Container => registration.TryInitialize();
 
         public static GoogleDocsService GoogleDocsService()
         {
-            var configService = container.Resolve<IConfigService>();
+            var configService = Container.Resolve<IConfigService>();
 
             var clientId = configService.SettingsDict["googleClientId"].ToString();
             var clientSecret = configService.SettingsDict["googleClientSecret"].ToString();
@@ -30,7 +33,7 @@ namespace SharpRepoBackendProg.Repetition
 
         public static GoogleDriveService NewGoogleDriveService()
         {
-            var configService = container.Resolve<IConfigService>();
+            var configService = Container.Resolve<IConfigService>();
 
             var clientId = configService.SettingsDict["googleClientId"].ToString();
             var clientSecret = configService.SettingsDict["googleClientSecret"].ToString();

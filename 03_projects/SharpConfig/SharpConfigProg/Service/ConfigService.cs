@@ -1,11 +1,11 @@
-﻿using SharpConfigProg.Preparer;
+﻿using SharpConfigProg.ConfigPreparer;
 using SharpConfigProg.Repetition;
 using SharpFileServiceProg.Service;
 using Unity;
 
 namespace SharpConfigProg.Service
 {
-    internal class ConfigService : IConfigService
+    internal partial class ConfigService : IConfigService
     {
         //private readonly RepoService repoService;
         private readonly IFileService.IYamlOperations yamlOperations;

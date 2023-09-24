@@ -1,12 +1,10 @@
 ﻿using SharpFileServiceProg.Service;
 using SharpRepoServiceCoreProj;
-using SharpRepoServiceProg.FileOperations;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
-using System.Xml.Linq;
 using static SharpRepoServiceProg.Service.IRepoService;
 
 namespace SharpRepoServiceProg.RepoOperations
@@ -847,6 +845,7 @@ namespace SharpRepoServiceProg.RepoOperations
         {
             return path.Replace("\\", "/");
         }
+
         private int GetLocationLastNumber(string location)
         {
             var lastString = location.Split("/").Last();

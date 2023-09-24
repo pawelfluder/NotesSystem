@@ -1,5 +1,4 @@
-﻿using SharpConfigProg.Preparer;
-using SharpConfigProg.Service;
+﻿using SharpConfigProg.Service;
 using Border1 = SharpFileServiceProg.Repetition.OutBorder;
 
 namespace SharpPrepareConfigProg
@@ -10,7 +9,7 @@ namespace SharpPrepareConfigProg
         {
             var fileService = Border1.FileService();
             var service = new ConfigService(fileService);
-            service.Prepare(typeof(IPreparer.IWinderPreparer));
+            service.Prepare(typeof(IConfigService.IWinderPreparer));
         }
     }
 }

@@ -1,13 +1,9 @@
-using SharpConfigProg.Preparer;
 using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
 using SharpNotesMigrationProg.Service;
 using SharpNotesMigrationTests.Repetition;
 using SharpRepoServiceProg.Service;
-using System.ComponentModel;
 using Unity;
-
-using OutBorder01 = SharpRepoServiceProg.Repetition.OutBorder;
 
 namespace SharpNotesMigrationTests
 {
@@ -28,7 +24,7 @@ namespace SharpNotesMigrationTests
         public void TestMethod1()
         {
             // arrange
-            Prepare(typeof(IPreparer.ILocalProgramData));
+            Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
             var migrationService = MyBorder.Container.Resolve<IMigrationService>();
 
             // act
@@ -39,7 +35,7 @@ namespace SharpNotesMigrationTests
         public void TestMethod2()
         {
             // arrange
-            Prepare(typeof(IPreparer.ILocalProgramData));
+            Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
             var migrator03 = MyBorder.Container.Resolve<IMigrationService.IMigrator03>();
             var repo = "todo";
             var loca = "02";
@@ -55,7 +51,7 @@ namespace SharpNotesMigrationTests
         public void MigrateOneFolderRecoursively()
         {
             // arrange
-            Prepare(typeof(IPreparer.INotesSystem));
+            Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
             var migrator03 = MyBorder.Container.Resolve<IMigrationService.IMigrator03>();
             migrator03.SetAgree(true);
             var repoServer = MyBorder.Container.Resolve<IRepoService>();
@@ -83,7 +79,7 @@ namespace SharpNotesMigrationTests
         public void MigrateOneRepo()
         {
             // arrange
-            Prepare(typeof(IPreparer.INotesSystem));
+            Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
             var migrator03 = MyBorder.Container.Resolve<IMigrationService.IMigrator03>();
             migrator03.SetAgree(true);
             var repoServer = MyBorder.Container.Resolve<IRepoService>();

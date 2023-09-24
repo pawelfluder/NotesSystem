@@ -2,7 +2,7 @@
 using Unity;
 using Unity.Injection;
 
-namespace SharpNotesMigrationTests.Repetition
+namespace WpfNotesSystem.Repetition
 {
     internal abstract class RegistrationBase
     {

@@ -1,6 +1,4 @@
-﻿using SharpConfigProg.Preparer;
-using SharpConfigProg.Service;
-using SharpFileServiceProg.Service;
+﻿using SharpFileServiceProg.Service;
 using SharpNotesMigrationProg.Service;
 using SharpRepoServiceProg.Service;
 using Unity;

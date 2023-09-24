@@ -1,8 +1,14 @@
-﻿using SharpFileServiceProg.Service;
+﻿using SharpConfigProg.ConfigPreparer;
+using SharpFileServiceProg.Service;
 
-namespace SharpConfigProg.Preparer
+namespace SharpConfigProg.Service
 {
-    internal class LocalProgramDataPreparer : IPreparer.ILocalProgramData
+    public partial interface IConfigService
+    {
+        public interface ILocalProgramDataPreparer : IPreparer { }
+    }
+
+    internal class LocalProgramDataPreparer : IConfigService.ILocalProgramDataPreparer
     {
         private readonly IFileService fileService;
 

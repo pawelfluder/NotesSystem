@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Repetition\EmbeddedResources\21-09-30_Notki-info_GameStatistics.json" />
+    <None Remove="AAPrivate\EmbeddedResources\21-09-30_Notki-info_GameStatistics.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Repetition\EmbeddedResources\21-09-30_Notki-info_GameStatistics.json" />
+    <EmbeddedResource Include="AAPrivate\EmbeddedResources\21-09-30_Notki-info_GameStatistics.json" />
   </ItemGroup>
 
   <ItemGroup>

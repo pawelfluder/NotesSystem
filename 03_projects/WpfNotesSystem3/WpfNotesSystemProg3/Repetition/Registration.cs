@@ -7,16 +7,24 @@ using OutBorder1 = SharpFileServiceProg.Repetition.OutBorder;
 using OutBorder2 = SharpConfigProg.Repetition.OutBorder;
 using OutBorder3 = SharpRepoBackendProg.Repetition.OutBorder;
 
-namespace SharpNotesMigrationTests.Repetition
+namespace WpfNotesSystem.Repetition
 {
     internal class Registration : RegistrationBase
     {
-        protected override void Registrations()
+        private bool registrationStarted;
+
+        public UnityContainer TryInitialize()
         {
-            Register();
+            if (!registrationStarted)
+            {
+                registrationStarted = true;
+                Registrations();
+            }
+
+            return container;
         }
 
-        protected void Register()
+        protected override void Registrations()
         {
             RegisterByFunc<IBackendService>(
                 OutBorder3.BackendService);
@@ -27,33 +35,12 @@ namespace SharpNotesMigrationTests.Repetition
                 OutBorder2.ConfigService,
                 container.Resolve<IFileService>());
 
-            RegisterByFunc<MainViewModel>(() => new MainViewModel());
+            RegisterByFunc<MainViewModel>(
+                () => new MainViewModel());
             RegisterByFunc<TextViewModel>(
                 () => new TextViewModel());
             RegisterByFunc<FolderViewModel>(
                 () => new FolderViewModel());
         }
-
-        //protected override void Registrations()
-        //{
-        //    RegisterByFunc(OutBorder1.FileService);
-
-        //    RegisterByFunc(
-        //        OutBorder2.NewConfigService,
-        //        container.Resolve<IFileService>());
-
-        //    RegisterByFunc<RepoService, IFileService>(OutBorder3.RepoService,
-        //        container.Resolve<IFileService>());
-
-        //    RegisterByFunc<IMigrationService, IFileService, RepoService>
-        //        (OutBorder4.MigrationService,
-        //        container.Resolve<IFileService>(),
-        //        container.Resolve<RepoService>());
-
-        //    RegisterByFunc<IMigrationService.IMigrator03, IFileService, RepoService>
-        //        (OutBorder4.Migrator03,
-        //        container.Resolve<IFileService>(),
-        //        container.Resolve<RepoService>());
-        //}
     }
 }

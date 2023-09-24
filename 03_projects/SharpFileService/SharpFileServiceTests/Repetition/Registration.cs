@@ -1,4 +1,4 @@
-﻿using SharpConfigProg.Preparer;
+﻿using SharpConfigProg.ConfigPreparer;
 using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
 using SharpRepoServiceProg.Service;
@@ -25,7 +25,7 @@ namespace SharpNotesMigrationTests.Repetition
 
             var configService = container.Resolve<IConfigService>();
             var repoService = container.Resolve<IRepoService>();
-            configService.Prepare(typeof(IPreparer.INotesSystem));
+            configService.Prepare(typeof(IConfigService.INotesSystemPreparer));
             repoService.Initialize(configService.GetRepoSearchPaths());
         }
     }

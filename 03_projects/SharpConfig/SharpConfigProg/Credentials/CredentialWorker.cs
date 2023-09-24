@@ -5,16 +5,12 @@ namespace SharpRepoBackendProg.Repetition
 {
     internal class CredentialWorker
     {
-        public (string clientId, string clientSecret) GetCredentials()
+        public (string clientId, string clientSecret) GetCredentials(string fileProjectPath)
         {
-            var namespaceName = Assembly.GetCallingAssembly().GetName().Name; // "GoogleDocsServiceProj";
-            var fileName = "Repetition.EmbeddedResources.21-09-30_Notki-info_GameStatistics.json";
-            string[] Scopes = { };
-            string applicationName = "GoogleDriveService";
-            var result = new CredentialWorker().GetEmbeddedResource(namespaceName, fileName);
+            var namespaceName = Assembly.GetCallingAssembly().GetName().Name;
+            var result = new CredentialWorker().GetEmbeddedResource(namespaceName, fileProjectPath);
 
             JObject googleSearch = JObject.Parse(result);
-            IList<JToken> results = googleSearch["installed"].Children().ToList();
             var clientId = googleSearch["installed"]["client_id"].ToString();
             var clientSecret = googleSearch["installed"]["client_secret"].ToString();
 
@@ -27,11 +23,18 @@ namespace SharpRepoBackendProg.Repetition
             var resourceName = namespacename + "." + filename;
 
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-            using (StreamReader reader = new StreamReader(stream))
             {
-                string result = reader.ReadToEnd();
-                return result;
-            }
+                if (stream == null)
+                {
+                    throw new Exception("CredentialWorker - Please check assembly file path, bacause file stream was null!");
+                }
+
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    string result = reader.ReadToEnd();
+                    return result;
+                }
+            }            
         }
     }
 }
