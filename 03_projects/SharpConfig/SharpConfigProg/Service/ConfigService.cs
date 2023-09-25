@@ -19,6 +19,18 @@ namespace SharpConfigProg.Service
             private set;
         }
 
+        public bool TryGetSettingAsString(string key, out string value)
+        {
+            var success = SettingsDict.TryGetValue(key, out var valueObj);
+            if (success)
+            {
+                value = valueObj.ToString();
+                return success;
+            }
+            value = null;
+            return false;
+        }
+
         public ConfigService(
             IFileService fileService)
         {

@@ -29,7 +29,6 @@ namespace SwitchingViewsMVVM.ViewModels
             var container = MyBorder.Container;
             backendService = container.Resolve<IBackendService>();
             addressHistory = new History<(string, string)>();
-            GoAction(("Notki", ""));
             var jString = backendService.CommandApi(
                 IBackendService.ApiMethods.GetAllRepoName.ToString());
             _allRepoList = JsonConvert.DeserializeObject<List<string>>(jString);

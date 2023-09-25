@@ -9,7 +9,7 @@ namespace SharpPrepareConfigProg
         {
             var fileService = Border1.FileService();
             var service = new ConfigService(fileService);
-            service.Prepare(typeof(IConfigService.IWinderPreparer));
+            service.Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
         }
     }
 }

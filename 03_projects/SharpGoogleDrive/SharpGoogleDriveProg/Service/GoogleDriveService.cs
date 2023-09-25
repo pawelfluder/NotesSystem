@@ -18,10 +18,14 @@ namespace SharpGoogleDriveProg.Service
         {
             this.clientId = clientId;
             this.clientSecret = clientSecret;
-            Initialize();
+            Initialize(clientId, clientSecret);
         }
 
-        public void Initialize()
+        public GoogleDriveService()
+        {
+        }
+
+        public void Initialize(string clientId, string clientSecret)
         {
             string[] Scopes = { DriveService.Scope.Drive, DriveService.Scope.DriveFile };
             string ApplicationName = GetType().Name;

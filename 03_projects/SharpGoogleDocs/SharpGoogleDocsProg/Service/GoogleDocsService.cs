@@ -24,10 +24,16 @@ namespace GoogleDocsServiceProj.Service
             this.clientId = clientId;
             this.clientSecret = clientSecret;
             this.applicationName = applicationName;
-            Initialize();
+            Initialize(clientId, clientSecret);
         }
 
-        public void Initialize()
+        public GoogleDocsService()
+        {
+            applicationName = "";
+            Scopes = new List<string>();
+        }
+
+        public void Initialize(string clientId, string clientSecret)
         {
             var initializer = GetInitilizer(clientId, clientSecret);
             var service = new DocsService(initializer);

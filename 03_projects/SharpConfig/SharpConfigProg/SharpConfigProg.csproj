@@ -8,14 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="AAPrivate\EmbeddedResources\21-09-30_Notki-info_GameStatistics.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="AAPrivate\EmbeddedResources\21-09-30_Notki-info_GameStatistics.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Cake.Powershell" Version="2.0.0" />
     <PackageReference Include="Unity" Version="5.11.10" />
   </ItemGroup>

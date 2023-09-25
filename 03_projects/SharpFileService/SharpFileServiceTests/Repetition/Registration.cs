@@ -25,7 +25,7 @@ namespace SharpNotesMigrationTests.Repetition
 
             var configService = container.Resolve<IConfigService>();
             var repoService = container.Resolve<IRepoService>();
-            configService.Prepare(typeof(IConfigService.INotesSystemPreparer));
+            configService.Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
             repoService.Initialize(configService.GetRepoSearchPaths());
         }
     }
