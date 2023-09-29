@@ -10,6 +10,11 @@ namespace SharpNotesMigrationTests
     [TestClass]
     public class UnitTest1
     {
+        public UnitTest1()
+        {
+            Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
+        }
+
         public void Prepare(Type type)
         {
             var fileSerice = MyBorder.Container.Resolve<IFileService>();
@@ -24,7 +29,6 @@ namespace SharpNotesMigrationTests
         public void TestMethod1()
         {
             // arrange
-            Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
             var migrationService = MyBorder.Container.Resolve<IMigrationService>();
 
             // act
@@ -35,7 +39,6 @@ namespace SharpNotesMigrationTests
         public void TestMethod2()
         {
             // arrange
-            Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
             var migrator03 = MyBorder.Container.Resolve<IMigrationService.IMigrator03>();
             var repo = "todo";
             var loca = "02";
@@ -51,17 +54,17 @@ namespace SharpNotesMigrationTests
         public void MigrateOneFolderRecoursively()
         {
             // arrange
-            Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
             var migrator03 = MyBorder.Container.Resolve<IMigrationService.IMigrator03>();
-            migrator03.SetAgree(true);
+            migrator03.SetAgree(false);
             var repoServer = MyBorder.Container.Resolve<IRepoService>();
-            var repoName = "Notki";
-            var loca = "12/02/03";
+            var repoName = "Sprawy";
+            var loca = "08/01/01";
             //var repoName = "02_appData";
+            var address = (repoName, loca);
             var folderPath = repoServer.Methods.GetElemPath((repoName, loca));
 
             // act
-            migrator03.MigrateOneFolderRecourively(folderPath);
+            migrator03.MigrateOneFolderRecourively(address);
 
             // assert
             var beforeAfter = migrator03.Changes;
@@ -79,16 +82,16 @@ namespace SharpNotesMigrationTests
         public void MigrateOneRepo()
         {
             // arrange
-            Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
             var migrator03 = MyBorder.Container.Resolve<IMigrationService.IMigrator03>();
             migrator03.SetAgree(true);
             var repoServer = MyBorder.Container.Resolve<IRepoService>();
             var repoName = "Notki";
+            var address = (repoName, "");
             //var repoName = "02_appData";
-            var repoPath = repoServer.Methods.GetRepoPath(repoName);
+            //var repoPath = repoServer.Methods.GetRepoPath(repoName);
 
             // act
-            migrator03.MigrateOneRepo(repoPath);
+            migrator03.MigrateOneRepo(address);
 
             // assert
             

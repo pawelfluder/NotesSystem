@@ -2,6 +2,6 @@
 {
     public interface IRepoAddressesObtainer
     {
-        List<(string, string)> Visit(string path);
+        List<string> Visit(string path);
     }
 }

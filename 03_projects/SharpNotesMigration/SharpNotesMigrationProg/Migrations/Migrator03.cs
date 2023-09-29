@@ -47,28 +47,29 @@ namespace SharpNotesMigrationProg.Migrations
 
         public void MigrateEverything()
         {
-            var allReposPath = repoService.Methods.GetAllReposPaths();
-            foreach (var repoPath in allReposPath)
+            var allRepoNameList = repoService.Methods.GetAllReposNames();
+            foreach (var repoName in allRepoNameList)
             {
-                MigrateOneRepo(repoPath);
+                MigrateOneRepo((repoName, ""));
             }
         }
 
-        public void MigrateOneFolderRecourively(string folderPath)
+        public void MigrateOneFolderRecourively((string Repo, string Loca) address)
         {
-            var addresses = repoService.Methods.GetAllRepoAddresses(folderPath);
-            foreach (var address in addresses)
+            var foundAddressList = repoService.Methods
+                .GetAllRepoAddresses(address).ToList();
+            foreach (var foundAddress in foundAddressList)
             {
-                MigrateOneAddress(address);
+                MigrateOneAddress(foundAddress);
             }
         }
 
-        public void MigrateOneRepo(string repoPath)
+        public void MigrateOneRepo((string Repo, string Loca) address)
         {
-            var addresses = repoService.Methods.GetAllRepoAddresses(repoPath);
-            foreach (var address in addresses)
+            var foundAddressList = repoService.Methods.GetAllRepoAddresses(address);
+            foreach (var foundAddress in foundAddressList)
             {
-                MigrateOneAddress(address);
+                MigrateOneAddress(foundAddress);
             }
         }
 
@@ -110,10 +111,12 @@ namespace SharpNotesMigrationProg.Migrations
 
         private bool IsJustOneLine((string, string) address, out string line)
         {
-            var success = repoService.Methods.TryGetConfigLines(address, out var lines);
-            if (success && lines.Count == 1)
+            var path = repoService.Methods.GetConfigPath(address);
+            var lineList = File.ReadAllLines(path);
+            //var success = repoService.Methods.TryGetConfigLines(address, out var lines);
+            if (lineList.Count() == 1)
             {
-                line = lines.First();
+                line = lineList.First();
                 return true;
             }
 

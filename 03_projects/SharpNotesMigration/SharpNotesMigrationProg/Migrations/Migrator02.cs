@@ -19,32 +19,33 @@ namespace SharpNotesMigrationProg.Migrations
 
         public void MigrateEverything()
         {
-            var allReposPath = repoService.Methods.GetAllReposPaths();
+            List<string> allRepoNames = repoService.Methods.GetAllReposNames();
             var counts = new List<(string, int)>();
-            foreach (var repoPath in allReposPath)
+            foreach (string repoName in allRepoNames)
             {
-                var addresses = repoService.Methods.GetAllRepoAddresses(repoPath);
-                var repoName = Path.GetFileName(repoPath);
+                var address = (repoName, "");
+                var foundAddressList = repoService.Methods.GetAllRepoAddresses((repoName, ""));
+                //var repoName = Path.GetFileName(repoName);    
                 var i = 0;
-                foreach (var address in addresses)
+                foreach (var foundAddress in foundAddressList)
                 {
                     i++;
-                    var success = repoService.Methods.TryGetConfigLines(address, out var lines);
+                    var success = repoService.Methods.TryGetConfigLines(foundAddress, out var lines);
                     if (!success)
                     {
-                        var deleted = TryCorrect(address);
+                        var deleted = TryCorrect(foundAddress);
                         if (deleted)
                         {
                             continue;
                         }
                     }
-                    var configLines = repoService.Methods.GetConfigLines(address);
+                    var configLines = repoService.Methods.GetConfigLines(foundAddress);
                     if (configLines.Count() != 1)
                     {
-                        TryCorrect2(address);
+                        TryCorrect2(foundAddress);
                     }
                     var name = configLines[0];
-                    Console.WriteLine(i + "; " + repoName + "; " + address.Loca + "; " + name);
+                    Console.WriteLine(i + "; " + repoName + "; " + foundAddress.Loca + "; " + name);
                     counts.Add((repoName, i));
                 }
             }

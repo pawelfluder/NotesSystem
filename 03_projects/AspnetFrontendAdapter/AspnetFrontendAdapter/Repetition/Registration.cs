@@ -1,5 +1,4 @@
-﻿using SharpNotesMigrationTests.Repetition;
-using SharpRepoBackendProg.Service;
+﻿using SharpRepoBackendProg.Service;
 using OutBorder1 = SharpRepoBackendProg.Repetition.OutBorder;
 
 namespace AspnetFrontendAdapterProg.Repetition
