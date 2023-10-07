@@ -2,43 +2,54 @@
 using SharpConfigProg.Service;
 using SharpGoogleDriveProg.Service;
 using Unity;
-using SharpNotesMigrationTests.Repetition;
 
 namespace SharpRepoBackendProg.Repetition
 {
     internal static class MyBorder
     {
-        private static UnityContainer container = new Registration().Start();
-        public static UnityContainer Container => container;
+        public static Registration Registration = new Registration();
+        public static UnityContainer Container => Registration.TryInitialize();
 
         public static GoogleDocsService GoogleDocsService()
         {
-            var configService = container.Resolve<IConfigService>();
-
-            var clientId = configService.SettingsDict["googleClientId"].ToString();
-            var clientSecret = configService.SettingsDict["googleClientSecret"].ToString();
-
             var aplicationName = "";
             var scopes = new List<string>();
-            var googleDocsService = new GoogleDocsService(
-                clientId,
-                clientSecret,
-                aplicationName,
-                scopes);
+            GoogleDocsService googleDocsService;
+            if (GetCredenctials(out var clientId, out var clientSecret))
+            {
+                googleDocsService = new GoogleDocsService(
+                    clientId.ToString(),
+                    clientSecret.ToString(),
+                    aplicationName,
+                    scopes);
+                return googleDocsService;
+            }
+
+            googleDocsService = new GoogleDocsService();
             return googleDocsService;
         }
 
         public static GoogleDriveService NewGoogleDriveService()
         {
-            var configService = container.Resolve<IConfigService>();
+            GoogleDriveService googleDocsService;
+            if (GetCredenctials(out var clientId, out var clientSecret))
+            {
+                googleDocsService = new GoogleDriveService(
+                    clientId.ToString(),
+                    clientSecret.ToString());
+                return googleDocsService;
+            }
 
-            var clientId = configService.SettingsDict["googleClientId"].ToString();
-            var clientSecret = configService.SettingsDict["googleClientSecret"].ToString();
-
-            var googleDocsService = new GoogleDriveService(
-                clientId,
-                clientSecret);
+            googleDocsService = new GoogleDriveService();
             return googleDocsService;
+        }
+
+        private static bool GetCredenctials(out string clientId, out string clientSecret)
+        {
+            var configService = Container.Resolve<IConfigService>();
+            var s1 = configService.TryGetSettingAsString("googleClientId", out clientId);
+            var s2 = configService.TryGetSettingAsString("googleClientSecret", out clientSecret);
+            return s1 && s2;
         }
     }
 }

@@ -1,7 +1,8 @@
 ####################
 # moje-01
+AAPrivate
 Binaries
-folder-to-ignore
+**/paths.cfg
 ####################
 
 # Most important

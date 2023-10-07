@@ -5,7 +5,7 @@ namespace SharpRepoServiceProg.FileOperations
     public class GetRepoAddresses : IRepoAddressesObtainer
     {
         private readonly IFileService fileService;
-        private List<(string repo, string loca)> addressesList;
+        private List<string> locaList;
         private string repoName;
         private IFileService.IParentVisit vdr;
 
@@ -17,17 +17,17 @@ namespace SharpRepoServiceProg.FileOperations
 
         private void ReInitialize()
         {
-            addressesList = new List<(string repo, string loca)>();
+            locaList = new List<string>();
         }
 
-        public List<(string, string)> Visit(string path)
+        public List<string> Visit(string path)
         {
             this.repoName = Path.GetFileName(path);
             vdr = fileService.File.GetNewVisitDirectoriesRecursivelyWithParentMemory();
             var fileAction = FileAction;
             var folderAction = FolderAction;
             vdr.Visit(path, fileAction, folderAction);
-            var result = new List<(string repo, string loca)>(addressesList);
+            var result = new List<string>(locaList);
             ReInitialize();
             return result;
         }
@@ -44,8 +44,7 @@ namespace SharpRepoServiceProg.FileOperations
                 var parents = vdr.Parents;
                 var names = parents.Select(x => x.Name);
                 var loca = string.Join('/', names);
-                var address = (repoName, loca);
-                addressesList.Add(address);
+                locaList.Add(loca);
             }
         }
     }

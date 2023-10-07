@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using Google.Apis.Auth.OAuth2;
+﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
 using GoogleDriveCoreApp;
@@ -22,10 +18,14 @@ namespace SharpGoogleDriveProg.Service
         {
             this.clientId = clientId;
             this.clientSecret = clientSecret;
-            Initialize();
+            Initialize(clientId, clientSecret);
         }
 
-        public void Initialize()
+        public GoogleDriveService()
+        {
+        }
+
+        public void Initialize(string clientId, string clientSecret)
         {
             string[] Scopes = { DriveService.Scope.Drive, DriveService.Scope.DriveFile };
             string ApplicationName = GetType().Name;

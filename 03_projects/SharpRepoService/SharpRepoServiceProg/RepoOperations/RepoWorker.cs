@@ -1,12 +1,10 @@
 ﻿using SharpFileServiceProg.Service;
 using SharpRepoServiceCoreProj;
-using SharpRepoServiceProg.FileOperations;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
-using System.Xml.Linq;
 using static SharpRepoServiceProg.Service.IRepoService;
 
 namespace SharpRepoServiceProg.RepoOperations
@@ -49,13 +47,27 @@ namespace SharpRepoServiceProg.RepoOperations
 
         //-------------------------
         // GET
-        public List<(string Repo, string Loca)> GetAllRepoAddresses(string repoPath)
+        public List<(string Repo, string Loca)> GetAllRepoAddresses(
+            (string Repo, string Loca) a)
         {
-            var result = fileService.File.NewRepoAddressesObtainer().Visit(repoPath);
+            var path = GetLocalPath(a);
+            var tmp = fileService.File.NewRepoAddressesObtainer().Visit(path);
+            var result = tmp.Select(x => (a.Repo, JoinLoca(a.Loca, x))).ToList();
             return result;
         }
 
-        public string GetConfigText((string Repo, string Loca) address)
+        public string JoinLoca(string loca01, string loca02)
+        {
+            if (loca01 == string.Empty)
+            {
+                return loca02;
+            }
+
+            var newLoca = loca01 + "/" + loca02;
+            return newLoca;
+        }
+
+            public string GetConfigText((string Repo, string Loca) address)
         {
             var itemPath = GetElemPath(address);
             var nameFilePath = itemPath + slash + configFileName;
@@ -200,7 +212,7 @@ namespace SharpRepoServiceProg.RepoOperations
             return null;
         }
 
-        private string GetConfigFilePath((string Name, string Location) address)
+        public string GetConfigPath((string Name, string Location) address)
         {
             var tmp = GetLocalPath(address);
             var path = tmp + slash + configFileName;
@@ -847,6 +859,7 @@ namespace SharpRepoServiceProg.RepoOperations
         {
             return path.Replace("\\", "/");
         }
+
         private int GetLocationLastNumber(string location)
         {
             var lastString = location.Split("/").Last();

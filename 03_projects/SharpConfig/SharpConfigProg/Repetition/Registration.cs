@@ -1,7 +1,4 @@
-﻿using SharpConfigProg.Preparer;
-using SharpConfigProg.Service;
-using SharpFileServiceProg.Service;
-using Unity;
+﻿using SharpConfigProg.Service;
 
 namespace SharpConfigProg.Repetition
 {
@@ -9,8 +6,6 @@ namespace SharpConfigProg.Repetition
     {
         protected override void Registrations()
         {
-            RegisterByFunc<IPreparer.IOnlyRootPathsPreparer>(()
-                => new OnlyRootPathsPreparer());
         }
     }
 }

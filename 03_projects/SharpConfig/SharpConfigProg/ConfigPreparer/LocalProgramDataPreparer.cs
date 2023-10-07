@@ -1,8 +1,14 @@
-﻿using SharpFileServiceProg.Service;
+﻿using SharpConfigProg.ConfigPreparer;
+using SharpFileServiceProg.Service;
 
-namespace SharpConfigProg.Preparer
+namespace SharpConfigProg.Service
 {
-    internal class LocalProgramDataPreparer : IPreparer.ILocalProgramData
+    public partial interface IConfigService
+    {
+        public interface ILocalProgramDataPreparer : IPreparer { }
+    }
+
+    internal class LocalProgramDataPreparer : IConfigService.ILocalProgramDataPreparer
     {
         private readonly IFileService fileService;
 
@@ -30,7 +36,7 @@ namespace SharpConfigProg.Preparer
             var startupPath = Directory.GetCurrentDirectory();
             var startupPath2 = Environment.CurrentDirectory;
             var tmpPath = fileService.Path.MoveDirectoriesUp(startupPath, 6);
-            var programDataFolderPath = tmpPath + "/" + "17_projects/02_program-data";
+            var programDataFolderPath = fileService.Path.GetProjectFolderPath("02_program-data");
             var searchPaths = new List<object> { programDataFolderPath };
             return searchPaths;
         }

@@ -1,11 +1,10 @@
-﻿using SharpFileServiceProg.Service;
-
-namespace SharpConfigProg.Service
+﻿namespace SharpConfigProg.Service
 {
-    public interface IConfigService
+    public partial interface IConfigService
     {
         string ConfigFilePath { get; }
         Dictionary<string, object> SettingsDict { get; }
+        bool TryGetSettingAsString(string key, out string value);
 
         void AddSetting(string key, object value);
         void Prepare(Type preparationClassType);

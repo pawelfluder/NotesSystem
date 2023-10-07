@@ -1,5 +1,5 @@
-﻿using SharpFileServiceProg.Service;
-using SharpRepoBackendProg.Service;
+﻿using SharpRepoBackendProg.Service;
+using Unity;
 
 namespace SharpRepoBackendProg.Repetition
 {
@@ -7,7 +7,7 @@ namespace SharpRepoBackendProg.Repetition
     {
         public static IBackendService BackendService()
         {
-            return new BackendService();
+            return MyBorder.Container.Resolve<IBackendService>();
         }
     }
 }

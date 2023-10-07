@@ -2,21 +2,18 @@
 using SharpConfigProg.Service;
 using SharpGoogleDriveProg.Service;
 using Unity;
-using SharpConfigProg.Preparer;
-using SharpNotesMigrationTests.Repetition;
 using System.Collections.Generic;
 
 namespace WpfNotesSystem.Repetition
 {
     internal static class MyBorder
     {
-        private static UnityContainer container = new Registration().Start();
-        public static UnityContainer Container => container;
+        public static Registration Registration = new Registration();
+        public static UnityContainer Container => Registration.TryInitialize();
 
         public static GoogleDocsService GoogleDocsService()
         {
-            //var fileService = Container.Resolve<IFileService>();
-            var configService = container.Resolve<IConfigService>();
+            var configService = Container.Resolve<IConfigService>();
 
             var clientId = configService.SettingsDict["googleClientId"].ToString();
             var clientSecret = configService.SettingsDict["googleClientSecret"].ToString();
@@ -33,8 +30,7 @@ namespace WpfNotesSystem.Repetition
 
         public static GoogleDriveService NewGoogleDriveService()
         {
-            var configService = container.Resolve<IConfigService>();
-            configService.Prepare(typeof(IPreparer.INotesSystem));
+            var configService = Container.Resolve<IConfigService>();
 
             var clientId = configService.SettingsDict["googleClientId"].ToString();
             var clientSecret = configService.SettingsDict["googleClientSecret"].ToString();

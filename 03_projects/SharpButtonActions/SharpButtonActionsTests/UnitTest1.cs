@@ -1,5 +1,5 @@
 using SharpButtonActionsProj.Service;
-using SharpConfigProg.Preparer;
+using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
 using SharpRepoServiceProg.Service;
 using OutBorder1 = SharpFileServiceProg.Repetition.OutBorder;
@@ -30,12 +30,12 @@ namespace SharpButtonActionsTests
         {
             var buttonActionService = new ButtonActionsService();
             var configService = OutBorder2.ConfigService(fileService);
-            configService.Prepare(typeof(IPreparer.IWinder));
-            var repoService = new RepoService(fileService, configService.GetRepoSearchPaths());
-            var repo = "Notki";
-            var loca = "01/02";
-            var path = repoService.Methods.GetElemPath((repo, loca));
-            buttonActionService.OpenFolder(path);
+            configService.Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
+            //var repoService = new RepoService(fileService, configService.GetRepoSearchPaths());
+            //var repo = "Notki";
+            //var loca = "01/02";
+            //var path = repoService.Methods.GetElemPath((repo, loca));
+            //buttonActionService.OpenFolder(path);
         }
     }
 }

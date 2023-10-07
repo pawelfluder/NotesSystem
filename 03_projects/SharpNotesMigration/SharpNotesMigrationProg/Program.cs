@@ -1,4 +1,4 @@
-﻿using SharpConfigProg.Preparer;
+﻿using SharpConfigProg.ConfigPreparer;
 using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
 using SharpNotesMigrationProg.Service;
@@ -14,7 +14,7 @@ namespace SharpNotesMigrationProg
         {
             var fileService = MyBorder.Container.Resolve<IFileService>();
             var configService = MyBorder.Container.Resolve<IConfigService>();
-            configService.Prepare(typeof(IPreparer.IOnlyRootPathsPreparer));
+            configService.Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
             var repoService = MyBorder.Container.Resolve<IRepoService>();
             repoService.Initialize(configService.GetRepoSearchPaths());
             var migrationService = new MigrationService(fileService, repoService);

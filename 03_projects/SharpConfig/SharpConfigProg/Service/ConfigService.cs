@@ -1,11 +1,11 @@
-﻿using SharpConfigProg.Preparer;
+﻿using SharpConfigProg.ConfigPreparer;
 using SharpConfigProg.Repetition;
 using SharpFileServiceProg.Service;
 using Unity;
 
 namespace SharpConfigProg.Service
 {
-    internal class ConfigService : IConfigService
+    internal partial class ConfigService : IConfigService
     {
         //private readonly RepoService repoService;
         private readonly IFileService.IYamlOperations yamlOperations;
@@ -17,6 +17,18 @@ namespace SharpConfigProg.Service
         {
             get;
             private set;
+        }
+
+        public bool TryGetSettingAsString(string key, out string value)
+        {
+            var success = SettingsDict.TryGetValue(key, out var valueObj);
+            if (success)
+            {
+                value = valueObj.ToString();
+                return success;
+            }
+            value = null;
+            return false;
         }
 
         public ConfigService(
