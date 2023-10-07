@@ -1,19 +1,17 @@
-﻿using System;
+﻿using SharpConfigProg.Repetition;
+using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
-using WpfNotesSystem;
 
 namespace WpfNotesSystem
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            new Registration();
+        }
+
         void App_Startup(object sender, StartupEventArgs e)
         {
             MainWindow = new WpfNotesSystem.MainWindow();

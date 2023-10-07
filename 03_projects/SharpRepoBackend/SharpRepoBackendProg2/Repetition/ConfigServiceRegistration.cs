@@ -13,7 +13,8 @@ namespace SharpRepoBackendProg.Repetition
                 OutBorder2.ConfigService,
                 MyBorder.Container.Resolve<IFileService>());
             var configService = MyBorder.Container.Resolve<IConfigService>();
-            configService.Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
+            configService.Prepare();
+            //configService.Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
         }
     }
 }

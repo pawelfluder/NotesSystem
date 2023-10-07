@@ -1,4 +1,6 @@
-﻿namespace SharpConfigProg.Service
+﻿using SharpConfigProg.APublic;
+
+namespace SharpConfigProg.Service
 {
     public partial interface IConfigService
     {
@@ -8,6 +10,7 @@
 
         void AddSetting(string key, object value);
         void Prepare(Type preparationClassType);
+        void Prepare();
         void LoadSettingsFromFile();
         List<string> GetRepoSearchPaths();
     }

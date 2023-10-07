@@ -63,35 +63,18 @@ namespace SharpConfigProg.Service
             yamlOperations.SerializeToFile(ConfigFilePath, SettingsDict);
         }
 
+        public void Prepare()
+        {
+            var preparer = MyBorder.Container.Resolve<IPreparer>();
+            var paths = preparer.Prepare();
+            SetAndSerializePaths(paths);
+        }
+
         public void Prepare(Type preparerClassType)
         {
             var preparer = MyBorder.Container.Resolve(preparerClassType);
             var paths = (preparer as IPreparer).Prepare();
             SetAndSerializePaths(paths);
-
-            //f (preparerClassType == typeof(IPreparer.IOnlyRootPathsPreparer))
-            //{
-            //    SetAndSerializePaths(new iOnlyRootPathsPreparer()
-            //        .Prepare());
-            //}
-
-            //if (preparerClassType == typeof(IPreparer.IWinder))
-            //{
-            //    SetAndSerializePaths(new WinderPreparer(ConfigFilePath)
-            //        .Prepare());
-            //}
-
-            //if (preparerClassType == typeof(IPreparer.ILocalProgramData))
-            //{
-            //    SetAndSerializePaths(new LocalProgramDataPreparer(fileService)
-            //        .Prepare());
-            //}
-
-            //if (preparerClassType == typeof(IPreparer.INotesSystem))
-            //{
-            //    SetAndSerializePaths(new NotesSystemPreparer(fileService)
-            //        .Prepare());
-            //}
         }
 
         public void AddSetting(string key, object value)

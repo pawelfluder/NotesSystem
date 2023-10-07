@@ -1,6 +1,7 @@
 ﻿using SharpContainerProg.Public;
 using Unity;
 using Unity.Injection;
+using Unity.Resolution;
 
 namespace SharpContainerProg.Repetition
 {
@@ -18,9 +19,16 @@ namespace SharpContainerProg.Repetition
         {
             var result = UnityContainerExtensions.Resolve<T>(unity);
             return result;
+            
         }
 
-        public IContainer RegisterSingleton<T>(params object[] injectionMember)
+        public object Resolve(Type type)
+        {
+            var result = UnityContainerExtensions.Resolve(unity, type);
+            return result;
+        }
+
+            public IContainer RegisterSingleton<T>(params object[] injectionMember)
         {
             var tmp = injectionMember.Select(x => (InjectionMember)x).ToArray();
             var result = UnityContainerExtensions.RegisterSingleton<T>(unity, tmp);

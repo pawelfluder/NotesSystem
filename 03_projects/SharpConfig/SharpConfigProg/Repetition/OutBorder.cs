@@ -14,7 +14,7 @@ namespace SharpConfigProg.Repetition
                 MyBorder.Registration
                     .RegisterByFunc<IFileService>(() => fileService);
 
-                new PreparerRegistration().Invoke();
+                new Reg_Preparer().Invoke();
 
                 MyBorder.Registration.RegisterByFunc<IConfigService>(
                         () => new ConfigService(fileService));

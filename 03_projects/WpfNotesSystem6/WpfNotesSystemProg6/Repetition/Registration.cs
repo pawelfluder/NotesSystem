@@ -1,4 +1,5 @@
-﻿using SharpContainerProg.Public;
+﻿using SharpConfigProg.Service;
+using SharpContainerProg.Public;
 
 namespace SharpConfigProg.Repetition
 {
@@ -6,6 +7,7 @@ namespace SharpConfigProg.Repetition
     {
         protected override void Registrations()
         {
+
         }
     }
 }

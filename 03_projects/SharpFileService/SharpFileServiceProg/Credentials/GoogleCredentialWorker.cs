@@ -1,14 +1,16 @@
 ﻿using Newtonsoft.Json.Linq;
+using SharpConfigProg.APublic;
 using System.Reflection;
 
-namespace SharpRepoBackendProg.Repetition
+namespace SharpConfigProg.Credentials
 {
-    internal class CredentialWorker
+    internal class GoogleCredentialWorker : IGoogleCredentialWorker
     {
-        public (string clientId, string clientSecret) GetCredentials(string fileProjectPath)
+        public (string clientId, string clientSecret) GetCredentials(
+            AssemblyName assemblyName,
+            string embeddedResourceFile)
         {
-            var namespaceName = Assembly.GetCallingAssembly().GetName().Name;
-            var result = new CredentialWorker().GetEmbeddedResource(namespaceName, fileProjectPath);
+            var result = GetEmbeddedResource(assemblyName, embeddedResourceFile);
 
             JObject googleSearch = JObject.Parse(result);
             var clientId = googleSearch["installed"]["client_id"].ToString();
@@ -17,10 +19,11 @@ namespace SharpRepoBackendProg.Repetition
             return (clientId, clientSecret);
         }
 
-        public string GetEmbeddedResource(string namespacename, string filename)
+        public string GetEmbeddedResource(AssemblyName assemblyName, string filename)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var namespacename = assemblyName.Name;
             var resourceName = namespacename + "." + filename;
+            var assembly = Assembly.Load(assemblyName);
 
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
@@ -34,7 +37,7 @@ namespace SharpRepoBackendProg.Repetition
                     string result = reader.ReadToEnd();
                     return result;
                 }
-            }            
+            }
         }
     }
 }

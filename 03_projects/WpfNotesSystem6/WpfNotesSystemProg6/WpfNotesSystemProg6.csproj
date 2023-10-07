@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SharpContainer\SharpContainerProg\SharpContainerProg.csproj" />
     <ProjectReference Include="..\..\WpfNotesSystem3\WpfNotesSystemProg3\WpfNotesSystemProg3.csproj" />
   </ItemGroup>
 

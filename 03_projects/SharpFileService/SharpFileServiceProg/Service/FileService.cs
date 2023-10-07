@@ -1,4 +1,6 @@
-﻿using SharpFileServiceProg.Operations.Files;
+﻿using SharpConfigProg.APublic;
+using SharpConfigProg.Credentials;
+using SharpFileServiceProg.Operations.Files;
 using SharpFileServiceProg.Operations.Headers;
 using SharpFileServiceProg.Operations.Index;
 using SharpFileServiceProg.Operations.RepoAddress;
@@ -14,6 +16,7 @@ namespace SharpFileServiceProg.Service
         public IPathsOperations Path { get; private set; }
         public HeadersOperations Header { get; private set; }
         public IRepoAddressOperations RepoAddress { get; private set; }
+        public IGoogleCredentialWorker Credentials { get; private set; }
 
         public FileService()
         {
@@ -23,6 +26,7 @@ namespace SharpFileServiceProg.Service
             Path = new PathsOperations();
             Header = new HeadersOperations();
             RepoAddress = new RepoAddressOperations(Index);
+            Credentials = new GoogleCredentialWorker();
         }
     }
 

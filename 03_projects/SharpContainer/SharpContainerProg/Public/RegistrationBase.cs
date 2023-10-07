@@ -5,15 +5,30 @@ namespace SharpContainerProg.Public
 {
     public abstract class RegistrationBase
     {
-        private static IContainer container;
+        public static IContainer container = SetContainerStatic();
         private bool registrationStarted;
 
-        public RegistrationBase()
+        private static IContainer SetContainerStatic()
+        {
+            if (container != null)
+            {
+                return container;
+            }
+
+            return new Container();
+        }
+
+        private void SetContainer()
         {
             if (container == null)
             {
                 container = new Container();
             }
+        }
+
+        public RegistrationBase()
+        {
+            SetContainer();
         }
 
         public IContainer Start()
@@ -43,6 +58,14 @@ namespace SharpContainerProg.Public
             container.RegisterSingleton<R>(new InjectionFactory(c =>
             {
                 return func.Invoke(t1);
+            }));
+        }
+
+        public void RegisterByFunc<R, T1>(Func<T1, R> func, Func<T1> funcT1)
+        {
+            container.RegisterSingleton<R>(new InjectionFactory(c =>
+            {
+                return func.Invoke(funcT1.Invoke());
             }));
         }
 

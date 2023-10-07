@@ -22,7 +22,7 @@ namespace SharpConfigProg.Repetition
 
         public void AddMethodsToList()
         {
-            Type type = typeof(PreparerRegistration);
+            Type type = typeof(Reg_Preparer);
             MethodInfo[] methods = type.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 
             foreach (MethodInfo methodInfo in methods)
