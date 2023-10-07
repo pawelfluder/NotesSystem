@@ -1,3 +1,9 @@
+# personal
+npm instal snowpack
+npm build
+
+# personal
+
 # New Project
 
 > ✨ Bootstrapped with Create Snowpack App (CSA).
