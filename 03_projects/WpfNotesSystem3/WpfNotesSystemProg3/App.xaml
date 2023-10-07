@@ -5,4 +5,12 @@
              xmlns:views="clr-namespace:WpfNotesSystem.Views"
              xmlns:viewmodels="clr-namespace:WpfNotesSystem.ViewModels"
              StartupUri="MainWindow.xaml">
+   <Application.Resources>
+      <ResourceDictionary>
+         <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary 
+               Source="Styles/AppResources.xaml" />
+         </ResourceDictionary.MergedDictionaries>
+      </ResourceDictionary>
+   </Application.Resources>
 </Application>

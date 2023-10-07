@@ -2,7 +2,7 @@
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
 using GoogleDriveCoreApp;
-using GoogleDriveCoreApp.Contract;
+using SharpGoogleDriveProg.Public;
 
 namespace SharpGoogleDriveProg.Service
 {

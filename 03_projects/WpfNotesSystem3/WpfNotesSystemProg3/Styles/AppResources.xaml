@@ -1,7 +1,18 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SwitchingViewsMVVM"
+   
+         xmlns:views="clr-namespace:WpfNotesSystem.Views"
+         xmlns:viewmodels="clr-namespace:WpfNotesSystem.ViewModels">
 
+
+      <DataTemplate DataType="{x:Type viewmodels:FolderViewModel}">
+         <views:FolderView/>
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type viewmodels:TextViewModel}">
+         <views:TextView/>
+      </DataTemplate>
 
       <Style x:Key="MainWindowContentControl" TargetType="{x:Type Border}">
       <Setter Property="BorderThickness" Value="0" />

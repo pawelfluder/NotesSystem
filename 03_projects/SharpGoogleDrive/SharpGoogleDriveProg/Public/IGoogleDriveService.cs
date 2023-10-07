@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GoogleDriveCoreApp;
 
-namespace GoogleDriveCoreApp.Contract
+namespace SharpGoogleDriveProg.Public
 {
     public interface IGoogleDriveService
     {

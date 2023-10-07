@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Page Remove="Styles\tempborderstyle.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\..\WpfNotesSystem2\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
