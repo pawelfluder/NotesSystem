@@ -9,7 +9,7 @@ using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.Models;
 using WpfNotesSystemProg3.ViewModelBase;
 
-namespace SwitchingViewsMVVM.ViewModels
+namespace WpfNotesSystem.ViewModels
 {
     public class FolderViewModel : BaseViewModel, IItemViewModel
     {

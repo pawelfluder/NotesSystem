@@ -1,4 +1,4 @@
-﻿using SwitchingViewsMVVM.ViewModels;
+﻿using WpfNotesSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Windows.Controls;
 using Unity;
 using WpfNotesSystem.Repetition;
 
-namespace SwitchingViewsMVVM.Views
+namespace WpfNotesSystem.Views
 {
     /// <summary>
     /// Interaction logic for HomeView.xaml

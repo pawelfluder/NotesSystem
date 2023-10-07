@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SharpRepoBackendProg.Service;
-using SwitchingViewsMVVM.Commands;
+using WpfNotesSystem.Commands;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -10,7 +10,7 @@ using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.History;
 using WpfNotesSystemProg3.ViewModelBase;
 
-namespace SwitchingViewsMVVM.ViewModels
+namespace WpfNotesSystem.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
@@ -111,7 +111,7 @@ namespace SwitchingViewsMVVM.ViewModels
             return url;
         }
 
-        internal void BackArrow()
+        public void BackArrow()
         {
             var next = addressHistory.Back(out var success);
             if (success)
@@ -121,7 +121,7 @@ namespace SwitchingViewsMVVM.ViewModels
             }
         }
 
-        internal void ForwardArrow()
+        public void ForwardArrow()
         {
             var next = addressHistory.Forward(out var success);
             if (success)

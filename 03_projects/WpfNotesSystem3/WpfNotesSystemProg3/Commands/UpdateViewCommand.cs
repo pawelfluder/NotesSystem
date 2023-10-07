@@ -1,4 +1,4 @@
-﻿using SwitchingViewsMVVM.ViewModels;
+﻿using WpfNotesSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Windows.Input;
 using Unity;
 using WpfNotesSystem.Repetition;
 
-namespace SwitchingViewsMVVM.Commands
+namespace WpfNotesSystem.Commands
 {
     public class UpdateViewCommand : ICommand
     {

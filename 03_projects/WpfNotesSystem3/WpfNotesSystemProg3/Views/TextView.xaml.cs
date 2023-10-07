@@ -1,11 +1,11 @@
 ﻿using SharpRepoBackendProg.Service;
-using SwitchingViewsMVVM.ViewModels;
+using WpfNotesSystem.ViewModels;
 using System.Windows.Controls;
 using Unity;
 using WpfNotesSystem.Repetition;
 using OutBorder1 = SharpRepoBackendProg.Repetition.OutBorder;
 
-namespace SwitchingViewsMVVM.Views
+namespace WpfNotesSystem.Views
 {
     public partial class TextView : UserControl
     {

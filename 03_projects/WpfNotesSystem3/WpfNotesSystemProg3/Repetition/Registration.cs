@@ -1,7 +1,7 @@
 ﻿using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
 using SharpRepoBackendProg.Service;
-using SwitchingViewsMVVM.ViewModels;
+using WpfNotesSystem.ViewModels;
 using Unity;
 using OutBorder1 = SharpFileServiceProg.Repetition.OutBorder;
 using OutBorder2 = SharpConfigProg.Repetition.OutBorder;

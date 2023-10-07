@@ -8,7 +8,7 @@ using WpfNotesSystemProg3.Models;
 using WpfNotesSystemProg3.ViewModelBase;
 using static SharpRepoBackendProg.Service.IBackendService;
 
-namespace SwitchingViewsMVVM.ViewModels
+namespace WpfNotesSystem.ViewModels
 {
     public class TextViewModel : BaseViewModel, IItemViewModel
     {

@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="App.xaml.cs">
+    <Compile Update="MainView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="MainWindow.xaml.cs">
@@ -36,6 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NLog.Config" Version="4.7.15" />
+    <PackageReference Include="NLog.Schema" Version="5.2.4" />
     <PackageReference Include="Unity" Version="5.11.10" />
     <PackageReference Include="Unity.Container" Version="5.11.11" />
   </ItemGroup>

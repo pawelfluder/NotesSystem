@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace SwitchingViewsMVVM
+namespace WpfNotesSystem
 {
     public class CommandHandler : ICommand
     {
