@@ -4,5 +4,5 @@
              xmlns:local="clr-namespace:WpfNotesSystem"
              xmlns:views="clr-namespace:WpfNotesSystem.Views"
              xmlns:viewmodels="clr-namespace:WpfNotesSystem.ViewModels"
-             StartupUri="MainWindow.xaml">
+             Startup="App_Startup">
 </Application>

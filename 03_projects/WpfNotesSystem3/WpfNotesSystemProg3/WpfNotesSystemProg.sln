@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpFileServiceTests", "..
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfNotesSystemProg3", "WpfNotesSystemProg3.csproj", "{28291B50-D985-4171-9A3A-9B9DD0CA24AD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfNotesSystemProg6", "..\..\WpfNotesSystem6\WpfNotesSystemProg6\WpfNotesSystemProg6.csproj", "{61EB7F7C-1BB3-4339-BEFC-749AAF0BAFCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{28291B50-D985-4171-9A3A-9B9DD0CA24AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28291B50-D985-4171-9A3A-9B9DD0CA24AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28291B50-D985-4171-9A3A-9B9DD0CA24AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61EB7F7C-1BB3-4339-BEFC-749AAF0BAFCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61EB7F7C-1BB3-4339-BEFC-749AAF0BAFCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61EB7F7C-1BB3-4339-BEFC-749AAF0BAFCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61EB7F7C-1BB3-4339-BEFC-749AAF0BAFCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
