@@ -13,6 +13,21 @@ namespace SharpFileServiceProg.Operations.Files
             return path;
         }
 
+        public string TryGetBinPath(out bool success)
+        {
+            try
+            {
+                var binPath = GetBinPath();
+                success = true;
+                return binPath;
+            }
+            catch (Exception ex)
+            {
+                success = false;
+                return default;
+            }
+        }
+
         public string GetBinPath()
         {
             string codeBase = Assembly.GetExecutingAssembly().CodeBase;

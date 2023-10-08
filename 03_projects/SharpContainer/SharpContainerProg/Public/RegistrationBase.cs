@@ -37,6 +37,7 @@ namespace SharpContainerProg.Public
             {
                 registrationStarted = true;
                 Registrations();
+                registrationStarted = false;
             }
 
             return container;
@@ -44,36 +45,41 @@ namespace SharpContainerProg.Public
 
         protected abstract void Registrations();
 
-        public void RegisterByFunc<R>(Func<R> func)
+        public void RegisterByFunc<RegT>(Func<RegT> func)
         {
             var factory = new InjectionFactory(c =>
             {
                 return func.Invoke();
             });
-            container.RegisterSingleton<R>(factory);
+            container.RegisterSingleton<RegT>(factory);
         }
 
-        public void RegisterByFunc<R, T1>(Func<T1, R> func, T1 t1)
+        public void RegisterByFunc<RegT, ParT1>(
+            Func<ParT1, RegT> func, ParT1 t1)
         {
-            container.RegisterSingleton<R>(new InjectionFactory(c =>
+            container.RegisterSingleton<RegT>(new InjectionFactory(c =>
             {
                 return func.Invoke(t1);
             }));
         }
 
-        public void RegisterByFunc<R, T1>(Func<T1, R> func, Func<T1> funcT1)
+        public void RegisterByFunc<RegT, ParT1>(
+            Func<ParT1, RegT> rfunc, 
+            Func<ParT1> arg1func)
         {
-            container.RegisterSingleton<R>(new InjectionFactory(c =>
+            container.RegisterSingleton<RegT>(new InjectionFactory(c =>
             {
-                return func.Invoke(funcT1.Invoke());
+                return rfunc.Invoke(arg1func.Invoke());
             }));
         }
 
-        public void RegisterByFunc<R, T1, T2>(Func<T1, T2, R> func, T1 t1, T2 t2)
+        public void RegisterByFunc<RegT, ParT1, ParT2>(
+            Func<ParT1, ParT2, RegT> rfunc,
+            ParT1 p1, ParT2 p2)
         {
-            container.RegisterType<R>(new InjectionFactory(c =>
+            container.RegisterType<RegT>(new InjectionFactory(c =>
             {
-                return func.Invoke(t1, t2);
+                return rfunc.Invoke(p1, p2);
             }));
         }
     }

@@ -1,18 +1,16 @@
 ﻿using SharpConfigProg.ConfigPreparer;
 using SharpConfigProg.Repetition;
 using SharpFileServiceProg.Service;
-using Unity;
 
 namespace SharpConfigProg.Service
 {
     internal partial class ConfigService : IConfigService
     {
-        //private readonly RepoService repoService;
         private readonly IFileService.IYamlOperations yamlOperations;
 
         public IFileService fileService;
 
-        public string ConfigFilePath { get; }
+        public string ConfigFilePath { get; private set; }
         public Dictionary<string, object> SettingsDict
         {
             get;
@@ -34,13 +32,11 @@ namespace SharpConfigProg.Service
         public ConfigService(
             IFileService fileService)
         {
+            SettingsDict = new Dictionary<string, object>();
             this.fileService = fileService;
             yamlOperations = this.fileService.Yaml.Custom03;
-            var binPath = this.fileService.Path.GetBinPath();
-            SettingsDict = new Dictionary<string, object>();
-            ConfigFilePath = this.fileService.Path.MoveDirectoriesUp(binPath, 3) +
-                "/" + "Config" + "/" + "paths.cfg";
-            this.fileService.Path.CreateMissingDirectories(ConfigFilePath);
+
+            CreateConfigFile();
         }
 
         public List<string> GetRepoSearchPaths()
@@ -80,6 +76,19 @@ namespace SharpConfigProg.Service
         public void AddSetting(string key, object value)
         {
             SettingsDict.Add(key, value);
+        }
+
+        private void CreateConfigFile()
+        {
+#if DEBUG
+            var binPath = this.fileService.Path.TryGetBinPath(out var success);
+            if (success)
+            {
+                ConfigFilePath = this.fileService.Path.MoveDirectoriesUp(binPath, 3) +
+                "/" + "Config" + "/" + "paths.cfg";
+                this.fileService.Path.CreateMissingDirectories(ConfigFilePath);
+            }
+#endif
         }
     }
 }
