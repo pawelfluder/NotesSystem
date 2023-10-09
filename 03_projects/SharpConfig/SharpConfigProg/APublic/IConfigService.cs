@@ -1,4 +1,5 @@
 ﻿using SharpConfigProg.APublic;
+using SharpConfigProg.ConfigPreparer;
 
 namespace SharpConfigProg.Service
 {
@@ -10,6 +11,7 @@ namespace SharpConfigProg.Service
 
         void AddSetting(string key, object value);
         void Prepare(Type preparationClassType);
+        void Prepare(IPreparer preparer);
         void Prepare();
         void LoadSettingsFromFile();
         List<string> GetRepoSearchPaths();

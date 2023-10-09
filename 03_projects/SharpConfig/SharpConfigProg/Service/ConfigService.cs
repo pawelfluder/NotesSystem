@@ -66,6 +66,12 @@ namespace SharpConfigProg.Service
             SetAndSerializePaths(paths);
         }
 
+        public void Prepare(IPreparer preparer)
+        {
+            var paths = preparer.Prepare();
+            SetAndSerializePaths(paths);
+        }
+
         public void Prepare(Type preparerClassType)
         {
             var preparer = MyBorder.Container.Resolve(preparerClassType);

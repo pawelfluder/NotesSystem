@@ -58,6 +58,8 @@ namespace SharpNotesMigrationProg.Migrations
         {
             var foundAddressList = repoService.Methods
                 .GetAllRepoAddresses(address).ToList();
+
+            //MigrateOneAddress(address);
             foreach (var foundAddress in foundAddressList)
             {
                 MigrateOneAddress(foundAddress);
@@ -124,7 +126,7 @@ namespace SharpNotesMigrationProg.Migrations
             return false;
         }
 
-        private bool HasDuplicates(string nameLine)
+        private bool HasDuplicatesOld(string nameLine)
         {
             var match1 = Regex.Match(nameLine, pattern1);
             var match2 = Regex.Match(nameLine, pattern2);
@@ -134,9 +136,35 @@ namespace SharpNotesMigrationProg.Migrations
             var count = match1.Captures.Count +
                 match2.Captures.Count +
                 match3.Captures.Count;
-                //match4.Captures.Count;
+            //match4.Captures.Count;
 
             if (count >= 2)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool HasDuplicates(string nameLine)
+        {
+            var n = 0;
+            var tmp = nameLine;
+            while (true)
+            {
+                try
+                {
+                    var dict = yamlOperations.Deserialize<Dictionary<string, object>>(tmp);
+                    tmp = dict["name"].ToString();
+                    n++;
+                }
+                catch
+                {
+                    break;
+                }
+            }
+
+            if (n >= 2)
             {
                 return true;
             }

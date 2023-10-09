@@ -19,35 +19,38 @@ namespace WpfNotesSystem.Creator
 
             var tuplesList = fileService.Header.Select2.GetElements(gg);
 
-            var imax = tuplesList.Select(x => x.Item2).Max();
-            var jmax = tuplesList.Count();
-
-            creator.CreateRowsAndColls(jmax, imax);
-
-            for (int j = 0; j < jmax; j++)
+            if (tuplesList.Any())
             {
-                var lineObj = tuplesList[j];
-                for (int i = 0; i < imax; i++)
+                var imax = tuplesList.Select(x => x.Item2).Max();
+                var jmax = tuplesList.Count();
+
+                creator.CreateRowsAndColls(jmax, imax);
+
+                for (int j = 0; j < jmax; j++)
                 {
-                    if (lineObj.Type == "Header" &&
-                        i == lineObj.Level - 2)
+                    var lineObj = tuplesList[j];
+                    for (int i = 0; i < imax; i++)
                     {
-                        creator.CreateHeader((j, i),
-                            lineObj.Text.ToString(),
-                            imax - lineObj.Level + 2);
-                        continue;
-                    }
+                        if (lineObj.Type == "Header" &&
+                            i == lineObj.Level - 2)
+                        {
+                            creator.CreateHeader((j, i),
+                                lineObj.Text.ToString(),
+                                imax - lineObj.Level + 2);
+                            continue;
+                        }
 
-                    if (lineObj.Type == "Line" &&
-                        i == lineObj.Level - 1)
-                    {
-                        creator.CreateLines((j, i),
-                            lineObj.Text,
-                            imax - lineObj.Level + 1);
-                        continue;
-                    }
+                        if (lineObj.Type == "Line" &&
+                            i == lineObj.Level - 1)
+                        {
+                            creator.CreateLines((j, i),
+                                lineObj.Text,
+                                imax - lineObj.Level + 1);
+                            continue;
+                        }
 
-                    creator.CreateEmpty((j, i));
+                        creator.CreateEmpty((j, i));
+                    }
                 }
             }
         }

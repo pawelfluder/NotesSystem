@@ -12,17 +12,13 @@ namespace SharpNotesMigrationTests
     {
         public UnitTest1()
         {
-            Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
-        }
-
-        public void Prepare(Type type)
-        {
-            var fileSerice = MyBorder.Container.Resolve<IFileService>();
+            // WpfNotesSystemPrivate01.Repetition
+            var registration = new WpfNotesSystemPrivate01.Repetition.Registration();
+            registration.Start();
             var configService = MyBorder.Container.Resolve<IConfigService>();
-            configService.Prepare(type);
+            configService.Prepare();
             var repoService = MyBorder.Container.Resolve<IRepoService>();
             repoService.Initialize(configService.GetRepoSearchPaths());
-            //repoService.Methods.InitializeRootPaths();
         }
 
         [TestMethod]
@@ -55,10 +51,10 @@ namespace SharpNotesMigrationTests
         {
             // arrange
             var migrator03 = MyBorder.Container.Resolve<IMigrationService.IMigrator03>();
-            migrator03.SetAgree(false);
+            migrator03.SetAgree(true);
             var repoServer = MyBorder.Container.Resolve<IRepoService>();
-            var repoName = "Sprawy";
-            var loca = "08/01/01";
+            var repoName = "Rama";
+            var loca = "";
             //var repoName = "02_appData";
             var address = (repoName, loca);
             var folderPath = repoServer.Methods.GetElemPath((repoName, loca));
