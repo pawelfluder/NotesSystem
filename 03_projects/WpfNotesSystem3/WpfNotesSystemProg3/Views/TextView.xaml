@@ -12,7 +12,7 @@
       </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
-         <RowDefinition Height="30"></RowDefinition>
+         <RowDefinition Height="40"></RowDefinition>
          <RowDefinition></RowDefinition>
       </Grid.RowDefinitions>
 
@@ -23,13 +23,18 @@
 
       <!-- 0 -->
       <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
-       
-      <Button Content="Folder" Margin="3" Padding="5" Command="{Binding FolderCommand}"/>
-         <Button Content="Content" Margin="3" Command="{Binding ContentCommand}"/>
-         <Button Content="Config" Margin="3" Command="{Binding ConfigCommand}"/>
-         <Button Content="Pdf" Margin="3" Command="{Binding PdfCommand}"/>
-         <Button Content="GoogleDoc" Margin="3" Command="{Binding GoogledocCommand}"/>
-         <Button Content="RunPrinter" Margin="3" Command="{Binding RunPrinterCommand}"/>
+         <Button Content="Folder" Command="{Binding FolderCommand}"
+            Style="{StaticResource Button01}"/>
+         <Button Content="Content" Command="{Binding ContentCommand}"
+            Style="{StaticResource Button01}"/>
+         <Button Content="Config" Command="{Binding ConfigCommand}"
+            Style="{StaticResource Button01}"/>
+         <Button Content="Pdf"  Command="{Binding PdfCommand}"
+            Style="{StaticResource Button01}"/>
+         <Button Content="GoogleDoc" Command="{Binding GoogledocCommand}"
+            Style="{StaticResource Button01}"/>
+         <Button Content="RunPrinter" Command="{Binding RunPrinterCommand}"
+            Style="{StaticResource Button01}"/>
       </StackPanel>
 
       <!-- 2 -->
@@ -37,12 +42,13 @@
          <TextBox Margin="5" Text="{Binding ValueToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   MinWidth="400">
          </TextBox>
-      <Button Content="Add" Margin="5" Command="{Binding AddCommand}"></Button>
+      <Button Content="Add" Command="{Binding AddCommand}"
+              Style="{StaticResource Button01}"></Button>
       </StackPanel>
 
       <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                    MinHeight="500" MinWidth="480"
-                    MaxHeight="500" MaxWidth="480"
+                    MinHeight="500" MinWidth="680"
+                    MaxHeight="500" MaxWidth="680"
                     Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6">
          <ContentControl Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}" />
       </ScrollViewer>

@@ -15,36 +15,38 @@
          <ColumnDefinition MinWidth="680"></ColumnDefinition>
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
-         <RowDefinition MinHeight="130"></RowDefinition>
-         <RowDefinition Height="Auto" MinHeight="19.96"></RowDefinition>
+            <RowDefinition Height="170"></RowDefinition>
+         <RowDefinition Height="670" MinHeight="19.96"></RowDefinition>
       </Grid.RowDefinitions>
 
-      <Border Style="{StaticResource MainWindowContentControl}"
+         <Border Style="{StaticResource MainWindowControlPanel}"
+            Grid.Row="0" Grid.Column="1" Grid.ZIndex="2"/>
+         <Border Style="{StaticResource MainWindowContentControl}"
             Grid.Row="1" Grid.Column="1" Grid.ZIndex="2"/>
+      
 
-      <ScrollViewer Grid.Row="0" Grid.Column="0" Grid.RowSpan="3">
-         <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Orientation="Vertical" Margin="0,0,0,20">
-            <Button Grid.Row="0" Grid.Column="0" 
+         <ScrollViewer Grid.Row="0" Grid.Column="0" Grid.RowSpan="3">
+         <StackPanel Orientation="Vertical" Margin="0,0,0,20">
+            <Button 
                Margin="10" Width="100" Content="Home" Command="{Binding UpdateViewCommand}" CommandParameter="Home"/>
-            <Button Grid.Row="1" Grid.Column="0"
+            <Button 
               Margin="10" Width="100" Content="Account" Command="{Binding UpdateViewCommand}" CommandParameter="Account"/>
          </StackPanel>
       </ScrollViewer>
 
       
-      <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-         <Grid>
+            <Grid Grid.Row="0" Grid.Column="1">
             <Grid.ColumnDefinitions>
                <ColumnDefinition Width="60"></ColumnDefinition>
                <ColumnDefinition Width="120"></ColumnDefinition>
                <ColumnDefinition Width="240"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-               <RowDefinition Height="30"></RowDefinition>
-               <RowDefinition Height="20"></RowDefinition>
-               <RowDefinition Height="20"></RowDefinition>
-               <RowDefinition Height="20"></RowDefinition>
-               <RowDefinition Height="20"></RowDefinition>
+               <RowDefinition MaxHeight="40"></RowDefinition>
+               <RowDefinition MaxHeight="20"></RowDefinition>
+               <RowDefinition MaxHeight="40"></RowDefinition>
+               <RowDefinition MaxHeight="20"></RowDefinition>
+               <RowDefinition MaxHeight="40"></RowDefinition>
             </Grid.RowDefinitions>
 
             <!-- 0 -->
@@ -100,11 +102,8 @@
                   my:TextBoxBehaviour.CommandOnEnterPressed="{Binding SearchCommand}"/>-->
 
          </Grid>
-      </StackPanel>
-      <ScrollViewer Grid.Row="1" Grid.Column="1">
-         <ContentControl
+            <ContentControl Grid.Row="1" Grid.Column="1"
          Content="{Binding SelectedViewModel}" Margin="0,0,0,20" Grid.RowSpan="2"/>
-      </ScrollViewer>
    </Grid>
    </ScrollViewer>
 </UserControl>
