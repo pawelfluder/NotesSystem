@@ -52,7 +52,7 @@ namespace SharpNotesMigrationTests
             var migrator03 = MyBorder.Container.Resolve<IMigrationService.IMigrator03>();
             migrator03.SetAgree(true);
             var repoServer = MyBorder.Container.Resolve<IRepoService>();
-            var repoName = "Krypto";
+            var repoName = "Zdrowie";
             var loca = "";
             //var repoName = "02_appData";
             var address = (repoName, loca);
