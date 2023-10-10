@@ -1,5 +1,6 @@
 ﻿using Google.Apis.Drive.v3;
 using Google.Apis.Drive.v3.Data;
+using SharpGoogleDriveProg.Service;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,11 +11,15 @@ namespace GoogleDriveCoreApp
 {
     public class DriveWorker
     {
+        private readonly GoogleDriveService parentService;
         private DriveService service;
         private (string Id, string Name) tempFolder;
 
-        public DriveWorker(DriveService service)
+        public DriveWorker(
+            GoogleDriveService parentService,
+            DriveService service)
         {
+            this.parentService = parentService;
             this.service = service;
         }
 

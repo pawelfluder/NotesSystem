@@ -168,7 +168,7 @@ namespace GoogleDocsServiceProj
         public bool TryExecuteBatchUpdate(List<Request> requestsList, string id, int maxAttemptCount)
         {
             var attemptCount = 0;
-            if (maxAttemptCount >= 1)
+            if (maxAttemptCount >= 1 && requestsList.Count > 0)
             {
                 while (attemptCount != -1)
                 {
