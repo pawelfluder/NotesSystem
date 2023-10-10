@@ -8,18 +8,12 @@
         mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+         <ColumnDefinition></ColumnDefinition>
       </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+         <RowDefinition Height="30"></RowDefinition>
+         <RowDefinition></RowDefinition>
       </Grid.RowDefinitions>
 
       <Border Style="{StaticResource TextViewAllRowQCol}" Grid.ZIndex="5"
@@ -28,21 +22,27 @@
       
 
       <!-- 0 -->
-      <Button Content="Folder" Grid.Row="0" Grid.Column="0" Command="{Binding FolderCommand}"/>
-        <Button Content="Content" Grid.Row="0" Grid.Column="1" Command="{Binding ContentCommand}"/>
-        <Button Content="Config" Grid.Row="0" Grid.Column="2" Command="{Binding ConfigCommand}"/>
-        <Button Content="Pdf" Grid.Row="0" Grid.Column="3" Command="{Binding PdfCommand}"/>
-        <Button Content="GoogleDoc" Grid.Row="0" Grid.Column="4" Command="{Binding GoogledocCommand}"/>
-        <Button Content="RunPrinter" Grid.Row="0" Grid.Column="5" Command="{Binding RunPrinterCommand}"/>
+      <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+       
+      <Button Content="Folder" Margin="3" Padding="5" Command="{Binding FolderCommand}"/>
+         <Button Content="Content" Margin="3" Command="{Binding ContentCommand}"/>
+         <Button Content="Config" Margin="3" Command="{Binding ConfigCommand}"/>
+         <Button Content="Pdf" Margin="3" Command="{Binding PdfCommand}"/>
+         <Button Content="GoogleDoc" Margin="3" Command="{Binding GoogledocCommand}"/>
+         <Button Content="RunPrinter" Margin="3" Command="{Binding RunPrinterCommand}"/>
+      </StackPanel>
 
       <!-- 2 -->
-      <TextBox Margin="5" Text="{Binding ValueToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-         Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"></TextBox>
-      <Button Content="Add" Margin="5" Command="{Binding AddCommand}"
-         Grid.Row="2" Grid.Column="3"></Button>
+      <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+         <TextBox Margin="5" Text="{Binding ValueToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  MinWidth="400">
+         </TextBox>
+      <Button Content="Add" Margin="5" Command="{Binding AddCommand}"></Button>
+      </StackPanel>
 
       <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                    MinHeight="100" MinWidth="80"
+                    MinHeight="500" MinWidth="480"
+                    MaxHeight="500" MaxWidth="480"
                     Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6">
          <ContentControl Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}" />
       </ScrollViewer>
