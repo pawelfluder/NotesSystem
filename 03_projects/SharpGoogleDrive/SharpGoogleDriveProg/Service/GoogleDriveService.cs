@@ -46,7 +46,7 @@ namespace SharpGoogleDriveProg.Service
                 ApplicationName = ApplicationName,
             });
 
-            Worker = new DriveWorker(service);
+            Worker = new DriveWorker(this, service);
         }
 
         public List<(string Name, string Id)> GetFilesRequest(string query)
