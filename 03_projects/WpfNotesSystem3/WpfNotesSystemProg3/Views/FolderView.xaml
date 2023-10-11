@@ -38,14 +38,18 @@
 
       <!-- 2 -->
 
-      <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-         <TextBox Margin="5" Text="{Binding ValueToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            ></TextBox>
-                  <ComboBox Margin="5" ItemsSource="{Binding ItemTypes}"
+      <StackPanel
+         Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+         <TextBox
+            Text="{Binding ValueToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Style="{StaticResource FolderView_Buttons_TextBox}"/>
+         <ComboBox
+            ItemsSource="{Binding ItemTypes}"
             SelectedIndex="{Binding SelectedIndex}"
-            ></ComboBox>
-         <Button Content="Add" Margin="5" Command="{Binding AddCommand}"
-            ></Button>
+            Style="{StaticResource FolderView_Buttons_ComboBox}"/>
+         <Button
+            Content="Add" Command="{Binding AddCommand}"
+            Style="{StaticResource FolderView_Button02}"/>
       </StackPanel>
 
       <!-- 3 -->
@@ -53,7 +57,8 @@
             Style="{StaticResource FolderView_ScrollViewer}"
             Grid.Row="3" Grid.Column="0">
          <ContentControl
-            Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}" />
+            Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}"
+            Style="{StaticResource FolderView_ContentControl}"/>
       </ScrollViewer>
    </Grid>
 </UserControl>

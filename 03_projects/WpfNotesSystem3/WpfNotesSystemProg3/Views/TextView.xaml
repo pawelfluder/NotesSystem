@@ -38,18 +38,23 @@
       </StackPanel>
 
       <!-- 2 -->
-      <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-         <TextBox Margin="5" Text="{Binding ValueToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  MinWidth="400">
-         </TextBox>
-      <Button Content="Add" Command="{Binding AddCommand}"
-              Style="{StaticResource Button01}"></Button>
+      <StackPanel
+         Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+         <TextBox
+            Text="{Binding ValueToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Style="{StaticResource TextView_Buttons_TextBox}"/>
+
+         <Button
+            Content="Add" Command="{Binding AddCommand}"
+            Style="{StaticResource TextView_Button02}"/>
       </StackPanel>
 
       <ScrollViewer
          Style="{StaticResource TextView_ScrollViewer}"
          Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6">
-            <ContentControl Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}" />
+         <ContentControl
+            Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}"
+            Style="{StaticResource TextView_ContentControl}"/>
       </ScrollViewer>
    </Grid>
 </UserControl>

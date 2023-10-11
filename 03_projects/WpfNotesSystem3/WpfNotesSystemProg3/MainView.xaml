@@ -5,37 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d">
    <ScrollViewer
-      VerticalScrollBarVisibility="Auto"
-      HorizontalScrollBarVisibility="Auto"
-      MaxWidth="800"
-      HorizontalAlignment="Left">
-   <Grid>
-      <Grid.ColumnDefinitions>
-         <ColumnDefinition Width="120"></ColumnDefinition>
-         <ColumnDefinition MinWidth="680"></ColumnDefinition>
-      </Grid.ColumnDefinitions>
-      <Grid.RowDefinitions>
+      Style="{StaticResource MainWindow_ScrollViewer}">
+      <Grid>
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
             <RowDefinition Height="150"></RowDefinition>
-         <RowDefinition Height="620" MinHeight="19.96"></RowDefinition>
-      </Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+         </Grid.RowDefinitions>
 
-         <Border Style="{StaticResource MainWindowControlPanel}"
-            Grid.Row="0" Grid.Column="1" Grid.ZIndex="2"/>
-         <Border Style="{StaticResource MainWindowContentControl}"
-            Grid.Row="1" Grid.Column="1" Grid.ZIndex="2"/>
-      
+         <Border
+               Style="{StaticResource MainWindowControlPanel}"
+               Grid.Row="0" Grid.Column="1" Grid.ZIndex="2"/>
+         <Border
+               Style="{StaticResource MainWindowContentControl}"
+               Grid.Row="1" Grid.Column="1" Grid.ZIndex="2"/>
+
 
          <ScrollViewer Grid.Row="0" Grid.Column="0" Grid.RowSpan="3">
-         <StackPanel Orientation="Vertical" Margin="0,0,0,20">
-            <Button 
-               Margin="10" Width="100" Content="Home" Command="{Binding UpdateViewCommand}" CommandParameter="Home"/>
-            <Button 
-              Margin="10" Width="100" Content="Account" Command="{Binding UpdateViewCommand}" CommandParameter="Account"/>
-         </StackPanel>
-      </ScrollViewer>
+            <StackPanel Orientation="Vertical" Margin="0,0,0,20">
+               <Button 
+                  Margin="10" Width="100" Content="Home" Command="{Binding UpdateViewCommand}" CommandParameter="Home"/>
+               <Button 
+                 Margin="10" Width="100" Content="Account" Command="{Binding UpdateViewCommand}" CommandParameter="Account"/>
+            </StackPanel>
+         </ScrollViewer>
 
-      
-            <Grid Grid.Row="0" Grid.Column="1">
+
+         <Grid Grid.Row="0" Grid.Column="1">
             <Grid.ColumnDefinitions>
                <ColumnDefinition Width="60"></ColumnDefinition>
                <ColumnDefinition Width="120"></ColumnDefinition>
@@ -51,26 +50,26 @@
 
             <!-- 0 -->
             <!--
-            <Border CornerRadius="4" BorderBrush="Gray" Background="LightGray" BorderThickness="2"
-               Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1"/>
-            <Border CornerRadius="4" BorderBrush="Gray" Background="LightGray" BorderThickness="2"
-               Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"/>
+               <Border CornerRadius="4" BorderBrush="Gray" Background="LightGray" BorderThickness="2"
+                  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1"/>
+               <Border CornerRadius="4" BorderBrush="Gray" Background="LightGray" BorderThickness="2"
+                  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"/>
 
-            -->
+               -->
             <!-- 1 -->
             <!--
-            <Border BorderThickness="1" BorderBrush="Green" 
-               Grid.Column="4" Grid.Row="3" Grid.RowSpan="2"/>-->
+               <Border BorderThickness="1" BorderBrush="Green" 
+                  Grid.Column="4" Grid.Row="3" Grid.RowSpan="2"/>-->
 
             <!-- 0 -->
             <Button Width="50"
-               Click="BackArrowClick"
-               Grid.Row="0" Grid.Column="0">
+                  Click="BackArrowClick"
+                  Grid.Row="0" Grid.Column="0">
                <Path  Fill="Black" Data="M 0 10 L 10 0 L 10 20 Z"/>
             </Button>
             <Button Width="50"
-               Click="ForwardArrowClick"
-               Grid.Row="0" Grid.Column="1">
+                  Click="ForwardArrowClick"
+                  Grid.Row="0" Grid.Column="1">
                <Path  Fill="Black" Data="M 0 0 L 10 10 L 0 20 Z"/>
             </Button>
 
@@ -79,11 +78,11 @@
 
             <!-- 2 -->
             <Button Content="Go" Height="20" Width="50" Margin="0,0,0,0"
-               Click="GoButtonClick"
-               Grid.Row="2" Grid.Column="0"/>
+                  Click="GoButtonClick"
+                  Grid.Row="2" Grid.Column="0"/>
             <TextBox Name="Address" Height="20" Width="360" Margin="0,0,0,0"
-               Text="{Binding AddressString}"
-               Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"/>
+                  Text="{Binding AddressString}"
+                  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"/>
 
             <!-- 3 -->
             <TextBlock Grid.Row="3" Grid.Column="1">Repo</TextBlock>
@@ -91,20 +90,17 @@
 
             <!-- 4 -->
             <Button Content="Go" Height="20" Width="50" Margin="0,0,0,0"
-               Click="GoButtonClick2"
-               Grid.Row="4" Grid.Column="0"/>
-            <ComboBox Grid.Row="4" Grid.Column="1"
-               ItemsSource="{Binding AllRepoList}" Name="RepoName"/>
-
-            <!--<TextBox Grid.Row="1" Grid.Column="1"
-                  Name="RepoName" Height="20" Width="170" Margin="0,0,0,20"
-                  Text="{Binding SearchTerm, UpdateSourceTrigger=Explicit}" 
-                  my:TextBoxBehaviour.CommandOnEnterPressed="{Binding SearchCommand}"/>-->
-
+                  Click="GoButtonClick2"
+                  Grid.Row="4" Grid.Column="0"/>
+            <ComboBox
+                  Margin="8"
+                  Grid.Row="4" Grid.Column="1"
+                  ItemsSource="{Binding AllRepoList}" Name="RepoName"/>
          </Grid>
-            <ContentControl Grid.Row="1" Grid.Column="1"
-         Content="{Binding SelectedViewModel}" Margin="0,0,0,20" Grid.RowSpan="2"/>
-   </Grid>
+         <ContentControl
+               Content="{Binding SelectedViewModel}" Margin="0,0,0,20" Grid.RowSpan="2"
+               Grid.Row="1" Grid.Column="1"
+               Style="{StaticResource MainWindow_ContentControl}"/>
+      </Grid>
    </ScrollViewer>
 </UserControl>
-

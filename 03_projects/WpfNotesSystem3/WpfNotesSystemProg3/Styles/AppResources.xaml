@@ -38,6 +38,21 @@
       <Setter Property="BorderThickness" Value="2" />
       <Setter Property="BorderBrush" Value="Black" />
    </Style>
+   <Style x:Key="MainWindow_ScrollViewer" TargetType="{x:Type ScrollViewer}">
+      <Setter Property="MinHeight" Value="800" />
+      <Setter Property="MaxHeight" Value="800" />
+      <Setter Property="MinWidth" Value="800" />
+      <Setter Property="MaxWidth" Value="800" />
+      <Setter Property="VerticalAlignment" Value="Top" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
+      <Setter Property="BorderBrush" Value="LightGray" />
+      <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+      <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+   </Style>
+   <Style x:Key="MainWindow_ContentControl" TargetType="{x:Type ContentControl}">
+      <Setter Property="MinHeight" Value="620" />
+      <Setter Property="MinWidth" Value="770" />
+   </Style>
    <Style x:Key="MainWindowControlPanel" TargetType="{x:Type Border}">
       <Setter Property="BorderThickness" Value="2" />
       <Setter Property="BorderBrush" Value="Green" />
@@ -46,22 +61,58 @@
 
    <!-- Folder View -->
    <Style x:Key="FolderView_ScrollViewer" TargetType="{x:Type ScrollViewer}">
-      <Setter Property="MinHeight" Value="540" />
-      <Setter Property="VerticalAlignment" Value="Top" />
-      <Setter Property="MinWidth" Value="400" />
+      <Setter Property="MinHeight" Value="740" />
+      <Setter Property="MaxHeight" Value="740" />
+      <Setter Property="MinWidth" Value="650" />
+      <Setter Property="MaxWidth" Value="650" />
+      <Setter Property="VerticalAlignment" Value="Top" />      
       <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
       <Setter Property="Background" Value="LightGray" />
       <Setter Property="Margin" Value="10" />
+      <Setter Property="VerticalAlignment" Value="Top" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
+   </Style>
+   <Style x:Key="FolderView_Buttons_TextBox" TargetType="{x:Type TextBox}">
+      <Setter Property="MinWidth" Value="250" />
+      <Setter Property="Margin" Value="9" />
+   </Style>
+   <Style x:Key="FolderView_ContentControl" TargetType="{x:Type ContentControl}">
+      <Setter Property="Margin" Value="10" />
+   </Style>
+   <Style x:Key="FolderView_Buttons_ComboBox" TargetType="{x:Type ComboBox}">
+      <Setter Property="Margin" Value="10" />
+   </Style>
+   <Style x:Key="FolderView_Button02" TargetType="{x:Type Button}">
+      <Setter Property="Margin" Value="10" />
+      <Setter Property="MinWidth" Value="50"/>
+      <Setter Property="FontSize" Value="11"/>
    </Style>
    <!-- Folder View -->
 
    <!-- Text View -->
    <Style x:Key="TextView_ScrollViewer" TargetType="{x:Type ScrollViewer}">
-      <Setter Property="MinHeight" Value="600" />
+      <Setter Property="MinHeight" Value="740" />
+      <Setter Property="MaxHeight" Value="740" />
+      <Setter Property="MinWidth" Value="650" />
+      <Setter Property="MaxWidth" Value="650" />
       <Setter Property="VerticalAlignment" Value="Top" />
-      <Setter Property="MinWidth" Value="400" />
-      <Setter Property="BorderBrush" Value="LightGray" />
+      <Setter Property="Background" Value="LightGray" />
       <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+      <Setter Property="Margin" Value="10" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
+      <Setter Property="VerticalAlignment" Value="Top" />
+   </Style>
+   <Style x:Key="TextView_Buttons_TextBox" TargetType="{x:Type TextBox}">
+      <Setter Property="MinWidth" Value="250" />
+      <Setter Property="Margin" Value="9" />
+   </Style>
+   <Style x:Key="TextView_ContentControl" TargetType="{x:Type ContentControl}">
+      <Setter Property="Margin" Value="10" />
+   </Style>
+   <Style x:Key="TextView_Button02" TargetType="{x:Type Button}">
+      <Setter Property="Margin" Value="7" />
+      <Setter Property="MinWidth" Value="90"/>
+      <Setter Property="FontSize" Value="11"/>
    </Style>
    <!-- Text View -->
 
