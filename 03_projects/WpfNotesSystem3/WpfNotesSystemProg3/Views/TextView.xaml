@@ -13,7 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
          <RowDefinition Height="40"></RowDefinition>
-         <RowDefinition></RowDefinition>
+         <RowDefinition Height="760"></RowDefinition>
       </Grid.RowDefinitions>
 
       <Border Style="{StaticResource TextViewAllRowQCol}" Grid.ZIndex="5"
@@ -46,11 +46,10 @@
               Style="{StaticResource Button01}"></Button>
       </StackPanel>
 
-      <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                    MinHeight="500" MinWidth="680"
-                    MaxHeight="500" MaxWidth="680"
-                    Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6">
-         <ContentControl Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}" />
+      <ScrollViewer
+         Style="{StaticResource TextView_ScrollViewer}"
+         Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6">
+            <ContentControl Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}" />
       </ScrollViewer>
    </Grid>
 </UserControl>

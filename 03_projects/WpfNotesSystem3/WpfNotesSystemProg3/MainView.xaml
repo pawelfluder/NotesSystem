@@ -15,8 +15,8 @@
          <ColumnDefinition MinWidth="680"></ColumnDefinition>
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
-            <RowDefinition Height="170"></RowDefinition>
-         <RowDefinition Height="670" MinHeight="19.96"></RowDefinition>
+            <RowDefinition Height="150"></RowDefinition>
+         <RowDefinition Height="620" MinHeight="19.96"></RowDefinition>
       </Grid.RowDefinitions>
 
          <Border Style="{StaticResource MainWindowControlPanel}"
