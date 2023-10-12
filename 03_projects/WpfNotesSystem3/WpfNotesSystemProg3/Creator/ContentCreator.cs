@@ -68,56 +68,49 @@ namespace WpfNotesSystem.Creator
             
             txt1.FontSize = 12;
             txt1.FontWeight = FontWeights.Bold;
+            var pattern = "(http|ftp|https):\\/\\/([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:\\/~+#-]*[\\w@?^=%&\\/~+#-])";
+            var match = Regex.Match(line, pattern);
 
-            
-
-            var spliter = "https://";
-            if (line.Contains(spliter))
+            if (match.Captures.Count > 0)
             {
-                var pattern = "(http|ftp|https):\\/\\/([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:\\/~+#-]*[\\w@?^=%&\\/~+#-])";
-                var match = Regex.Match(line, pattern);
+                var captured = match.Captures[0].Value;
+                var tmp = line.Split(captured).ToList();
 
-                if (match.Captures.Count > 0)
+                var tmp2 = new List<string>();
+                for (int i = 0; i < tmp.Count(); i++)
                 {
-                    var captured = match.Captures[0].Value;
-                    var tmp = line.Split(captured).ToList();
-
-                    var tmp2 = new List<string>();
-                    for (int i = 0; i < tmp.Count(); i++)
+                    tmp2.Add(tmp[i]);
+                    if (i != tmp.Count() - 1)
                     {
-                        tmp2.Add(tmp[i]);
-                        if (i != tmp.Count() - 1)
-                        {
-                            tmp2.Add(captured);
-                        }
+                        tmp2.Add(captured);
                     }
+                }
 
                     
 
-                    foreach (var item in tmp2)
+                foreach (var item in tmp2)
+                {
+                    if (item == captured)
                     {
-                        if (item == captured)
-                        {
-                            var hyperlink = new Hyperlink(new Run(captured));
-                            hyperlink.NavigateUri = new Uri(captured);
+                        var hyperlink = new Hyperlink(new Run(captured));
+                        hyperlink.NavigateUri = new Uri(captured);
                             
-                            hyperlink.RequestNavigate += (s, e) =>
-                            {
-                                var hyperLink = (Hyperlink)s;
-                                var destinationurl = hyperLink.NavigateUri.OriginalString;
-                                var sInfo = new System.Diagnostics.ProcessStartInfo(destinationurl)
-                                {
-                                    UseShellExecute = true,
-                                };
-                                System.Diagnostics.Process.Start(sInfo);
-
-                            };
-                            txt1.Inlines.Add(hyperlink);
-                        }
-                        else
+                        hyperlink.RequestNavigate += (s, e) =>
                         {
-                            txt1.Inlines.Add(item);
-                        }
+                            var hyperLink = (Hyperlink)s;
+                            var destinationurl = hyperLink.NavigateUri.OriginalString;
+                            var sInfo = new System.Diagnostics.ProcessStartInfo(destinationurl)
+                            {
+                                UseShellExecute = true,
+                            };
+                            System.Diagnostics.Process.Start(sInfo);
+
+                        };
+                        txt1.Inlines.Add(hyperlink);
+                    }
+                    else
+                    {
+                        txt1.Inlines.Add(item);
                     }
                 }
             }
