@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using WpfNotesSystemProg3.Controls;
 
 namespace WpfNotesSystem.Creator
 {
@@ -42,12 +43,18 @@ namespace WpfNotesSystem.Creator
             table.HorizontalAlignment = HorizontalAlignment.Left;
             table.VerticalAlignment = VerticalAlignment.Top;
             table.ShowGridLines = false;
-            var border = new Border();
-            border.BorderThickness = new Thickness(3);
-            border.BorderBrush = Brushes.Gray;
+            var border = CreateBorder();
             Grid.SetRowSpan(border, jmax);
             Grid.SetColumnSpan(border, imax);
             table.Children.Add(border);
+        }
+
+        public Border CreateBorder()
+        {
+            var border = new Border();
+            //border.BorderThickness = new Thickness(3);
+            border.BorderBrush = Brushes.Gray;
+            return border;
         }
 
         public void CreateHeader((int, int) pos, string text, int collSpan)
@@ -65,13 +72,14 @@ namespace WpfNotesSystem.Creator
         public void CreateLines((int, int) pos, string line, int collSpan)
         {
             TextBlock txt1 = new TextBlock();
-            
             txt1.FontSize = 12;
             txt1.FontWeight = FontWeights.Bold;
-            var pattern = "(http|ftp|https):\\/\\/([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:\\/~+#-]*[\\w@?^=%&\\/~+#-])";
-            var match = Regex.Match(line, pattern);
+            var pattern = ".*(http|ftp|https):\\/\\/([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:\\/~+#-]*[\\w@?^=%&\\/~+#-])";
+            var pattern2 = @"\bhttps?://\S+";
+            var match = Regex.Match(line, pattern2);
 
-            if (match.Captures.Count > 0)
+            var groupsCount = match.Captures.Count;
+            if (groupsCount > 0)
             {
                 var captured = match.Captures[0].Value;
                 var tmp = line.Split(captured).ToList();
@@ -107,17 +115,20 @@ namespace WpfNotesSystem.Creator
 
                         };
                         txt1.Inlines.Add(hyperlink);
+                        //txt1.AddHyperlink(hyperlink);
                     }
                     else
                     {
                         txt1.Inlines.Add(item);
+                        //txt1.AddText(item);
                     }
                 }
             }
 
-            if (!line.Contains(spliter))
+            if (!(groupsCount > 0))
             {
-                txt1.Text = line;
+                txt1.Inlines.Add(line);
+                //txt1.AddText(line);
             }
 
             Grid.SetRow(txt1, pos.Item1);

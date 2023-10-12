@@ -50,9 +50,7 @@ namespace WpfNotesSystem.Creator
             table.HorizontalAlignment = HorizontalAlignment.Left;
             table.VerticalAlignment = VerticalAlignment.Top;
             table.ShowGridLines = false;
-            var border = new Border();
-            border.BorderThickness = new Thickness(3);
-            border.BorderBrush = Brushes.Gray;
+            var border = CreateBorder();
             Grid.SetRowSpan(border, jmax);
             Grid.SetColumnSpan(border, imax);
             table.Children.Add(border);
@@ -64,7 +62,15 @@ namespace WpfNotesSystem.Creator
             }
         }
 
-        public void CreateFolderLine(int j, string indexString, string name)
+        public Border CreateBorder()
+        {
+            var border = new Border();
+            //border.BorderThickness = new Thickness(3);
+            border.BorderBrush = Brushes.Gray;
+            return border;
+        }
+
+            public void CreateFolderLine(int j, string indexString, string name)
         {
             // index
             TextBlock txt1 = new TextBlock();
