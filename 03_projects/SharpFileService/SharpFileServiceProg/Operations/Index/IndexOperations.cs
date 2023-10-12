@@ -4,6 +4,15 @@ namespace SharpFileServiceProg.Operations.Index
 {
     internal class IndexOperations : IFileService.IIndexWrk
     {
+        public int GetLocaLast(string loca)
+        {
+            var tmp = loca.Split("/");
+            var lastString = tmp.Last();
+            var last = StringToIndex(lastString);
+            return last;
+        }
+
+
         public string IndexToString(int index)
         {
             if (index < 10)
@@ -11,6 +20,10 @@ namespace SharpFileServiceProg.Operations.Index
                 return "0" + index;
             }
             if (index < 100)
+            {
+                return index.ToString();
+            }
+            if (index < 1000)
             {
                 return index.ToString();
             }

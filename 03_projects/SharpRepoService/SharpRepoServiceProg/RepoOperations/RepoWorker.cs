@@ -384,8 +384,8 @@ namespace SharpRepoServiceProg.RepoOperations
             {
                 var subAddress = (address.repo, subLoca);
                 var name = GetName(subAddress);
-                var indexString = subLoca.Substring(subLoca.Length - 2, 2);
-                names.Add(indexString, name);
+                var last = fileService.Index.GetLocaLast(subLoca);
+                names.Add(last.ToString(), name);
             }
 
             return names;

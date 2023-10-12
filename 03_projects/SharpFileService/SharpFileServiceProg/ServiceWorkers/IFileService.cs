@@ -19,6 +19,7 @@ namespace SharpFileServiceProg.Service
             string LastTwoChar(string input);
             bool IsCorrectIndex(string input);
             bool IsCorrectIndex(string input, out int index);
+            int GetLocaLast(string loca);
         }
 
         public interface IYamlWrk

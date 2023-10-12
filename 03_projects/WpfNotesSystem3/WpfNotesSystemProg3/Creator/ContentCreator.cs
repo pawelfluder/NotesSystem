@@ -1,5 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace WpfNotesSystem.Creator
@@ -60,9 +65,68 @@ namespace WpfNotesSystem.Creator
         public void CreateLines((int, int) pos, string line, int collSpan)
         {
             TextBlock txt1 = new TextBlock();
-            txt1.Text = line;
+            
             txt1.FontSize = 12;
             txt1.FontWeight = FontWeights.Bold;
+
+            
+
+            var spliter = "https://";
+            if (line.Contains(spliter))
+            {
+                var pattern = "(http|ftp|https):\\/\\/([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:\\/~+#-]*[\\w@?^=%&\\/~+#-])";
+                var match = Regex.Match(line, pattern);
+
+                if (match.Captures.Count > 0)
+                {
+                    var captured = match.Captures[0].Value;
+                    var tmp = line.Split(captured).ToList();
+
+                    var tmp2 = new List<string>();
+                    for (int i = 0; i < tmp.Count(); i++)
+                    {
+                        tmp2.Add(tmp[i]);
+                        if (i != tmp.Count() - 1)
+                        {
+                            tmp2.Add(captured);
+                        }
+                    }
+
+                    
+
+                    foreach (var item in tmp2)
+                    {
+                        if (item == captured)
+                        {
+                            var hyperlink = new Hyperlink(new Run(captured));
+                            hyperlink.NavigateUri = new Uri(captured);
+                            
+                            hyperlink.RequestNavigate += (s, e) =>
+                            {
+                                var hyperLink = (Hyperlink)s;
+                                var destinationurl = hyperLink.NavigateUri.OriginalString;
+                                var sInfo = new System.Diagnostics.ProcessStartInfo(destinationurl)
+                                {
+                                    UseShellExecute = true,
+                                };
+                                System.Diagnostics.Process.Start(sInfo);
+
+                            };
+                            txt1.Inlines.Add(hyperlink);
+                        }
+                        else
+                        {
+                            txt1.Inlines.Add(item);
+                        }
+                    }
+                }
+            }
+
+            if (!line.Contains(spliter))
+            {
+                txt1.Text = line;
+            }
+
             Grid.SetRow(txt1, pos.Item1);
             Grid.SetColumn(txt1, pos.Item2);
             Grid.SetColumnSpan(txt1, collSpan);

@@ -11,6 +11,14 @@
       <views:TextView/>
    </DataTemplate>
 
+   <ControlTemplate x:Key="SelectableTextBlockTemplate" TargetType="TextBox">
+      <Border BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}">
+         <TextBlock Text="{TemplateBinding Text}" />
+      </Border>
+   </ControlTemplate>
+
    <Style x:Key="Button01" TargetType="{x:Type Button}">
       <Setter Property="Margin" Value="7" />
       <Setter Property="Padding" Value="0" />
