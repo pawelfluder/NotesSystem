@@ -1,4 +1,7 @@
-﻿using SharpContainerProg.Public;
+﻿using SharpConfigProg.ConfigPreparer;
+using SharpConfigProg.Service;
+using SharpContainerProg.Public;
+using SharpFileServiceProg.Service;
 
 namespace SharpConfigProg.Repetition
 {
@@ -6,7 +9,9 @@ namespace SharpConfigProg.Repetition
     {
         protected override void Registrations()
         {
-            // Add registrations here!
+            RegisterByFunc<IPreparer, IFileService>(
+                (x) => new LocalProgramDataPreparer(x),
+                () => container.Resolve<IFileService>());
         }
     }
 }

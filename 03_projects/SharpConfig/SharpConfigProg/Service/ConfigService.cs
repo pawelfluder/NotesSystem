@@ -87,13 +87,13 @@ namespace SharpConfigProg.Service
         private void CreateConfigFile()
         {
 #if DEBUG
-            var binPath = this.fileService.Path.TryGetBinPath(out var success);
-            if (success)
-            {
-                ConfigFilePath = this.fileService.Path.MoveDirectoriesUp(binPath, 3) +
-                "/" + "Config" + "/" + "paths.cfg";
-                this.fileService.Path.CreateMissingDirectories(ConfigFilePath);
-            }
+            //var binPath = this.fileService.Path.TryGetBinPath(out var success);
+            //if (success)
+            //{
+            //    ConfigFilePath = this.fileService.Path.MoveDirectoriesUp(binPath, 3) +
+            //    "/" + "Config" + "/" + "paths.cfg";
+            //    this.fileService.Path.CreateMissingDirectories(ConfigFilePath);
+            //}
 #endif
         }
     }
