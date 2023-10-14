@@ -10,6 +10,8 @@ using System.Windows.Media;
 using System.Windows.Navigation;
 using Unity;
 using WpfNotesSystem.Repetition;
+using System.Globalization;
+using System.Threading;
 
 namespace WpfNotesSystem.Creator
 {
@@ -45,8 +47,6 @@ namespace WpfNotesSystem.Creator
                 table.ColumnDefinitions.Add(col);
             }
 
-            //table.Width = 500;
-            //table.Height = 500;
             table.HorizontalAlignment = HorizontalAlignment.Left;
             table.VerticalAlignment = VerticalAlignment.Top;
             table.ShowGridLines = false;
@@ -65,14 +65,12 @@ namespace WpfNotesSystem.Creator
         public Border CreateBorder()
         {
             var border = new Border();
-            //border.BorderThickness = new Thickness(3);
             border.BorderBrush = Brushes.Gray;
             return border;
         }
 
-            public void CreateFolderLine(int j, string indexString, string name)
+        public void CreateFolderLine(int j, string indexString, string name)
         {
-            // index
             TextBlock txt1 = new TextBlock();
             txt1.Text = indexString;
             txt1.FontSize = 12;
@@ -82,23 +80,20 @@ namespace WpfNotesSystem.Creator
             Grid.SetColumnSpan(txt1, 1);
             table.Children.Add(txt1);
 
-            // link
-
-            //hyperlink.Click += GoItem
-
             if (mainViewModel.Address.Loca.Contains("//"))
             {
                 throw new Exception();
             }
 
             Hyperlink hyperlink = new Hyperlink(new Run(name));
+            hyperlink.FontFamily = new FontFamily("Arial");
+
             var index = int.Parse(indexString);
             hyperlink.NavigateUri = fileService.RepoAddress.
                 CreateUriFromAddress(mainViewModel.Address, index);
             hyperlink.RequestNavigate += HyperlinkRequestNavigate;
 
             TextBlock txt2 = new TextBlock();
-            //txt2.Text = name;
             txt2.FontSize = 12;
             txt2.FontWeight = FontWeights.Bold;
             Grid.SetRow(txt2, j);
@@ -107,8 +102,6 @@ namespace WpfNotesSystem.Creator
 
             txt2.Inlines.Add(hyperlink);
             table.Children.Add(txt2);
-
-            
         }
 
         private void HyperlinkRequestNavigate(
@@ -122,13 +115,8 @@ namespace WpfNotesSystem.Creator
                 var address = fileService.RepoAddress
                     .CreateAddressFromString(addressString);
                 mainViewModel.GoAction(address);
-
-                //var index = tmp.IndexOf('/');
-                //var repo = tmp.Substring(0, index);
-                //var loca = tmp.Substring(index + 1, tmp.Length - index - 1);
             }
-
-        }       
+        }
 
         public void CreateLines((int, int) pos, string line, int collSpan)
         {
@@ -140,10 +128,6 @@ namespace WpfNotesSystem.Creator
             Grid.SetColumn(txt1, pos.Item2);
             Grid.SetColumnSpan(txt1, collSpan);
             table.Children.Add(txt1);
-        }
-
-        public void CreateEmpty((int, int) pos)
-        {
         }
     }
 }

@@ -10,7 +10,7 @@ namespace SharpConfigProg.Repetition
         protected override void Registrations()
         {
             RegisterByFunc<IPreparer, IFileService>(
-                (x) => new LocalProgramDataPreparer(x),
+                (x) => new GuidFolderPreparer(x),
                 () => container.Resolve<IFileService>());
         }
     }

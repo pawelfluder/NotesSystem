@@ -3,7 +3,6 @@ using SharpRepoBackendProg.Service;
 using WpfNotesSystem.Commands;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Windows.Input;
 using Unity;
 using WpfNotesSystem.Repetition;
@@ -26,8 +25,7 @@ namespace WpfNotesSystem.ViewModels
         public MainViewModel()
         {
             UpdateViewCommand = new UpdateViewCommand(this);
-            var container = MyBorder.Container;
-            backendService = container.Resolve<IBackendService>();
+            backendService = MyBorder.Container.Resolve<IBackendService>();
             addressHistory = new History<(string, string)>();
             var jString = backendService.CommandApi(
                 IBackendService.ApiMethods.GetAllRepoName.ToString());

@@ -20,8 +20,6 @@ namespace SharpFileServiceProg.Operations.Yaml
 
             var builder2 = new SerializerBuilder().
                 WithEventEmitter(next => new QuotedScalarEventEmitter(next));
-                //WithEventEmitter(next => new QuotedValueEmitter(next));
-            //.JsonCompatible();
             custom03Serializer = builder2.Build();
         }
 
@@ -101,7 +99,6 @@ namespace SharpFileServiceProg.Operations.Yaml
         {
             try
             {
-                //var yamlText = File.ReadAllText(path);
                 var yamlText = FileReadText(path);
                 var result = custom03Deserializer.Deserialize<T>(yamlText);
                 
@@ -144,7 +141,7 @@ namespace SharpFileServiceProg.Operations.Yaml
         private string FileReadText(string filePath)
         {
             var text = string.Empty;
-            using (StreamReader streamReader = new StreamReader(filePath, Encoding.ASCII, true))
+            using (StreamReader streamReader = new StreamReader(filePath, Encoding.UTF8, true))
             {
                 text = streamReader.ReadToEnd();
                 Console.WriteLine(text);

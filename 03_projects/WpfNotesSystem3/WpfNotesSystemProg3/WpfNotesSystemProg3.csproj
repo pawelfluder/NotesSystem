@@ -40,8 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog.Config" Version="4.7.15" />
-    <PackageReference Include="NLog.Schema" Version="5.2.4" />
     <PackageReference Include="Unity" Version="5.11.10" />
     <PackageReference Include="Unity.Container" Version="5.11.11" />
   </ItemGroup>

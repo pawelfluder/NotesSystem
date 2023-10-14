@@ -6,7 +6,6 @@ using Unity;
 using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.Models;
 using WpfNotesSystemProg3.ViewModelBase;
-using static SharpRepoBackendProg.Service.IBackendService;
 
 namespace WpfNotesSystem.ViewModels
 {

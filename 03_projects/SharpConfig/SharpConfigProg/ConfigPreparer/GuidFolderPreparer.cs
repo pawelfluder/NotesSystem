@@ -8,11 +8,11 @@ namespace SharpConfigProg.Service
         public interface ILocalProgramDataPreparer : IPreparer { }
     }
 
-    public class LocalProgramDataPreparer : IConfigService.ILocalProgramDataPreparer
+    public class GuidFolderPreparer : IPreparer
     {
         private readonly IFileService fileService;
 
-        public LocalProgramDataPreparer(IFileService fileService)
+        public GuidFolderPreparer(IFileService fileService)
         {
             this.fileService = fileService;
         }

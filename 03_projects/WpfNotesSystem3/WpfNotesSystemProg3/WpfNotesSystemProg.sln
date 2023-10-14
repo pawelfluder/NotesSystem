@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfNotesSystemProg3", "WpfN
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfNotesSystemProg6", "..\..\WpfNotesSystem6\WpfNotesSystemProg6\WpfNotesSystemProg6.csproj", "{61EB7F7C-1BB3-4339-BEFC-749AAF0BAFCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpContainerProg", "..\..\SharpContainer\SharpContainerProg\SharpContainerProg.csproj", "{926700D7-D7D7-490A-83B9-DC288714E544}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpContainerProg", "..\..\SharpContainer\SharpContainerProg\SharpContainerProg.csproj", "{926700D7-D7D7-490A-83B9-DC288714E544}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
-using WpfNotesSystemProg3.Controls;
 
 namespace WpfNotesSystem.Creator
 {
@@ -24,7 +23,6 @@ namespace WpfNotesSystem.Creator
             for (int j = 0; j < jmax; j++)
             {
                 var row = new RowDefinition();
-                //row.Height = new GridLength(80);
                 table.RowDefinitions.Add(row);
             }
 
@@ -74,7 +72,6 @@ namespace WpfNotesSystem.Creator
             TextBlock txt1 = new TextBlock();
             txt1.FontSize = 12;
             txt1.FontWeight = FontWeights.Bold;
-            var pattern = ".*(http|ftp|https):\\/\\/([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:\\/~+#-]*[\\w@?^=%&\\/~+#-])";
             var pattern2 = @"\bhttps?://\S+";
             var match = Regex.Match(line, pattern2);
 
@@ -93,8 +90,6 @@ namespace WpfNotesSystem.Creator
                         tmp2.Add(captured);
                     }
                 }
-
-                    
 
                 foreach (var item in tmp2)
                 {

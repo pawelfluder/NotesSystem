@@ -19,8 +19,6 @@ namespace WpfNotesSystem.ViewModels
         private ICommand contentCommand;
         private ICommand configCommand;
 
-        //private readonly MainViewModel mainViewModel;
-
         public (string repo, string loca) CurrentAddress { get; set; }
 
         public FolderViewModel()
@@ -33,7 +31,6 @@ namespace WpfNotesSystem.ViewModels
 
         public void GoAction(string type, (string Repo, string Loca) address)
         {
-            //backendService.RepoApi(address.Repo, address.Loca);
             var jsonString = backendService.RepoApi(address.Item1, address.Item2);
             ItemModel2 jObj = jObj = JsonConvert.DeserializeObject<ItemModel2>(jsonString);
             CurrentAddress = address;

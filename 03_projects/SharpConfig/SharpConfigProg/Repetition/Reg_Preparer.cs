@@ -1,4 +1,5 @@
-﻿using SharpConfigProg.Service;
+﻿using SharpConfigProg.ConfigPreparer;
+using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
 using Unity;
 
@@ -11,8 +12,8 @@ namespace SharpConfigProg.Repetition
             var fileService = MyBorder.Container.Resolve<IFileService>();
 
             MyBorder.Registration
-                .RegisterByFunc<IConfigService.ILocalProgramDataPreparer>(()
-                => new LocalProgramDataPreparer(fileService));
+                .RegisterByFunc<IPreparer>(()
+                => new GuidFolderPreparer(fileService));
         }
     }
 }
