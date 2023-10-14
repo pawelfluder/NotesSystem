@@ -9,7 +9,6 @@ namespace WpfNotesSystem6
     {
         public App()
         {
-            
         }
 
         void App_Startup(object sender, StartupEventArgs e)
