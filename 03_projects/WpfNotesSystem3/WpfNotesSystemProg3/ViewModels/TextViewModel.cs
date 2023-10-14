@@ -33,6 +33,18 @@ namespace WpfNotesSystem.ViewModels
             ValueToAdd = string.Empty;
         }
 
+        public string name;
+
+        public string Name
+        {
+            get => name;
+            private set
+            {
+                name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+
         public string ValueToAdd { get; set; }
 
         public void SetValueToAdd_AndNotify(string valueToAdd)
@@ -152,9 +164,9 @@ namespace WpfNotesSystem.ViewModels
             //backendService.RepoApi(CurrentAddress.repo, CurrentAddress.loca);
             var jsonString = backendService.RepoApi(address.Item1, address.Item2);
             object error = null;
-            var jObj = JsonConvert.DeserializeObject<ItemModel2>(jsonString);
-
-            HeadersDict = jObj;
+            var jsonObj = JsonConvert.DeserializeObject<ItemModel2>(jsonString);
+            Name = jsonObj.Name;
+            HeadersDict = jsonObj;
         }
 
         public void AddAction()

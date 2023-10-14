@@ -1,4 +1,5 @@
-﻿using SharpConfigProg.Service;
+﻿using SharpConfigProg.ConfigPreparer;
+using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
 using Unity;
 
@@ -14,7 +15,10 @@ namespace SharpConfigProg.Repetition
                 MyBorder.Registration
                     .RegisterByFunc<IFileService>(() => fileService);
 
-                new Reg_Preparer().Invoke();
+                if (!MyBorder.Container.IsRegistered<IPreparer>())
+                {
+                    new Reg_Preparer().Register();
+                }
 
                 MyBorder.Registration.RegisterByFunc<IConfigService>(
                         () => new ConfigService(fileService));

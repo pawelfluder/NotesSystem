@@ -67,6 +67,9 @@ namespace SharpContainerProg.Public
             Func<ParT1, RegT> rfunc, 
             Func<ParT1> arg1func)
         {
+
+            //if (typeof(RegT) == typeof(ICloneable)){ };
+
             container.RegisterSingleton<RegT>(new InjectionFactory(c =>
             {
                 return rfunc.Invoke(arg1func.Invoke());

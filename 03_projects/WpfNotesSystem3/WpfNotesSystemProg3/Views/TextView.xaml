@@ -11,9 +11,8 @@
          <ColumnDefinition></ColumnDefinition>
       </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"></RowDefinition>
-         <RowDefinition Height="40"></RowDefinition>
-         <RowDefinition Height="760"></RowDefinition>
+            <RowDefinition Height="120"></RowDefinition>
+            <RowDefinition Height="600"></RowDefinition>
       </Grid.RowDefinitions>
 
       <Border
@@ -21,33 +20,40 @@
          Style="{StaticResource TextViewAllRowQCol}"/>
        
       <!-- 0 -->
-      <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
-         <Button Content="Folder" Command="{Binding FolderCommand}"
-            Style="{StaticResource Button01}"/>
-         <Button Content="Config" Command="{Binding ConfigCommand}"
-            Style="{StaticResource Button01}"/>
-         <Button Content="Content" Command="{Binding ContentCommand}"
-            Style="{StaticResource Button01}"/>
-         <Button Content="Pdf"  Command="{Binding PdfCommand}"
-            Style="{StaticResource Button01}"/>
-         <Button Content="GoogleDoc" Command="{Binding GoogledocCommand}"
-            Style="{StaticResource Button01}"/>
-         <Button Content="RunPrinter" Command="{Binding RunPrinterCommand}"
-            Style="{StaticResource Button01}"/>
+      <StackPanel Orientation="Vertical"
+         Grid.Row="0" Grid.Column="0">
+         <StackPanel Orientation="Horizontal">
+            <TextBox Margin="9"
+               Text="{Binding Name, Mode=OneWay}"
+               Style="{StaticResource FolderView_TitleTextBox}"/>
+         </StackPanel>
+         <StackPanel Orientation="Horizontal">
+            <Button Content="Folder" Command="{Binding FolderCommand}"
+               Style="{StaticResource Button01}"/>
+            <Button Content="Config" Command="{Binding ConfigCommand}"
+               Style="{StaticResource Button01}"/>
+            <Button Content="Content" Command="{Binding ContentCommand}"
+               Style="{StaticResource Button01}"/>
+            <Button Content="Pdf"  Command="{Binding PdfCommand}"
+               Style="{StaticResource Button01}"/>
+            <Button Content="GoogleDoc" Command="{Binding GoogledocCommand}"
+               Style="{StaticResource Button01}"/>
+            <Button Content="RunPrinter" Command="{Binding RunPrinterCommand}"
+               Style="{StaticResource Button01}"/>
+         </StackPanel>
+         <StackPanel
+            Orientation="Horizontal">
+            <TextBox
+               Text="{Binding ValueToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+               Style="{StaticResource TextView_Buttons_TextBox}"/>
+
+            <Button
+               Content="Add" Command="{Binding AddCommand}"
+               Style="{StaticResource TextView_Button02}"/>
+         </StackPanel>
       </StackPanel>
 
-      <!-- 2 -->
-      <StackPanel
-         Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-         <TextBox
-            Text="{Binding ValueToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            Style="{StaticResource TextView_Buttons_TextBox}"/>
-
-         <Button
-            Content="Add" Command="{Binding AddCommand}"
-            Style="{StaticResource TextView_Button02}"/>
-      </StackPanel>
-
+      <!-- 1 -->
       <ScrollViewer
          Style="{StaticResource TextView_ScrollViewer}"
          Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6">

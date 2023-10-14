@@ -21,6 +21,18 @@ namespace WpfNotesSystem.ViewModels
 
         public (string repo, string loca) CurrentAddress { get; set; }
 
+        public string name;
+
+        public string Name
+        {
+            get => name;
+            private set
+            {
+                name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+
         public FolderViewModel()
         {
             backendService = MyBorder.Container.Resolve<IBackendService>();
@@ -33,6 +45,8 @@ namespace WpfNotesSystem.ViewModels
         {
             var jsonString = backendService.RepoApi(address.Item1, address.Item2);
             ItemModel2 jObj = jObj = JsonConvert.DeserializeObject<ItemModel2>(jsonString);
+
+            Name = jObj.Name;
             CurrentAddress = address;
             HeadersDict = jObj;
         }
@@ -112,6 +126,7 @@ namespace WpfNotesSystem.ViewModels
                     CurrentAddress.loca,
                     ItemTypes[SelectedIndex],
                     ValueToAdd);
+
                 SetValueToAdd_AndNotify(string.Empty);
                 GoAction("Folder", CurrentAddress);
             }

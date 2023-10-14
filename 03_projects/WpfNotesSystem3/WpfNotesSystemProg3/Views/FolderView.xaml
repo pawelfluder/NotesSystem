@@ -14,8 +14,7 @@
          <ColumnDefinition></ColumnDefinition>
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
-         <RowDefinition Height="40"></RowDefinition>
-         <RowDefinition Height="40"></RowDefinition>
+         <RowDefinition Height="120"></RowDefinition>
          <RowDefinition Height="600"></RowDefinition>
       </Grid.RowDefinitions>
 
@@ -27,35 +26,39 @@
 
 
       <!-- 0 -->
-      <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
-         <Button Content="Folder" Command="{Binding FolderCommand}"
-      Style="{StaticResource Button01}"/>
-         <Button Content="Config" Command="{Binding ConfigCommand}"
-      Style="{StaticResource Button01}"/>
+      <StackPanel
+         Grid.Row="0" Grid.Column="0">
+         <StackPanel Orientation="Horizontal">
+            <TextBox Margin="9"
+               Text="{Binding Name, Mode=OneWay}"
+               Style="{StaticResource FolderView_TitleTextBox}"/>
+         </StackPanel>
+         
+         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+            <Button Content="Folder" Command="{Binding FolderCommand}"
+               Style="{StaticResource Button01}"/>
+            <Button Content="Config" Command="{Binding ConfigCommand}"
+               Style="{StaticResource Button01}"/>
+         </StackPanel>
+         
+         <StackPanel Orientation="Horizontal">
+            <TextBox
+               Text="{Binding ValueToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+               Style="{StaticResource FolderView_Buttons_TextBox}"/>
+            <ComboBox
+               ItemsSource="{Binding ItemTypes}"
+               SelectedIndex="{Binding SelectedIndex}"
+               Style="{StaticResource FolderView_Buttons_ComboBox}"/>
+            <Button
+               Content="Add" Command="{Binding AddCommand}"
+               Style="{StaticResource FolderView_Button02}"/>
+         </StackPanel>
       </StackPanel>
 
       <!-- 1 -->
-
-      <!-- 2 -->
-
-      <StackPanel
-         Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-         <TextBox
-            Text="{Binding ValueToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            Style="{StaticResource FolderView_Buttons_TextBox}"/>
-         <ComboBox
-            ItemsSource="{Binding ItemTypes}"
-            SelectedIndex="{Binding SelectedIndex}"
-            Style="{StaticResource FolderView_Buttons_ComboBox}"/>
-         <Button
-            Content="Add" Command="{Binding AddCommand}"
-            Style="{StaticResource FolderView_Button02}"/>
-      </StackPanel>
-
-      <!-- 3 -->
       <ScrollViewer
             Style="{StaticResource FolderView_ScrollViewer}"
-            Grid.Row="3" Grid.Column="0">
+            Grid.Row="1" Grid.Column="0">
          <ContentControl
             Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}"
             Style="{StaticResource FolderView_ContentControl}"/>
