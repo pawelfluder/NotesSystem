@@ -1,13 +1,28 @@
 ﻿using SharpContainerProg.Public;
+using System.Reflection;
 using Unity;
 using Unity.Injection;
-using Unity.Resolution;
 
 namespace SharpContainerProg.Repetition
 {
     internal class Container : IContainer
     {
         private UnityContainer unity = new UnityContainer();
+        private static bool nLogLoaded = LoadNLogConfig();
+
+        private static bool LoadNLogConfig()
+        {
+            try
+            {
+                string assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration(assemblyFolder + "\\NLog.config");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         public bool IsRegistered<T>()
         {
@@ -41,5 +56,7 @@ namespace SharpContainerProg.Repetition
             var result = UnityContainerExtensions.RegisterType<T>(unity, tmp);
             return this;
         }
+
+        
     }
 }
