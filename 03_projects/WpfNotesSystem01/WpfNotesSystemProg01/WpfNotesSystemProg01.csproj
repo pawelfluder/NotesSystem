@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SharpContainer\SharpContainerProg\SharpContainerProg.csproj" />
-    <ProjectReference Include="..\..\WpfNotesSystem3\WpfNotesSystemProg3\WpfNotesSystemProg3.csproj" />
+    <ProjectReference Include="..\..\WpfCore\WpfCoreProg\WpfCoreProg.csproj" />
   </ItemGroup>
 
   <ItemGroup>
