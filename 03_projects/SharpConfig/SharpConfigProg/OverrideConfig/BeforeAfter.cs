@@ -15,7 +15,6 @@ namespace SharpConfigProg.OverrideConfig
 
         private string configFolderPath;
 
-
         public BeforeAfter(
             IFileService fileService,
             IConfigService configService)

@@ -1,1 +1,1 @@
-"name": "ąść"
+"name": "special characters - ąśćżńć"
