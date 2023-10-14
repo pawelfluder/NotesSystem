@@ -10,6 +10,7 @@ namespace SharpFileServiceProg.Operations.Files
             {
                 path = Directory.GetParent(path).FullName;
             }
+
             return path;
         }
 

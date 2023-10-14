@@ -1,4 +1,5 @@
 ﻿using SharpConfigProg.ConfigPreparer;
+using SharpConfigProg.OverrideConfig;
 using SharpConfigProg.Repetition;
 using SharpFileServiceProg.Service;
 
@@ -35,8 +36,6 @@ namespace SharpConfigProg.Service
             SettingsDict = new Dictionary<string, object>();
             this.fileService = fileService;
             yamlOperations = this.fileService.Yaml.Custom03;
-
-            CreateConfigFile();
         }
 
         public List<string> GetRepoSearchPaths()
@@ -52,49 +51,33 @@ namespace SharpConfigProg.Service
             SettingsDict = tmp;
         }
 
-        protected void SetAndSerializePaths(Dictionary<string, object> paths)
-        {
-            SettingsDict = paths;
-            SettingsDict.ToList().ForEach(x => Console.WriteLine(x));
-            yamlOperations.SerializeToFile(ConfigFilePath, SettingsDict);
-        }
 
         public void Prepare()
         {
             var preparer = MyBorder.Container.Resolve<IPreparer>();
-            var paths = preparer.Prepare();
-            SetAndSerializePaths(paths);
+            var settings = preparer.Prepare();
+            SettingsDict = settings;
+            new BeforeAfter(fileService, this).Run();
         }
 
         public void Prepare(IPreparer preparer)
         {
-            var paths = preparer.Prepare();
-            SetAndSerializePaths(paths);
+            var settings = preparer.Prepare();
+            SettingsDict = settings;
+            new BeforeAfter(fileService, this).Run();
         }
 
         public void Prepare(Type preparerClassType)
         {
             var preparer = MyBorder.Container.Resolve(preparerClassType);
-            var paths = (preparer as IPreparer).Prepare();
-            SetAndSerializePaths(paths);
+            var settings = (preparer as IPreparer).Prepare();
+            SettingsDict = settings;
+            new BeforeAfter(fileService, this).Run();
         }
 
         public void AddSetting(string key, object value)
         {
             SettingsDict.Add(key, value);
-        }
-
-        private void CreateConfigFile()
-        {
-#if DEBUG
-            //var binPath = this.fileService.Path.TryGetBinPath(out var success);
-            //if (success)
-            //{
-            //    ConfigFilePath = this.fileService.Path.MoveDirectoriesUp(binPath, 3) +
-            //    "/" + "Config" + "/" + "paths.cfg";
-            //    this.fileService.Path.CreateMissingDirectories(ConfigFilePath);
-            //}
-#endif
         }
     }
 }
