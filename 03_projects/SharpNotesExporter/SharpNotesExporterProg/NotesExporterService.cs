@@ -5,6 +5,7 @@ using System.Text;
 using SharpFileServiceProg.Operations.Headers;
 using ElementType = TextHeaderAnalyzerCoreProj.ElementType;
 using SharpRepoServiceProg.Service;
+using SharpFileServiceProg.Repetition;
 
 namespace SharpNotesExporter
 {
@@ -19,7 +20,7 @@ namespace SharpNotesExporter
 
         public NotesExporterService(IRepoService repoService)
         {
-            docsService = Border.NewGoogleDocsService();
+            docsService = SharpGoogleDocsProg.Repetition.OutBorder.GoogleDocsService();
             headerNotesService = new HeaderNotesService();
             this.repoService = repoService;
             headersOp = new HeadersOperations();

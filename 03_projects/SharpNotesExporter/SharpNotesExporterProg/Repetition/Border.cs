@@ -3,7 +3,7 @@ using TinderImport.Repetition;
 
 namespace SharpNotesExporter.Repetition
 {
-    internal class Border
+    public class Border
     {
         public static GoogleDocsService NewGoogleDocsService()
         {

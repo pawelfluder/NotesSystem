@@ -34,7 +34,7 @@ namespace SharpFileServiceProg.Operations.Files
             string codeBase = Assembly.GetExecutingAssembly().CodeBase;
             UriBuilder uri = new UriBuilder(codeBase);
             string path = Uri.UnescapeDataString(uri.Path);
-            var tmp = Path.GetDirectoryName(path);
+            var tmp = System.IO.Path.GetDirectoryName(path);
 
             var parent = new DirectoryInfo(tmp);
             while (parent?.Name != "bin")
@@ -75,7 +75,8 @@ namespace SharpFileServiceProg.Operations.Files
             for (var i = 0; i < max; i++)
             {
                 directories = Directory.GetDirectories(currentFolder);
-                startupProjectFolder = directories.SingleOrDefault(x => Path.GetFileName(x) == projectName);
+                startupProjectFolder = directories.SingleOrDefault(
+                    x => System.IO.Path.GetFileName(x) == projectName);
 
                 if (startupProjectFolder != default)
                 {

@@ -98,7 +98,7 @@ namespace SharpFileServiceProg.Operations.FileSize
                     newElement.SetAttributeValue("name", name);
                     var relativePath = GetRelativePath(fileInfo);
 
-                    var parentRelativePath = Path.GetDirectoryName(relativePath);
+                    var parentRelativePath = System.IO.Path.GetDirectoryName(relativePath);
                     folderElementsDict.TryGetValue(parentRelativePath, out var parent);
                     if (parent != null)
                     {
