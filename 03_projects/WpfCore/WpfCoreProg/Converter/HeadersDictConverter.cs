@@ -5,10 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text.Json.Nodes;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
+using System.Windows.Media;
 using Unity;
 using WpfNotesSystem.Creator;
 using WpfNotesSystem.Repetition;
@@ -54,28 +55,58 @@ namespace WpfNotesSystemProg.Converter
                     myGrid = ConvertFolderItem(itemModel);
                 }
 
+                //var resourceDict = new ResourceDictionary();
+                //resourceDict.Source = new Uri("Style/AppResources.xaml",
+                //    UriKind.RelativeOrAbsolute);
+
+                //var buttonStyle = resourceDict["Converter_StackPanel"] as Style;
+
+
+                var width = 600;
+
+                //myGrid.MinWidth = width;
+                //myGrid.MaxWidth = width;
                 stackPanel = new StackPanel();
                 stackPanel.Children.Add(myGrid);
-                
-                var w = 150;
-                var h = 150;
-                //myGrid.MinHeight = h;
-                //myGrid.MinWidth = w;
-                if (myGrid.Height < h )//||
-                    //Double.IsNaN(myGrid.Height))
-                {
-                    myGrid.Height = h;
-                }
-                if (myGrid.Width < w )//||
-                    //Double.IsNaN(myGrid.Width))
-                {
-                    myGrid.Width = w;
-                }
-                stackPanel.Height = myGrid.Height;
-                stackPanel.Width = myGrid.Width;
 
-                stackPanel.MinHeight = h;
-                stackPanel.MinWidth = w;
+                //stackPanel.MinWidth = width;
+                //stackPanel.MaxWidth = width;
+
+                var stackPanelStyle = Application.Current.Resources["Converter_StackPanel"] as Style;
+                if (stackPanelStyle != null)
+                {
+                    stackPanel.Style = stackPanelStyle;
+                }
+
+                var gridPanelStyle = Application.Current.Resources["Converter_Grid"] as Style;
+                if (gridPanelStyle != null)
+                {
+                    myGrid.Style = gridPanelStyle;
+                }
+
+
+
+                //stackPanel.Style = new System.Windows.Style();
+
+                //var w = 150;
+                //var h = 150;
+                ////myGrid.MinHeight = h;
+                ////myGrid.MinWidth = w;
+                //if (myGrid.Height < h )//||
+                //    //Double.IsNaN(myGrid.Height))
+                //{
+                //    myGrid.Height = h;
+                //}
+                //if (myGrid.Width < w )//||
+                //    //Double.IsNaN(myGrid.Width))
+                //{
+                //    myGrid.Width = w;
+                //}
+                //stackPanel.Height = myGrid.Height;
+                //stackPanel.Width = myGrid.Width;
+
+                //stackPanel.MinHeight = h;
+                //stackPanel.MinWidth = w;
 
                 //stackPanel.Width = 500;
             }

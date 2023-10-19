@@ -38,12 +38,7 @@
       <Setter Property="BorderThickness" Value="0" />
       <Setter Property="BorderBrush" Value="Purple" />
    </Style>
-
-   <Style x:Key="FolderViewAllRowQCol" TargetType="{x:Type Border}">
-      <Setter Property="BorderThickness" Value="0" />
-      <Setter Property="BorderBrush" Value="Orange" />
-   </Style>
-
+   
    <Style x:Key="FolderContentControl" TargetType="{x:Type Border}">
       <Setter Property="BorderThickness" Value="0" />
       <Setter Property="BorderBrush" Value="Red" />
@@ -62,24 +57,33 @@
       <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
    </Style>
    <Style x:Key="MainWindow_ContentControl" TargetType="{x:Type ContentControl}">
-      <Setter Property="MinHeight" Value="800" />
-      <Setter Property="MaxHeight" Value="800" />
+      <Setter Property="MinHeight" Value="900" />
+      <Setter Property="MaxHeight" Value="900" />
       <Setter Property="MinWidth" Value="680" />
       <Setter Property="MaxWidth" Value="680" />
    </Style>
    <Style x:Key="MainWindowControlPanel" TargetType="{x:Type Border}">
-      <Setter Property="BorderThickness" Value="2" />
+      <Setter Property="BorderThickness" Value="0" />
       <Setter Property="BorderBrush" Value="Green" />
    </Style>
    <!-- Main View -->
 
    <!-- Folder View -->
+   <Style x:Key="FolderView_Border_StackPanels" TargetType="{x:Type Border}">
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="BorderBrush" Value="Purple" />
+   </Style>
+
+   <Style x:Key="FolderView_Border_ContentControl" TargetType="{x:Type Border}">
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="BorderBrush" Value="Red" />
+   </Style>
+
    <Style x:Key="FolderView_ScrollViewer" TargetType="{x:Type ScrollViewer}">
-      <Setter Property="MinHeight" Value="740" />
-      <Setter Property="MaxHeight" Value="740" />
+      <Setter Property="MinHeight" Value="750" />
+      <Setter Property="MaxHeight" Value="750" />
       <Setter Property="MinWidth" Value="650" />
       <Setter Property="MaxWidth" Value="650" />
-      <Setter Property="VerticalAlignment" Value="Top" />      
       <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
       <Setter Property="Background" Value="LightGray" />
       <Setter Property="Margin" Value="10" />
@@ -92,6 +96,11 @@
    </Style>
    <Style x:Key="FolderView_ContentControl" TargetType="{x:Type ContentControl}">
       <Setter Property="Margin" Value="10" />
+      <Setter Property="MinWidth" Value="610" />
+      <Setter Property="MaxWidth" Value="610" />
+
+      <Setter Property="VerticalAlignment" Value="Top" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
    </Style>
    <Style x:Key="FolderView_Buttons_ComboBox" TargetType="{x:Type ComboBox}">
       <Setter Property="Margin" Value="10" />
@@ -109,12 +118,34 @@
       <Setter Property="IsReadOnly" Value="True"/>
       <Setter Property="BorderThickness" Value="0"/>
    </Style>
+   <Style x:Key="FolderView_StackPanelMain" TargetType="{x:Type StackPanel}">
+   <Setter Property="MaxHeight" Value="120" />
+   </Style>
+   <Style x:Key="FolderView_StackPanel01" TargetType="{x:Type StackPanel}">
+      <Setter Property="MaxHeight" Value="40" />
+   </Style>
+   <Style x:Key="FolderView_StackPanel02" TargetType="{x:Type StackPanel}">
+      <Setter Property="MaxHeight" Value="40" />
+   </Style>
+   <Style x:Key="FolderView_StackPanel03" TargetType="{x:Type StackPanel}">
+      <Setter Property="MaxHeight" Value="40" />
+   </Style>
    <!-- Folder View -->
 
    <!-- Text View -->
+   <Style x:Key="TextView_Border_StackPanels" TargetType="{x:Type Border}">
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="BorderBrush" Value="Purple" />
+   </Style>
+
+   <Style x:Key="TextView_Border_ContentControl" TargetType="{x:Type Border}">
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="BorderBrush" Value="Red" />
+   </Style>
+   
    <Style x:Key="TextView_ScrollViewer" TargetType="{x:Type ScrollViewer}">
-      <Setter Property="MinHeight" Value="740" />
-      <Setter Property="MaxHeight" Value="740" />
+      <Setter Property="MinHeight" Value="750" />
+      <Setter Property="MaxHeight" Value="750" />
       <Setter Property="MinWidth" Value="650" />
       <Setter Property="MaxWidth" Value="650" />
       <Setter Property="VerticalAlignment" Value="Top" />
@@ -130,7 +161,9 @@
    </Style>
    <Style x:Key="TextView_ContentControl" TargetType="{x:Type ContentControl}">
       <Setter Property="Margin" Value="10" />
-   </Style>
+      <Setter Property="MinWidth" Value="610" />
+      <Setter Property="MaxWidth" Value="610" />
+   </Style>   
    <Style x:Key="TextView_Button02" TargetType="{x:Type Button}">
       <Setter Property="Margin" Value="10" />
       <Setter Property="MinWidth" Value="50"/>
@@ -145,6 +178,27 @@
       <Setter Property="BorderThickness" Value="0"/>
    </Style>
    <!-- Text View -->
+
+   <SolidColorBrush x:Key="Brush01" Color="Transparent" />
+   <SolidColorBrush x:Key="Brush02" Color="Green" />
+   <SolidColorBrush x:Key="Brush03" Color="Orange" />
+   
+
+   <!-- Converter -->
+   <Style x:Key="Converter_StackPanel" TargetType="{x:Type StackPanel}">
+      <Setter Property="MinWidth" Value="600" />
+      <Setter Property="MaxWidth" Value="600" />
+      <Setter Property="Background" Value="{StaticResource Brush01}" />
+   </Style>
+   <Style x:Key="Converter_Grid" TargetType="{x:Type Grid}">
+      <Setter Property="MinWidth" Value="600" />
+      <Setter Property="MaxWidth" Value="600" />
+      <Setter Property="Background" Value="{StaticResource Brush01}" />
+   </Style>
+   <Style x:Key="Converter_Column01" TargetType="{x:Type ColumnDefinition}">
+      <Setter Property="MinWidth" Value="23" />
+   </Style>
+   <!-- Converter -->
 
    <Style x:Key="SelectableTextBlockLikeStyle" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
       <Setter Property="IsReadOnly" Value="True"/>
@@ -167,15 +221,15 @@
             <Setter Property="Template">
                <Setter.Value>
                   <ControlTemplate TargetType="{x:Type TextBox}">
-                     <TextBlock Text="{TemplateBinding Text}" 
-                             FontSize="{TemplateBinding FontSize}"
-                             FontStyle="{TemplateBinding FontStyle}"
-                             FontFamily="{TemplateBinding FontFamily}"
-                             FontWeight="{TemplateBinding FontWeight}"
-                             TextWrapping="{TemplateBinding TextWrapping}"
-                             Foreground="{DynamicResource NormalText}"
-                             Padding="0,0,0,0"
-                                       />
+                     <TextBlock
+                        Text="{TemplateBinding Text}"
+                        FontSize="{TemplateBinding FontSize}"
+                        FontStyle="{TemplateBinding FontStyle}"
+                        FontFamily="{TemplateBinding FontFamily}"
+                        FontWeight="{TemplateBinding FontWeight}"
+                        TextWrapping="{TemplateBinding TextWrapping}"
+                        Foreground="{DynamicResource NormalText}"
+                        Padding="0,0,0,0"/>
                   </ControlTemplate>
                </Setter.Value>
             </Setter>

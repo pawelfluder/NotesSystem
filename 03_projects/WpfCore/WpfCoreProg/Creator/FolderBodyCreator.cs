@@ -10,8 +10,6 @@ using System.Windows.Media;
 using System.Windows.Navigation;
 using Unity;
 using WpfNotesSystem.Repetition;
-using System.Globalization;
-using System.Threading;
 
 namespace WpfNotesSystem.Creator
 {
@@ -33,7 +31,7 @@ namespace WpfNotesSystem.Creator
         public void Run(Dictionary<string, string> indexQnameDict)
         {
             var jmax = indexQnameDict.Count;
-            var imax = 3;
+            var imax = 2;
 
             for (int j = 0; j < jmax; j++)
             {
@@ -47,6 +45,14 @@ namespace WpfNotesSystem.Creator
                 table.ColumnDefinitions.Add(col);
             }
 
+            table.ColumnDefinitions[0].Width = new GridLength(23);
+
+            //var column01Style = Application.Current.Resources["Converter_Column01"] as Style;
+            //if (column01Style != null)
+            //{
+            //    table.ColumnDefinitions[0].Style = column01Style;
+            //}
+
             table.HorizontalAlignment = HorizontalAlignment.Left;
             table.VerticalAlignment = VerticalAlignment.Top;
             table.ShowGridLines = false;
@@ -55,11 +61,15 @@ namespace WpfNotesSystem.Creator
             Grid.SetColumnSpan(border, imax);
             table.Children.Add(border);
 
+            
+
             for (int j = 0; j < indexQnameDict.Count; j++)
             {
                 var indexQname = indexQnameDict.ElementAt(j);
                 CreateFolderLine(j, indexQname.Key, indexQname.Value);
             }
+
+            //table.Background = Brushes.Yellow;
         }
 
         public Border CreateBorder()

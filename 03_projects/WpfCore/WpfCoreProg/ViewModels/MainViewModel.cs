@@ -71,6 +71,7 @@ namespace WpfNotesSystem.ViewModels
             var type = backendService.RepoApi("GetItemType", address.Item1, address.Item2);
             if (type == "Text") { SelectedViewModel = MyBorder.Container.Resolve<TextViewModel>(); }
             if (type == "Folder") { SelectedViewModel = MyBorder.Container.Resolve<FolderViewModel>(); }
+            if (type == null) { return; }
             SelectedViewModel.GoAction(type, address);
         }
 

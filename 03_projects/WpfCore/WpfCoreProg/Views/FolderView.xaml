@@ -7,41 +7,44 @@
              xmlns:local="clr-namespace:WpfNotesSystem"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="White">
-
    <Grid>
-
       <Grid.ColumnDefinitions>
          <ColumnDefinition></ColumnDefinition>
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
          <RowDefinition Height="120"></RowDefinition>
-         <RowDefinition Height="600"></RowDefinition>
+         <RowDefinition Height="800"></RowDefinition>
       </Grid.RowDefinitions>
 
-      <Border Style="{StaticResource FolderViewAllRowQCol}" Grid.ZIndex="3"
-         Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Grid.ColumnSpan="6"/>
+      <Border Style="{StaticResource FolderView_Border_StackPanels}"
+         Grid.ZIndex="5"
+         Grid.Row="0" Grid.Column="0" Grid.RowSpan="1"/>
 
-      <Border Style="{StaticResource FolderContentControl}" Grid.ZIndex="3"
-         Grid.Row="3" Grid.Column="0" Grid.RowSpan="1"/>
-
+      <Border Style="{StaticResource FolderView_Border_ContentControl}"
+         Grid.ZIndex="12"
+         Grid.Row="1" Grid.Column="0" Grid.RowSpan="1"/>
 
       <!-- 0 -->
       <StackPanel
-         Grid.Row="0" Grid.Column="0">
-         <StackPanel Orientation="Horizontal">
-            <TextBox Margin="9"
+         Grid.Row="0" Grid.Column="0"
+         Style="{StaticResource FolderView_StackPanelMain}">
+         <StackPanel Orientation="Horizontal"
+            Style="{StaticResource FolderView_StackPanel01}">
+         <TextBox Margin="9"
                Text="{Binding Name, Mode=OneWay}"
                Style="{StaticResource FolderView_TitleTextBox}"/>
          </StackPanel>
          
-         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal"
+            Style="{StaticResource FolderView_StackPanel02}">
             <Button Content="Folder" Command="{Binding FolderCommand}"
                Style="{StaticResource Button01}"/>
             <Button Content="Config" Command="{Binding ConfigCommand}"
                Style="{StaticResource Button01}"/>
          </StackPanel>
          
-         <StackPanel Orientation="Horizontal">
+         <StackPanel Orientation="Horizontal"
+            Style="{StaticResource FolderView_StackPanel03}">
             <TextBox
                Text="{Binding ValueToAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                Style="{StaticResource FolderView_Buttons_TextBox}"/>

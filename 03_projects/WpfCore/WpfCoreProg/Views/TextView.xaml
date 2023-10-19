@@ -12,13 +12,17 @@
       </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="120"></RowDefinition>
-            <RowDefinition Height="600"></RowDefinition>
+            <RowDefinition Height="800"></RowDefinition>
       </Grid.RowDefinitions>
 
       <Border
-         Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Grid.ColumnSpan="6" Grid.ZIndex="5"
-         Style="{StaticResource TextViewAllRowQCol}"/>
-       
+         Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="6" Grid.ZIndex="5"
+         Style="{StaticResource TextView_Border_StackPanels}"/>
+
+      <Border
+         Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="6" Grid.ZIndex="5"
+         Style="{StaticResource TextView_Border_ContentControl}"/>
+
       <!-- 0 -->
       <StackPanel Orientation="Vertical"
          Grid.Row="0" Grid.Column="0">
