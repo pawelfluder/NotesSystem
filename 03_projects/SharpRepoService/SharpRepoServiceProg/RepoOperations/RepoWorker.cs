@@ -1,5 +1,6 @@
 ﻿using SharpFileServiceProg.Service;
 using SharpRepoServiceCoreProj;
+using SharpTinderComplexTests;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -271,27 +272,32 @@ namespace SharpRepoServiceProg.RepoOperations
         }
 
         public string GetItem(
-            (string repo, string loca) address)
+            (string repo, string loca) adrTuple)
         {
-            var type = GetItemType(address);
-            JsonValue body = null;
-            if (type == "Text")
+            var type = GetItemType(adrTuple);
+            JsonValue jsonBody = null;
+            if (type == ItemTypeNames.Text)
             {
-                body = JsonValue.Create(
-                    GetTextLines(address));
+                jsonBody = JsonValue.Create(
+                    GetTextLines(adrTuple));
             }
 
-            if (type == "Folder")
+            if (type == ItemTypeNames.Folder)
             {
-                body = JsonValue.Create(
-                    GetAllIndexesQNames(address));
+                jsonBody = JsonValue.Create(
+                    GetAllIndexesQNames(adrTuple));
             }
-            var name = GetName(address);
+            var name = GetName(adrTuple);
+
+            var jsonConfig = JsonValue.Create(GetConfigDictionary(adrTuple));
+            var jsonAddress = JsonValue.Create(GetAddressString(adrTuple));
 
             JsonObject jObj = new JsonObject();
-            jObj.Add("type", type);
-            jObj.Add("name", name);
-            jObj.Add("body", body);
+            jObj.Add("Type", type);
+            jObj.Add("Name", name);
+            jObj.Add("Body", jsonBody);
+            jObj.Add("Config", jsonConfig);
+            jObj.Add("Address", jsonAddress);
 
             //var item = new Dictionary<string, object>();
             //var name = GetLocalName(address);
@@ -299,6 +305,17 @@ namespace SharpRepoServiceProg.RepoOperations
             //item.Add("Body", body);
             //item.Add("Type", type);
             return jObj.ToJsonString();
+        }
+
+        private string GetAddressString((string, string) adrTuple)
+        {
+            if (string.IsNullOrEmpty(adrTuple.Item2))
+            {
+                return adrTuple.Item1;
+            }
+
+            var address = adrTuple.Item1 + "/" + adrTuple.Item2;
+            return address;
         }
 
         [MethodLogger]
@@ -645,6 +662,9 @@ namespace SharpRepoServiceProg.RepoOperations
             foreach (var nQc in nQcList)
             {
                 lastNumber++;
+                if (nQc.Name == "645a90a505ed8501009ff2fc651ae829e0d5d201007d6767")
+                {}
+
                 CreateText(address, nQc.Name, nQc.Content);
             }
         }

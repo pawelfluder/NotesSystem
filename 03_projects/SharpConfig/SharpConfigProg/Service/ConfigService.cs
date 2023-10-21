@@ -79,5 +79,16 @@ namespace SharpConfigProg.Service
         {
             SettingsDict.Add(key, value);
         }
+
+        public void OverrideSetting(string key, object value)
+        {
+            var success = SettingsDict.TryGetValue(key, out var tmp);
+            if (!success)
+            {
+                AddSetting(key, value);
+            }
+
+            SettingsDict[key] = value;
+        }
     }
 }
