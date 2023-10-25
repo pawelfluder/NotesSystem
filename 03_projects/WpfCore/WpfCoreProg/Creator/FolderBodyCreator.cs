@@ -61,8 +61,6 @@ namespace WpfNotesSystem.Creator
             Grid.SetColumnSpan(border, imax);
             table.Children.Add(border);
 
-            
-
             for (int j = 0; j < indexQnameDict.Count; j++)
             {
                 var indexQname = indexQnameDict.ElementAt(j);

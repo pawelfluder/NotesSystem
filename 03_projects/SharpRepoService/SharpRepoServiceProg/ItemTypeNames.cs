@@ -4,9 +4,9 @@ namespace SharpTinderComplexTests
     internal static class ItemTypeNames
     {
         public static string Folder
-            = "folder";
+            = "Folder";
 
         public static string Text
-            = "text";
+            = "Text";
     }
 }

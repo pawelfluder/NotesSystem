@@ -118,13 +118,20 @@ namespace WpfNotesSystemProg.Converter
         {
             var grid = new Grid();
             //var body = itemModel.Body as Dictionary<string, string>;
+
+            if (itemModel.Body == null)
+            {
+                // log error
+            }
+
             var indexQnameDict = JsonConvert
                 .DeserializeObject<Dictionary<string, string>>(itemModel.Body.ToString());
+            var creator = new FolderBodyCreator(grid, fileService);
+            creator.Run(indexQnameDict);
+            
             //var indexQnameList = tmp.ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value);
             //var indexQnameList = tmp.Select(kv => (kv.Key, kv.Value)).ToDictionary(x => x.Key);
 
-            var creator = new FolderBodyCreator(grid, fileService);
-            creator.Run(indexQnameDict);
             return grid;
         }
 
@@ -134,9 +141,16 @@ namespace WpfNotesSystemProg.Converter
 
             var creator = new ContentCreator(grid);
             var contentManager = new ContentManager(fileService);
+
+            if (dict.Body == null)
+            {
+                // log error
+            }
+
             var lines = JsonConvert
-                .DeserializeObject<List<object>>(dict.Body.ToString());
+            .DeserializeObject<List<object>>(dict.Body.ToString());
             contentManager.Run(creator, lines);
+
             return grid;
         }
 
