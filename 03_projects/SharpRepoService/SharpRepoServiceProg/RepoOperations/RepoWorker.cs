@@ -1,4 +1,5 @@
-﻿using SharpFileServiceProg.Service;
+﻿using Newtonsoft.Json;
+using SharpFileServiceProg.Service;
 using SharpRepoServiceCoreProj;
 using SharpTinderComplexTests;
 using System;
@@ -57,6 +58,19 @@ namespace SharpRepoServiceProg.RepoOperations
             return result;
         }
 
+        public (string, string) AdrTupleJoinLoca(
+            (string Repo, string Loca) adrTuple, string loca)
+        {
+            if (loca == string.Empty)
+            {
+                return adrTuple;
+            }
+
+            var newLoca = JoinLoca(adrTuple.Loca, loca);
+            var newAdrTuple = (adrTuple.Repo, newLoca);
+            return newAdrTuple;
+        }
+
         public string JoinLoca(string loca01, string loca02)
         {
             if (loca01 == string.Empty)
@@ -99,8 +113,22 @@ namespace SharpRepoServiceProg.RepoOperations
 
             return default;
         }
+        public (string, string) GetAdrTupleByName(
+            (string Repo, string Loca) address,
+            string name)
+        {
+            var tmp = GetAllFoldersNames(address);
+            var find = tmp.SingleOrDefault(x => x == name);
+            if (name == null)
+            {
+                return default;
+            }
 
-        public (string, string) GetPathsByName(
+            address = GetExistingItem(address, name);
+            return address;
+        }
+
+        public (string, string) GetAdrTupleByNameList(
             (string Repo, string Loca) address,
             List<string> names)
         {
@@ -148,7 +176,7 @@ namespace SharpRepoServiceProg.RepoOperations
             List<string> names)
         {
             // ReadElemListByNames
-            address = GetPathsByName(address, names);
+            address = GetAdrTupleByNameList(address, names);
             var localPath = GetElemPath(address);
             var folders = GetDirectories(localPath);
             var tmp = folders.Select(x => Path.GetFileName(x));
@@ -271,26 +299,46 @@ namespace SharpRepoServiceProg.RepoOperations
             return contentsList;
         }
 
+        public string GetItemList(
+            (string repo, string loca) adrTuple)
+        {
+            var adrTupleList = GetFolderAdrTupleList(adrTuple);
+            var itemJsonObjList = adrTupleList.Select(x => GetItemDict(x)).ToList();
+            var itemList = JsonConvert.SerializeObject(itemJsonObjList);
+            return itemList;
+        }
+
         public string GetItem(
+            (string repo, string loca) adrTuple)
+        {
+            var dict = GetItemDict(adrTuple);
+            var item = JsonConvert.SerializeObject(dict);
+            return item;
+        }
+
+        public Dictionary<string, object> GetItemDict(
             (string repo, string loca) adrTuple)
         {
             var type = GetItemType(adrTuple);
             JsonValue jsonBody = null;
+            Object body = null;
             if (type == ItemTypeNames.Text)
             {
-                jsonBody = JsonValue.Create(
-                    GetTextLines(adrTuple));
+                body = GetText2(adrTuple);
+                jsonBody = JsonValue.Create(body);
             }
 
             if (type == ItemTypeNames.Folder)
             {
-                jsonBody = JsonValue.Create(
-                    GetAllIndexesQNames(adrTuple));
+                body = GetAllIndexesQNames(adrTuple);
+                jsonBody = JsonValue.Create(body);
             }
             var name = GetName(adrTuple);
 
-            var jsonConfig = JsonValue.Create(GetConfigDictionary(adrTuple));
-            var jsonAddress = JsonValue.Create(GetAddressString(adrTuple));
+            var config = GetConfigDictionary(adrTuple);
+            var jsonConfig = JsonValue.Create(config);
+            var address = GetAddressString(adrTuple);
+            var jsonAddress = JsonValue.Create(address);
 
             JsonObject jObj = new JsonObject();
             jObj.Add("Type", type);
@@ -299,12 +347,19 @@ namespace SharpRepoServiceProg.RepoOperations
             jObj.Add("Config", jsonConfig);
             jObj.Add("Address", jsonAddress);
 
+            var dict = new Dictionary<string, object>();
+            dict.Add("Type", type);
+            dict.Add("Name", name);
+            dict.Add("Body", body);
+            dict.Add("Config", config);
+            dict.Add("Address", address);
+
             //var item = new Dictionary<string, object>();
             //var name = GetLocalName(address);
             //item.Add("Name", name);
             //item.Add("Body", body);
             //item.Add("Type", type);
-            return jObj.ToJsonString();
+            return dict;
         }
 
         private string GetAddressString((string, string) adrTuple)
@@ -478,6 +533,18 @@ namespace SharpRepoServiceProg.RepoOperations
         public int GetReposCount()
         {
             return reposPathsList.Count;
+        }
+
+        public List<(string Repo, string Loca)> GetFolderAdrTupleList(
+            (string Repo, string Loca) adrTuple)
+        {
+            var path = GetLocalPath(adrTuple);
+            var directories = GetDirectories(path);
+            var locaList = directories.Select(x => x.Replace(path, "")).ToList();
+
+            var adrTupleList = locaList.Select(x => AdrTupleJoinLoca(adrTuple, x))
+                .ToList();
+            return adrTupleList;
         }
 
         public List<string> GetDirectories(string path)

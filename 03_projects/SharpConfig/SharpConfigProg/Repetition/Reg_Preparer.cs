@@ -5,12 +5,10 @@ using Unity;
 
 namespace SharpConfigProg.Repetition
 {
-    internal partial class Reg_Preparer
+    internal class Reg_Preparer
     {
-        public void Register()
+        public void Register(IFileService fileService)
         {
-            var fileService = MyBorder.Container.Resolve<IFileService>();
-
             MyBorder.Registration
                 .RegisterByFunc<IPreparer>(()
                 => new GuidFolderPreparer(fileService));
