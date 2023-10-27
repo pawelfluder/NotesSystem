@@ -83,6 +83,7 @@ namespace WpfNotesSystem.Creator
             txt1.Text = indexString;
             txt1.FontSize = 12;
             txt1.FontWeight = FontWeights.Bold;
+            txt1.TextWrapping = TextWrapping.Wrap;
             Grid.SetRow(txt1, j);
             Grid.SetColumn(txt1, 0);
             Grid.SetColumnSpan(txt1, 1);
@@ -104,6 +105,7 @@ namespace WpfNotesSystem.Creator
             TextBlock txt2 = new TextBlock();
             txt2.FontSize = 12;
             txt2.FontWeight = FontWeights.Bold;
+            txt2.TextWrapping = TextWrapping.Wrap;
             Grid.SetRow(txt2, j);
             Grid.SetColumn(txt2, 1);
             Grid.SetColumnSpan(txt2, 1);

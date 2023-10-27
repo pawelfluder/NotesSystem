@@ -68,6 +68,7 @@ namespace WpfNotesSystem.Creator
         public void CreateLines((int, int) pos, string line, int collSpan)
         {
             TextBlock txt1 = new TextBlock();
+            txt1.TextWrapping = TextWrapping.Wrap;
             txt1.FontSize = 12;
             txt1.FontWeight = FontWeights.Bold;
             var pattern2 = @"\bhttps?://\S+";
