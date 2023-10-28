@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleApiV4CoreApp", "GoogleApiV4CoreApp.csproj", "{C998DFBE-87BC-4EEB-A871-C2B9544B2386}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C998DFBE-87BC-4EEB-A871-C2B9544B2386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C998DFBE-87BC-4EEB-A871-C2B9544B2386}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C998DFBE-87BC-4EEB-A871-C2B9544B2386}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C998DFBE-87BC-4EEB-A871-C2B9544B2386}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C02859E5-43E1-4CBC-B1E9-9B9A0E5273F3}
+	EndGlobalSection
+EndGlobal

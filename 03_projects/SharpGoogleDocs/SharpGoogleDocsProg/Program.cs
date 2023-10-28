@@ -6,7 +6,7 @@ namespace GoogleDocsServiceProj
     {
         static void Main(string[] args)
         {
-            var service = new GoogleDocsService("", "", "", new List<string>());
+            var service = new GoogleDocsService(null);
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using SharpConfigProg.ConfigPreparer;
+using SharpConfigProg.Repetition;
 using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
 
-namespace SharpConfigProg.Repetition
+namespace SharpConfigProg.APublic
 {
     public static partial class OutBorder
     {

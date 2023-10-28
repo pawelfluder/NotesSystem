@@ -1,24 +1,24 @@
-﻿using Google.Apis.Auth.OAuth2;
-using Google.Apis.Drive.v3;
+﻿using System.Collections.Generic;
+using System.Threading;
+using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
-using GoogleDriveCoreApp;
-using SharpGoogleDriveProg.AAPublic;
+using Google.Apis.Sheets.v4;
+using SharpGoogleSheetProg.AAPublic;
 
-namespace SharpGoogleDriveProg.Service
+namespace SharpGoogleSheetProg.Service
 {
-    public class GoogleDriveService : IGoogleDriveService
+    public class GoogleSheetService : IGoogleSheetService
     {
-        private DriveService service;
-        private bool isInitialized;
-        private DriveWorker worker;
-
-        // settings
+        private string[] Scopes = { SheetsService.ScopeConstants.Spreadsheets };
+        private SheetsService sheetsService;
+        private SheetWorker worker;
         private string applicationName;
         private List<string> scopes;
         private string clientId;
         private string clientSecret;
+        private bool isInitialized;
 
-        public DriveWorker Worker
+        public SheetWorker Worker
         {
             get
             {
@@ -31,11 +31,11 @@ namespace SharpGoogleDriveProg.Service
             }
         }
 
-        public GoogleDriveService()
+        public GoogleSheetService()
         {
         }
 
-        public GoogleDriveService(
+        public GoogleSheetService(
             Dictionary<string, object> settingDict)
         {
             ApplySettings(settingDict);
@@ -60,7 +60,7 @@ namespace SharpGoogleDriveProg.Service
 
         public void Initialize(string clientId, string clientSecret)
         {
-            string[] Scopes = { DriveService.Scope.Drive, DriveService.Scope.DriveFile };
+            string[] Scopes = { SheetsService.Scope.Spreadsheets};
             string ApplicationName = GetType().Name;
 
             var secrets = new ClientSecrets();
@@ -73,43 +73,19 @@ namespace SharpGoogleDriveProg.Service
                 "user",
                 CancellationToken.None);
 
-            service = new DriveService(new BaseClientService.Initializer()
+            // Create Google Sheets API service.
+            sheetsService = new SheetsService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credentialAuthorization.Result,
-                ApplicationName = ApplicationName,
+                ApplicationName = applicationName,
             });
 
-            worker = new DriveWorker(this, service);
+            //var apiKey = "AIzaSyBIl-uJYcK1-tQW-YZwxshpGqBbwnns4FU";
+            //var gg = new UserCredential(;
+            //var initializer = new BaseClientService.Initializer { ApiKey = apiKey, Ht};
+            //sheetsService = new SheetsService(initializer);
+
+            worker = new SheetWorker(this, sheetsService);
         }
-
-        //public List<(string Name, string Id)> GetFilesRequest(string query)
-        //{
-        //    var files = Worker.GetFilesRequest(query);
-        //    return files.Select(x => (x.Name, x.Id)).ToList();
-        //}
-
-        //public List<(string Name, string Id)> GetFilesRequest(string query)
-        //{
-        //    var files = worker.GetFilesRequest(query);
-        //    return files.Select(x => (x.Name, x.Id)).ToList();
-        //}
-
-        //public (string Name, string Id) GetFolderByNameAndId(string name, string id)
-        //{
-        //    var googleFile = Worker.GetFolderByNameAndId(name, id);
-        //    return (googleFile.Name, googleFile.Id);
-        //}
-
-        //public List<(string Name, string Id)> GetAllMp3Files()
-        //{
-        //    var items = Worker.GetFilesRequest($"fileExtension='mp3'");
-        //    return items.Select(x => (x.Name, x.Id)).ToList();
-        //}
-
-        //public (string, string) UploadTempPhotoFile(Stream fileStream)
-        //{
-        //    var result = Worker.UploadTempPhotoFile(fileStream);
-        //    return result;
-        //}
     }
 }

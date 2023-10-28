@@ -43,7 +43,21 @@ namespace SharpContainerProg.Public
             return container;
         }
 
-        protected abstract void Registrations();
+        public IContainer Start(ref bool isRegistered)
+        {
+            if (!registrationStarted
+                && !isRegistered)
+            {
+                registrationStarted = true;
+                Registrations();
+                isRegistered = true;
+                registrationStarted = false;
+            }
+
+            return container;
+        }
+
+        public abstract void Registrations();
 
         public void RegisterByFunc<RegT>(Func<RegT> func)
         {

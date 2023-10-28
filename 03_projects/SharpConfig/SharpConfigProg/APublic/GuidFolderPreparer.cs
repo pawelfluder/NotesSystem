@@ -11,6 +11,7 @@ namespace SharpConfigProg.Service
     public class GuidFolderPreparer : IPreparer
     {
         private readonly IFileService fileService;
+        private IConfigService configService;
 
         public GuidFolderPreparer(IFileService fileService)
         {
@@ -36,6 +37,11 @@ namespace SharpConfigProg.Service
             var programDataFolderPath = fileService.Path.GetProjectFolderPath("18296f12-0706-43e1-9bd4-1b40154ec22e");
             var searchPaths = new List<object> { programDataFolderPath };
             return searchPaths;
+        }
+
+        public void SetConfigService(IConfigService configService)
+        {
+            this.configService = configService;
         }
     }
 }

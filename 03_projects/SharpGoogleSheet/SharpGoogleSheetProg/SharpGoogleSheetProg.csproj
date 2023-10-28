@@ -6,13 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <PackageReference Include="Google.Apis.Drive.v3" Version="1.49.0.2138" />
+    <Compile Remove="WIN\**" />
+    <EmbeddedResource Remove="WIN\**" />
+    <None Remove="WIN\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SharpContainer\SharpContainerProg\SharpContainerProg.csproj" />
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.50.0.2231" />
   </ItemGroup>
 
 </Project>

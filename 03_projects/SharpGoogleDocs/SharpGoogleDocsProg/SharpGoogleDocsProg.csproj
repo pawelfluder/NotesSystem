@@ -11,4 +11,8 @@
     <PackageReference Include="Google.Apis.Docs.v1" Version="1.60.0.2979" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repetition\" />
+  </ItemGroup>
+
 </Project>

@@ -4,7 +4,7 @@ namespace SharpConfigProg.Repetition
 {
     internal class Registration : RegistrationBase
     {
-        protected override void Registrations()
+        public override void Registrations()
         {
         }
     }

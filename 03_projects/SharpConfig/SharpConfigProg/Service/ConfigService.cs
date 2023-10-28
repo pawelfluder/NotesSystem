@@ -55,6 +55,7 @@ namespace SharpConfigProg.Service
         public void Prepare()
         {
             var preparer = MyBorder.Container.Resolve<IPreparer>();
+            preparer.SetConfigService(this);
             var settings = preparer.Prepare();
             SettingsDict = settings;
             new BeforeAfter(fileService, this).Run();
@@ -63,15 +64,17 @@ namespace SharpConfigProg.Service
         public void Prepare(IPreparer preparer)
         {
             var settings = preparer.Prepare();
+            preparer.SetConfigService(this);
             SettingsDict = settings;
             new BeforeAfter(fileService, this).Run();
         }
 
         public void Prepare(Type preparerClassType)
         {
-            var preparer = MyBorder.Container.Resolve(preparerClassType);
-            var settings = (preparer as IPreparer).Prepare();
-            SettingsDict = settings;
+            var tmp = MyBorder.Container.Resolve(preparerClassType);
+            var preparer = (tmp as IPreparer);
+            preparer.SetConfigService(this);
+            SettingsDict = preparer.Prepare(); ;
             new BeforeAfter(fileService, this).Run();
         }
 

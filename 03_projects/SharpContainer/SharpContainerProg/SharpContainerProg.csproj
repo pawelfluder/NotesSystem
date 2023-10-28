@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <!--<ItemGroup>
-    <None Remove="C:\Users\pawel\.nuget\packages\nlog.config\4.7.15\contentFiles\any\any\NLog.config" />
+    <None Remove="C:\Users\user-name\.nuget\packages\nlog.config\4.7.15\contentFiles\any\any\NLog.config" />
   </ItemGroup>-->
 
   <!--<ItemGroup>
-    <None Remove="C:\Users\pawel\.nuget\packages\nlog.schema\5.2.4\contentFiles\any\any\NLog.xsd" />
+    <None Remove="C:\Users\user-name\.nuget\packages\nlog.schema\5.2.4\contentFiles\any\any\NLog.xsd" />
   </ItemGroup>-->
 
   <ItemGroup>
@@ -28,6 +28,5 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-
+  
 </Project>
