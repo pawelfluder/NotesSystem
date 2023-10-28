@@ -32,12 +32,9 @@ namespace SharpRepoBackendProg.Service
         {
             fileService = MyBorder.Container.Resolve<IFileService>();
             pdfService = MyBorder.Container.Resolve<IPdfService2>();
-            new ConfigServiceRegistration().Invoke();
             configService = MyBorder.Container.Resolve<IConfigService>();
             driveService = MyBorder.Container.Resolve<IGoogleDriveService>();
-            var searchPaths = configService.GetRepoSearchPaths();
             repoService = MyBorder.Container.Resolve<IRepoService>();
-            //repoService.Initialize(searchPaths);
             headerNotesService = new HeaderNotesService();
             buttonActionService = new ButtonActionsService();
             notesExporterService = new NotesExporterService(repoService);

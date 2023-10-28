@@ -17,8 +17,6 @@ namespace SharpNotesExporter
         private readonly IRepoService repoService;
         private readonly HeadersOperations headersOp;
 
-        //private readonly GoogleDriveService driveService;
-
         public NotesExporterService(IRepoService repoService)
         {
             docsService = MyBorder.Container.Resolve<IGoogleDocsService>();
@@ -32,25 +30,12 @@ namespace SharpNotesExporter
         {
             var gg = headerNotesService.AnalyzeFile(path);
         }
-
-        //public void ExportHeaderTextLinesToGoogleDoc(
-        //    (Guid, string) repo,
-        //    string sectionName,
-        //    List<string> acceptedHeadersList,
-        //    string docId)
-        //{
-        //    var textLines = repoService.Methods.ReadTextLines((repo.Item2, sectionName));
-        //    var name = repoService.Methods.GetLocalName((repo.Item2, sectionName));
-        //    var elementsList = headerNotesService.GetElements2(textLines.ToArray());
-
-        //    ExportNotesToGoogleDoc(name, elementsList, docId);
-        //}
-
+        
         public void ExportNotesToGoogleDoc(
-        string repo,
-        string loca,
-        string docId,
-        bool createTwoColumns = false)
+            string repo,
+            string loca,
+            string docId,
+            bool createTwoColumns = false)
         {
             var textLines = repoService.Methods.GetTextLines((repo, loca));
             var name = repoService.Methods.GetLocalName((repo, loca));

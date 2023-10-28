@@ -1,5 +1,4 @@
-﻿using Namotion.Reflection;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SharpFileServiceProg.Service;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
-using System.Windows.Media;
 using Unity;
 using WpfNotesSystem.Creator;
 using WpfNotesSystem.Repetition;
