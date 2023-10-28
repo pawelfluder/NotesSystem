@@ -147,8 +147,9 @@ namespace WpfNotesSystemProg.Converter
                 // log error
             }
 
-            var lines = JsonConvert
-            .DeserializeObject<List<object>>(dict.Body.ToString());
+            var tmp = dict.Body.ToString();
+            var lines = tmp.Split('\n').Skip(4).ToArray();
+
             contentManager.Run(creator, lines);
 
             return grid;

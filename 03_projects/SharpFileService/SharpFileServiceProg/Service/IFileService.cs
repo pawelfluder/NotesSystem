@@ -1,4 +1,4 @@
-﻿using SharpConfigProg.APublic;
+﻿using SharpConfigProg.AAPublic;
 using SharpFileServiceProg.Operations.Files;
 using SharpFileServiceProg.Operations.Headers;
 using SharpFileServiceProg.Operations.RepoAddress;

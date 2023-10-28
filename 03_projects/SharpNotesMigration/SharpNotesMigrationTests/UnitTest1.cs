@@ -12,7 +12,7 @@ namespace SharpNotesMigrationTests
         public UnitTest1()
         {
             // WpfNotesSystemPrivate01.Repetition
-            var registration = new SharpSetupProg21Private.Repetition.Registration();
+            var registration = new SharpSetupProg21Private.AAPublic.Registration();
             registration.Start();
             var configService = MyBorder.Container.Resolve<IConfigService>();
             configService.Prepare();

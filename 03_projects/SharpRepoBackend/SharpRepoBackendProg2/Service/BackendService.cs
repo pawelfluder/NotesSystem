@@ -13,6 +13,7 @@ using System.Diagnostics;
 using static SharpRepoServiceProg.Service.IRepoService;
 using SharpRepoServiceProg.RepoOperations;
 using System.Text.Json.Nodes;
+using SharpGoogleDriveProg.AAPublic;
 
 namespace SharpRepoBackendProg.Service
 {
@@ -20,7 +21,7 @@ namespace SharpRepoBackendProg.Service
     {
         private readonly IFileService fileService;
         private readonly IPdfService2 pdfService;
-        private readonly GoogleDriveService driveService;
+        private readonly IGoogleDriveService driveService;
         private readonly IRepoService repoService;
         private readonly HeaderNotesService headerNotesService;
         private readonly ButtonActionsService buttonActionService;
@@ -33,10 +34,10 @@ namespace SharpRepoBackendProg.Service
             pdfService = MyBorder.Container.Resolve<IPdfService2>();
             new ConfigServiceRegistration().Invoke();
             configService = MyBorder.Container.Resolve<IConfigService>();
-            driveService = MyBorder.NewGoogleDriveService();
+            driveService = MyBorder.Container.Resolve<IGoogleDriveService>();
             var searchPaths = configService.GetRepoSearchPaths();
             repoService = MyBorder.Container.Resolve<IRepoService>();
-            repoService.Initialize(searchPaths);
+            //repoService.Initialize(searchPaths);
             headerNotesService = new HeaderNotesService();
             buttonActionService = new ButtonActionsService();
             notesExporterService = new NotesExporterService(repoService);

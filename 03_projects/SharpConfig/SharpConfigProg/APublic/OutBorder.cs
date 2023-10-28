@@ -3,7 +3,7 @@ using SharpConfigProg.Repetition;
 using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
 
-namespace SharpConfigProg.APublic
+namespace SharpConfigProg.AAPublic
 {
     public static partial class OutBorder
     {

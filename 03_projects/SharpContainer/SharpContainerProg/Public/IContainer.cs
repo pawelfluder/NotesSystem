@@ -1,4 +1,4 @@
-﻿namespace SharpContainerProg.Public
+﻿namespace SharpContainerProg.AAPublic
 {
     public interface IContainer
     {

@@ -1,5 +1,4 @@
 ﻿using SharpFileServiceProg.Service;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace WpfNotesSystem.Creator
@@ -13,11 +12,9 @@ namespace WpfNotesSystem.Creator
             this.fileService = fileService;
         }
 
-        public void Run(IContentCreator creator, object content)
+        public void Run(IContentCreator creator, string[] lines)
         {
-            var gg = (content as List<object>).Select(x => x.ToString()).Skip(4).ToArray();
-
-            var tuplesList = fileService.Header.Select2.GetElements(gg);
+            var tuplesList = fileService.Header.Select2.GetElements(lines);
 
             if (tuplesList.Any())
             {

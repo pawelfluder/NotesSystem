@@ -4,7 +4,7 @@ using SharpRepoBackendProg.Service;
 using WpfNotesSystem.ViewModels;
 using Unity;
 using OutBorder1 = SharpFileServiceProg.Repetition.OutBorder;
-using OutBorder2 = SharpConfigProg.Repetition.OutBorder;
+using OutBorder2 = SharpConfigProg.AAPublic.OutBorder;
 using OutBorder3 = SharpRepoBackendProg.Repetition.OutBorder;
 
 namespace WpfNotesSystem.Repetition

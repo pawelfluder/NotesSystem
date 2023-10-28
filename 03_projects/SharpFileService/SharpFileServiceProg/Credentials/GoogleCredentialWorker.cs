@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
-using SharpConfigProg.APublic;
+using SharpConfigProg.AAPublic;
 using System.Reflection;
 
 namespace SharpConfigProg.Credentials

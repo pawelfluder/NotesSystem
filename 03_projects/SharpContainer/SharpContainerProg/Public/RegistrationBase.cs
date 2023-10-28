@@ -1,7 +1,7 @@
 ﻿using SharpContainerProg.Repetition;
 using Unity.Injection;
 
-namespace SharpContainerProg.Public
+namespace SharpContainerProg.AAPublic
 {
     public abstract class RegistrationBase
     {

@@ -1,6 +1,6 @@
 ﻿using SharpContainerProg.AAPublic;
 
-namespace SharpConfigProg.Repetition
+namespace SharpNotesExporterProg.Register
 {
     internal class Registration : RegistrationBase
     {

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace SharpConfigProg.APublic
+namespace SharpConfigProg.AAPublic
 {
     public interface IGoogleCredentialWorker
     {

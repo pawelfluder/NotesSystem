@@ -1,17 +1,18 @@
 ﻿using TextHeaderAnalyzerCoreProj.Service;
-using GoogleDocsServiceProj.Service;
-using SharpNotesExporter.Repetition;
 using System.Text;
 using SharpFileServiceProg.Operations.Headers;
 using ElementType = TextHeaderAnalyzerCoreProj.ElementType;
 using SharpRepoServiceProg.Service;
-using SharpFileServiceProg.Repetition;
+using SharpGoogleDocsProg.AAPublic;
+using SharpNotesExporterProg.Register;
+using SharpFileServiceProg.Service;
 
 namespace SharpNotesExporter
 {
     public class NotesExporterService
     {
-        private readonly GoogleDocsService docsService;
+        private readonly IGoogleDocsService docsService;
+        private readonly IFileService fileService;
         private readonly HeaderNotesService headerNotesService;
         private readonly IRepoService repoService;
         private readonly HeadersOperations headersOp;
@@ -20,10 +21,11 @@ namespace SharpNotesExporter
 
         public NotesExporterService(IRepoService repoService)
         {
-            docsService = SharpGoogleDocsProg.Repetition.OutBorder.GoogleDocsService();
+            docsService = MyBorder.Container.Resolve<IGoogleDocsService>();
+            fileService = MyBorder.Container.Resolve<IFileService>();
             headerNotesService = new HeaderNotesService();
             this.repoService = repoService;
-            headersOp = new HeadersOperations();
+            headersOp = fileService.Header;
         }
 
         public void GetMatch(string path, string docId)
