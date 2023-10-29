@@ -1,11 +1,10 @@
-﻿using SharpConfigProg.ConfigPreparer;
-using SharpConfigProg.Service;
+﻿using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
 using SharpRepoServiceProg.Service;
 using Unity;
-using OutBorder1 = SharpFileServiceProg.Repetition.OutBorder;
-using OutBorder2 = SharpConfigProg.Repetition.OutBorder;
-using OutBorder3 = SharpRepoServiceProg.Repetition.OutBorder;
+using OutBorder1 = SharpFileServiceProg.AAPublic.OutBorder;
+using OutBorder2 = SharpConfigProg.AAPublic.OutBorder;
+using OutBorder3 = SharpRepoServiceProg.AAPublic.OutBorder;
 
 namespace SharpNotesMigrationTests.Repetition
 {

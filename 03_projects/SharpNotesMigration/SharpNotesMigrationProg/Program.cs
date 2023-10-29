@@ -1,5 +1,4 @@
-﻿using SharpConfigProg.ConfigPreparer;
-using SharpConfigProg.Service;
+﻿using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
 using SharpNotesMigrationProg.Service;
 using SharpRepoBackendProg.Repetition;

@@ -154,8 +154,6 @@ namespace GoogleDocsServiceProj
             return request;
         }
 
-        
-
         public Request GetInsertTextRequest(int? lastEndIndex, string text)
         {
             var insertTextRequest = new Request()
@@ -237,8 +235,6 @@ namespace GoogleDocsServiceProj
             var indexes = GetTableIndexes(table);
             return indexes;
         }
-
-        
 
         public Request GetMergeCellsRequest((int, int) range, int index, (int, int) location)
         {

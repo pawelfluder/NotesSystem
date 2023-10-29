@@ -1,6 +1,6 @@
-﻿using SharpConfigProg.ConfigPreparer;
+﻿using SharpConfigProg.AAPublic;
 using SharpConfigProg.OverrideConfig;
-using SharpConfigProg.Repetition;
+using SharpConfigProg.Register;
 using SharpFileServiceProg.Service;
 
 namespace SharpConfigProg.Service

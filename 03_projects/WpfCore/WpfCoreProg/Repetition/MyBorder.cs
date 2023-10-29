@@ -1,45 +1,15 @@
 ﻿using GoogleDocsServiceProj.Service;
 using SharpConfigProg.Service;
+using SharpContainerProg.AAPublic;
 using SharpGoogleDriveProg.Service;
 using Unity;
-using System.Collections.Generic;
-using SharpGoogleDocsProg.AAPublic;
 
 namespace WpfNotesSystem.Repetition
 {
     internal static class MyBorder
     {
+        public static bool IsRegistered = false; 
         public static Registration Registration = new Registration();
-        public static UnityContainer Container => Registration.TryInitialize();
-
-        //public static IGoogleDocsService GoogleDocsService()
-        //{
-        //    var configService = Container.Resolve<IConfigService>();
-
-        //    var clientId = configService.SettingsDict["googleClientId"].ToString();
-        //    var clientSecret = configService.SettingsDict["googleClientSecret"].ToString();
-
-        //    var aplicationName = "";
-        //    var scopes = new List<string>();
-        //    var googleDocsService = new GoogleDocsService(
-        //        clientId,
-        //        clientSecret,
-        //        aplicationName,
-        //        scopes);
-        //    return googleDocsService;
-        //}
-
-        //public static GoogleDriveService NewGoogleDriveService()
-        //{
-        //    var configService = Container.Resolve<IConfigService>();
-
-        //    var clientId = configService.SettingsDict["googleClientId"].ToString();
-        //    var clientSecret = configService.SettingsDict["googleClientSecret"].ToString();
-
-        //    var googleDocsService = new GoogleDriveService(
-        //        clientId,
-        //        clientSecret);
-        //    return googleDocsService;
-        //}
+        public static IContainer Container => Registration.Start(ref IsRegistered);
     }
 }

@@ -4,7 +4,7 @@ using SharpRepoServiceProg.Service;
 using Unity;
 using OutBorder1 = SharpFileServiceProg.Repetition.OutBorder;
 using OutBorder2 = SharpConfigProg.Repetition.OutBorder;
-using OutBorder3 = SharpRepoServiceProg.Repetition.OutBorder;
+using OutBorder3 = SharpRepoServiceProg.AAPublic.OutBorder;
 using OutBorder4 = SharpNotesMigrationProg.Repetition.OutBorder;
 
 namespace SharpNotesMigrationTests.Repetition

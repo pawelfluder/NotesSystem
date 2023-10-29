@@ -3,7 +3,7 @@ using System.Reflection;
 using Unity;
 using Unity.Injection;
 
-namespace SharpContainerProg.Repetition
+namespace SharpContainerProg.Register
 {
     internal class Container : IContainer
     {
@@ -26,37 +26,35 @@ namespace SharpContainerProg.Repetition
 
         public bool IsRegistered<T>()
         {
-            var result = UnityContainerExtensions.IsRegistered(unity, typeof(T));
+            var result = unity.IsRegistered(typeof(T));
             return result;
         }
 
         public T Resolve<T>()
         {
-            var result = UnityContainerExtensions.Resolve<T>(unity);
+            var result = unity.Resolve<T>();
             return result;
-            
+
         }
 
         public object Resolve(Type type)
         {
-            var result = UnityContainerExtensions.Resolve(unity, type);
+            var result = unity.Resolve(type);
             return result;
         }
 
-            public IContainer RegisterSingleton<T>(params object[] injectionMember)
+        public IContainer RegisterSingleton<T>(params object[] injectionMember)
         {
             var tmp = injectionMember.Select(x => (InjectionMember)x).ToArray();
-            var result = UnityContainerExtensions.RegisterSingleton<T>(unity, tmp);
+            var result = unity.RegisterSingleton<T>(tmp);
             return this;
         }
 
         public IContainer RegisterType<T>(params object[] injectionMember)
         {
             var tmp = injectionMember.Select(x => (InjectionMember)x).ToArray();
-            var result = UnityContainerExtensions.RegisterType<T>(unity, tmp);
+            var result = unity.RegisterType<T>(tmp);
             return this;
         }
-
-        
     }
 }

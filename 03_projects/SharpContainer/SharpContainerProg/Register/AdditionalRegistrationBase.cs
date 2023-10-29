@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace SharpContainerProg.Repetition
+namespace SharpContainerProg.Register
 {
     internal partial class AdditionalRegistrationBase
     {

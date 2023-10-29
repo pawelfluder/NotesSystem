@@ -3,37 +3,20 @@ using SharpFileServiceProg.Service;
 using SharpRepoBackendProg.Service;
 using WpfNotesSystem.ViewModels;
 using Unity;
-using OutBorder1 = SharpFileServiceProg.Repetition.OutBorder;
+using OutBorder1 = SharpFileServiceProg.AAPublic.OutBorder;
 using OutBorder2 = SharpConfigProg.AAPublic.OutBorder;
 using OutBorder3 = SharpRepoBackendProg.Repetition.OutBorder;
+using SharpContainerProg.AAPublic;
 
 namespace WpfNotesSystem.Repetition
 {
     internal class Registration : RegistrationBase
     {
-        private bool registrationStarted;
-
-        public UnityContainer TryInitialize()
-        {
-            if (!registrationStarted)
-            {
-                registrationStarted = true;
-                Registrations();
-            }
-
-            return container;
-        }
-
-        protected override void Registrations()
+        public override void Registrations()
         {
             RegisterByFunc<IBackendService>(
                 OutBorder3.BackendService);
             container.Resolve<IBackendService>();
-
-            RegisterByFunc<IFileService>(OutBorder1.FileService);
-            RegisterByFunc<IConfigService, IFileService>(
-                OutBorder2.ConfigService,
-                container.Resolve<IFileService>());
 
             RegisterByFunc<MainViewModel>(
                 () => new MainViewModel());

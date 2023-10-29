@@ -1,4 +1,4 @@
-﻿using SharpContainerProg.Repetition;
+﻿using SharpContainerProg.Register;
 using Unity.Injection;
 
 namespace SharpContainerProg.AAPublic
@@ -78,7 +78,7 @@ namespace SharpContainerProg.AAPublic
         }
 
         public void RegisterByFunc<RegT, ParT1>(
-            Func<ParT1, RegT> rfunc, 
+            Func<ParT1, RegT> rfunc,
             Func<ParT1> arg1func)
         {
             container.RegisterSingleton<RegT>(new InjectionFactory(c =>

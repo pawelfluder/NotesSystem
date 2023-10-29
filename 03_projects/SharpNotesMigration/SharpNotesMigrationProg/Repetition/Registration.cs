@@ -1,7 +1,7 @@
 ﻿using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
-using Border1 = SharpFileServiceProg.Repetition.OutBorder;
-using Border2 = SharpConfigProg.Repetition.OutBorder;
+using Border1 = SharpFileServiceProg.AAPublic.OutBorder;
+using Border2 = SharpConfigProg.AAPublic.OutBorder;
 using Unity;
 
 namespace SharpRepoBackendProg.Repetition

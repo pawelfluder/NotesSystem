@@ -1,7 +1,7 @@
 ﻿using SharpRepoServiceProg.FileOperations;
 using SharpRepoServiceProg.Service;
 using System.Collections.Generic;
-using OutBorder1 = SharpFileServiceProg.Repetition.OutBorder;
+using OutBorder1 = SharpFileServiceProg.AAPublic.OutBorder;
 
 namespace SharpRepoServiceCoreProj
 {

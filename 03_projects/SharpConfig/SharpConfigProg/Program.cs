@@ -1,5 +1,5 @@
 ﻿using SharpConfigProg.Service;
-using Border1 = SharpFileServiceProg.Repetition.OutBorder;
+using Border1 = SharpFileServiceProg.AAPublic.OutBorder;
 
 namespace SharpPrepareConfigProg
 {

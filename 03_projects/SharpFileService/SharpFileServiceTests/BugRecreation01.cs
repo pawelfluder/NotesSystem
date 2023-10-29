@@ -1,9 +1,9 @@
 ﻿using FileServiceCoreApp;
 using SharpFileServiceProg.Operations.Headers;
 using SharpFileServiceProg.Service;
-using SharpRepoServiceProg.Repetition;
+using SharpRepoServiceProg.AAPublic;
 using SharpRepoServiceProg.Service;
-using OutBorder1 = SharpFileServiceProg.Repetition.OutBorder;
+using OutBorder1 = SharpFileServiceProg.AAPublic.OutBorder;
 
 namespace SharpFileServiceTests
 {

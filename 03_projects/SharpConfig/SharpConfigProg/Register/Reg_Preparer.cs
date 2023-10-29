@@ -1,9 +1,8 @@
-﻿using SharpConfigProg.ConfigPreparer;
+﻿using SharpConfigProg.AAPublic;
 using SharpConfigProg.Service;
 using SharpFileServiceProg.Service;
-using Unity;
 
-namespace SharpConfigProg.Repetition
+namespace SharpConfigProg.Register
 {
     internal class Reg_Preparer
     {

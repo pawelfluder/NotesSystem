@@ -1,8 +1,6 @@
-﻿using SharpConfigProg.Repetition;
-using System;
-using System.Globalization;
-using System.Threading;
+﻿using System;
 using WpfNotesSystem;
+using WpfNotesSystemProg01.Register;
 
 namespace WpfNotesSystemProg6
 {

@@ -1,6 +1,6 @@
 ﻿using SharpFileServiceProg.Service;
 using System;
-namespace SharpFileServiceProg.Repetition
+namespace SharpFileServiceProg.AAPublic
 {
     public static class OutBorder
     {

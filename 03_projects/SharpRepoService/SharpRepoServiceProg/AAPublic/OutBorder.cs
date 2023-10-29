@@ -1,7 +1,7 @@
 ﻿using SharpFileServiceProg.Service;
 using SharpRepoServiceProg.Service;
 
-namespace SharpRepoServiceProg.Repetition
+namespace SharpRepoServiceProg.AAPublic
 {
     public class OutBorder
     {
