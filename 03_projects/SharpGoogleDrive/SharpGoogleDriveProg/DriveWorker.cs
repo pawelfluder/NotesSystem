@@ -31,6 +31,14 @@ namespace GoogleDriveCoreApp
             return file;
         }
 
+        public (string Id, string Name) GetFileByName(string name)
+        {
+            var files = GetFilesRequest($"name='{name}'");
+            var file = files.First();
+            var result = (file.Id, file.Name);
+            return result;
+        }
+
         public (string, string) UploadTempPhotoFile(Stream fileStream)
         {
             var guid = Guid.NewGuid();
