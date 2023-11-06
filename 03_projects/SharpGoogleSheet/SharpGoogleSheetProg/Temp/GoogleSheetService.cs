@@ -16,6 +16,10 @@ namespace GoogleApiV4CoreApp
             logicWorker = new GoogleSheetService_Logic(queryWoker);
         }
 
+        public GoogleSheetService()
+        {
+        }
+
         public void PasteDataAndFunctionsToSheet(
            string spreadsheetId,
            string sheetId,

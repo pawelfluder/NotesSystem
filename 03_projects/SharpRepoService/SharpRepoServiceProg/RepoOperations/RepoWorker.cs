@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
+using System.Xml.Linq;
 using static SharpRepoServiceProg.Service.IRepoService;
 
 namespace SharpRepoServiceProg.RepoOperations
@@ -830,6 +831,14 @@ namespace SharpRepoServiceProg.RepoOperations
             return newAddress;
         }
 
+        public (string, string) CreateText(
+            (string Repo, string Loca) address,
+            string content)
+        {
+            OverrideTextGenerate(address, content);
+            return address;
+        }
+
         private void CreateTextGenerate(
             (string Repo, string Loca) address,
             string name,
@@ -886,6 +895,16 @@ namespace SharpRepoServiceProg.RepoOperations
             var contentFilePath = elemPath + slash + contentFileName;
             var oldContent = GetText2(address);
             var newContent = oldContent + "\n" + content;
+            File.WriteAllText(contentFilePath, newContent);
+        }
+
+        private void OverrideTextGenerate(
+            (string Repo, string Loca) address,
+            string newContent)
+        {
+            var elemPath = GetElemPath(address);
+
+            var contentFilePath = elemPath + slash + contentFileName;
             File.WriteAllText(contentFilePath, newContent);
         }
 

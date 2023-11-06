@@ -87,5 +87,7 @@ namespace SharpGoogleSheetProg.Service
 
             worker = new SheetWorker(this, sheetsService);
         }
+
+        
     }
 }

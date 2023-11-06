@@ -37,8 +37,8 @@ namespace SharpGoogleSheetProg.Service
 
             var cellList = Enumerable.Repeat("x", dataMax).Select(x => CreateDataCell(x, false)).ToList();
 
-            cellList.AddRange(new List<string> { GetFormulaOfName(2), GetFormulaOfWhoOne(2), GetFormulaOfWhoTwo(2) }.Select(x =>
-            CreateFormulaCell(x, false)));
+            //cellList.AddRange(new List<string> { GetFormulaOfName(2), GetFormulaOfWhoOne(2), GetFormulaOfWhoTwo(2) }.Select(x =>
+            //CreateFormulaCell(x, false)));
 
             var row = new RowData { Values = cellList };
             updateFormulasRequest.UpdateCells.Rows = new List<RowData> { row };
@@ -70,14 +70,40 @@ namespace SharpGoogleSheetProg.Service
             //return "";
         }
 
+        //public void PasteDataAndFunctionsToSheet(
+        //   string spreadsheetId,
+        //   string sheetId,
+        //   IList<IList<object>> data,
+        //   List<string> propertyNames,
+        //   List<(string, string)> formulas)
+        //{
+        //    var afterPropertiesColumnNumber = propertyNames.Count() + 1;
+        //    var formulaNames = formulas.Select(x => x.Item1).ToList();
+        //    var sId = int.Parse(sheetId);
+
+        //    var dataRowList = data.Select(x => logicWorker.CreateDataRow(x)).ToList();
+        //    var request1 = PasteDataToSheet(sId, spreadsheetId, dataRowList, 1, propertyNames);
+        //    queryWoker.GetAllUpdateRequests(request1, spreadsheetId);
+
+        //    if (formulas.Any())
+        //    {
+        //        var formulaList = GetFormulaDataList(data.Count(), formulas);
+        //        var formulaRowList = formulaList.Select(x => logicWorker.CreateFormulaRow(x)).ToList();
+        //        var request2 = PasteDataToSheet(sId, spreadsheetId, formulaRowList, afterPropertiesColumnNumber, formulaNames);
+        //        queryWoker.GetAllUpdateRequests(request2, spreadsheetId);
+
+        //    }
+
+        //}
+
         public void PasteDataToSheet(
             string spreadsheetId,
             string sheetName,
             IList<IList<object>> data,
             List<string> columnsList)
         {
-            int max = 9;
             int dataMax = data.First().Count;
+            int max = dataMax;// 9;
 
             var headersPosition = (1, 1);
             var sampleRowCoordinates = (2, 1);
@@ -93,12 +119,13 @@ namespace SharpGoogleSheetProg.Service
 
             requests.Requests.Add(ClearAllCells(sheetId, 1, max));
             requests.Requests.Add(AddOrDeleteColumn(sheetId, columnCount, max));
+
             requests.Requests.Add(CreateHeadersUpdate(sheetId, headersPosition, columnsList));
             requests.Requests.Add(CreateSampleRow(sheetId, sampleRowCoordinates, dataMax));
 
 
             requests.Requests.Add(CreateUpdateRow(spreadsheetId, sheetId, dataStartCoordinates, data));
-            requests.Requests.Add(CreateUpdateFormulas(sheetId, formulaStartCoordinates, data.Count));
+            //requests.Requests.Add(CreateUpdateFormulas(sheetId, formulaStartCoordinates, data.Count));
             requests.Requests.Add(AutoResize(sheetId, 1, max));
 
             //If Idobject
@@ -208,7 +235,7 @@ namespace SharpGoogleSheetProg.Service
 
             var formulasColumnsList = new List<string>() { "FileName", "Who1", "Who2" };
 
-            var cellList = columnsList.Concat(formulasColumnsList)
+            var cellList = columnsList
                .Select(x => CreateDataCell(x, false)).ToList();
 
             var row = new RowData { Values = cellList };

@@ -12,7 +12,7 @@ using Google.Apis.Util.Store;
 
 namespace GoogleApiV4CoreApp
 {
-   public class GoogleSheetsHelper
+   public class GoogleSheetsHelper2
    {
       static string[] Scopes = { SheetsService.Scope.Spreadsheets };
       static string ApplicationName = "GoogleSheetsHelper";
@@ -20,7 +20,7 @@ namespace GoogleApiV4CoreApp
       private readonly SheetsService _sheetsService;
       private readonly string _spreadsheetId;
 
-      public GoogleSheetsHelper(string jsonPath, string spreadsheetId)
+      public GoogleSheetsHelper2(string jsonPath, string spreadsheetId)
       {
          UserCredential credential;
 
@@ -180,14 +180,14 @@ namespace GoogleApiV4CoreApp
       }
    }
 
-   public class GoogleSheetCell
+   public class GoogleSheetCell2
    {
       public string CellValue { get; set; }
       public bool IsBold { get; set; }
       public System.Drawing.Color BackgroundColor { get; set; } = System.Drawing.Color.White;
    }
 
-   public class GoogleSheetParameters
+   public class GoogleSheetParameters2
    {
       public int RangeColumnStart { get; set; }
       public int RangeRowStart { get; set; }
@@ -197,9 +197,9 @@ namespace GoogleApiV4CoreApp
       public bool FirstRowIsHeaders { get; set; }
    }
 
-   public class GoogleSheetRow
+   public class GoogleSheetRow2
    {
-      public GoogleSheetRow() => Cells = new List<GoogleSheetCell>();
+      public GoogleSheetRow2() => Cells = new List<GoogleSheetCell>();
 
       public List<GoogleSheetCell> Cells { get; set; }
    }

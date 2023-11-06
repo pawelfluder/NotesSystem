@@ -7,7 +7,7 @@ namespace GoogleApiV4CoreApp
         static void Main(string[] args)
         {
             var jsonPath = "credentials3.json";
-            var googleSheetApiV4Service = new GoogleSheetService(null);
+            var googleSheetApiV4Service = new GoogleSheetService();
         }
     }
 }
