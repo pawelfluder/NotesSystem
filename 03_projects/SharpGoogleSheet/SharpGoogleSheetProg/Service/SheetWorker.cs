@@ -110,7 +110,7 @@ namespace SharpGoogleSheetProg.Service
             var coordinatesNextId = (3, 1);
             var dataStartCoordinates = (4, 1);
 
-            var sheetId = GetSheetId(sheetsService, spreadsheetId, sheetName);
+            var sheetId = GetSheetId(spreadsheetId, sheetName);
             var formulaStartCoordinates = (dataStartCoordinates.Item1, dataStartCoordinates.Item2 + dataMax);
             var columnCount = GetSheetColumnCount(spreadsheetId, sheetId) ?? default;
 
@@ -632,16 +632,22 @@ namespace SharpGoogleSheetProg.Service
             return response;
         }
 
-        private int GetSheetId(SheetsService service, string spreadSheetId, string spreadSheetName)
+        public int GetSheetId(string spreadSheetId, string spreadSheetName)
         {
-            var spreadsheet = service.Spreadsheets.Get(spreadSheetId).Execute();
+            var spreadsheet = sheetsService.Spreadsheets.Get(spreadSheetId).Execute();
 
             var sheet = spreadsheet.Sheets.FirstOrDefault(s => s.Properties.Title == spreadSheetName);
             int sheetId = (int)sheet.Properties.SheetId;
             return sheetId;
-
-            //var temp = spreadsheet.Sheets.First();
-            //var tempTitle = temp.Properties.Title;
         }
+
+        //private int GetSheetId(SheetsService service, string spreadSheetId, string spreadSheetName)
+        //{
+        //    var spreadsheet = service.Spreadsheets.Get(spreadSheetId).Execute();
+
+        //    var sheet = spreadsheet.Sheets.FirstOrDefault(s => s.Properties.Title == spreadSheetName);
+        //    int sheetId = (int)sheet.Properties.SheetId;
+        //    return sheetId;
+        //}
     }
 }
