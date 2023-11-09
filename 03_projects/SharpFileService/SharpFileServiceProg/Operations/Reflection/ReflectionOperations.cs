@@ -1,4 +1,5 @@
 ﻿using SharpFileServiceProg.AAPublic;
+using System.Reflection;
 
 namespace SharpFileServiceProg.Operations.Reflection
 {
@@ -14,8 +15,15 @@ namespace SharpFileServiceProg.Operations.Reflection
         public List<string> GetPropNames<T>(params string[] propArray)
         {
             var type = typeof(T);
-            List<string> propNames = type.GetProperties().Select(x => x.Name).ToList();
+            var propNames = type.GetProperties().Select(x => x.Name).ToList();
             return propNames;
+        }
+
+        public List<PropertyInfo> GetPropList<T>(params string[] propArray)
+        {
+            var type = typeof(T);
+            var propList = type.GetProperties().ToList();
+            return propList;
         }
 
         public bool HasProp<T>(params string[] propArray)
