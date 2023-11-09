@@ -1006,7 +1006,7 @@ namespace SharpRepoServiceProg.RepoOperations
         [MethodLogger]
         public string HandleError()
         {
-            throw new Exception();
+            //throw new Exception();
         }
         // OTHER
         //-------------------------

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-
-namespace FileServiceCoreApp
+﻿namespace FileServiceCoreApp
 {
     class Program
     {

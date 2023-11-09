@@ -80,14 +80,7 @@ namespace SharpGoogleSheetProg.Service
                 ApplicationName = applicationName,
             });
 
-            //var apiKey = "AIzaSyBIl-uJYcK1-tQW-YZwxshpGqBbwnns4FU";
-            //var gg = new UserCredential(;
-            //var initializer = new BaseClientService.Initializer { ApiKey = apiKey, Ht};
-            //sheetsService = new SheetsService(initializer);
-
             worker = new SheetWorker(this, sheetsService);
         }
-
-        
     }
 }
