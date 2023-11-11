@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
 using SharpGoogleSheetProg.AAPublic;
 
 namespace SharpGoogleSheetProg.Service
@@ -17,6 +20,7 @@ namespace SharpGoogleSheetProg.Service
         private string clientId;
         private string clientSecret;
         private bool isInitialized;
+        private List<Request> stack;
 
         public SheetWorker Worker
         {

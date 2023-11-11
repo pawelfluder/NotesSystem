@@ -3,7 +3,7 @@ using Google.Apis.Docs.v1.Data;
 using GoogleDocument = Google.Apis.Docs.v1.Data.Document;
 using GoogleDocsRange = Google.Apis.Docs.v1.Data.Range;
 
-namespace GoogleDocsServiceProj
+namespace SharpGoogleDocsProg.Worker
 {
     public class StackWorker
     {
@@ -22,16 +22,25 @@ namespace GoogleDocsServiceProj
             stack = new List<Request>();
         }
 
+        public bool ExecuteStack()
+        {
+            var stack2 = stack.Where(x => x != null).ToList();
+            var success = TryExecuteBatchUpdate(stack2);
+            ClearStack();
+            LoadDocument(docId);
+            return success;
+        }
+
         public void LoadDocument(string docId)
         {
             var request = service.Documents.Get(docId);
             var document = request.Execute();
             this.document = document;
             this.docId = document.DocumentId;
-            this.lastIndex = (int)document.Body.Content.Last().EndIndex - 1;
+            lastIndex = (int)document.Body.Content.Last().EndIndex - 1;
 
-            Google.Apis.Docs.v1.Data.Paragraph gg;
-            Google.Apis.Docs.v1.Data.SectionBreak gg2;
+            Paragraph gg;
+            SectionBreak gg2;
         }
 
         public int GetDocumentLastIndex(GoogleDocument document)
@@ -161,7 +170,7 @@ namespace GoogleDocsServiceProj
 
         public bool TryExecuteBatchUpdate(List<Request> requestsList)
         {
-            var success = TryExecuteBatchUpdate(requestsList, this.docId, 1);
+            var success = TryExecuteBatchUpdate(requestsList, docId, 1);
             return success;
         }
 
@@ -259,12 +268,12 @@ namespace GoogleDocsServiceProj
 
         public void StackInsertTextRequest(int index, string text)
         {
-            if (text != null && text.Count() > 0 )
+            if (text != null && text.Count() > 0)
             {
                 var req = GetInsertTextRequest(index, text);
                 stack.Add(req);
             }
-            
+
         }
 
         public void StackInsertBoldTextRequests(int index, string text)
@@ -277,15 +286,6 @@ namespace GoogleDocsServiceProj
                 stack.Add(req1);
                 stack.Add(req2);
             }
-        }
-
-        public bool ExecuteStack()
-        {
-            var stack2 = stack.Where(x => x != null).ToList();
-            var success = TryExecuteBatchUpdate(stack2);
-            ClearStack();
-            LoadDocument(this.docId);
-            return success;
         }
 
         public void ClearStack()
@@ -303,7 +303,7 @@ namespace GoogleDocsServiceProj
         {
             if (lastIndex == default)
             {
-                LoadDocument(this.docId);
+                LoadDocument(docId);
                 lastIndex = (int)document.Body.Content.Last().EndIndex - 1;
             }
 
@@ -342,7 +342,7 @@ namespace GoogleDocsServiceProj
 
         public List<int> GetFirstTableCellsIndexes()
         {
-            var firstTableElement = this.document.Body.Content.FirstOrDefault(x => x.Table != null);
+            var firstTableElement = document.Body.Content.FirstOrDefault(x => x.Table != null);
             if (firstTableElement == null)
             {
                 throw new Exception();
@@ -362,7 +362,7 @@ namespace GoogleDocsServiceProj
                     //var index = cell.Content[0].StartIndex;
                     var index = cell.StartIndex + 1;
                     //var index = cell.StartIndex;
-                    indexes.Add(index ?? default(int));
+                    indexes.Add(index ?? default);
                 }
             }
             return indexes;
@@ -370,7 +370,7 @@ namespace GoogleDocsServiceProj
 
         public int GetFirstTableIndex()
         {
-            var firstTableElement = this.document.Body.Content.FirstOrDefault(x => x.Table != null);
+            var firstTableElement = document.Body.Content.FirstOrDefault(x => x.Table != null);
             if (firstTableElement == null)
             {
                 throw new Exception();
@@ -582,13 +582,13 @@ namespace GoogleDocsServiceProj
 
         public List<string> GetDocumentTextLines()
         {
-            var lines = GetTextLines(this.document);
+            var lines = GetTextLines(document);
             return lines;
         }
 
         public string GetDocumentAllText()
         {
-            var lines = GetTextLines(this.document);
+            var lines = GetTextLines(document);
             var text = ConcatLines(lines, string.Empty);
             return text;
         }

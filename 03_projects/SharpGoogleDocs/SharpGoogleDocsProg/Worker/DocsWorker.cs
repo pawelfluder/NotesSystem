@@ -3,7 +3,7 @@ using Google.Apis.Docs.v1.Data;
 using GoogleDocument = Google.Apis.Docs.v1.Data.Document;
 using GoogleDocsRange = Google.Apis.Docs.v1.Data.Range;
 
-namespace GoogleDocsServiceProj
+namespace SharpGoogleDocsProg.Worker
 {
     public class DocsWorker
     {
@@ -68,7 +68,7 @@ namespace GoogleDocsServiceProj
                             requests.Add(request);
                         }
                     }
-                    
+
                 }
             }
 
@@ -134,7 +134,7 @@ namespace GoogleDocsServiceProj
             }
         }
 
-        
+
 
         private Request GetInsertTableRequest((int ColumnsCount, int RowsCount) size)
         {
@@ -223,7 +223,7 @@ namespace GoogleDocsServiceProj
                 foreach (var cell in row.TableCells)
                 {
                     var index = cell.StartIndex + 1;
-                    indexes.Add(index ?? default(int));
+                    indexes.Add(index ?? default);
                 }
             }
             return indexes;

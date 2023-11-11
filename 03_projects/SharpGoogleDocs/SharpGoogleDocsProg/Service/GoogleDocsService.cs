@@ -2,6 +2,7 @@
 using Google.Apis.Docs.v1;
 using Google.Apis.Services;
 using SharpGoogleDocsProg.AAPublic;
+using SharpGoogleDocsProg.Worker;
 
 namespace GoogleDocsServiceProj.Service
 {

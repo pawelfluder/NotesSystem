@@ -1,9 +1,5 @@
 ﻿using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System;
 
 namespace SharpGoogleSheetProg.Service
 {
@@ -13,6 +9,7 @@ namespace SharpGoogleSheetProg.Service
         private readonly GoogleSheetService parentService;
         private SheetsService sheetsService;
         private (string Id, string Name) tempFolder;
+        private List<Request> stack;
 
         public SheetWorker(
             GoogleSheetService parentService,
@@ -20,6 +17,31 @@ namespace SharpGoogleSheetProg.Service
         {
             this.parentService = parentService;
             this.sheetsService = service;
+            stack = new List<Request>();
+        }
+
+        public bool ExecuteStack(string spreadsheetId)
+        {
+            var stack2 = stack.Where(x => x != null).ToList();
+            var success = TryExecuteBatchUpdate(stack2, spreadsheetId);
+            stack.Clear();
+            return success;
+        }
+
+        private bool TryExecuteBatchUpdate(
+            IEnumerable<Request> requests,
+            string spreadsheetId)
+        {
+            try
+            {
+                var batch = new BatchUpdateSpreadsheetRequest { Requests = new List<Request>() };
+                var res = sheetsService.Spreadsheets.BatchUpdate(batch, spreadsheetId).Execute();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private Request CreateSampleRow(int sheetId, (int, int) headersPosition, int dataMax)
@@ -67,7 +89,6 @@ namespace SharpGoogleSheetProg.Service
             var last = ids.Max();
             var next = last + 1;
             return next.ToString();
-            //return "";
         }
 
         //public void PasteDataAndFunctionsToSheet(
@@ -100,10 +121,18 @@ namespace SharpGoogleSheetProg.Service
             string spreadsheetId,
             string sheetName,
             IList<IList<object>> data,
-            List<string> columnsList)
+            List<string> columnsList,
+            Dictionary<char, string>? formulas = null)
         {
+            if (data.Count() == 0)
+            {
+                return;
+            }
+
+            int dataHeight = data.Count();
+
             int dataMax = data.First().Count;
-            int max = dataMax;// 9;
+            int dataWidth = dataMax;// 9;
 
             var headersPosition = (1, 1);
             var sampleRowCoordinates = (2, 1);
@@ -111,31 +140,22 @@ namespace SharpGoogleSheetProg.Service
             var dataStartCoordinates = (4, 1);
 
             var sheetId = GetSheetId(spreadsheetId, sheetName);
-            var formulaStartCoordinates = (dataStartCoordinates.Item1, dataStartCoordinates.Item2 + dataMax);
             var columnCount = GetSheetColumnCount(spreadsheetId, sheetId) ?? default;
 
+            stack.Add(ClearAllCells(sheetId, 1, dataWidth));
+            stack.Add(AddOrDeleteColumn(sheetId, columnCount, dataWidth));
 
-            var requests = new BatchUpdateSpreadsheetRequest { Requests = new List<Request>() };
+            stack.Add(CreateHeadersUpdate(sheetId, headersPosition, columnsList));
+            stack.Add(CreateSampleRow(sheetId, sampleRowCoordinates, dataMax));
 
-            requests.Requests.Add(ClearAllCells(sheetId, 1, max));
-            requests.Requests.Add(AddOrDeleteColumn(sheetId, columnCount, max));
+            stack.Add(CreateUpdateRow(spreadsheetId, sheetId, dataStartCoordinates, data));
 
-            requests.Requests.Add(CreateHeadersUpdate(sheetId, headersPosition, columnsList));
-            requests.Requests.Add(CreateSampleRow(sheetId, sampleRowCoordinates, dataMax));
+            stack.Add(CreateUpdateFormulas(sheetId, dataHeight, formulas));
+            stack.Add(CopyPasteFormulas(sheetId, dataHeight, formulas));
 
+            stack.Add(AutoResize(sheetId, 1, dataWidth));
 
-            requests.Requests.Add(CreateUpdateRow(spreadsheetId, sheetId, dataStartCoordinates, data));
-            //requests.Requests.Add(CreateUpdateFormulas(sheetId, formulaStartCoordinates, data.Count));
-            requests.Requests.Add(AutoResize(sheetId, 1, max));
-
-            //If Idobject
-            //var nextId = GetNextId(data);
-            //requests.Requests.Add(AddNextId(spreadsheetId, sheetId, coordinatesNextId, nextId));
-
-            if (requests.Requests.Any())
-            {
-                sheetsService.Spreadsheets.BatchUpdate(requests, spreadsheetId).Execute();
-            }
+            var success = ExecuteStack(spreadsheetId);
         }
 
 
@@ -158,7 +178,6 @@ namespace SharpGoogleSheetProg.Service
             var gg7 = gg11.ElementAt(11);
 
             var gg9 = gg.Select(x => x.ToString().Contains(gg7.ToString()));
-            var gg10 = gg11.FirstOrDefault(x => x.ToString().Contains("Kamila"));
 
             var gg4 = gg11.Select(x => (x, gg.FirstOrDefault(y => y.ToString().Contains(x.ToString()))));
 
@@ -284,36 +303,121 @@ namespace SharpGoogleSheetProg.Service
             return request;
         }
 
-
-        private Request CreateUpdateFormulas(int sheetId, (int, int) sc, int dataCount)
+        public Dictionary<char, string> GetFormulas()
         {
-            var start = GetCoordinate(sc, sheetId);
+            var f = new Dictionary<char, string>();
+            f.Add('D', "=C4-B4");
+            return f;
+        }
 
-            var updateFormulasRequest = new Request
+        private Request CopyPasteFormulas(
+            int sheetId,
+            int dataHeight,
+            Dictionary<char, string>? formulas)
+        {
+            if (formulas == null)
+            {
+                return null;
+            }
+
+            var f = formulas.First();
+            (int, int) cor = LetterToSc(f);
+
+            var request = new Request
+            {
+                CopyPaste = new CopyPasteRequest
+                {
+                    PasteType = "paste_normal",
+                    Source = new GridRange()
+                    {
+                        SheetId = sheetId,
+                        StartColumnIndex = 3,
+                        EndColumnIndex = 4,
+                        StartRowIndex = 3,
+                        EndRowIndex = 4,
+                    },
+                    Destination = new GridRange()
+                    {
+                        SheetId = sheetId,
+                        StartColumnIndex = 3,
+                        EndColumnIndex = 4,
+                        StartRowIndex = 4,
+                        EndRowIndex = 13,
+                    },
+                }
+            };
+
+            return request;
+        }
+
+        private Request CreateUpdateFormulas(
+            int sheetId,
+            int dataHeight,
+            Dictionary<char, string>? formulas)
+        {
+            if (formulas == null)
+            {
+                return null;
+            }
+
+            var f = formulas.First();
+
+            (int, int) cor = LetterToSc(f);
+            var gridCoordinates = GetCoordinate(cor, sheetId);
+
+            var request = new Request
             {
                 UpdateCells = new UpdateCellsRequest
                 {
-                    Start = start,
+                    Start = gridCoordinates,
                     Fields = "*",
                 }
             };
 
-            var listOfList = new List<RowData>();
+            var r = new RowData();
+            var listOfList = new List<RowData>() { r };
+            r.Values = new List<CellData>();
+            r.Values.Add(CreateFormulaCell(f.Value,false));
+            request.UpdateCells.Rows = listOfList;
 
-            for (int i = 0; i < dataCount; i++)
-            {
-                var formula1 = CreateFormulaCell(GetFormulaOfName(i + sc.Item1), false);
-                var formula2 = CreateFormulaCell(GetFormulaOfWhoOne(i + sc.Item1), false);
-                var formula3 = CreateFormulaCell(GetFormulaOfWhoTwo(i + sc.Item1), false);
-                var cellList = new List<CellData> { formula1, formula2, formula3 };
-                var row = new RowData { Values = cellList };
-                listOfList.Add(row);
-            }
-
-            updateFormulasRequest.UpdateCells.Rows = listOfList;
-
-            return updateFormulasRequest;
+            return request;
         }
+
+        private (int, int) LetterToSc(KeyValuePair<char, string> f)
+        {
+            int index = char.ToUpper(f.Key) - 64;
+            return (4, index);
+        }
+
+        //private Request CreateUpdateFormulas(int sheetId, (int, int) sc, int dataCount)
+        //{
+        //    var start = GetCoordinate(sc, sheetId);
+
+        //    var updateFormulasRequest = new Request
+        //    {
+        //        UpdateCells = new UpdateCellsRequest
+        //        {
+        //            Start = start,
+        //            Fields = "*",
+        //        }
+        //    };
+
+        //    var listOfList = new List<RowData>();
+
+        //    for (int i = 0; i < dataCount; i++)
+        //    {
+        //        var formula1 = CreateFormulaCell(GetFormulaOfName(i + sc.Item1), false);
+        //        var formula2 = CreateFormulaCell(GetFormulaOfWhoOne(i + sc.Item1), false);
+        //        var formula3 = CreateFormulaCell(GetFormulaOfWhoTwo(i + sc.Item1), false);
+        //        var cellList = new List<CellData> { formula1, formula2, formula3 };
+        //        var row = new RowData { Values = cellList };
+        //        listOfList.Add(row);
+        //    }
+
+        //    updateFormulasRequest.UpdateCells.Rows = listOfList;
+
+        //    return updateFormulasRequest;
+        //}
 
         private string GetFormulaOfWhoOne(int number)
         {
@@ -510,14 +614,14 @@ namespace SharpGoogleSheetProg.Service
             }
             else
             {
-                var success = int.TryParse(input.ToString(), out var number);
+                var success = int.TryParse(input?.ToString(), out var number);
                 if (success == true)
                 {
                     extendedValue.NumberValue = number;
                 }
                 else
                 {
-                    extendedValue.StringValue = input.ToString();
+                    extendedValue.StringValue = input?.ToString();
                 }
             }
 
