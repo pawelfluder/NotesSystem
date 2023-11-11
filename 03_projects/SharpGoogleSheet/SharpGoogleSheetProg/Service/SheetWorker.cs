@@ -34,7 +34,7 @@ namespace SharpGoogleSheetProg.Service
         {
             try
             {
-                var batch = new BatchUpdateSpreadsheetRequest { Requests = new List<Request>() };
+                var batch = new BatchUpdateSpreadsheetRequest { Requests = requests.ToList() };
                 var res = sheetsService.Spreadsheets.BatchUpdate(batch, spreadsheetId).Execute();
                 return true;
             }
@@ -130,13 +130,10 @@ namespace SharpGoogleSheetProg.Service
             }
 
             int dataHeight = data.Count();
-
-            int dataMax = data.First().Count;
-            int dataWidth = dataMax;// 9;
+            int dataWidth = data.First().Count;
 
             var headersPosition = (1, 1);
             var sampleRowCoordinates = (2, 1);
-            var coordinatesNextId = (3, 1);
             var dataStartCoordinates = (4, 1);
 
             var sheetId = GetSheetId(spreadsheetId, sheetName);
@@ -146,7 +143,7 @@ namespace SharpGoogleSheetProg.Service
             stack.Add(AddOrDeleteColumn(sheetId, columnCount, dataWidth));
 
             stack.Add(CreateHeadersUpdate(sheetId, headersPosition, columnsList));
-            stack.Add(CreateSampleRow(sheetId, sampleRowCoordinates, dataMax));
+            stack.Add(CreateSampleRow(sheetId, sampleRowCoordinates, dataWidth));
 
             stack.Add(CreateUpdateRow(spreadsheetId, sheetId, dataStartCoordinates, data));
 
@@ -330,19 +327,20 @@ namespace SharpGoogleSheetProg.Service
                     PasteType = "paste_normal",
                     Source = new GridRange()
                     {
+                        StartRowIndex = cor.Item1,
+                        EndRowIndex = cor.Item1+1,
                         SheetId = sheetId,
-                        StartColumnIndex = 3,
-                        EndColumnIndex = 4,
-                        StartRowIndex = 3,
-                        EndRowIndex = 4,
+                        StartColumnIndex = cor.Item2,
+                        EndColumnIndex = cor.Item2+1,
+                        
                     },
                     Destination = new GridRange()
                     {
+                        StartRowIndex = cor.Item2,
+                        EndRowIndex = dataHeight+3,
                         SheetId = sheetId,
-                        StartColumnIndex = 3,
-                        EndColumnIndex = 4,
-                        StartRowIndex = 4,
-                        EndRowIndex = 13,
+                        StartColumnIndex = cor.Item2,
+                        EndColumnIndex = cor.Item2 + 1,
                     },
                 }
             };
@@ -385,8 +383,8 @@ namespace SharpGoogleSheetProg.Service
 
         private (int, int) LetterToSc(KeyValuePair<char, string> f)
         {
-            int index = char.ToUpper(f.Key) - 64;
-            return (4, index);
+            int index = char.ToUpper(f.Key) - 65;
+            return (3, index);
         }
 
         //private Request CreateUpdateFormulas(int sheetId, (int, int) sc, int dataCount)
