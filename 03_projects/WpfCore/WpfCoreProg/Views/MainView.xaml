@@ -66,12 +66,8 @@
 
             <TabControl.ContentTemplate>
                <DataTemplate>
-                  <Border BorderBrush="Red" BorderThickness="10" Padding="10">
-                     <ContentPresenter
-                        Content="{Binding SelectedViewModel}"
-                        Margin="0,0,0,20">
-                     </ContentPresenter>
-                  </Border>
+                  <TextBlock
+                    Text="{Binding Content}" />
                </DataTemplate>
             </TabControl.ContentTemplate>
          </TabControl>
