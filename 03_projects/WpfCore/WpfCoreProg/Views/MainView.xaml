@@ -26,11 +26,18 @@
 
 
          <ScrollViewer Grid.Row="0" Grid.Column="0" Grid.RowSpan="3">
-            <StackPanel Orientation="Vertical" Margin="0,0,0,20">
-               <Button 
-                  Margin="10" Width="100" Content="Home" Command="{Binding UpdateViewCommand}" CommandParameter="Home"/>
-               <Button 
-                 Margin="10" Width="100" Content="Account" Command="{Binding UpdateViewCommand}" CommandParameter="Account"/>
+            <StackPanel>
+               <Button
+                       Margin="0,0,0,10"
+                       Content="Add"
+                       Command="{Binding AddTab}"
+                       Height="30" Width="80"
+                       VerticalAlignment="Top" />
+               <Button
+                       Content="Remove"
+                       Command="{Binding RemoveTab}"
+                       Height="30" Width="80"
+                       VerticalAlignment="Top" />
             </StackPanel>
          </ScrollViewer>
 
