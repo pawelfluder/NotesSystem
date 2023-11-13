@@ -15,7 +15,7 @@ using WpfNotesSystemProg3.Models;
 
 namespace WpfNotesSystemProg.Converter
 {
-    [ValueConversion(typeof(ItemModel2), typeof(StackPanel))]
+    [ValueConversion(typeof(RepoItem), typeof(StackPanel))]
     public class HeadersDictConverter : MarkupExtension, IValueConverter
     {
         private object converter;
@@ -38,7 +38,7 @@ namespace WpfNotesSystemProg.Converter
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var itemModel = value as ItemModel2;
+            var itemModel = value as RepoItem;
             Grid myGrid = null;
             StackPanel stackPanel = null;
             try
@@ -112,7 +112,7 @@ namespace WpfNotesSystemProg.Converter
             return stackPanel;
         }
 
-        private Grid ConvertFolderItem(ItemModel2 itemModel)
+        private Grid ConvertFolderItem(RepoItem itemModel)
         {
             var grid = new Grid();
             //var body = itemModel.Body as Dictionary<string, string>;
@@ -133,7 +133,7 @@ namespace WpfNotesSystemProg.Converter
             return grid;
         }
 
-        private Grid ConvertTextItem(ItemModel2 dict)
+        private Grid ConvertTextItem(RepoItem dict)
         {
             var grid = new Grid();
 

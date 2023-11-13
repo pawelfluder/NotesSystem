@@ -41,21 +41,38 @@ namespace WpfNotesSystem.ViewModels
             ValueToAdd = string.Empty;
         }
 
+        public string Address { get; set; }
+
+        private (string Repo, string Loca) CreateAdrTuple(string address)
+        {
+            if (!address.Contains('/'))
+            {
+                return (address, "");
+            }
+
+            var tmp = address.Split('/');
+            var repo = tmp[0];
+            var loca = address.Replace("repoName" + '/', "");
+
+            var adrTuple = (repo, loca);
+            return adrTuple;
+        }
+
         public void GoAction(string type, (string Repo, string Loca) address)
         {
             var jsonString = backendService.RepoApi(address.Item1, address.Item2);
-            ItemModel2 jObj = jObj = JsonConvert.DeserializeObject<ItemModel2>(jsonString);
+            RepoItem jObj = jObj = JsonConvert.DeserializeObject<RepoItem>(jsonString);
 
             Name = jObj.Name;
             CurrentAddress = address;
             HeadersDict = jObj;
         }
 
-        private ItemModel2 headersDict;
+        private RepoItem headersDict;
 
         public int SelectedIndex { get; set; }
 
-        public ItemModel2 HeadersDict
+        public RepoItem HeadersDict
         {
             get => headersDict;
             private set

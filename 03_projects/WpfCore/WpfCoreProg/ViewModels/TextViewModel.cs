@@ -20,9 +20,12 @@ namespace WpfNotesSystem.ViewModels
         private ICommand goCommand;
         private ICommand addCommand;
 
-        public (string repo, string loca) AdrTuple { get; set; }
+        public (string repo, string loca) AdrTuple => CreateAdrTuple(Address);
+
+        
 
         private readonly IFileService fileService;
+        
 
         public TextViewModel()
         {
@@ -30,6 +33,23 @@ namespace WpfNotesSystem.ViewModels
             this.backendService = MyBorder.Container.Resolve<IBackendService>();
             fileService = MyBorder.Container.Resolve<IFileService>();
             ValueToAdd = string.Empty;
+        }
+
+        public string Address { get; set; }
+
+        private (string Repo, string Loca) CreateAdrTuple(string address)
+        {
+            if (!address.Contains('/'))
+            {
+                return (address, "");
+            }
+
+            var tmp = address.Split('/');
+            var repo = tmp[0];
+            var loca = address.Replace("repoName" + '/', "");
+
+            var adrTuple = (repo, loca);
+            return adrTuple;
         }
 
         public string name;
@@ -159,11 +179,10 @@ namespace WpfNotesSystem.ViewModels
 
         public void GoAction(string type, (string, string) adrTuple)
         {
-            AdrTuple = adrTuple;
             //backendService.RepoApi(CurrentAddress.repo, CurrentAddress.loca);
             var jsonString = backendService.RepoApi(adrTuple.Item1, adrTuple.Item2);
             object error = null;
-            var jsonObj = JsonConvert.DeserializeObject<ItemModel2>(jsonString);
+            var jsonObj = JsonConvert.DeserializeObject<RepoItem>(jsonString);
             Name = jsonObj.Name;
             HeadersDict = jsonObj;
         }
@@ -182,8 +201,8 @@ namespace WpfNotesSystem.ViewModels
             }
         }
 
-        private ItemModel2 headersDict;
-        public ItemModel2 HeadersDict
+        private RepoItem headersDict;
+        public RepoItem HeadersDict
         {
             get => headersDict;
             private set

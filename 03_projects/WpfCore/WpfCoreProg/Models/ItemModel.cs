@@ -1,6 +1,6 @@
 ﻿namespace WpfNotesSystemProg3.Models
 {
-    public class ItemModel2
+    public class RepoItem
     {
         public string Name { get; set; }
 

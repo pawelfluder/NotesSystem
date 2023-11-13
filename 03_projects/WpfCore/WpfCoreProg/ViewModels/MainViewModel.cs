@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SharpRepoBackendProg.Service;
 using WpfNotesSystem.Commands;
-using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using WpfNotesSystem.Repetition;
@@ -18,8 +17,6 @@ namespace WpfNotesSystem.ViewModels
         private IItemViewModel _selectedViewModel;
         private readonly IBackendService backendService;
         private List<string> _allRepoList;
-        private string _addressString;
-        private (string Repo, string Loca) _address;
 
         private History<(string, string)> addressHistory;
 
@@ -31,12 +28,10 @@ namespace WpfNotesSystem.ViewModels
             var jString = backendService.CommandApi(
                 IBackendService.ApiMethods.GetAllRepoName.ToString());
             _allRepoList = JsonConvert.DeserializeObject<List<string>>(jString);
-            Titles = new ObservableCollection<Item>();
-            TabViewModels = new ObservableCollection<Item>();
 
             Titles2 = new ObservableCollection<TabItem>();
             var firstRepoName = _allRepoList.First();
-            GoAction((firstRepoName, ""));
+            AddTabItem2();
         }
 
         public List<string> AllRepoList
@@ -59,53 +54,40 @@ namespace WpfNotesSystem.ViewModels
             }
         }
 
-        //public ICommand GoCommand
-        //{
-        //    get
-        //    {
-        //        return goCommand ?? (goCommand = new CommandHandler(
-        //            () => GoAction(), () => CanExecute));
-        //    }
-        //}
-
         public ICommand UpdateViewCommand { get; set; }
 
-        public void GoAction((string Repo, string Loca) address)
+        public IItemViewModel GoAction((string Repo, string Loca) address)
         {
-            addressHistory.Add(address);
-            Address = address;
-            AddressString = CreateUrlFromAddress(address);
+            if (SelectedViewModel == null)
+            {
+
+            }
+
             var type = backendService.RepoApi("GetItemType", address.Item1, address.Item2);
-            if (type == "Text") { SelectedViewModel = MyBorder.Container.Resolve<TextViewModel>(); }
-            if (type == "Folder") { SelectedViewModel = MyBorder.Container.Resolve<FolderViewModel>(); }
-            if (type == null) { return; }
+            IItemViewModel viewModel = null;
+            if (type == "Text") { viewModel = MyBorder.Container.Resolve<TextViewModel>(); }
+            if (type == "Folder") { viewModel = MyBorder.Container.Resolve<FolderViewModel>(); }
+            if (type == null) { return viewModel; }
+            SelectedViewModel = viewModel;
+            SelectedViewModel.Address = CreateAddress(address);
+
             SelectedViewModel.GoAction(type, address);
+            return viewModel;
         }
 
-        public (string Repo, string Loca) Address
+        public (string Repo, string Loca) AdrTuple
         {
-            get { return _address; }
-            private set
-            {
-                if (value.Loca.StartsWith('/'))
-                {
-                    throw new Exception();
-                }
-                _address = value;
-            }
+            get => CreateAdrTuple(SelectedViewModel.Address);
         }
 
-        public string AddressString
+        public string Address
         {
-            get { return _addressString; }
-            set
-            {
-                _addressString = value;
-                OnPropertyChanged(nameof(AddressString));
-            }
+            get => SelectedViewModel.Address;
+            set => SelectedViewModel.Address = value;
         }
 
-        private string CreateUrlFromAddress((string Repo, string Loca) address)
+        private string CreateAddress(
+            (string Repo, string Loca) address)
         {
             if (address.Loca == string.Empty)
             {
@@ -114,6 +96,21 @@ namespace WpfNotesSystem.ViewModels
 
             var url = address.Repo + "/" + address.Loca;
             return url;
+        }
+
+        private (string Repo, string Loca) CreateAdrTuple(string address)
+        {
+            if (!address.Contains('/'))
+            {
+                return (address, "");
+            }
+
+            var tmp = address.Split('/');
+            var repo = tmp[0];
+            var loca = address.Replace("repoName" + '/', "");
+
+            var adrTuple = (repo, loca);
+            return adrTuple;
         }
 
         public void BackArrow()
@@ -148,8 +145,6 @@ namespace WpfNotesSystem.ViewModels
         static int tabs = 1;
         private ICommand _addTab;
         private ICommand _removeTab;
-        private ObservableCollection<Item> _titles;
-        private ObservableCollection<Item> _tabViewModels;
 
         public ICommand AddTab
         {
@@ -160,44 +155,11 @@ namespace WpfNotesSystem.ViewModels
             }
         }
 
-        public ICommand RemoveTab
-        {
-            get
-            {
-                return _removeTab ?? (_removeTab = new CommandHandler(
-                   () => { AddTabItem(); }, () => CanExecute));
-            }
-        }
-
-        private void RemoveTabItem()
-        {
-            Titles.Remove(Titles.Last());
-            tabs--;
-        }
-
-        private void AddTabItem()
-        {
-            var header = "Tab " + tabs;
-            var content = "Content " + tabs;
-            var item = new Item { Header = header, Content = content };
-
-            Titles.Add(item);
-            tabs++;
-            OnPropertyChanged("Titles");
-        }
-
         private void AddTabItem2()
         {
-            addressHistory.Add(Address);
-            AddressString = CreateUrlFromAddress(Address);
-            var type = backendService.RepoApi("GetItemType", Address.Item1, Address.Item2);
-            IItemViewModel viewModel = null;
-            if (type == "Text") { viewModel = MyBorder.Container.Resolve<TextViewModel>(); }
-            if (type == "Folder") { viewModel = MyBorder.Container.Resolve<FolderViewModel>(); }
-            SelectedViewModel = viewModel;
+            IItemViewModel viewModel = GoAction(("notes", ""));
 
             var header = "Tab " + tabs;
-            var content = "Content " + tabs;
             var item = new TabItem { Header = header, ViewModel = viewModel };
 
             Titles2.Add(item);
@@ -205,33 +167,7 @@ namespace WpfNotesSystem.ViewModels
             OnPropertyChanged("Titles2");
         }
 
-        public ObservableCollection<Item> Titles
-        {
-            get { return _titles; }
-            set
-            {
-                _titles = value;
-                OnPropertyChanged("Titles");
-            }
-        }
-
-        public ObservableCollection<Item> TabViewModels
-        {
-            get { return _tabViewModels; }
-            set
-            {
-                _tabViewModels = value;
-                OnPropertyChanged("TabViewModels");
-            }
-        }
-
         public ObservableCollection<TabItem> Titles2 { get; set; }
-
-        public class Item
-        {
-            public string Header { get; set; }
-            public string Content { get; set; }
-        }
 
         public class TabItem
         {

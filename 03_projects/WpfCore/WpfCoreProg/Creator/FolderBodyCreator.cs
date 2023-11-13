@@ -89,7 +89,7 @@ namespace WpfNotesSystem.Creator
             Grid.SetColumnSpan(txt1, 1);
             table.Children.Add(txt1);
 
-            if (mainViewModel.Address.Loca.Contains("//"))
+            if (mainViewModel.AdrTuple.Loca.Contains("//"))
             {
                 throw new Exception();
             }
@@ -99,7 +99,7 @@ namespace WpfNotesSystem.Creator
 
             var index = int.Parse(indexString);
             hyperlink.NavigateUri = fileService.RepoAddress.
-                CreateUriFromAddress(mainViewModel.Address, index);
+                CreateUriFromAddress(mainViewModel.AdrTuple, index);
             hyperlink.RequestNavigate += HyperlinkRequestNavigate;
 
             TextBlock txt2 = new TextBlock();

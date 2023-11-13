@@ -3,5 +3,6 @@
     public interface IItemViewModel
     {
         void GoAction(string type, (string Repo, string Loca) address);
+        string Address { get; set; }
     }
 }
