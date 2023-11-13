@@ -54,7 +54,7 @@
 
          <TabControl
             TabStripPlacement="Top"
-            ItemsSource="{Binding Titles, Mode=TwoWay}"
+            ItemsSource="{Binding Titles2, Mode=TwoWay}"
             Grid.Row="2" Grid.Column="1">
 
             <TabControl.ItemTemplate>
@@ -66,8 +66,8 @@
 
             <TabControl.ContentTemplate>
                <DataTemplate>
-                  <TextBlock
-                    Text="{Binding Content}" />
+                  <ContentPresenter
+                    Content="{Binding ViewModel}" />
                </DataTemplate>
             </TabControl.ContentTemplate>
          </TabControl>

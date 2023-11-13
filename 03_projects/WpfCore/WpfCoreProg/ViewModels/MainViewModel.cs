@@ -35,6 +35,8 @@ namespace WpfNotesSystem.ViewModels
             TabViewModels = new ObservableCollection<Item>();
 
             Titles2 = new ObservableCollection<TabItem>();
+            var firstRepoName = _allRepoList.First();
+            GoAction((firstRepoName, ""));
         }
 
         public List<string> AllRepoList
@@ -154,7 +156,7 @@ namespace WpfNotesSystem.ViewModels
             get
             {
                 return _addTab ?? (_addTab = new CommandHandler(
-                   () => { AddTabItem(); }, () => CanExecute));
+                   () => { AddTabItem2(); }, () => CanExecute));
             }
         }
 
@@ -200,7 +202,7 @@ namespace WpfNotesSystem.ViewModels
 
             Titles2.Add(item);
             tabs++;
-            OnPropertyChanged("Titles");
+            OnPropertyChanged("Titles2");
         }
 
         public ObservableCollection<Item> Titles
