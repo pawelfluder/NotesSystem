@@ -35,7 +35,10 @@
          </ScrollViewer>
 
 
-         <local:NavigationView></local:NavigationView>
+         <local:NavigationView
+            Grid.Row="0" Grid.Column="1">
+            
+         </local:NavigationView>
          <ContentControl
                Content="{Binding SelectedViewModel}" Margin="0,0,0,20" Grid.RowSpan="2"
                Grid.Row="1" Grid.Column="1"
