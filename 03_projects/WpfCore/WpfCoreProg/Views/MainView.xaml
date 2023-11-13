@@ -14,7 +14,7 @@
          </Grid.ColumnDefinitions>
          <Grid.RowDefinitions>
             <RowDefinition Height="150"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="200"></RowDefinition>
             <RowDefinition></RowDefinition>
          </Grid.RowDefinitions>
 
@@ -48,8 +48,10 @@
             
          </local:NavigationView>
          <ContentControl
+               VerticalAlignment="Top"
                Content="{Binding SelectedViewModel}" Margin="0,0,0,20" Grid.RowSpan="2"
                Grid.Row="1" Grid.Column="1"
+               MinHeight="400"
                Style="{StaticResource MainWindow_ContentControl}"/>
 
          <TabControl

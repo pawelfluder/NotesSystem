@@ -209,6 +209,7 @@ namespace WpfNotesSystem.ViewModels
             {
                 headersDict = value;
                 OnPropertyChanged(nameof(HeadersDict));
+                OnPropertyChanged("SelectedViewModel");
             }
         }
 

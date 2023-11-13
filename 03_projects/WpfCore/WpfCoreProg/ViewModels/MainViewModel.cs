@@ -58,20 +58,20 @@ namespace WpfNotesSystem.ViewModels
 
         public IItemViewModel GoAction((string Repo, string Loca) address)
         {
-            if (SelectedViewModel == null)
-            {
-
-            }
-
             var type = backendService.RepoApi("GetItemType", address.Item1, address.Item2);
             IItemViewModel viewModel = null;
-            if (type == "Text") { viewModel = MyBorder.Container.Resolve<TextViewModel>(); }
-            if (type == "Folder") { viewModel = MyBorder.Container.Resolve<FolderViewModel>(); }
-            if (type == null) { return viewModel; }
-            SelectedViewModel = viewModel;
-            SelectedViewModel.Address = CreateAddress(address);
 
+            if (SelectedViewModel == null)
+            {
+                if (type == "Text") { viewModel = MyBorder.Container.Resolve<TextViewModel>(); }
+                if (type == "Folder") { viewModel = MyBorder.Container.Resolve<FolderViewModel>(); }
+                if (type == null) { return viewModel; }
+                SelectedViewModel = viewModel;
+            }
+
+            NavAddress = CreateAddress(address);
             SelectedViewModel.GoAction(type, address);
+            addressHistory.Add(address);
             return viewModel;
         }
 
@@ -80,10 +80,14 @@ namespace WpfNotesSystem.ViewModels
             get => CreateAdrTuple(SelectedViewModel.Address);
         }
 
-        public string Address
+        public string NavAddress
         {
             get => SelectedViewModel.Address;
-            set => SelectedViewModel.Address = value;
+            set
+            {
+                SelectedViewModel.Address = value;
+                OnPropertyChanged(nameof(NavAddress));
+            }
         }
 
         private string CreateAddress(
