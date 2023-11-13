@@ -4,13 +4,10 @@ using WpfNotesSystem.Commands;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using Unity;
 using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.History;
 using WpfNotesSystemProg3.ViewModelBase;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 
 namespace WpfNotesSystem.ViewModels
@@ -36,6 +33,8 @@ namespace WpfNotesSystem.ViewModels
             _allRepoList = JsonConvert.DeserializeObject<List<string>>(jString);
             Titles = new ObservableCollection<Item>();
             TabViewModels = new ObservableCollection<Item>();
+
+            Titles2 = new ObservableCollection<TabItem>();
         }
 
         public List<string> AllRepoList
@@ -103,7 +102,6 @@ namespace WpfNotesSystem.ViewModels
                 OnPropertyChanged(nameof(AddressString));
             }
         }
-
 
         private string CreateUrlFromAddress((string Repo, string Loca) address)
         {
@@ -186,6 +184,25 @@ namespace WpfNotesSystem.ViewModels
             OnPropertyChanged("Titles");
         }
 
+        private void AddTabItem2()
+        {
+            addressHistory.Add(Address);
+            AddressString = CreateUrlFromAddress(Address);
+            var type = backendService.RepoApi("GetItemType", Address.Item1, Address.Item2);
+            IItemViewModel viewModel = null;
+            if (type == "Text") { viewModel = MyBorder.Container.Resolve<TextViewModel>(); }
+            if (type == "Folder") { viewModel = MyBorder.Container.Resolve<FolderViewModel>(); }
+            SelectedViewModel = viewModel;
+
+            var header = "Tab " + tabs;
+            var content = "Content " + tabs;
+            var item = new TabItem { Header = header, ViewModel = viewModel };
+
+            Titles2.Add(item);
+            tabs++;
+            OnPropertyChanged("Titles");
+        }
+
         public ObservableCollection<Item> Titles
         {
             get { return _titles; }
@@ -206,10 +223,18 @@ namespace WpfNotesSystem.ViewModels
             }
         }
 
+        public ObservableCollection<TabItem> Titles2 { get; set; }
+
         public class Item
         {
             public string Header { get; set; }
             public string Content { get; set; }
+        }
+
+        public class TabItem
+        {
+            public string Header { get; set; }
+            public IItemViewModel ViewModel { get; set; }
         }
     }
 }
