@@ -1007,6 +1007,7 @@ namespace SharpRepoServiceProg.RepoOperations
         public string HandleError()
         {
             //throw new Exception();
+            return "";
         }
         // OTHER
         //-------------------------
