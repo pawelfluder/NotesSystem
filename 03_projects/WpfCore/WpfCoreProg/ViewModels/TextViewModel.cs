@@ -2,7 +2,6 @@
 using SharpFileServiceProg.Service;
 using SharpRepoBackendProg.Service;
 using System.Windows.Input;
-using Unity;
 using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.Models;
 using WpfNotesSystemProg3.ViewModelBase;
@@ -21,7 +20,7 @@ namespace WpfNotesSystem.ViewModels
         private ICommand goCommand;
         private ICommand addCommand;
 
-        public (string repo, string loca) CurrentAddress { get; set; }
+        public (string repo, string loca) AdrTuple { get; set; }
 
         private readonly IFileService fileService;
 
@@ -120,49 +119,49 @@ namespace WpfNotesSystem.ViewModels
         {
             backendService.CommandApi(
                 IBackendService.ApiMethods.OpenFolder.ToString(),
-                CurrentAddress.repo, CurrentAddress.loca);
+                AdrTuple.repo, AdrTuple.loca);
         }
 
         public void ContentAction()
         {
             backendService.CommandApi(
                 IBackendService.ApiMethods.OpenContent.ToString(),
-                CurrentAddress.repo, CurrentAddress.loca);
+                AdrTuple.repo, AdrTuple.loca);
         }
 
         public void ConfigAction()
         {
             backendService.CommandApi(
                 IBackendService.ApiMethods.OpenConfig.ToString(),
-                CurrentAddress.repo, CurrentAddress.loca);
+                AdrTuple.repo, AdrTuple.loca);
         }
 
         public void PdfAction()
         {
             backendService.CommandApi(
                 IBackendService.ApiMethods.OpenPdf.ToString(),
-                CurrentAddress.repo, CurrentAddress.loca);
+                AdrTuple.repo, AdrTuple.loca);
         }
 
         public void RunPrinterAction()
         {
             backendService.CommandApi(
                 IBackendService.ApiMethods.RunPrinter.ToString(),
-                CurrentAddress.repo, CurrentAddress.loca);
+                AdrTuple.repo, AdrTuple.loca);
         }
 
         public void GoogledocAction()
         {
             backendService.CommandApi(
                 IBackendService.ApiMethods.OpenGoogledoc.ToString(),
-                CurrentAddress.repo, CurrentAddress.loca);
+                AdrTuple.repo, AdrTuple.loca);
         }
 
-        public void GoAction(string type, (string, string) address)
+        public void GoAction(string type, (string, string) adrTuple)
         {
-            CurrentAddress = address;
+            AdrTuple = adrTuple;
             //backendService.RepoApi(CurrentAddress.repo, CurrentAddress.loca);
-            var jsonString = backendService.RepoApi(address.Item1, address.Item2);
+            var jsonString = backendService.RepoApi(adrTuple.Item1, adrTuple.Item2);
             object error = null;
             var jsonObj = JsonConvert.DeserializeObject<ItemModel2>(jsonString);
             Name = jsonObj.Name;
@@ -175,11 +174,11 @@ namespace WpfNotesSystem.ViewModels
             {
                 backendService.CommandApi(
                     IBackendService.ApiMethods.AddContent.ToString(),
-                    CurrentAddress.repo,
-                    CurrentAddress.loca,
+                    AdrTuple.repo,
+                    AdrTuple.loca,
                     ValueToAdd);
                 SetValueToAdd_AndNotify(string.Empty);
-                GoAction("Text", CurrentAddress);
+                GoAction("Text", AdrTuple);
             }
         }
 

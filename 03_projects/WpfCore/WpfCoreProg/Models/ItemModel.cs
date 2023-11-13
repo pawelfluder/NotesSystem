@@ -7,5 +7,7 @@
         public string Type { get; set; }
 
         public object Body { get; set; }
+
+        public string Address { get; set; }
     }
 }
