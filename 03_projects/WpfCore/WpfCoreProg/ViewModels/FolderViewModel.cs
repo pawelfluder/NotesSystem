@@ -2,6 +2,7 @@
 using SharpFileServiceProg.Service;
 using SharpRepoBackendProg.Service;
 using System.Collections.Generic;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Unity;
 using WpfNotesSystem.Repetition;
@@ -19,7 +20,7 @@ namespace WpfNotesSystem.ViewModels
         private ICommand contentCommand;
         private ICommand configCommand;
 
-        public (string repo, string loca) CurrentAddress { get; set; }
+        public (string repo, string loca) AdrTuple => CreateAdrTuple(Address);
 
         public string name;
 
@@ -52,33 +53,32 @@ namespace WpfNotesSystem.ViewModels
 
             var tmp = address.Split('/');
             var repo = tmp[0];
-            var loca = address.Replace("repoName" + '/', "");
+            var loca = address.Replace(repo + '/', "");
 
             var adrTuple = (repo, loca);
             return adrTuple;
         }
 
-        public void GoAction(string type, (string Repo, string Loca) address)
+        public void GoAction()
         {
-            var jsonString = backendService.RepoApi(address.Item1, address.Item2);
+            var jsonString = backendService.RepoApi(AdrTuple.Item1, AdrTuple.Item2);
             RepoItem jObj = jObj = JsonConvert.DeserializeObject<RepoItem>(jsonString);
 
             Name = jObj.Name;
-            CurrentAddress = address;
-            HeadersDict = jObj;
+            RepoItem = jObj;
         }
 
-        private RepoItem headersDict;
+        private RepoItem repoItem;
 
         public int SelectedIndex { get; set; }
 
-        public RepoItem HeadersDict
+        public RepoItem RepoItem
         {
-            get => headersDict;
+            get => repoItem;
             private set
             {
-                headersDict = value;
-                OnPropertyChanged(nameof(HeadersDict));
+                repoItem = value;
+                OnPropertyChanged(nameof(RepoItem));
             }
         }
 
@@ -119,18 +119,22 @@ namespace WpfNotesSystem.ViewModels
             }
         }
 
+        public string ItemType => "Folder";
+
+        public UserControl View { get; set; }
+
         public void FolderAction()
         {
             backendService.CommandApi(
                 IBackendService.ApiMethods.OpenFolder.ToString(),
-                CurrentAddress.repo, CurrentAddress.loca);
+                AdrTuple.repo, AdrTuple.loca);
         }
 
         public void ConfigAction()
         {
             backendService.CommandApi(
                 IBackendService.ApiMethods.OpenConfig.ToString(),
-                CurrentAddress.repo, CurrentAddress.loca);
+                AdrTuple.repo, AdrTuple.loca);
         }
 
         public void AddAction()
@@ -139,14 +143,19 @@ namespace WpfNotesSystem.ViewModels
             {
                 backendService.CommandApi(
                     IBackendService.ApiMethods.CreateFolder.ToString(),
-                    CurrentAddress.repo,
-                    CurrentAddress.loca,
+                    AdrTuple.repo,
+                    AdrTuple.loca,
                     ItemTypes[SelectedIndex],
                     ValueToAdd);
 
                 SetValueToAdd_AndNotify(string.Empty);
-                GoAction("Folder", CurrentAddress);
+                GoAction();
             }
+        }
+
+        public void SetView(UserControl control)
+        {
+            this.View = control;
         }
 
         public bool CanExecute = true;

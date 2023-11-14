@@ -62,7 +62,7 @@
          Style="{StaticResource TextView_ScrollViewer}"
          Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6">
          <ContentControl
-            Content="{Binding HeadersDict, Converter={my:HeadersDictConverter}}"
+            Content="{Binding RepoItem, Converter={my:HeadersDictConverter}}"
             Style="{StaticResource TextView_ContentControl}"/>
       </ScrollViewer>
    </Grid>

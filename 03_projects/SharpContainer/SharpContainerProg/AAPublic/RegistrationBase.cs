@@ -59,13 +59,20 @@ namespace SharpContainerProg.AAPublic
 
         public abstract void Registrations();
 
-        public void RegisterByFunc<RegT>(Func<RegT> func)
+        public void RegisterByFunc<RegT>(Func<RegT> func, int type = 0)
         {
             var factory = new InjectionFactory(c =>
             {
                 return func.Invoke();
             });
-            container.RegisterSingleton<RegT>(factory);
+            if (type == 0)
+            {
+                container.RegisterSingleton<RegT>(factory);
+            }
+            if (type == 1)
+            {
+                container.RegisterType<RegT>(factory);
+            }
         }
 
         public void RegisterByFunc<RegT, ParT1>(

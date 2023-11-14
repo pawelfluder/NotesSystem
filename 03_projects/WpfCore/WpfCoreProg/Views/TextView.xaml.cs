@@ -14,9 +14,12 @@ namespace WpfNotesSystem.Views
         public TextView()
         {
             InitializeComponent();
-            DataContext = MyBorder.Container.Resolve<TextViewModel>();
-            var repo = "Sprawy";
-            var loca = "01/02";
+            var tmp = MyBorder.Container.Resolve<MainViewModel>();
+            tmp.SelectedViewModel.View = this;
+            tmp.BodyView = this;
+            DataContext = tmp.SelectedViewModel;
+            
+            // DataContext = MyBorder.Container.Resolve<TextViewModel>();
         }
 
         //private void CreateContent((string Repo, string Loca) address)

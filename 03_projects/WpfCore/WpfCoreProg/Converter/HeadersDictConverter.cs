@@ -38,6 +38,10 @@ namespace WpfNotesSystemProg.Converter
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null)
+            {
+                return null;
+            }
             var itemModel = value as RepoItem;
             Grid myGrid = null;
             StackPanel stackPanel = null;

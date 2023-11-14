@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Unity;
 using WpfNotesSystem.Repetition;
+using WpfCoreProg.Styles;
 
 namespace WpfNotesSystem
 {
@@ -16,7 +17,14 @@ namespace WpfNotesSystem
         {
             InitializeComponent();
 
-            DataContext = MyBorder.Container.Resolve<MainViewModel>();
+            var gg = this.Content as ScrollViewer;
+            var gg2 = gg.Content as Grid;
+            var gg3 = gg2.Children[5] as TabControl;
+            gg3.ContentTemplateSelector = new RepoItemTemplateSelector();
+
+            var mainViewModel = MyBorder.Container.Resolve<MainViewModel>();
+            DataContext = mainViewModel;
+            mainViewModel.MainView = this;
         }
 
         private void GoButtonClick(object sender, RoutedEventArgs e)

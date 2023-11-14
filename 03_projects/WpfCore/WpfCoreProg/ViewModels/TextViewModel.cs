@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SharpFileServiceProg.Service;
 using SharpRepoBackendProg.Service;
+using System.Windows.Controls;
 using System.Windows.Input;
 using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.Models;
@@ -22,10 +23,7 @@ namespace WpfNotesSystem.ViewModels
 
         public (string repo, string loca) AdrTuple => CreateAdrTuple(Address);
 
-        
-
         private readonly IFileService fileService;
-        
 
         public TextViewModel()
         {
@@ -37,6 +35,8 @@ namespace WpfNotesSystem.ViewModels
 
         public string Address { get; set; }
 
+        public string ItemType => "Text";
+
         private (string Repo, string Loca) CreateAdrTuple(string address)
         {
             if (!address.Contains('/'))
@@ -46,7 +46,7 @@ namespace WpfNotesSystem.ViewModels
 
             var tmp = address.Split('/');
             var repo = tmp[0];
-            var loca = address.Replace("repoName" + '/', "");
+            var loca = address.Replace(repo + '/', "");
 
             var adrTuple = (repo, loca);
             return adrTuple;
@@ -177,14 +177,14 @@ namespace WpfNotesSystem.ViewModels
                 AdrTuple.repo, AdrTuple.loca);
         }
 
-        public void GoAction(string type, (string, string) adrTuple)
+        public void GoAction()
         {
             //backendService.RepoApi(CurrentAddress.repo, CurrentAddress.loca);
-            var jsonString = backendService.RepoApi(adrTuple.Item1, adrTuple.Item2);
+            var jsonString = backendService.RepoApi(AdrTuple.Item1, AdrTuple.Item2);
             object error = null;
             var jsonObj = JsonConvert.DeserializeObject<RepoItem>(jsonString);
             Name = jsonObj.Name;
-            HeadersDict = jsonObj;
+            RepoItem = jsonObj;
         }
 
         public void AddAction()
@@ -197,18 +197,18 @@ namespace WpfNotesSystem.ViewModels
                     AdrTuple.loca,
                     ValueToAdd);
                 SetValueToAdd_AndNotify(string.Empty);
-                GoAction("Text", AdrTuple);
+                GoAction();
             }
         }
 
-        private RepoItem headersDict;
-        public RepoItem HeadersDict
+        private RepoItem repoItem;
+        public RepoItem RepoItem
         {
-            get => headersDict;
+            get => repoItem;
             private set
             {
-                headersDict = value;
-                OnPropertyChanged(nameof(HeadersDict));
+                repoItem = value;
+                OnPropertyChanged(nameof(RepoItem));
                 OnPropertyChanged("SelectedViewModel");
             }
         }
@@ -220,5 +220,7 @@ namespace WpfNotesSystem.ViewModels
                 return true;
             }
         }
+
+        public UserControl View { get; set; }
     }
 }

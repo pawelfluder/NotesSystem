@@ -1,12 +1,5 @@
 ﻿using WpfNotesSystem.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using Unity;
 using WpfNotesSystem.Repetition;
 
 namespace WpfNotesSystem.Views
@@ -19,7 +12,11 @@ namespace WpfNotesSystem.Views
         public FolderView()
         {
             InitializeComponent();
-            DataContext = MyBorder.Container.Resolve<FolderViewModel>();
+            var tmp = MyBorder.Container.Resolve<MainViewModel>();
+            tmp.SelectedViewModel.View = this;
+            tmp.BodyView = this;
+            DataContext = tmp.SelectedViewModel;
+            //DataContext = MyBorder.Container.Resolve<FolderViewModel>();
         }
     }
 }

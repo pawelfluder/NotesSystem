@@ -21,9 +21,9 @@ namespace WpfNotesSystem.Repetition
             RegisterByFunc<MainViewModel>(
                 () => new MainViewModel());
             RegisterByFunc<TextViewModel>(
-                () => new TextViewModel());
+                () => new TextViewModel(), 1);
             RegisterByFunc<FolderViewModel>(
-                () => new FolderViewModel());
+                () => new FolderViewModel(), 1);
         }
     }
 }

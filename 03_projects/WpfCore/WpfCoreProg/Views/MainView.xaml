@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfNotesSystem"
-        mc:Ignorable="d">
+        xmlns:local="clr-namespace:WpfNotesSystem" xmlns:styles="clr-namespace:WpfCoreProg.Styles"
+             mc:Ignorable="d">
    <ScrollViewer
       Style="{StaticResource MainWindow_ScrollViewer}">
       <Grid>
@@ -19,26 +19,26 @@
          </Grid.RowDefinitions>
 
          <Border
-               Style="{StaticResource MainWindowControlPanel}"
-               Grid.Row="0" Grid.Column="1" Grid.ZIndex="2"/>
+            Style="{StaticResource MainWindowControlPanel}"
+            Grid.Row="0" Grid.Column="1" Grid.ZIndex="2"/>
          <Border
-               Style="{StaticResource MainWindowContentControl}"
-               Grid.Row="1" Grid.Column="1" Grid.ZIndex="2"/>
+            Style="{StaticResource MainWindowContentControl}"
+            Grid.Row="1" Grid.Column="1" Grid.ZIndex="2"/>
 
 
          <ScrollViewer Grid.Row="0" Grid.Column="0" Grid.RowSpan="3">
             <StackPanel>
                <Button
-                       Margin="0,0,0,10"
-                       Content="Add"
-                       Command="{Binding AddTab}"
-                       Height="30" Width="80"
-                       VerticalAlignment="Top" />
+                  Margin="0,0,0,10"
+                  Content="Add"
+                  Command="{Binding AddTab}"
+                  Height="30" Width="80"
+                  VerticalAlignment="Top" />
                <Button
-                       Content="Remove"
-                       Command="{Binding RemoveTab}"
-                       Height="30" Width="80"
-                       VerticalAlignment="Top" />
+                  Content="Remove"
+                  Command="{Binding RemoveTab}"
+                  Height="30" Width="80"
+                  VerticalAlignment="Top" />
             </StackPanel>
          </ScrollViewer>
 
@@ -48,21 +48,23 @@
             
          </local:NavigationView>
          <ContentControl
-               VerticalAlignment="Top"
-               Content="{Binding SelectedViewModel}" Margin="0,0,0,20" Grid.RowSpan="2"
-               Grid.Row="1" Grid.Column="1"
-               MinHeight="400"
-               Style="{StaticResource MainWindow_ContentControl}"/>
+            VerticalAlignment="Top"
+            Content="{Binding SelectedViewModel}"
+            Margin="0,0,0,20" Grid.RowSpan="2"
+            Grid.Row="1" Grid.Column="1"
+            MinHeight="400"
+            Style="{StaticResource MainWindow_ContentControl}"/>
 
          <TabControl
             TabStripPlacement="Top"
             ItemsSource="{Binding Titles2, Mode=TwoWay}"
-            Grid.Row="2" Grid.Column="1">
-
+            Grid.Row="2" Grid.Column="1"
+            SelectedItem="{Binding SelectedTab, Mode=TwoWay}">
+            
             <TabControl.ItemTemplate>
                <DataTemplate>
                   <TextBlock
-                    Text="header" />
+                    Text="{Binding Header}" />
                </DataTemplate>
             </TabControl.ItemTemplate>
 
