@@ -17,10 +17,10 @@ namespace WpfNotesSystem
         {
             InitializeComponent();
 
-            var gg = this.Content as ScrollViewer;
-            var gg2 = gg.Content as Grid;
-            var gg3 = gg2.Children[5] as TabControl;
-            gg3.ContentTemplateSelector = new RepoItemTemplateSelector();
+            //var gg = this.Content as ScrollViewer;
+            //var gg2 = gg.Content as Grid;
+            //var gg3 = gg2.Children[5] as TabControl;
+            //gg3.ContentTemplateSelector = new RepoItemTemplateSelector();
 
             var mainViewModel = MyBorder.Container.Resolve<MainViewModel>();
             DataContext = mainViewModel;

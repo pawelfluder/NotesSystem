@@ -209,7 +209,7 @@ namespace WpfNotesSystem.ViewModels
             {
                 repoItem = value;
                 OnPropertyChanged(nameof(RepoItem));
-                OnPropertyChanged("SelectedViewModel");
+                //OnPropertyChanged("SelectedViewModel");
             }
         }
 

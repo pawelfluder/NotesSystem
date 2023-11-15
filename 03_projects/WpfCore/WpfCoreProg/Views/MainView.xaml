@@ -11,10 +11,11 @@
          <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition MinWidth="500"></ColumnDefinition>
          </Grid.ColumnDefinitions>
          <Grid.RowDefinitions>
-            <RowDefinition Height="150"></RowDefinition>
-            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition Height="5"></RowDefinition>
+            <RowDefinition Height="5"></RowDefinition>
             <RowDefinition></RowDefinition>
          </Grid.RowDefinitions>
 
@@ -39,27 +40,40 @@
                   Command="{Binding RemoveTab}"
                   Height="30" Width="80"
                   VerticalAlignment="Top" />
+               <Button
+                  Content="Debug"
+                  Command="{Binding DebugCommand}"
+                  Height="30" Width="80"
+                  VerticalAlignment="Top" />
             </StackPanel>
          </ScrollViewer>
 
 
-         <local:NavigationView
+         <!--<local:NavigationView
             Grid.Row="0" Grid.Column="1">
             
-         </local:NavigationView>
-         <ContentControl
+         </local:NavigationView>-->
+         <!--<ContentControl
             VerticalAlignment="Top"
             Content="{Binding SelectedViewModel}"
             Margin="0,0,0,20" Grid.RowSpan="2"
             Grid.Row="1" Grid.Column="1"
             MinHeight="400"
-            Style="{StaticResource MainWindow_ContentControl}"/>
+            Style="{StaticResource MainWindow_ContentControl}"/>-->
+
+         <TextBlock
+            Text="{Binding DebugState.Body}"
+            Visibility="{Binding DebugState.Visibility}"
+            Grid.Row="0" Grid.Column="3" Grid.RowSpan="3">
+         </TextBlock>
 
          <TabControl
             TabStripPlacement="Top"
             ItemsSource="{Binding Titles2, Mode=TwoWay}"
             Grid.Row="2" Grid.Column="1"
-            SelectedItem="{Binding SelectedTab, Mode=TwoWay}">
+            SelectedItem="{Binding SelectedTab, Mode=TwoWay}"
+            MinWidth="400"
+            MinHeight="700">
             
             <TabControl.ItemTemplate>
                <DataTemplate>
@@ -70,8 +84,13 @@
 
             <TabControl.ContentTemplate>
                <DataTemplate>
-                  <ContentPresenter
+                  <StackPanel>
+                     <local:NavigationView MinWidth="400">
+                     </local:NavigationView>
+                     <ContentPresenter
                     Content="{Binding ViewModel}" />
+                  </StackPanel>
+                  
                </DataTemplate>
             </TabControl.ContentTemplate>
          </TabControl>

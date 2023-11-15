@@ -15,7 +15,8 @@ namespace WpfNotesSystem.Views
             var tmp = MyBorder.Container.Resolve<MainViewModel>();
             tmp.SelectedViewModel.View = this;
             tmp.BodyView = this;
-            DataContext = tmp.SelectedViewModel;
+            //DataContext = tmp.SelectedViewModel;
+            DataContext = tmp.SelectedTab.ViewModel;
             //DataContext = MyBorder.Container.Resolve<FolderViewModel>();
         }
     }

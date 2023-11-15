@@ -11,6 +11,7 @@ using System.Linq;
 using System.Windows.Controls;
 using System;
 using SharpRepoServiceProg.Service;
+using WpfCoreProg.Debug;
 
 namespace WpfNotesSystem.ViewModels
 {
@@ -40,7 +41,9 @@ namespace WpfNotesSystem.ViewModels
 
             Titles2 = new ObservableCollection<TabItem>();
             var firstRepoName = _allRepoList.First();
+            DebugState = new DebugState();
             OnTabAdd();
+            
         }
 
         public List<string> AllRepoList
@@ -65,8 +68,6 @@ namespace WpfNotesSystem.ViewModels
 
         public ICommand UpdateViewCommand { get; set; }
 
-        
-
         public IItemViewModel CreateViewModel(string type, (string, string) adrTuple)
         {
             IItemViewModel viewModel = null;
@@ -83,10 +84,11 @@ namespace WpfNotesSystem.ViewModels
 
         public string NavAddress
         {
-            get => SelectedViewModel?.Address;
+            get => SelectedTab.ViewModel?.Address;
             set
             {
-                SelectedViewModel.Address = value;
+                //SelectedViewModel.Address = value;
+                SelectedTab.ViewModel.Address = value;
                 OnPropertyChanged(nameof(NavAddress));
             }
         }
@@ -161,8 +163,28 @@ namespace WpfNotesSystem.ViewModels
             get
             {
                 return _removeTab ?? (_removeTab = new CommandHandler(
-                   () => { OnTabRemove(); }, () => CanExecute));
+                   () => { OnRemoveClicked(); }, () => CanExecute));
             }
+        }
+
+        private ICommand _debugCommand;
+
+        public ICommand DebugCommand
+        {
+            get
+            {
+                return _debugCommand ?? (_debugCommand = new CommandHandler(
+                   () => { OnDebugClicked(); }, () => CanExecute));
+            }
+        }
+
+        private void OnDebugClicked()
+        {
+
+            DebugState.Body = PrintCurrentState();
+            var tabObservable = Titles2;
+
+            
         }
 
         public ICommand AddTab
@@ -190,22 +212,9 @@ namespace WpfNotesSystem.ViewModels
         {
             var result = new List<string>();
             var i = 0;
-            var t = "\t";
+            var t = "    ";
             var t2 = t + t;
-            result.Add("//TabItems");
-            foreach (var tabItem in Titles2)
-            {
-                result.Add(t+"//Item[" + i + "]");
-                result.Add(t2 + "Index:" + i);
-                result.Add(t2 + "ViewModel.HashCode: " + tabItem.ViewModel.GetHashCode());
-                result.Add(t2 + "ViewModel.RepoItem.Name: " + tabItem.ViewModel?.RepoItem?.Name);
-                result.Add(t2 + "Header: " + tabItem.Header.ToString());
-                result.Add(t2 + "Address: " + tabItem.ViewModel.Address?.ToString());
-                result.Add(t2 + "View.HashCode: " + tabItem.ViewModel.View?.GetHashCode());
-                i++;
-            }
-
-
+            
             if (SelectedTab != null)
             {
                 i = Titles2.IndexOf(SelectedTab);
@@ -232,23 +241,61 @@ namespace WpfNotesSystem.ViewModels
                 result.Add("");
             }
 
+            i = 0;
+            result.Add("//TabItems");
+            foreach (var tabItem in Titles2)
+            {
+                result.Add(t + "//Item[" + i + "]");
+                result.Add(t2 + "Index:" + i);
+                result.Add(t2 + "ViewModel.HashCode: " + tabItem.ViewModel.GetHashCode());
+                result.Add(t2 + "ViewModel.RepoItem.Name: " + tabItem.ViewModel?.RepoItem?.Name);
+                result.Add(t2 + "Header: " + tabItem.Header.ToString());
+                result.Add(t2 + "Address: " + tabItem.ViewModel.Address?.ToString());
+                result.Add(t2 + "View.HashCode: " + tabItem.ViewModel.View?.GetHashCode());
+                i++;
+            }
+            result.Add("");
+
             var result2 = string.Join("\n", result);
             return result2;
+        }
+
+        private void AddItemLog(
+            string title,
+            List<string> inputList)
+        {
+
         }
 
         private void OnTabChanged()
         {
             OnPropertyChanged("RepoItem");
-            UpdateViewProps(SelectedTab.ViewModel);
-            SelectedViewModel.GoAction();
-            var state = PrintCurrentState();
+            if (SelectedTab != null)
+            {
+                UpdateViewProps(SelectedTab.ViewModel);
+                //SelectedViewModel.GoAction();
+                SelectedTab.ViewModel.GoAction();
+            }
+            
+            DebugState.Body = PrintCurrentState();
+        }
+
+        private DebugState _debugState;
+        public DebugState DebugState
+        {
+            get => _debugState;
+            set
+            {
+                _debugState = value;
+                OnPropertyChanged("State");
+            }
         }
 
         private void OverrideOnTypeChange(
             string repoItemType,
             IItemViewModel viewModel)
         {
-            if (viewModel.ItemType == repoItemType)
+            if (SelectedTab.ViewModel.ItemType == repoItemType)
             {
                 return;
             }
@@ -274,9 +321,28 @@ namespace WpfNotesSystem.ViewModels
             }
         }
 
-        private void OnTabRemove()
+        private void OnRemoveClicked()
         {
-            Titles2.Remove(Titles2.Last());
+            if(Titles2.Count == 0)
+            {
+                return;
+            }
+
+            var toRemove = Titles2.Last();
+
+            if (SelectedTab == toRemove &&
+                Titles2.Count() == 1)
+            {
+                UpdateViewProps(null);
+            }
+
+            if (SelectedTab == toRemove)
+            {
+                SelectedTab = Titles2.First();
+            }
+
+            Titles2.Remove(toRemove);
+            DebugState.Body =PrintCurrentState();
         }
 
         private void OnTabAdd()
@@ -289,19 +355,18 @@ namespace WpfNotesSystem.ViewModels
             UpdateViewProps(viewModel);
             SelectedViewModel.GoAction();
 
-            var state = PrintCurrentState();
+            DebugState.Body =PrintCurrentState();
         }
 
-        public IItemViewModel GoAction((string Repo, string Loca) address)
+        public void GoAction((string Repo, string Loca) address)
         {
             var repoItemType = repoService.Methods.GetItemType(address.Repo, address.Loca);
             OverrideOnTypeChange(repoItemType, SelectedTab.ViewModel);
-            SelectedViewModel.Address = CreateAddress(address);
-            SelectedViewModel.GoAction();
-            UpdateViewProps(SelectedViewModel);
-            
-            var state = PrintCurrentState();
-            return null;
+            SelectedTab.ViewModel.Address = CreateAddress(address);
+            SelectedTab.ViewModel.GoAction();
+            UpdateViewProps(SelectedTab.ViewModel);
+
+            DebugState.Body =PrintCurrentState();
         }
 
         private void UpdateViewProps(IItemViewModel viewModel)
@@ -331,9 +396,9 @@ namespace WpfNotesSystem.ViewModels
         {
             if (MainView != null)
             {
-                var gg = MainView.Content as ScrollViewer;
-                var gg2 = gg.Content as Grid;
-                var gg3 = gg2.Children[5] as TabControl;
+                //var gg = MainView.Content as ScrollViewer;
+                //var gg2 = gg.Content as Grid;
+                //var gg3 = gg2.Children[5] as TabControl;
             }
             
         }
