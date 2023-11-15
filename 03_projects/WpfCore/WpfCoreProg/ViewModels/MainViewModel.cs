@@ -18,7 +18,7 @@ namespace WpfNotesSystem.ViewModels
     public class MainViewModel : BaseViewModel
     {
         private ICommand goCommand;
-        private IItemViewModel _selectedViewModel;
+        //private IItemViewModel _selectedViewModel;
         private readonly IBackendService backendService;
         private readonly IRepoService repoService;
         private List<string> _allRepoList;
@@ -56,15 +56,15 @@ namespace WpfNotesSystem.ViewModels
             }
         }
 
-        public IItemViewModel SelectedViewModel
-        {
-            get { return _selectedViewModel; }
-            set
-            {
-                _selectedViewModel = value;
-                OnPropertyChanged(nameof(SelectedViewModel));
-            }
-        }
+        //public IItemViewModel SelectedViewModel
+        //{
+        //    get { return _selectedViewModel; }
+        //    set
+        //    {
+        //        _selectedViewModel = value;
+        //        OnPropertyChanged(nameof(SelectedViewModel));
+        //    }
+        //}
 
         public ICommand UpdateViewCommand { get; set; }
 
@@ -79,7 +79,7 @@ namespace WpfNotesSystem.ViewModels
 
         public (string Repo, string Loca) AdrTuple
         {
-            get => CreateAdrTuple(SelectedViewModel.Address);
+            get => CreateAdrTuple(SelectedTab.ViewModel.Address);
         }
 
         public string NavAddress
@@ -180,11 +180,9 @@ namespace WpfNotesSystem.ViewModels
 
         private void OnDebugClicked()
         {
-
             DebugState.Body = PrintCurrentState();
+            DebugState.Visibility = "Visible";
             var tabObservable = Titles2;
-
-            
         }
 
         public ICommand AddTab
@@ -228,18 +226,18 @@ namespace WpfNotesSystem.ViewModels
                 result.Add("");
             }
 
-            if (SelectedViewModel != null)
-            {
-                var found = Titles2.SingleOrDefault(x => x.ViewModel == SelectedViewModel);
-                i = Titles2.IndexOf(found);
-                result.Add("//SelectedViewModel");
-                result.Add(t + "Index:" + i);
-                result.Add(t + "ViewModel.HashCode: " + SelectedViewModel.GetHashCode());
-                result.Add(t + "ViewModel.RepoItem.Name: " + SelectedViewModel.RepoItem.Name);
-                result.Add(t + "Address: " + SelectedViewModel.Address?.ToString());
-                result.Add(t + "View.HashCode: " + SelectedViewModel.View?.GetHashCode());
-                result.Add("");
-            }
+            //if (SelectedViewModel != null)
+            //{
+            //    var found = Titles2.SingleOrDefault(x => x.ViewModel == SelectedViewModel);
+            //    i = Titles2.IndexOf(found);
+            //    result.Add("//SelectedViewModel");
+            //    result.Add(t + "Index:" + i);
+            //    result.Add(t + "ViewModel.HashCode: " + SelectedViewModel.GetHashCode());
+            //    result.Add(t + "ViewModel.RepoItem.Name: " + SelectedViewModel.RepoItem.Name);
+            //    result.Add(t + "Address: " + SelectedViewModel.Address?.ToString());
+            //    result.Add(t + "View.HashCode: " + SelectedViewModel.View?.GetHashCode());
+            //    result.Add("");
+            //}
 
             i = 0;
             result.Add("//TabItems");
@@ -273,7 +271,6 @@ namespace WpfNotesSystem.ViewModels
             if (SelectedTab != null)
             {
                 UpdateViewProps(SelectedTab.ViewModel);
-                //SelectedViewModel.GoAction();
                 SelectedTab.ViewModel.GoAction();
             }
             
@@ -353,7 +350,7 @@ namespace WpfNotesSystem.ViewModels
 
             TryAddTab(viewModel);
             UpdateViewProps(viewModel);
-            SelectedViewModel.GoAction();
+            SelectedTab.ViewModel.GoAction();
 
             DebugState.Body =PrintCurrentState();
         }
@@ -377,7 +374,7 @@ namespace WpfNotesSystem.ViewModels
                 _selectedTab = tmp2;
             }
             
-            SelectedViewModel = viewModel;
+            //SelectedViewModel = viewModel;
             var gg = NavAddress;
             if (BodyView != null)
             {

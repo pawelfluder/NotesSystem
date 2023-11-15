@@ -15,10 +15,11 @@ namespace WpfNotesSystem.Views
         {
             InitializeComponent();
             var tmp = MyBorder.Container.Resolve<MainViewModel>();
-            tmp.SelectedViewModel.View = this;
+            //tmp.SelectedViewModel.View = this;
             tmp.BodyView = this;
             //DataContext = tmp.SelectedViewModel;
             DataContext = tmp.SelectedTab.ViewModel;
+            tmp.SelectedTab.ViewModel.View = this;
 
             // DataContext = MyBorder.Container.Resolve<TextViewModel>();
         }

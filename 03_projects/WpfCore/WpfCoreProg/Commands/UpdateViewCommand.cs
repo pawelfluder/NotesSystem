@@ -28,14 +28,14 @@ namespace WpfNotesSystem.Commands
 
         public void Execute(object parameter)
         {
-            if(parameter.ToString() == "Home")
-            {
-                viewModel.SelectedViewModel = MyBorder.Container.Resolve<FolderViewModel>();
-            }
-            else if(parameter.ToString() == "Account")
-            {
-                viewModel.SelectedViewModel = MyBorder.Container.Resolve<TextViewModel>();
-            }
+            //if(parameter.ToString() == "Home")
+            //{
+            //    viewModel.SelectedViewModel = MyBorder.Container.Resolve<FolderViewModel>();
+            //}
+            //else if(parameter.ToString() == "Account")
+            //{
+            //    viewModel.SelectedViewModel = MyBorder.Container.Resolve<TextViewModel>();
+            //}
         }
     }
 }
