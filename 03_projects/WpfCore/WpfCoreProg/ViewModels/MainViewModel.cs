@@ -9,9 +9,10 @@ using WpfNotesSystemProg3.ViewModelBase;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
-using System;
 using SharpRepoServiceProg.Service;
 using WpfCoreProg.Debug;
+using System;
+using System.ComponentModel;
 
 namespace WpfNotesSystem.ViewModels
 {
@@ -65,6 +66,9 @@ namespace WpfNotesSystem.ViewModels
         //        OnPropertyChanged(nameof(SelectedViewModel));
         //    }
         //}
+
+
+
 
         public ICommand UpdateViewCommand { get; set; }
 
@@ -157,7 +161,6 @@ namespace WpfNotesSystem.ViewModels
         static int tabs = 0;
         private ICommand _addTab;
         private ICommand _removeTab;
-
         public ICommand RemoveTab
         {
             get
@@ -167,8 +170,33 @@ namespace WpfNotesSystem.ViewModels
             }
         }
 
-        private ICommand _debugCommand;
+        private ICommand _goBackCommand;
+        public ICommand GoBackCommand
+        {
+            get
+            {
+                return _goBackCommand ?? (_goBackCommand = new CommandHandler(
+                   () => { OnGoBackClicked(); }, () => CanExecute));
+            }
+        }
 
+        private void OnGoBackClicked()
+        {
+            var tmp = NavAddress.Split('/').ToList();
+            if (!(tmp.Count > 1))
+            {
+                return;
+            }
+
+            tmp.Remove(tmp.Last());
+            var newAddress = string.Join('/', tmp);
+
+            //NavAddress = newAddress;
+            var adrTuple = CreateAdrTuple(newAddress);
+            GoAction(adrTuple);
+        }
+
+        private ICommand _debugCommand;
         public ICommand DebugCommand
         {
             get
@@ -203,6 +231,7 @@ namespace WpfNotesSystem.ViewModels
             {
                 _selectedTab = value;
                 OnTabChanged();
+                OnPropertyChanged(nameof(SelectedTab));
             }
         }
 
@@ -220,24 +249,12 @@ namespace WpfNotesSystem.ViewModels
                 result.Add(t + "Index:" + i);
                 result.Add(t + "ViewModel.HashCode: " + SelectedTab.ViewModel.GetHashCode());
                 result.Add(t + "ViewModel.RepoItem.Name: " + SelectedTab.ViewModel.RepoItem?.Name);
+                result.Add(t + "ViewModel.Type: " + SelectedTab.ViewModel.ItemType);
                 result.Add(t + "Header: " + SelectedTab.Header.ToString());
                 result.Add(t + "Address: " + SelectedTab.ViewModel.Address?.ToString());
                 result.Add(t + "View.HashCode: " + SelectedTab.ViewModel.View?.GetHashCode());
                 result.Add("");
             }
-
-            //if (SelectedViewModel != null)
-            //{
-            //    var found = Titles2.SingleOrDefault(x => x.ViewModel == SelectedViewModel);
-            //    i = Titles2.IndexOf(found);
-            //    result.Add("//SelectedViewModel");
-            //    result.Add(t + "Index:" + i);
-            //    result.Add(t + "ViewModel.HashCode: " + SelectedViewModel.GetHashCode());
-            //    result.Add(t + "ViewModel.RepoItem.Name: " + SelectedViewModel.RepoItem.Name);
-            //    result.Add(t + "Address: " + SelectedViewModel.Address?.ToString());
-            //    result.Add(t + "View.HashCode: " + SelectedViewModel.View?.GetHashCode());
-            //    result.Add("");
-            //}
 
             i = 0;
             result.Add("//TabItems");
@@ -247,6 +264,7 @@ namespace WpfNotesSystem.ViewModels
                 result.Add(t2 + "Index:" + i);
                 result.Add(t2 + "ViewModel.HashCode: " + tabItem.ViewModel.GetHashCode());
                 result.Add(t2 + "ViewModel.RepoItem.Name: " + tabItem.ViewModel?.RepoItem?.Name);
+                result.Add(t + "ViewModel.Type: " + tabItem.ViewModel.ItemType);
                 result.Add(t2 + "Header: " + tabItem.Header.ToString());
                 result.Add(t2 + "Address: " + tabItem.ViewModel.Address?.ToString());
                 result.Add(t2 + "View.HashCode: " + tabItem.ViewModel.View?.GetHashCode());
@@ -320,7 +338,7 @@ namespace WpfNotesSystem.ViewModels
 
         private void OnRemoveClicked()
         {
-            if(Titles2.Count == 0)
+            if(!(Titles2.Count > 1))
             {
                 return;
             }
@@ -402,10 +420,28 @@ namespace WpfNotesSystem.ViewModels
 
         public ObservableCollection<TabItem> Titles2 { get; set; }
 
-        public class TabItem
+        public class TabItem : INotifyPropertyChanged
         {
+            private IItemViewModel _viewModel;
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            protected void OnPropertyChanged(string propertyName)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+        
             public string Header { get; set; }
-            public IItemViewModel ViewModel { get; set; }
+
+            public IItemViewModel ViewModel
+            {
+                get => _viewModel;
+                set
+                {
+                    _viewModel = value;
+                    OnPropertyChanged(nameof(ViewModel));
+                }
+            }
         }
 
         public IItemViewModel GetViewModel(int hashCode)

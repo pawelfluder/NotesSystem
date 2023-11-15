@@ -24,6 +24,10 @@
 
       <!-- 2 -->
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+         <Button Width="30" Margin="5"
+            Command="{Binding GoBackCommand}">
+            <Path  Fill="Black" Data="M 0 6 L 6 0 L 6 12 Z"/>
+         </Button>
          <Button Content="Go" Height="20" Width="50" Margin="0,0,0,0"
             Click="GoButtonClick"/>
          <TextBox Name="Address" Height="20" Width="360" Margin="0,0,0,0"

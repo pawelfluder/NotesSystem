@@ -8,7 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Navigation;
-using Unity;
 using WpfNotesSystem.Repetition;
 
 namespace WpfNotesSystem.Creator
