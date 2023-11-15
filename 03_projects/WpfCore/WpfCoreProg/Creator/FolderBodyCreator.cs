@@ -30,6 +30,11 @@ namespace WpfNotesSystem.Creator
 
         public void Run(Dictionary<string, string> indexQnameDict)
         {
+            if (indexQnameDict.Count() == 0)
+            {
+                return;
+            }
+
             var jmax = indexQnameDict.Count;
             var imax = 2;
 
