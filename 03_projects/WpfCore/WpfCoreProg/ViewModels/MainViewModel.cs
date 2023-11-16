@@ -188,7 +188,7 @@ namespace WpfNotesSystem.ViewModels
                 return;
             }
 
-            tmp.Remove(tmp.Last());
+            tmp.RemoveAt(tmp.Count() - 1);
             var newAddress = string.Join('/', tmp);
 
             //NavAddress = newAddress;
