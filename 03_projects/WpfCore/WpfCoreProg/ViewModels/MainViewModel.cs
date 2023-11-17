@@ -30,6 +30,8 @@ namespace WpfNotesSystem.ViewModels
 
         public UserControl MainView { get; set; }
 
+        public (string, string) defaultRepo;
+
         public MainViewModel()
         {
             UpdateViewCommand = new UpdateViewCommand(this);
@@ -41,10 +43,9 @@ namespace WpfNotesSystem.ViewModels
             _allRepoList = JsonConvert.DeserializeObject<List<string>>(jString);
 
             Titles2 = new ObservableCollection<TabItem>();
-            var firstRepoName = _allRepoList.First();
+            defaultRepo = (_allRepoList.First(), "");
             DebugState = new DebugState();
             OnTabAdd();
-            
         }
 
         public List<string> AllRepoList
@@ -362,9 +363,8 @@ namespace WpfNotesSystem.ViewModels
 
         private void OnTabAdd()
         {
-            var adrTuple = ("notes", "");
-            var type = backendService.RepoApi("GetItemType", adrTuple.Item1, adrTuple.Item2);
-            var viewModel = CreateViewModel(type, adrTuple);
+            var type = backendService.RepoApi("GetItemType", defaultRepo.Item1, defaultRepo.Item2);
+            var viewModel = CreateViewModel(type, defaultRepo);
 
             TryAddTab(viewModel);
             UpdateViewProps(viewModel);
