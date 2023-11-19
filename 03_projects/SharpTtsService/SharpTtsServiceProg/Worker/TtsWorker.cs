@@ -4,7 +4,7 @@ using System.Speech.Synthesis;
 
 namespace SharpTtsServiceProg.Worker
 {
-    internal class TtsWorker
+    public class TtsWorker
     {
         private SpeechSynthesizer synth;
 
@@ -21,7 +21,7 @@ namespace SharpTtsServiceProg.Worker
             var voice = tmp.First(x => x.VoiceInfo.Culture.Name == "pl-PL");
             synth.SelectVoice(voice.VoiceInfo.Name);
             var gg = synth.Rate;
-            synth.Rate = -2;
+            synth.Rate = 0;
         }
 
         private void SetVoiceSettings()
@@ -29,22 +29,41 @@ namespace SharpTtsServiceProg.Worker
             synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult, 0, new CultureInfo("pl-PL"));
         }
 
-        public void Speak(string text)
+        public async Task Pause()
         {
-            synth.SetOutputToDefaultAudioDevice();
-            synth.Speak(text);
+            synth.Pause();
         }
 
-        public void SaveFile(string fileName, string text)
+        public async Task Speak(string text)
         {
-            synth.SetOutputToWaveFile(@"C:\temp\test.wav",
+            if (synth.State == SynthesizerState.Speaking)
+            {
+                synth.Pause();
+                synth.SpeakAsyncCancelAll();
+                return;
+            }
+
+            if (synth.State != SynthesizerState.Paused)
+            {
+                synth.SetOutputToDefaultAudioDevice();
+                synth.SpeakAsync(text);
+                return;
+            }
+
+            synth.Resume();
+        }
+
+        public async Task SaveFile(string fileName, string text)
+        {
+            var filepath2 = fileName + ".wav";
+            synth.SetOutputToWaveFile(filepath2,
                 new SpeechAudioFormatInfo(
                     32000,
                     AudioBitsPerSample.Sixteen,
                     AudioChannel.Mono));
 
-            synth.SetOutputToWaveFile(fileName + ".wav");
-            synth.Speak(text);
+            //synth.SetOutputToWaveFile(fileName + ".wav");
+            synth.SpeakAsync(text);
         }
 
         public void LoadFile(string text)

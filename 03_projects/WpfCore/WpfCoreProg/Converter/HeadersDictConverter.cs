@@ -69,7 +69,11 @@ namespace WpfNotesSystemProg.Converter
                 //myGrid.MinWidth = width;
                 //myGrid.MaxWidth = width;
                 stackPanel = new StackPanel();
-                stackPanel.Children.Add(myGrid);
+                if (myGrid != null)
+                {
+                    stackPanel.Children.Add(myGrid);
+                }
+                
 
                 //stackPanel.MinWidth = width;
                 //stackPanel.MaxWidth = width;

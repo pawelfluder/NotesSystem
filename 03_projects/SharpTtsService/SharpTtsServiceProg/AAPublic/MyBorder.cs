@@ -1,11 +1,14 @@
-﻿using SharpContainerProg.AAPublic;
+﻿
+using SharpRepoServiceProg.Service;
+using SharpTtsServiceProg.Service;
 
 namespace SharpTtsServiceProg.AAPublic
 {
-    internal static class MyBorder
+    public static class OutBorder
     {
-        public static bool IsRegistered = false;
-        public static Registration Registration = new Registration();
-        public static IContainer Container => Registration.Start(ref IsRegistered);
+        public static ITtsService TtsService(IRepoService repoService)
+        {
+            return new TtsService(repoService);
+        }
     }
 }

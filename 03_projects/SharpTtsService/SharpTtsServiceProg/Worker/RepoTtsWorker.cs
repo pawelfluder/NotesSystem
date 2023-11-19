@@ -4,28 +4,36 @@ using System.Speech.Synthesis;
 
 namespace SharpTtsServiceProg.Worker
 {
-    internal class RepoTtsWorker
+    public class RepoTtsWorker
     {
         private readonly TtsWorker ttsWorker;
         private readonly IRepoService repoService;
         private readonly SpeechSynthesizer synth;
 
-        public RepoTtsWorker()
+        public RepoTtsWorker(IRepoService repoService)
         {
-            repoService = MyBorder.Container.Resolve<IRepoService>();
+            this.repoService = repoService;
             ttsWorker = new TtsWorker();
         }
 
-        public void Speak((string Repo, string Loca) adrTuple)
+        public async Task Speak((string Repo, string Loca) adrTuple)
         {
             var text = repoService.Methods.GetText3(adrTuple);
-            ttsWorker.Speak(text);
+            await ttsWorker.Speak(text);
         }
 
-        public void SaveFile((string Repo, string Loca) adrTuple)
+        public async Task Pause()
+        {
+            await ttsWorker.Pause();
+        }
+
+        public async Task SaveFile((string Repo, string Loca) adrTuple)
         {
             var text = repoService.Methods.GetText3(adrTuple);
-            ttsWorker.Speak(text);
+            var elemPath = repoService.Methods.GetElemPath(adrTuple);
+            var filePath = elemPath + "/" + "lista";
+
+            await ttsWorker.SaveFile(filePath, text);
         }
     }
 }

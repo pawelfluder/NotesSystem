@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using SharpFileServiceProg.Service;
 using SharpRepoBackendProg.Service;
+using SharpTtsServiceProg.AAPublic;
+using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Input;
 using WpfNotesSystem.Repetition;
@@ -24,13 +26,18 @@ namespace WpfNotesSystem.ViewModels
         public (string repo, string loca) AdrTuple => CreateAdrTuple(Address);
 
         private readonly IFileService fileService;
+        private readonly ITtsService ttsService;
 
         public TextViewModel()
         {
             //this.mainViewModel = mainViewModel;
             this.backendService = MyBorder.Container.Resolve<IBackendService>();
             fileService = MyBorder.Container.Resolve<IFileService>();
+
+            ttsService = MyBorder.Container.Resolve<ITtsService>();
             ValueToAdd = string.Empty;
+            TtsOptions = new List<string> { "Speak", "Pause", "SaveFile" };
+            TtsSelected = "Speak";
         }
 
         public string Address { get; set; }
@@ -70,6 +77,37 @@ namespace WpfNotesSystem.ViewModels
         {
             ValueToAdd = valueToAdd;
             OnPropertyChanged(nameof(ValueToAdd));
+        }
+
+        public List<string> TtsOptions { get; private set; }
+        public string TtsSelected { get; set; }
+
+        private ICommand _ttsCommand;
+        public ICommand TtsCommand
+        {
+            get
+            {
+                return _ttsCommand ?? (_ttsCommand = new CommandHandler(
+                   () => { OnTtsClicked(); }, () => CanExecute));
+            }
+        }
+
+        private async void OnTtsClicked()
+        {
+            if (TtsSelected == "Speak")
+            {
+                await ttsService.RepoTts.Speak(AdrTuple);
+            }
+
+            if (TtsSelected == "Pause")
+            {
+                await ttsService.RepoTts.Pause();
+            }
+
+            if (TtsSelected == "SaveFile")
+            {
+                await ttsService.RepoTts.SaveFile(AdrTuple);
+            }
         }
 
         public ICommand FolderCommand

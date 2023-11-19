@@ -127,7 +127,7 @@
       <Setter Property="MaxHeight" Value="40" />
    </Style>
    <Style x:Key="FolderView_StackPanel02" TargetType="{x:Type StackPanel}">
-      <Setter Property="MaxHeight" Value="40" />
+      <Setter Property="MaxHeight" Value="30" />
    </Style>
    <Style x:Key="FolderView_StackPanel03" TargetType="{x:Type StackPanel}">
       <Setter Property="MaxHeight" Value="40" />

@@ -13,6 +13,7 @@ using SharpRepoServiceProg.Service;
 using WpfCoreProg.Debug;
 using System;
 using System.ComponentModel;
+using SharpTtsServiceProg.AAPublic;
 
 namespace WpfNotesSystem.ViewModels
 {
@@ -171,6 +172,8 @@ namespace WpfNotesSystem.ViewModels
             }
         }
 
+        
+
         private ICommand _goBackCommand;
         public ICommand GoBackCommand
         {
@@ -306,6 +309,7 @@ namespace WpfNotesSystem.ViewModels
                 OnPropertyChanged("State");
             }
         }
+
 
         private void OverrideOnTypeChange(
             string repoItemType,

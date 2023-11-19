@@ -1,16 +1,18 @@
-﻿using SharpTtsServiceProg.Worker;
+﻿using SharpRepoServiceProg.Service;
+using SharpTtsServiceProg.AAPublic;
+using SharpTtsServiceProg.Worker;
 
 namespace SharpTtsServiceProg.Service
 {
-    internal class TtsService
+    internal class TtsService : ITtsService
     {
-        public TtsWorker Tts { get; set; }
+        public TtsWorker Tts { get; }
         public RepoTtsWorker RepoTts { get; }
 
-        public TtsService()
+        public TtsService(IRepoService repoService)
         {
             Tts = new TtsWorker();
-            RepoTts = new RepoTtsWorker();
+            RepoTts = new RepoTtsWorker(repoService);
         }
     }
 }
