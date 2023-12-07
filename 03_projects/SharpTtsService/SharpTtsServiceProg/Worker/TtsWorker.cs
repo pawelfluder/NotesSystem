@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Speech.AudioFormat;
 using System.Speech.Synthesis;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SharpTtsServiceProg.Worker
 {
@@ -12,13 +13,14 @@ namespace SharpTtsServiceProg.Worker
         {
             synth = new SpeechSynthesizer();
             //SetVoiceSettings();
-            SetVoiceSettings2();
+            var cultureString = "pl-PL";
+            SetVoiceSettings2(cultureString);
         }
 
-        private void SetVoiceSettings2()
+        private void SetVoiceSettings2(string cultureString)
         {
             var tmp = synth.GetInstalledVoices();
-            var voice = tmp.First(x => x.VoiceInfo.Culture.Name == "pl-PL");
+            var voice = tmp.First(x => x.VoiceInfo.Culture.Name == cultureString);
             synth.SelectVoice(voice.VoiceInfo.Name);
             var gg = synth.Rate;
             synth.Rate = 0;
@@ -34,23 +36,25 @@ namespace SharpTtsServiceProg.Worker
             synth.Pause();
         }
 
-        public async Task Speak(string text)
+        public async Task Resume()
         {
-            if (synth.State == SynthesizerState.Speaking)
+            if (synth.State == SynthesizerState.Paused)
             {
-                synth.Pause();
+                synth.Resume();
+                return;
+            }
+        }
+
+        public async Task StartNew(string text)
+        {
+            if (synth.State == SynthesizerState.Speaking ||
+                synth.State == SynthesizerState.Paused)
+            {
                 synth.SpeakAsyncCancelAll();
-                return;
             }
-
-            if (synth.State != SynthesizerState.Paused)
-            {
-                synth.SetOutputToDefaultAudioDevice();
-                synth.SpeakAsync(text);
-                return;
-            }
-
+            var state = synth.State;
             synth.Resume();
+            synth.SpeakAsync(text);
         }
 
         public async Task SaveFile(string fileName, string text)

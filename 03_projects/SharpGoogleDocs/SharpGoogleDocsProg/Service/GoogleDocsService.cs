@@ -44,14 +44,12 @@ namespace GoogleDocsServiceProj.Service
 
         private void ApplySettings(Dictionary<string, object> settingDict)
         {
-            var s1 = settingDict.TryGetValue("applicationName", out var applicationName);
-            var s2 = settingDict.TryGetValue("scopes", out var scopes);
-            var s3 = settingDict.TryGetValue("clientId", out var clientId);
-            var s4 = settingDict.TryGetValue("clientSecret", out var clientSecret);
-            if (s1) { this.applicationName = applicationName.ToString(); }
-            if (s2) { this.scopes = applicationName as List<string>; }
-            if (s3) { this.applicationName = clientId.ToString(); }
-            if (s4) { this.applicationName = clientSecret.ToString(); }
+            var s3 = settingDict.TryGetValue("googleClientId", out var clientId);
+            var s4 = settingDict.TryGetValue("googleClientSecret", out var clientSecret);
+            this.applicationName = "notesSystem";
+            this.scopes = new List<string> { DocsService.ScopeConstants.Documents };
+            if (s3) { this.clientId = clientId.ToString(); }
+            if (s4) { this.clientSecret = clientSecret.ToString(); }
         }
 
         public void OverrideSettings(Dictionary<string, object> settingDict)

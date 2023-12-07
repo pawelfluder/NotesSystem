@@ -16,15 +16,20 @@ namespace SharpTtsServiceProg.Worker
             ttsWorker = new TtsWorker();
         }
 
-        public async Task Speak((string Repo, string Loca) adrTuple)
+        public async Task StartNew((string Repo, string Loca) adrTuple)
         {
             var text = repoService.Methods.GetText3(adrTuple);
-            await ttsWorker.Speak(text);
+            await ttsWorker.StartNew(text);
         }
 
         public async Task Pause()
         {
             await ttsWorker.Pause();
+        }
+
+        public async Task Resume()
+        {
+            await ttsWorker.Resume();
         }
 
         public async Task SaveFile((string Repo, string Loca) adrTuple)

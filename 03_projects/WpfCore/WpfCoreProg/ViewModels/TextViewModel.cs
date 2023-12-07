@@ -36,8 +36,10 @@ namespace WpfNotesSystem.ViewModels
 
             ttsService = MyBorder.Container.Resolve<ITtsService>();
             ValueToAdd = string.Empty;
-            TtsOptions = new List<string> { "Speak", "Pause", "SaveFile" };
-            TtsSelected = "Speak";
+            // Todo get interface method names
+            var gg = ttsService.RepoTts.GetType().GetMethods();
+            TtsOptions = new List<string> { "StartNew", "Pause", "SaveFile", "Resume" };
+            TtsSelected = "StartNew";
         }
 
         public string Address { get; set; }
@@ -94,14 +96,19 @@ namespace WpfNotesSystem.ViewModels
 
         private async void OnTtsClicked()
         {
-            if (TtsSelected == "Speak")
+            if (TtsSelected == "StartNew")
             {
-                await ttsService.RepoTts.Speak(AdrTuple);
+                await ttsService.RepoTts.StartNew(AdrTuple);
             }
 
             if (TtsSelected == "Pause")
             {
                 await ttsService.RepoTts.Pause();
+            }
+
+            if (TtsSelected == "Resume")
+            {
+                await ttsService.RepoTts.Resume();
             }
 
             if (TtsSelected == "SaveFile")
