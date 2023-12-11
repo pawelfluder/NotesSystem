@@ -1,13 +1,8 @@
 ﻿using Google.Apis.Drive.v3;
 using Google.Apis.Drive.v3.Data;
-using SharpGoogleDriveProg.Service;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using DriveFile = Google.Apis.Drive.v3.Data.File;
 
-namespace GoogleDriveCoreApp
+namespace SharpGoogleDriveProg.Service
 {
     public class DriveWorker
     {
@@ -29,6 +24,29 @@ namespace GoogleDriveCoreApp
             var file = files.Single(x => x.Id == id);
 
             return file;
+        }
+
+        public Permission AddReadPermissionForAnyone(string fileId)
+        {
+            try
+            {
+                var permission = new Permission
+                {
+                    Type = "anyone",
+                    Role = "reader",
+                };
+
+                var request = service.Permissions.Create(permission, fileId);
+                var result = request.Execute();
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occurred: " + e.Message);
+            }
+
+            return null;
         }
 
         public (string Id, string Name) GetFileByName(string name)
@@ -158,6 +176,15 @@ namespace GoogleDriveCoreApp
             return permissionsList;
         }
 
+        public List<Permission> GetFilePermissions(string fileId)
+        {
+            var permissions = service.Permissions.List(fileId);
+            permissions.Fields = "permissions(id,role,type,emailAddress)";
+
+            var permissionList = permissions.Execute().Permissions.ToList();
+            return permissionList;
+        }
+
         public void SetAnyoneReadPermission(string fileId)
         {
             var permission = new Permission();
@@ -170,7 +197,7 @@ namespace GoogleDriveCoreApp
 
             if (res.Type != "anyone")
             {
-                throw new System.Exception();
+                throw new Exception();
             }
         }
 
@@ -226,5 +253,35 @@ namespace GoogleDriveCoreApp
 
             return items;
         }
+
+        //public List<(string Name, string Id)> GetFilesRequest(string query)
+        //{
+        //    var files = Worker.GetFilesRequest(query);
+        //    return files.Select(x => (x.Name, x.Id)).ToList();
+        //}
+
+        //public List<(string Name, string Id)> GetFilesRequest(string query)
+        //{
+        //    var files = worker.GetFilesRequest(query);
+        //    return files.Select(x => (x.Name, x.Id)).ToList();
+        //}
+
+        //public (string Name, string Id) GetFolderByNameAndId(string name, string id)
+        //{
+        //    var googleFile = Worker.GetFolderByNameAndId(name, id);
+        //    return (googleFile.Name, googleFile.Id);
+        //}
+
+        //public List<(string Name, string Id)> GetAllMp3Files()
+        //{
+        //    var items = Worker.GetFilesRequest($"fileExtension='mp3'");
+        //    return items.Select(x => (x.Name, x.Id)).ToList();
+        //}
+
+        //public (string, string) UploadTempPhotoFile(Stream fileStream)
+        //{
+        //    var result = Worker.UploadTempPhotoFile(fileStream);
+        //    return result;
+        //}
     }
 }

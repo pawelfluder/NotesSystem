@@ -5,8 +5,6 @@ using SharpFileServiceProg.Service;
 using SharpNotesExporter;
 using SharpRepoServiceProg.Service;
 using TextHeaderAnalyzerCoreProj.Service;
-using SharpGoogleDriveProg.Service;
-using Unity;
 using SharpRepoBackendProg.Repetition;
 using PdfService.PdfService;
 using System.Diagnostics;
@@ -14,19 +12,22 @@ using static SharpRepoServiceProg.Service.IRepoService;
 using SharpRepoServiceProg.RepoOperations;
 using System.Text.Json.Nodes;
 using SharpGoogleDriveProg.AAPublic;
+using SharpGoogleDocsProg.AAPublic;
 
 namespace SharpRepoBackendProg.Service
 {
     public class BackendService : IBackendService
     {
+        // services
         private readonly IFileService fileService;
         private readonly IPdfService2 pdfService;
         private readonly IGoogleDriveService driveService;
+        private readonly IGoogleDocsService docsService;
         private readonly IRepoService repoService;
+        private readonly IConfigService configService;
         private readonly HeaderNotesService headerNotesService;
         private readonly ButtonActionsService buttonActionService;
         private readonly NotesExporterService notesExporterService;
-        private readonly IConfigService configService;
 
         public BackendService()
         {
@@ -34,6 +35,7 @@ namespace SharpRepoBackendProg.Service
             pdfService = MyBorder.Container.Resolve<IPdfService2>();
             configService = MyBorder.Container.Resolve<IConfigService>();
             driveService = MyBorder.Container.Resolve<IGoogleDriveService>();
+            docsService = MyBorder.Container.Resolve<IGoogleDocsService>();
             repoService = MyBorder.Container.Resolve<IRepoService>();
             headerNotesService = new HeaderNotesService();
             buttonActionService = new ButtonActionsService();
@@ -284,8 +286,12 @@ namespace SharpRepoBackendProg.Service
 
         private (string id, string name) CreateNewDocFile(string fileName)
         {
-            var folder2023 = "13gY7OdaPCMwHQKmJZWZpcou7xtMrxNlg";
-            var result = driveService.Worker.CreateNewDocFile(folder2023, fileName);
+            // Opcja druga za pomocą google drive
+            // var nameQId = driveService.Worker.CreateNewDocFile(null, fileName);
+
+            var document = docsService.StackWkr.CreateDocFile(fileName);
+            var permission = driveService.Worker.AddReadPermissionForAnyone(document.DocumentId);
+            var result = (document.DocumentId, document.Title);            
             return result;
         }
 

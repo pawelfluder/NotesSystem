@@ -1,7 +1,6 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
-using GoogleDriveCoreApp;
 using SharpGoogleDriveProg.AAPublic;
 
 namespace SharpGoogleDriveProg.Service
@@ -48,13 +47,15 @@ namespace SharpGoogleDriveProg.Service
             if (s3) { this.clientId = clientId.ToString(); }
             if (s4) { this.clientSecret = clientSecret.ToString(); }
 
-            applicationName = "gamestatistics";
+            applicationName = "notesSystem";
 
             this.scopes = new List<string>
             { 
                 DriveService.ScopeConstants.Drive,
-                //DriveService.ScopeConstants.DriveAppdata,
+                //DriveService.ScopeConstants.DriveAppda
                 DriveService.ScopeConstants.DriveFile,
+                DriveService.ScopeConstants.DriveMetadata,
+                DriveService.ScopeConstants.DriveScripts,
                 //DriveService.ScopeConstants.DriveMetadata,
                 //DriveService.ScopeConstants.DriveScripts,
             };
@@ -83,7 +84,7 @@ namespace SharpGoogleDriveProg.Service
             var credentialAuthorization = GoogleWebAuthorizationBroker.AuthorizeAsync(
                 secrets,
                 this.scopes,
-                "user",
+                "GameStatistics",
                 CancellationToken.None);
 
             var initializer = new BaseClientService.Initializer()
@@ -94,35 +95,5 @@ namespace SharpGoogleDriveProg.Service
 
             return initializer;
         }
-
-        //public List<(string Name, string Id)> GetFilesRequest(string query)
-        //{
-        //    var files = Worker.GetFilesRequest(query);
-        //    return files.Select(x => (x.Name, x.Id)).ToList();
-        //}
-
-        //public List<(string Name, string Id)> GetFilesRequest(string query)
-        //{
-        //    var files = worker.GetFilesRequest(query);
-        //    return files.Select(x => (x.Name, x.Id)).ToList();
-        //}
-
-        //public (string Name, string Id) GetFolderByNameAndId(string name, string id)
-        //{
-        //    var googleFile = Worker.GetFolderByNameAndId(name, id);
-        //    return (googleFile.Name, googleFile.Id);
-        //}
-
-        //public List<(string Name, string Id)> GetAllMp3Files()
-        //{
-        //    var items = Worker.GetFilesRequest($"fileExtension='mp3'");
-        //    return items.Select(x => (x.Name, x.Id)).ToList();
-        //}
-
-        //public (string, string) UploadTempPhotoFile(Stream fileStream)
-        //{
-        //    var result = Worker.UploadTempPhotoFile(fileStream);
-        //    return result;
-        //}
     }
 }

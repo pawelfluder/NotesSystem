@@ -2,6 +2,8 @@
 using Google.Apis.Docs.v1.Data;
 using GoogleDocument = Google.Apis.Docs.v1.Data.Document;
 using GoogleDocsRange = Google.Apis.Docs.v1.Data.Range;
+using static Google.Apis.Docs.v1.DocumentsResource;
+using System.Security;
 
 namespace SharpGoogleDocsProg.Worker
 {
@@ -112,6 +114,14 @@ namespace SharpGoogleDocsProg.Worker
         {
             var req = GetUpdateMarginsRequest(leftRight, topBottom);
             stack.Add(req);
+        }
+
+        public GoogleDocument CreateDocFile(string title)
+        {
+            var body = new GoogleDocument { Title = title };
+            var request = new CreateRequest(service, body);
+            var googleDocument = request.Execute();
+            return googleDocument;
         }
 
         private Request GetUpdateMarginsRequest(
