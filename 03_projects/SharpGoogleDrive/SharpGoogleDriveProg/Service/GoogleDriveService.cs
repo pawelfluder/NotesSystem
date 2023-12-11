@@ -43,14 +43,23 @@ namespace SharpGoogleDriveProg.Service
 
         private void ApplySettings(Dictionary<string, object> settingDict)
         {
-            var s1 = settingDict.TryGetValue("applicationName", out var applicationName);
-            var s2 = settingDict.TryGetValue("scopes", out var scopes);
             var s3 = settingDict.TryGetValue("googleClientId", out var clientId);
             var s4 = settingDict.TryGetValue("googleClientSecret", out var clientSecret);
-            if (s1) { this.applicationName = applicationName.ToString(); }
-            if (s2) { this.scopes = applicationName as List<string>; }
             if (s3) { this.clientId = clientId.ToString(); }
             if (s4) { this.clientSecret = clientSecret.ToString(); }
+
+            applicationName = "gamestatistics";
+
+            this.scopes = new List<string>
+            { 
+                DriveService.ScopeConstants.Drive,
+                //DriveService.ScopeConstants.DriveAppdata,
+                DriveService.ScopeConstants.DriveFile,
+                //DriveService.ScopeConstants.DriveMetadata,
+                //DriveService.ScopeConstants.DriveScripts,
+            };
+
+            //string[] Scopes = { DriveService.Scope.Drive, DriveService.Scope.DriveFile };
         }
 
         public void OverrideSettings(Dictionary<string, object> settingDict)
@@ -60,26 +69,30 @@ namespace SharpGoogleDriveProg.Service
 
         public void Initialize(string clientId, string clientSecret)
         {
-            string[] Scopes = { DriveService.Scope.Drive, DriveService.Scope.DriveFile };
-            string ApplicationName = GetType().Name;
+            var initializer = GetInitilizer(clientId, clientSecret);
+            var service = new DriveService(initializer);
+            worker = new DriveWorker(this, service);
+        }
 
+        public BaseClientService.Initializer GetInitilizer(string clientId, string clientSecret)
+        {
             var secrets = new ClientSecrets();
             secrets.ClientId = clientId;
             secrets.ClientSecret = clientSecret;
 
             var credentialAuthorization = GoogleWebAuthorizationBroker.AuthorizeAsync(
                 secrets,
-                Scopes,
+                this.scopes,
                 "user",
                 CancellationToken.None);
 
-            service = new DriveService(new BaseClientService.Initializer()
+            var initializer = new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credentialAuthorization.Result,
-                ApplicationName = ApplicationName,
-            });
+                ApplicationName = applicationName,
+            };
 
-            worker = new DriveWorker(this, service);
+            return initializer;
         }
 
         //public List<(string Name, string Id)> GetFilesRequest(string query)

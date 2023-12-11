@@ -85,7 +85,9 @@ namespace GoogleDriveCoreApp
             return result;
         }
 
-        public (string Id, string Name) CreateNewDocFile(string parent, string fileName)
+        public (string Id, string Name) CreateNewDocFile(
+            string parent,
+            string fileName)
         {
             var guid = Guid.NewGuid();
             var description = string.Empty;

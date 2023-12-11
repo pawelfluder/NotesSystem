@@ -73,7 +73,7 @@ namespace GoogleDocsServiceProj.Service
 
             var credentialAuthorization = GoogleWebAuthorizationBroker.AuthorizeAsync(
                 secrets,
-                scopes,
+                this.scopes,
                 "user",
                 CancellationToken.None);
 
