@@ -20,7 +20,7 @@ namespace SharpFileServiceProg.Operations.Path
                 return gg1;
             }
 
-            var gg2 = FindFolderInRangeUp(searchFolderName, inputFolderPath2, -(range.left) +1);
+            var gg2 = FindFolderInRangeUp(searchFolderName, inputFolderPath2, -(range.left) + 1);
 
             if (gg2 != default)
             {
@@ -69,7 +69,7 @@ namespace SharpFileServiceProg.Operations.Path
 
             var regex01 = "^(-?[0-9]\\d*)\\((-?[0-9]\\d*),(-?[0-9]\\d*)\\)$";
             var match01 = Regex.Match(expression, regex01);
-            if (match01.Groups.Count == (3+1))
+            if (match01.Groups.Count == (3 + 1))
             {
                 var success01 = int.TryParse(
                     match01.Groups.Values.ElementAt(1).Value,
@@ -151,7 +151,7 @@ namespace SharpFileServiceProg.Operations.Path
                 {
                     return default;
                 }
-                
+
                 directories = Directory.GetDirectories(currentFolder);
                 startupProjectFolder = directories.SingleOrDefault(
                     x => System.IO.Path.GetFileName(x) == folderName);
@@ -197,9 +197,13 @@ namespace SharpFileServiceProg.Operations.Path
                 {
                     if (!IsSpecial(dir))
                     {
-                        FindFolderInRangeDown(folderName, dir, max - 1);
+                        var found = FindFolderInRangeDown(folderName, dir, max - 1);
+                        if (found != null)
+                        {
+                            return found;
+                        }
                     }
-                    
+
                 }
             }
 
@@ -208,14 +212,14 @@ namespace SharpFileServiceProg.Operations.Path
 
         public bool IsSpecial(string folderPath)
         {
-            if (folderPath != "Config.Msi" &&
-                folderPath != "$RECYCLE.BIN")
+            if (folderPath == "Config.Msi" ||
+                folderPath == "$RECYCLE.BIN")
             {
                 return true;
             }
 
             return false;
         }
-        
+
     }
 }

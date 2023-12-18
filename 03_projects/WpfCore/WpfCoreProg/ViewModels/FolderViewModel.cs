@@ -4,7 +4,6 @@ using SharpRepoBackendProg.Service;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Unity;
 using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.Models;
 using WpfNotesSystemProg3.ViewModelBase;
