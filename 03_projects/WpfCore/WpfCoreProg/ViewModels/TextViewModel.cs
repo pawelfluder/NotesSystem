@@ -130,10 +130,10 @@ namespace WpfNotesSystem.ViewModels
                     AdrTuple.repo, AdrTuple.loca);
             }
 
-            if (TtsSelected == "Recreate")
+            if (SelectedGoogleDoc == "Recreate")
             {
                 backendService.CommandApi(
-                    IBackendService.ApiMethods.CreateGoogledoc.ToString(),
+                    IBackendService.ApiMethods.RecreateGoogledoc.ToString(),
                     AdrTuple.repo, AdrTuple.loca);
             }
         }
