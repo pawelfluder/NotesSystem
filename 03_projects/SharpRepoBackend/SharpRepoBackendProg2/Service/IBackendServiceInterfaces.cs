@@ -4,20 +4,31 @@
     {
         public enum ApiMethods
         {
-            OpenFolder,
-            OpenContent,
+            // config
             OpenConfig,
-            OpenPdf,
-            OpenGoogledoc,
-
             CreateFolder,
-            CreateContent,
-            CreatePdf,
-            CreateGoogledoc,
 
+            // content
+            OpenContent,
+            CreateContent,
             AddContent,
 
+            // folder
+            OpenFolder,
+
+            // pdf
+            OpenPdf,
+            CreatePdf,
+
+            // google doc
+            OpenGoogledoc,
+            RecreateGoogledoc,
+            CreateGoogledoc,
+
+            // printer
             RunPrinter,
+
+            // ??
             GetAllRepoName,
         }
     }

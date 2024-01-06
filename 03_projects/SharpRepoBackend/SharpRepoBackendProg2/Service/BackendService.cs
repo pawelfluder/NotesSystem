@@ -113,9 +113,15 @@ namespace SharpRepoBackendProg.Service
                     return jsonResult;
                 }
 
-                if (cmdName == IBackendService.ApiMethods.OpenGoogledoc.ToString())
+                if (cmdName == IBackendService.ApiMethods.RecreateGoogledoc.ToString())
                 {
                     var url = CreateGoogledoc((repo, loca2));
+                    OpenGoogledoc(url);
+                }
+
+                if (cmdName == IBackendService.ApiMethods.OpenGoogledoc.ToString())
+                {
+                    var url = OpenGoogledoc((repo, loca2));
                     OpenGoogledoc(url);
                 }
 
@@ -242,6 +248,32 @@ namespace SharpRepoBackendProg.Service
                 FileName = url,
                 UseShellExecute = true
             });
+        }
+
+        private string OpenGoogledoc((string repo, string loca) address)
+        {
+            var name = repoService.Methods.GetLocalName(address);
+            var id = repoService.Methods.TryGetConfigValue(
+                address, ConfigKeys.googleDocId.ToString());
+            var documentExists = id != null;
+
+            if (!documentExists)
+            {
+                var docIdQName = CreateNewDocFile(name);
+                id = docIdQName.id;
+                repoService.Methods.CreateConfigKey(
+                    address, ConfigKeys.googleDocId.ToString(),
+                    id);
+                documentExists = true;
+            }
+
+            if (documentExists)
+            {
+                var url = $"https://docs.google.com/document/d/{id}";
+                return url;
+            }
+
+            return default;
         }
 
         private string CreateGoogledoc((string repo, string loca) address)

@@ -39,7 +39,9 @@ namespace WpfNotesSystem.ViewModels
             // Todo get interface method names
             var gg = ttsService.RepoTts.GetType().GetMethods();
             TtsOptions = new List<string> { "StartNew", "Pause", "SaveFile", "Resume" };
+            OptionsGoogleDoc = new List<string> { "Open", "Recreate", };
             TtsSelected = "StartNew";
+            SelectedGoogleDoc = "Open";
         }
 
         public string Address { get; set; }
@@ -83,6 +85,8 @@ namespace WpfNotesSystem.ViewModels
 
         public List<string> TtsOptions { get; private set; }
         public string TtsSelected { get; set; }
+        public string SelectedGoogleDoc { get; set; }
+        public List<string> OptionsGoogleDoc { get; private set; }
 
         private ICommand _ttsCommand;
         public ICommand TtsCommand
@@ -114,6 +118,23 @@ namespace WpfNotesSystem.ViewModels
             if (TtsSelected == "SaveFile")
             {
                 await ttsService.RepoTts.SaveFile(AdrTuple);
+            }
+        }
+
+        public void GoogledocAction()
+        {
+            if (SelectedGoogleDoc == "Open")
+            {
+                backendService.CommandApi(
+                    IBackendService.ApiMethods.OpenGoogledoc.ToString(),
+                    AdrTuple.repo, AdrTuple.loca);
+            }
+
+            if (TtsSelected == "Recreate")
+            {
+                backendService.CommandApi(
+                    IBackendService.ApiMethods.CreateGoogledoc.ToString(),
+                    AdrTuple.repo, AdrTuple.loca);
             }
         }
 
@@ -212,13 +233,6 @@ namespace WpfNotesSystem.ViewModels
         {
             backendService.CommandApi(
                 IBackendService.ApiMethods.RunPrinter.ToString(),
-                AdrTuple.repo, AdrTuple.loca);
-        }
-
-        public void GoogledocAction()
-        {
-            backendService.CommandApi(
-                IBackendService.ApiMethods.OpenGoogledoc.ToString(),
                 AdrTuple.repo, AdrTuple.loca);
         }
 

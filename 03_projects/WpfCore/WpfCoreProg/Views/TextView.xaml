@@ -40,8 +40,13 @@
                Style="{StaticResource Button01}"/>
             <Button Content="Pdf"  Command="{Binding PdfCommand}"
                Style="{StaticResource Button01}"/>
-            <Button Content="GoogleDoc" Command="{Binding GoogledocCommand}"
-               Style="{StaticResource Button01}"/>
+            <StackPanel Orientation="Vertical" MinWidth="100">
+               <ComboBox
+                  ItemsSource="{Binding OptionsGoogleDoc}"
+                  SelectedItem="{Binding SelectedGoogleDoc}">
+               </ComboBox>
+               <Button Content="GoogleDoc" Command="{Binding GoogledocCommand}"/>
+            </StackPanel>
             <Button Content="RunPrinter" Command="{Binding RunPrinterCommand}"
                Style="{StaticResource Button01}"/>
             <StackPanel Orientation="Vertical" MinWidth="100">

@@ -478,6 +478,11 @@ namespace SharpNotesExporter
 
         public (int RowCount, int ColumnCount) GetTableSize(List<(string Type, int Level, string Text)> elementsList)//, string repoName, string repo)
         {
+            if (elementsList.Count() == 0)
+            {
+                return (0, 0);
+            }
+
             var rowCount = 0;
             var columnCount = elementsList.Select(x => x.Level).Max();
 
