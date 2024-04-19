@@ -1,0 +1,55 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+        "label": "build; SharpButtonActionsProg",
+        "command": "dotnet",
+        "type": "process",
+        "args": [
+            "build",
+            "${workspaceFolder}/03_projects/SharpButtonActions/SharpButtonActionsProg/SharpButtonActionsProg.csproj", // removed ${workspaceFolder}/
+            "/property:GenerateFullPaths=true",
+            "/consoleloggerparameters:NoSummary"
+        ],
+        "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build; BlazorInterAutoProj",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/05_projects/BlazorInterAutoProj/BlazorInterAutoProj.csproj", // removed ${workspaceFolder}/
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build; SharpCryptoCalcProg",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/24_projects/SharpCryptoCalc/SharpCryptoCalcProg/SharpCryptoCalcProg.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary",
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build; SharpImageSplitter",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/24_projects/SharpImageSplitter/SharpImageSplitterProg/SharpImageSplitterProg.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary",
+            ],
+            "problemMatcher": "$msCompile"
+        },
+    ]
+}

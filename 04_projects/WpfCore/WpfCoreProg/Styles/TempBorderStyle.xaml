@@ -1,0 +1,25 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+      <Style x:Key="MainWindowContentControl" TargetType="{x:Type Border}">
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="BorderBrush" Value="Black" />
+   </Style>
+
+   <Style x:Key="TextViewAllRowQCol" TargetType="{x:Type Border}">
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="BorderBrush" Value="Purple" />
+   </Style>
+
+   <Style x:Key="FolderViewAllRowQCol" TargetType="{x:Type Border}">
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="BorderBrush" Value="Orange" />
+   </Style>
+
+   <Style x:Key="FolderContentControl" TargetType="{x:Type Border}">
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="BorderBrush" Value="Red" />
+   </Style>
+</ResourceDictionary>

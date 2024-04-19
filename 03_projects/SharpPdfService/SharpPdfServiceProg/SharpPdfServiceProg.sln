@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdfService2CoreProj", "PdfService2CoreProj.csproj", "{07718245-E763-43BF-9FF9-1AE06F2502EC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextHeaderAnalyzerCoreProj", "..\TextHeaderAnalyzerCoreProj\TextHeaderAnalyzerCoreProj.csproj", "{8E7D89E7-3E83-4133-9940-EFE9FD1CB82A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07718245-E763-43BF-9FF9-1AE06F2502EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07718245-E763-43BF-9FF9-1AE06F2502EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07718245-E763-43BF-9FF9-1AE06F2502EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07718245-E763-43BF-9FF9-1AE06F2502EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E7D89E7-3E83-4133-9940-EFE9FD1CB82A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E7D89E7-3E83-4133-9940-EFE9FD1CB82A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E7D89E7-3E83-4133-9940-EFE9FD1CB82A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E7D89E7-3E83-4133-9940-EFE9FD1CB82A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A394C09-8010-4A34-85C5-444B61A66DFF}
+	EndGlobalSection
+EndGlobal

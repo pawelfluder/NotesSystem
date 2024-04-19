@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Repetition\RegistrationBase.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Unity.Container" Version="5.11.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SharpContainer\SharpContainerProg\SharpContainerProg.csproj" />
+    <ProjectReference Include="..\..\SharpGoogleDocs\SharpGoogleDocsProg\SharpGoogleDocsProg.csproj" />
+    <ProjectReference Include="..\..\SharpGoogleDrive\SharpGoogleDriveProg\SharpGoogleDriveProg.csproj" />
+    <ProjectReference Include="..\..\SharpConfig\SharpConfigProg\SharpConfigProg.csproj" />
+    <ProjectReference Include="..\..\SharpPdfService\SharpPdfServiceProg\SharpPdfServiceProg.csproj" />
+    <ProjectReference Include="..\..\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj" />
+    <ProjectReference Include="..\..\SharpNotesExporter\SharpNotesExporterProg\SharpNotesExporterProg.csproj" />
+    <ProjectReference Include="..\..\SharpTextHeaderAnalyzer\SharpTextHeaderAnalyzerProg\SharpTextHeaderAnalyzerProg.csproj" />
+    <ProjectReference Include="..\..\SharpButtonActions\SharpButtonActionsProg\SharpButtonActionsProg.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,5 @@
+{
+    "dotnet-test-explorer.testProjectPath": "*Tests*"
+    //"dotnet-test-explorer.testProjectPath": "03_projects/SharpGoogleSheet/SharpGoogleSheetTests/*Tests*"
+    //"dotnet-test-explorer.testProjectPath": "/Users/pawelfluder/03_synch/01_files_programming/03_github/NotesSystemCore/03_projects/SharpNotesMigration/SharpNotesMigrationTests/Directory.Build.props"
+}

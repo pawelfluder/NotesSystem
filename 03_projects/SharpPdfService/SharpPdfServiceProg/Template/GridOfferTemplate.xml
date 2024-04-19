@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Template>
+  <TitlePageSettings LeftMargin="1.27" RightMargin="1.27" TopMargin="1.27" BottomMargin="1.27">
+    <CompanyName>
+      Ecobam<br />
+      Ecobam Automation Solar Products
+    </CompanyName>
+    <CompanyAddress>
+      Zamiejska 45<br />
+      38-150 Warszawa<br />
+      Poland
+    </CompanyAddress>
+    <CompanyContact>
+      Tel. +48 665 147 149<br />
+      Fax. +48 231 434 2323<br />
+      https://www.ecobam.eu/en/
+    </CompanyContact>
+    <CustomTitle>Custommer offers</CustomTitle>
+    <ImagePath>./Ecobam.png</ImagePath>
+  </TitlePageSettings>
+  <DataPageSettings LeftMargin="1.27" RightMargin="1.27" TopMargin="1.27" BottomMargin="1.27" DataRowHeight="12" DataFontSize="8" HeaderFontSize="10" HeaderRowHeight="16" HeaderFontStyle="Bold" RowsPerPage="39">
+    <Column Id="0" Left="1.27" >Order number</Column>
+    <Column Id="1" Left="3.27">Equipment type</Column>
+    <Column Id="2" Left="7.27">Equipment name</Column>
+     <Column Id="3" Left="11.27">Date</Column>
+     <Column Id="4" Left="15.27">Guid</Column>
+  </DataPageSettings>
+</Template>

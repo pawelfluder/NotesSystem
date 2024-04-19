@@ -1,0 +1,156 @@
+﻿@using Newtonsoft.Json
+@using SharpFileServiceProg.Service
+@using SharpRepoBackendProg.Service
+@using BlazorInterAutoProj.Repet.Models
+@inject IFileService fileService
+@inject BackendService backendService
+@rendermode InteractiveServer
+
+@if (Item?.Type == myType)
+{
+    <div>
+        <input type="button" value="Folder" @onclick="OnFolderClicked" />
+        <input type="button" value="Config" @onclick="ConfigClicked" />
+        <input type="button" value="Terminal" @onclick="TerminalClicked" />
+    </div>
+
+    <div>
+        <input type="button" value="Add" @onclick="OnAddClicked" />
+        <select @bind="@formSelectedType">
+            <option value="Text">Text</option>
+            <option value="Folder">Folder</option>
+            <option value="RefText">RefText</option>
+        </select>
+        <input type="text" @bind=@formAddValue>
+    </div>
+
+   @foreach (var indexQname in GetIndexQnameDict())
+   {
+       <div>
+           @indexQname.Key
+           <input type="button" value="@indexQname.Value" @onclick="() => OnBtnClicked(indexQname.Key)" />
+       </div>
+   }
+}
+
+@*
+@foreach (var indexQname in GetIndexQnameDict())
+{
+    <tr>
+        <td>@indexQname.Key</td>
+        <!-- <td><a @onclick=@OnUrlClicked() href="#"></a></td> -->
+        <input type="button" value="@indexQname.Value" @onclick="() => OnBtnClicked(indexQname.Key)" />
+    </tr>
+}
+*@
+@code {
+    [Parameter]
+    public ItemModel Item { get; set; }
+
+    [Parameter]
+    public Action<ItemModel, bool> ReloadItem { get; set; }
+
+    private string formAddValue;
+    private string formSelectedType;
+
+    private Dictionary<string, string> indexQnameDict;
+    private string myType = "Folder";
+
+    protected override async Task OnInitializedAsync()
+    {
+        myType = "Folder";
+        formSelectedType = "Text";
+        ReloadComponent();
+    }
+
+    //private EventCallback<ItemModel2> itemChanged;
+
+    [Parameter]
+    public EventCallback<ItemModel> ItemChanged { get; set; }
+
+    void ItemChangeHandler(ItemModel item)
+    {
+
+    }
+
+    private void ReloadComponent()
+    {
+        indexQnameDict = GetIndexQnameDict();
+    }
+
+    private Dictionary<string, string> GetIndexQnameDict()
+    {
+        if (Item.Type == myType)
+        {
+            var tmp = fileService.Json.TryDeserializeObject<Dictionary<string, string>>(Item?.Body.ToString());
+            if (tmp is Dictionary<string, string> dict)
+            {
+                return dict;
+            }
+        }
+
+        return default;
+    }
+
+    
+    private void OnAddClicked()
+    {
+        if (string.IsNullOrEmpty(formAddValue))
+        {
+            return;
+        }
+
+        var adrTuple = fileService.RepoAddress
+             .CreateAddressFromString(Item.Address);
+        var itemJson = backendService
+            .CommandApi("CreateItem", adrTuple.Item1, adrTuple.Item2, formSelectedType, formAddValue);
+    }
+
+    private void OnFolderClicked()
+    {
+        var adrTuple = fileService.RepoAddress
+             .CreateAddressFromString(Item.Address);
+        var itemJson = backendService
+            .CommandApi("OpenFolder", adrTuple.Item1, adrTuple.Item2);
+    }
+
+    private void ConfigClicked()
+    {
+        var adrTuple = fileService.RepoAddress
+              .CreateAddressFromString(Item.Address);
+        var itemJson = backendService.CommandApi("OpenConfig", adrTuple.Item1, adrTuple.Item2);
+    }
+    
+    private void TerminalClicked()
+    {
+        var adrTuple = fileService.RepoAddress
+              .CreateAddressFromString(Item.Address);
+        var itemJson = backendService.CommandApi("OpenTerminal", adrTuple.Item1, adrTuple.Item2);
+    }
+
+    private void OnBtnClicked(string idxString)
+    {
+        var index = fileService.Index.StringToIndex(idxString);
+        var adrTuple = fileService.RepoAddress
+             .CreateAddressFromString(Item.Address);
+        var newAddress = fileService.Index.JoinIndexWithLoca(adrTuple, index);
+        var itemJString = GetItem(newAddress);
+        var itemObj = fileService.Json.TryDeserializeObject<ItemModel>(itemJString);
+
+        if (itemObj?.Type != myType)
+        {
+            ReloadItem(itemObj, true);
+            return;
+        }
+
+        ReloadItem(itemObj, false);
+        Item = itemObj;
+        ReloadComponent();
+    }
+
+    public string GetItem((string Repo, string Loca) address)
+    {
+        var itemJson = backendService.CommandApi("GetItem", address.Repo, address.Loca);
+        return itemJson;
+    }
+}
