@@ -28,11 +28,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpConfigProg", "..\03_pr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpSetup21ProgPrivate", "..\22_projects\SharpSetup21ProgPrivate\SharpSetup21ProgPrivate.csproj", "{56E372E1-2286-49CD-A75B-1F228FA50417}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpContainerProg", "..\03_projects\SharpContainer\SharpContainerProg\SharpContainerProg.csproj", "{7121670A-1E0E-4A81-A306-C070C38BC69C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpContainerProg", "..\03_projects\03_projects\SharpContainer\SharpContainerProg\SharpContainerProg.csproj", "{7121670A-1E0E-4A81-A306-C070C38BC69C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGoogleDocsProg", "..\03_projects\SharpGoogleDocs\SharpGoogleDocsProg\SharpGoogleDocsProg.csproj", "{2AD26002-54E1-465D-9526-D5CEFD4FEF49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGoogleDocsProg", "..\03_projects\03_projects\SharpGoogleDocs\SharpGoogleDocsProg\SharpGoogleDocsProg.csproj", "{2AD26002-54E1-465D-9526-D5CEFD4FEF49}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpTtsServiceProg", "..\03_projects\SharpTtsService\SharpTtsServiceProg\SharpTtsServiceProg.csproj", "{7A2AF9AB-4DEA-4490-AAD0-5DF3B440D9F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpTtsServiceProg", "..\03_projects\03_projects\SharpTtsService\SharpTtsServiceProg\SharpTtsServiceProg.csproj", "{7A2AF9AB-4DEA-4490-AAD0-5DF3B440D9F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpNotesMigrationProg", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpRepoServiceProg", "..\..\03_projects\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj", "{FF6C4EC6-21E3-46DD-92DF-FE9AC7707DA3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpConfigProg", "..\..\03_projects\SharpConfig\SharpConfigProg\SharpConfigProg.csproj", "{C5F48FAB-CA65-4EC0-9987-375B624E7DA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpConfigProg", "..\..\17_projects\03_projects\SharpConfig\SharpConfigProg\SharpConfigProg.csproj", "{C5F48FAB-CA65-4EC0-9987-375B624E7DA6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpFileServiceProg", "..\..\03_projects\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj", "{22565367-7EFB-438D-9999-ED9436DA222B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpFileServiceProg", "..\..\17_projects\03_projects\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj", "{22565367-7EFB-438D-9999-ED9436DA222B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpFileServiceTests", "..\..\03_projects\SharpFileService\SharpFileServiceTests\SharpFileServiceTests.csproj", "{CB70790C-E29E-45D1-A9C4-24A1A503DC35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpFileServiceTests", "..\..\17_projects\03_projects\SharpFileService\SharpFileServiceTests\SharpFileServiceTests.csproj", "{CB70790C-E29E-45D1-A9C4-24A1A503DC35}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpNotesMigrationTests", "SharpNotesMigrationTests\SharpNotesMigrationTests.csproj", "{D03C02C1-C743-4C29-9512-23EAA33F852B}"
 EndProject

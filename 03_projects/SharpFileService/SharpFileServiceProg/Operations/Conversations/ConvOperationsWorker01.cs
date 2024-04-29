@@ -39,7 +39,8 @@ namespace SharpFileServiceProg.Operations.Conversations
                 var id = dict["id"].ToString();
                 var name = dict["name"].ToString();
                 var tmp = dict["messages"] as List<object>;
-                var bio = dict["bio"].ToString().Split('\n').ToList();
+                var bio2 = dict["bio"]; if (bio2 == null) { bio2 = ""; }
+                var bio = bio2.ToString().Split('\n').ToList();
                 bio.RemoveAll(x => x == string.Empty);
                 var birth_date = dict["birth_date"].ToString();
                 var messagesObj = tmp.Select(x => (Dictionary<object, object>)x).ToList();

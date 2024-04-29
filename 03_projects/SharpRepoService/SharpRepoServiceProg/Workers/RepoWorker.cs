@@ -25,7 +25,8 @@ namespace SharpRepoServiceProg.RepoOperations
         private string refLocaStr;
 
         // char names
-        private static char slash = '/';
+        private char slash = '/';
+        private char newLine = '\n';
 
         private readonly ServerInfo serverInfo;
         private readonly LocalInfo localInfo;
@@ -101,7 +102,7 @@ namespace SharpRepoServiceProg.RepoOperations
             var itemPath = GetElemPath(address);
             var nameFilePath = itemPath + slash + configFileName;
             var configLines = File.ReadAllLines(nameFilePath);
-            var configText = string.Join('\n', configLines);
+            var configText = string.Join(newLine, configLines);
             return configText;
         }
 
@@ -226,6 +227,29 @@ namespace SharpRepoServiceProg.RepoOperations
             return contentsList;
         }
 
+        public List<(int, string)> GetManyItemByName2(
+            (string Repo, string Loca) address,
+            List<string> names)
+        {
+            // ReadElemListByNames
+            address = GetAdrTupleByNameList(address, names);
+            var localPath = GetElemPath(address);
+            var folders = GetDirectories(localPath);
+            var tmp = folders.Select(x => Path.GetFileName(x));
+
+            var contentsList = new List<(int,string)>();
+
+            foreach (var tmp2 in tmp)
+            {
+                var index = StringToIndex(tmp2);
+                var newAddress = fileService.Index.SelectAddress(address, index);
+                var content = GetText2(newAddress);
+                contentsList.Add((index,content));
+            }
+
+            return contentsList;
+        }
+
         public List<string> GetAllMsgFolders()
         {
             var guid = "ebf8d4ba-06c2-43eb-a201-4d32d13656e4";
@@ -259,6 +283,7 @@ namespace SharpRepoServiceProg.RepoOperations
             return resultValue;
         }
 
+        // todo rename - GetConfigDict
         public Dictionary<string, object> GetConfigKeyDict(
             (string Repo, string Loca) address,
             params string[] keyArray)
@@ -342,7 +367,7 @@ namespace SharpRepoServiceProg.RepoOperations
             // ReadText
             var path = GetElemPath(address) + "/" + contentFileName;
             var lines = File.ReadAllLines(path);
-            var content = string.Join('\n', lines);
+            var content = string.Join(newLine, lines);
             return content;
         }
 
@@ -745,13 +770,16 @@ namespace SharpRepoServiceProg.RepoOperations
         public string GetRepoPath(string repo)
         {
             var foundList = reposPathsList.Where(x => Path.GetFileName(x) == repo).ToList();
-            if (foundList?.Count() != 1 ||
-                !Directory.Exists(foundList.First()))
-            {
-                HandleError();
-            }
 
-            return foundList.First();
+            if (foundList != null &&
+                foundList.Count() == 1)
+            {
+                var result = foundList.First();
+                return result;
+            }
+                
+            var result2 = HandleError();
+            return result2;
         }
         // GET
         //-------------------------
@@ -792,9 +820,16 @@ namespace SharpRepoServiceProg.RepoOperations
             string itemPath,
             string content)
         {
-            var gg = string.Join("", Enumerable.Repeat("\n", 4));
+            var topSpace = GetTopSpace();
             var contentFilePath = itemPath + slash + contentFileName;
-            File.WriteAllText(contentFilePath, gg + content);
+            File.WriteAllText(contentFilePath, topSpace + content);
+        }
+
+        public string GetTopSpace()
+        {
+            //var result = string.Join("", Enumerable.Repeat(newLine, 4));
+            var result = "";
+            return result;
         }
 
         public void CreateConfig(
@@ -813,7 +848,7 @@ namespace SharpRepoServiceProg.RepoOperations
         {
             var itemPath = GetElemPath(address);
             var nameFilePath = itemPath + slash + configFileName;
-            var content = string.Join('\n', contentLines);
+            var content = string.Join(newLine, contentLines);
             File.WriteAllText(nameFilePath, content);
         }
 
@@ -846,15 +881,10 @@ namespace SharpRepoServiceProg.RepoOperations
             List<(string Name, string Content)> nQcList)
         {
             var localPath = GetElemPath(address);
-            var lastNumber = GetFolderLastNumber(localPath);
 
             foreach (var nQc in nQcList)
             {
-                lastNumber++;
-                if (nQc.Name == "645a90a505ed8501009ff2fc651ae829e0d5d201007d6767")
-                { }
-
-                CreateChildText(address, nQc.Name, nQc.Content);
+                PostText(address, nQc.Name, nQc.Content);
             }
         }
 
@@ -868,12 +898,47 @@ namespace SharpRepoServiceProg.RepoOperations
 
         public (string, string) CreateChildText(
             (string Repo, string Loca) address,
-            string name)
+            string name,
+            string content = "")
         {
             var lastNumber = GetFolderLastNumber(address);
             var newAddress = fileService.Index.SelectAddress(address, lastNumber + 1);
             CreateTextGenerate(newAddress, name, string.Empty);
             return newAddress;
+        }
+
+        public (string, string) PatchText(
+            string content,
+            (string Repo, string Loca) address)
+        {
+            var name = GetConfigKey(address, "name").ToString();
+            CreateTextGenerate(address, name, content);
+            return address;
+        }
+
+        public (string, string) PutText(
+            (string Repo, string Loca) address,
+            string name,
+            string content = "")
+        {
+            CreateTextGenerate(address, name, content);
+            return address;
+        }
+
+        public (string, string) PostText(
+            (string Repo, string Loca) adrTuple,
+            string name,
+            string content)
+        {
+            var existingItem = GetExistingItem(adrTuple, name);
+            if (existingItem != default)
+            {
+                PutText(adrTuple, name, content);
+                return adrTuple;
+            }
+
+            CreateChildText(adrTuple, name, content);
+            return adrTuple;
         }
 
         [MethodLogger]
@@ -939,16 +1004,16 @@ namespace SharpRepoServiceProg.RepoOperations
             CreateConfig(address, dict);
         }
 
-        public (string, string) CreateChildText(
-            (string Repo, string Loca) address,
-            string name,
-            string content)
-        {
-            var lastNumber = GetFolderLastNumber(address);
-            var newAddress = fileService.Index.SelectAddress(address, lastNumber + 1);
-            CreateTextGenerate(newAddress, name, content);
-            return newAddress;
-        }
+        //public (string, string) CreateChildText(
+        //    (string Repo, string Loca) address,
+        //    string name,
+        //    string content)
+        //{
+        //    var lastNumber = GetFolderLastNumber(address);
+        //    var newAddress = fileService.Index.SelectAddress(address, lastNumber + 1);
+        //    CreateTextGenerate(newAddress, name, content);
+        //    return newAddress;
+        //}
 
         public (string, string) CreateChildRefText(
             (string Repo, string Loca) address,
@@ -1051,7 +1116,7 @@ namespace SharpRepoServiceProg.RepoOperations
 
             var contentFilePath = elemPath + slash + contentFileName;
             var oldContent = GetText2(address);
-            var newContent = oldContent + "\n" + content;
+            var newContent = oldContent + newLine + content;
             File.WriteAllText(contentFilePath, newContent);
         }
 
@@ -1073,7 +1138,7 @@ namespace SharpRepoServiceProg.RepoOperations
 
             var contentFilePath = elemPath + slash + contentFileName;
             var oldContent = GetText2(address);
-            var newContent = oldContent + "\n" + content;
+            var newContent = oldContent + newLine + content;
             File.WriteAllText(contentFilePath, newContent);
         }
 
@@ -1082,7 +1147,7 @@ namespace SharpRepoServiceProg.RepoOperations
             // ReadText
             var path = GetElemPath(address) + "/" + contentFileName;
             var lines = File.ReadAllLines(path).Skip(4);
-            var content = string.Join('\n', lines);
+            var content = string.Join(newLine, lines);
             return content;
         }
 
@@ -1103,7 +1168,7 @@ namespace SharpRepoServiceProg.RepoOperations
             return false;
         }
 
-        public void Initialize(List<string> searchPaths)
+        public void PutPaths(List<string> searchPaths)
         {
             foreach (var searchFolder in searchPaths)
             {

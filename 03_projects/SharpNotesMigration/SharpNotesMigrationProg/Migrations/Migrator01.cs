@@ -9,6 +9,16 @@ namespace SharpNotesMigrationProg.Migrations
         private readonly IFileService fileService;
         private readonly IRepoService repoService;
 
+        public string Description
+        {
+            get
+            {
+                return @"Previously - first line was a name value.
+                         After update - name value is a part of yaml.
+                         And is written like this: ""name"": ""my super name""";
+            }
+        }
+
         public Migrator01(
             IFileService fileService,
             IRepoService repoService)

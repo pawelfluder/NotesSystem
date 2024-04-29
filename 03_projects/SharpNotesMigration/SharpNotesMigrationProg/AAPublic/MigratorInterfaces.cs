@@ -7,4 +7,12 @@
         void MigrateOneRepo((string Repo, string Loca) address);
         void SetAgree(bool agree);
     };
+
+    public interface IMigrator04
+    {
+    }
+
+    public interface IMigrator05
+    {
+    }
 }

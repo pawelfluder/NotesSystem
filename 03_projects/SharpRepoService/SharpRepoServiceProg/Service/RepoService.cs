@@ -12,9 +12,13 @@ namespace SharpRepoServiceProg.Service
         private readonly ServerInfo serverInfo;
         private readonly IFileService fileService;
         private readonly LocalInfo localInfo;
-        private bool repoWorkerIsInit;
+        private bool repoWorkerInit;
+        private bool itemWorkerInit;
+
         private RepoWorker methods;
         private ItemWorker item;
+
+        private bool isRepoInit;
 
         internal RepoService(
             IFileService fileService)
@@ -28,7 +32,12 @@ namespace SharpRepoServiceProg.Service
         {
             get
             {
-                InitializeWorkers();
+                if (!isRepoInit)
+                {
+                    methods = new RepoWorker(fileService, serverInfo, localInfo);
+                    isRepoInit = true;
+                }
+
                 return methods;
             }
         }
@@ -37,31 +46,21 @@ namespace SharpRepoServiceProg.Service
         {
             get
             {
-                InitializeWorkers();
+                if (!itemWorkerInit)
+                {
+                    var methods = Methods;
+                    item = new ItemWorker(methods, fileService);
+                    itemWorkerInit = true;
+                }
+
                 return item;
             }
         }
 
-        private void InitializeWorkers()
+        public void PutPaths(List<string> searchPaths)
         {
-            if (methods == null)
-            {
-                methods = new RepoWorker(fileService, serverInfo, localInfo);
-            }
+            Methods.PutPaths(searchPaths);
 
-            if (item == null)
-            {
-                item = new ItemWorker(methods, fileService);
-            }
-        }
-
-        public void Initialize(List<string> searchPaths)
-        {
-            InitializeWorkers();
-
-            if (repoWorkerIsInit) { throw new Exception(); }
-            methods.Initialize(searchPaths);
-            repoWorkerIsInit = true;
             if (!(methods.GetReposCount() > 0))
             {
                 throw new Exception();

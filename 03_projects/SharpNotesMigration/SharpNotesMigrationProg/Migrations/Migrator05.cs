@@ -1,11 +1,10 @@
 ﻿using SharpFileServiceProg.Service;
 using SharpNotesMigrationProg.AAPublic;
 using SharpRepoServiceProg.AAPublic;
-using System.Net;
 
 namespace SharpNotesMigrationProg.Migrations
 {
-    internal class Migrator04 : IMigrator, IMigrator04
+    internal class Migrator05 : IMigrator, IMigrator05
     {
         private readonly IFileService fileService;
         private readonly IRepoService repoService;
@@ -16,14 +15,15 @@ namespace SharpNotesMigrationProg.Migrations
         {
             get
             {
-                return @"Previously - there was no ""id"" and ""type"" in config.
-                         After update - those two values are added to config file.";
+                return @"Previously - there was 4 empty lines at the top of body file.
+                         After update - there is no empty lines at the top.";
             }
         }
 
+        // 
         public List<(int, string, string, string)> Changes { get; private set; }
 
-        public Migrator04(
+        public Migrator05(
             IFileService fileService,
             IRepoService repoService)
         {
@@ -45,24 +45,44 @@ namespace SharpNotesMigrationProg.Migrations
 
             MigrateOneAddress(adrTuple);
 
-            //MigrateOneAddress(address);
             foreach (var foundAddress in foundAddressList)
             {
                 MigrateOneAddress(foundAddress);
             }
         }
 
-        private void MigrateOneAddress((string Repo, string Loca) adrTuple)
+        private void MigrateOneAddress(
+            (string Repo, string Loca) adrTuple)
         {
-            var dict = repoService.Methods.GetConfigKeyDict(adrTuple);
             var type = repoService.Methods.GetType(adrTuple);
-            var s1 = dict.TryAdd("id", Guid.NewGuid().ToString());
-            var s2 = dict.TryAdd("type", type);
 
-            if (agree)
+            if (type == "Text")
             {
-                repoService.Methods.CreateConfig(adrTuple, dict);
+                var newText = RemoveTopEmptyLines(adrTuple);
+                var adrTuple2 = repoService.Methods.PatchText(newText, adrTuple);
             }
+        }
+
+        private string RemoveTopEmptyLines((string Repo, string Loca) adrTuple)
+        {
+            var lines = repoService.Methods.GetTextLines(adrTuple);
+            for (var i = 0; i < 4; i++)
+            {
+                var line = lines[0];
+                if (line == string.Empty)
+                {
+                    lines.RemoveAt(0);
+                }
+
+                if (line != string.Empty)
+                {
+                    break;
+                }
+            }
+
+            var text = string.Join("\n", lines);
+
+            return text;
         }
 
         void IMigrator.MigrateOneAddress((string Repo, string Loca) address)

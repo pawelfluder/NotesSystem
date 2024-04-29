@@ -1,7 +1,7 @@
 using SharpConfigProg.Service;
 using SharpNotesMigrationProg.AAPublic;
 using SharpNotesMigrationProg.Service;
-using SharpNotesMigrationTests.Repetition;
+using SharpNotesMigrationTests.Registration;
 using SharpRepoServiceProg.AAPublic;
 using Unity;
 using OutBorder01 = SharpSetup21ProgPrivate.AAPublic.OutBorder;
@@ -17,7 +17,7 @@ namespace SharpNotesMigrationTests
             var configService = MyBorder.Container.Resolve<IConfigService>();
             configService.Prepare();
             var repoService = MyBorder.Container.Resolve<IRepoService>();
-            repoService.Initialize(configService.GetRepoSearchPaths());
+            repoService.PutPaths(configService.GetRepoSearchPaths());
         }
 
         [TestMethod]

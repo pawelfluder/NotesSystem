@@ -2,6 +2,7 @@
 using SharpFileServiceProg.Service;
 using SharpNotesMigrationProg.Migrations;
 using SharpRepoServiceProg.AAPublic;
+using System.Reflection;
 
 namespace SharpNotesMigrationProg.Service
 {
@@ -19,13 +20,23 @@ namespace SharpNotesMigrationProg.Service
         {
             this.fileService = fileService;
             this.repoService = repoService;
-            //this.configService = configService;
 
             migratorsList = new List<IMigrator>()
             {
                 new Migrator03(fileService, repoService),
                 new Migrator04(fileService, repoService),
+                new Migrator05(fileService, repoService),
             };
+        }
+
+        // todo move to OperationsService
+        private IEnumerable<Type> Method()
+        {
+            var type = typeof(IMigrator);
+            IEnumerable<Type> types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => type.IsAssignableFrom(p));
+            return types;
         }
 
         public void MigrateOneAddress(

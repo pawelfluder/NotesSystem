@@ -12,7 +12,6 @@ namespace SharpTtsServiceProg
             //var fileName = "output";
             //ttsService.Tts.Speak(text);
 
-            
             var adrTuple = ("Rama", "03/11/03/05");
             //ttsService.RepoTts.Speak(adrTuple);
         }

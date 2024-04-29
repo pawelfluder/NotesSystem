@@ -9,6 +9,6 @@ namespace SharpRepoServiceProg.AAPublic
 
         ItemWorker Item { get; }
 
-        void Initialize(List<string> searchPaths);
+        void PutPaths(List<string> searchPaths);
     }
 }

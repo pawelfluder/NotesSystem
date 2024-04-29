@@ -194,6 +194,12 @@ namespace SharpTtsServiceProg.Worker
                 line = line.Substring(start, length);
             }
 
+            var at = '@';
+            if (line.StartsWith(at))
+            {
+                line = line.Trim(at);
+            }
+
             line = AllReplacements(line);
             line.Replace(" m2w ", " man to woman ");
 
