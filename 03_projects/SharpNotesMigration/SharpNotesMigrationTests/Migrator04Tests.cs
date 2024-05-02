@@ -1,17 +1,14 @@
-using SharpConfigProg.Service;
 using SharpNotesMigrationProg.AAPublic;
 using SharpNotesMigrationProg.Service;
 using SharpNotesMigrationTests.Registration;
-using SharpRepoServiceProg.AAPublic;
-using Unity;
 using OutBorder01 = SharpSetup21ProgPrivate.AAPublic.OutBorder;
 
 namespace SharpNotesMigrationTests
 {
     [TestClass]
-    public class Migrator05Tests
+    public class Migrator04Tests
     {
-        public Migrator05Tests()
+        public Migrator04Tests()
         {
             OutBorder01.GetPreparer("PrivateNotesPreparer").Prepare();
         }
@@ -25,19 +22,19 @@ namespace SharpNotesMigrationTests
             var agree = true;
 
             // act
-            migrationService.MigrateOneAddress(typeof(IMigrator05), adrTuple, agree);
+            migrationService.MigrateOneAddress(typeof(IMigrator04), adrTuple, agree);
         }
 
         [TestMethod]
-        public void TestMethod3()
+        public void MigrateOneFolder()
         {
             // arrange
             var migrationService = MyBorder.Container.Resolve<IMigrationService>();
-            var adrTuple = ("Winder2", "01/03/01");
+            var adrTuple = ("Winder2", "");
             var agree = true;
 
             // act
-            migrationService.MigrateOneFolder(typeof(IMigrator05), adrTuple, agree);
+            migrationService.MigrateOneFolder(typeof(IMigrator04), adrTuple, agree);
         }
     }
 }

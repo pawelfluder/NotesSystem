@@ -52,7 +52,7 @@ namespace SharpNotesMigrationProg.Migrations
             }
         }
 
-        private void MigrateOneAddress((string Repo, string Loca) adrTuple)
+        public void MigrateOneAddress((string Repo, string Loca) adrTuple)
         {
             var dict = repoService.Methods.GetConfigKeyDict(adrTuple);
             var type = repoService.Methods.GetType(adrTuple);
@@ -61,14 +61,8 @@ namespace SharpNotesMigrationProg.Migrations
 
             if (agree)
             {
-                // todo
-                //repoService.Methods.CreateConfig(adrTuple, dict);
+                repoService.Methods.CreateConfig(adrTuple, dict);
             }
-        }
-
-        void IMigrator.MigrateOneAddress((string Repo, string Loca) address)
-        {
-            throw new NotImplementedException();
         }
 
         public void MigrateOneRepo(string repoName)
@@ -85,5 +79,10 @@ namespace SharpNotesMigrationProg.Migrations
         {
             this.agree = agree;
         }
+
+        //void IMigrator.MigrateOneAddress((string Repo, string Loca) adrTuple)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

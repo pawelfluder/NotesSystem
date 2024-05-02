@@ -41,12 +41,14 @@ namespace SharpNotesMigrationProg.Service
 
         public void MigrateOneAddress(
             Type migratorType,
-            (string Repo, string Loca) address)
+            (string Repo, string Loca) address,
+            bool agree)
         {
-            var found = migratorsList.SingleOrDefault(x => x.GetType() == migratorType);
+            var found = migratorsList.SingleOrDefault(x => x.GetType().GetInterfaces().Contains(migratorType));
 
             if (found != null)
             {
+                found.SetAgree(agree);
                 found.MigrateOneAddress(address);
             }
         }
@@ -67,7 +69,8 @@ namespace SharpNotesMigrationProg.Service
 
         public void MigrateOneRepo(
             Type migratorType,
-            string repoName)
+            string repoName,
+            bool agree)
         {
             var found = migratorsList.SingleOrDefault(x => x.GetType() == migratorType);
 

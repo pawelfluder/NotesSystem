@@ -38,9 +38,10 @@ namespace SharpNotesMigrationTests
         {
             // arrange
             var migrationService = MyBorder.Container.Resolve<IMigrationService>();
+            var agree = true;
 
             // act
-            migrationService.MigrateOneRepo(typeof(IMigrator03), "Notes");
+            migrationService.MigrateOneRepo(typeof(IMigrator03), "Notes", agree);
         }
 
         [TestMethod]

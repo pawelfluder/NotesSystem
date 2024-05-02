@@ -1,8 +1,10 @@
 ﻿using SharpFileServiceProg.Service;
 using SharpRepoServiceCoreProj;
+using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.WorkersSystem;
 using SharpTinderComplexTests;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -84,6 +86,11 @@ namespace SharpRepoServiceProg.Workers
             (string Repo, string Loca) adrTuple)
             => rw.GetText2(adrTuple);
 
+        public void CreateConfig(
+            (string Repo, string Loca) adrTuple,
+            Dictionary<string, object> dict)
+            => cw.CreateConfig(adrTuple, dict);
+
         public (string, string) GetAdrTupleByName(
             (string Repo, string Loca) adrTuple,
             string name)
@@ -164,8 +171,23 @@ namespace SharpRepoServiceProg.Workers
         public string GetType(
             (string repo, string loca) adrTuple)
         {
-            var item = rw.GetItemConfig(adrTuple);
-            return item.Type;
+            var type = rw.GetConfigKey(adrTuple, Fields_Item.Type);
+            if(type == null)
+            {
+                var type2 = GuesTypeByFiles(adrTuple);
+                return type2;
+            }
+            return type.ToString();
+        }
+
+        private string GuesTypeByFiles((string repo, string loca) adrTuple)
+        {
+            var settingsFile = pw.GetBodyPath(adrTuple);
+            if (File.Exists(settingsFile))
+            {
+                return ItemTypes.Text;
+            }
+            return ItemTypes.Folder;
         }
 
         public string GetName(
