@@ -325,7 +325,7 @@ namespace SharpRepoServiceProg.Workers
             string name)
         {
             var items = GetItemConfigList(adrTuple);
-            var found = items.SingleOrDefault(x => x.Name == name);
+            var found = items.SingleOrDefault(x => x.Name.ToString() == name);
             if (found == null)
             {
                 return default;

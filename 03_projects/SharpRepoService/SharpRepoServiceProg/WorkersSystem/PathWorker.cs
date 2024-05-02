@@ -91,7 +91,7 @@ namespace SharpRepoServiceProg.WorkersSystem
 
         private string HandleError()
         {
-            throw new NotImplementedException();
+           throw new NotImplementedException();
         }
 
         internal int GetRepoCount()
