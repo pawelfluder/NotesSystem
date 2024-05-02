@@ -6,6 +6,6 @@
 
         public static string RefText = "RefText";
 
-        public static string Folder = "Text";
+        public static string Folder = "Folder";
     }
 }

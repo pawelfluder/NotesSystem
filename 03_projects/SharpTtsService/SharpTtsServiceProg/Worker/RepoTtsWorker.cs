@@ -144,14 +144,14 @@ namespace SharpTtsServiceProg.Worker
 
         private string GetText((string Repo, string Loca) adrTuple)
         {
-            var text = repoService.Methods.GetText3(adrTuple);
+            var text = repoService.Methods.GetText2(adrTuple);
             text = text.Replace("//", "");
             return text;
         }
 
         private PromptBuilder GetBuilder((string Repo, string Loca) adrTuple, CultureInfo culture)
         {
-            var text = repoService.Methods.GetText3(adrTuple);
+            var text = repoService.Methods.GetText2(adrTuple);
             var elements = fileService.Header.Select2.GetElements(text);
             var builder = new PromptBuilder();
             builder.Culture = culture;

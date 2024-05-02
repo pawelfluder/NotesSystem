@@ -59,7 +59,7 @@ namespace SharpNotesMigrationProg.Migrations
             if (type == "Text")
             {
                 var newText = RemoveTopEmptyLines(adrTuple);
-                var adrTuple2 = repoService.Methods.PatchText(newText, adrTuple);
+                repoService.Methods.PatchText(newText, adrTuple);
             }
         }
 

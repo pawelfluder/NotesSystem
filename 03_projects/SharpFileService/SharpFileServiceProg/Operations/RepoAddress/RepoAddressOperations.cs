@@ -11,6 +11,30 @@ namespace SharpFileServiceProg.Operations.RepoAddress
             this.indexOperations = indexOperations;
         }
 
+        public (string, string) AdrTupleJoinLoca(
+            (string Repo, string Loca) adrTuple, string loca)
+        {
+            if (loca == string.Empty)
+            {
+                return adrTuple;
+            }
+
+            var newLoca = JoinLoca(adrTuple.Loca, loca);
+            var newAdrTuple = (adrTuple.Repo, newLoca);
+            return newAdrTuple;
+        }
+
+        public string JoinLoca(string loca01, string loca02)
+        {
+            if (loca01 == string.Empty)
+            {
+                return loca02;
+            }
+
+            var newLoca = loca01 + "/" + loca02;
+            return newLoca;
+        }
+
         public Uri CreateUriFromAddress((string Repo, string Loca) address, int index)
         {
             var indexString = indexOperations.IndexToString(index);
@@ -61,6 +85,20 @@ namespace SharpFileServiceProg.Operations.RepoAddress
             var newAddress = String.Join('/', splited);
 
             return newAddress;
+        }
+
+        public int GetLastLocaIndex(string addressString)
+        {
+            var slashCount = addressString.Count(x => x == '/');
+            if (slashCount < 1)
+            {
+                throw new Exception();
+            }
+
+            var splited = addressString.Split("/").ToList();
+            var lastIndexString = splited.Last();
+            var lastIndex = indexOperations.StringToIndex(lastIndexString);
+            return lastIndex;
         }
 
         public (string, string) CreateAddressFromString(string addressString)

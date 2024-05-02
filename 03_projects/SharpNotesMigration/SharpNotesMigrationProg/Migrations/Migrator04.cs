@@ -61,7 +61,8 @@ namespace SharpNotesMigrationProg.Migrations
 
             if (agree)
             {
-                repoService.Methods.CreateConfig(adrTuple, dict);
+                // todo
+                //repoService.Methods.CreateConfig(adrTuple, dict);
             }
         }
 

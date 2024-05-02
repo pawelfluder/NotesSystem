@@ -57,7 +57,8 @@ namespace SharpNotesMigrationProg.Migrations
             var notEmptyLines = configLines.Where(x => x != "");
             if (notEmptyLines.Count() == 1)
             {
-                repoService.Methods.CreateConfig(address, new List<string> { Path.GetFileNameWithoutExtension(notEmptyLines.First()) });
+                // todo
+                //repoService.Methods.CreateConfig(address, new List<string> { Path.GetFileNameWithoutExtension(notEmptyLines.First()) });
             }
             else
             { }
@@ -75,40 +76,42 @@ namespace SharpNotesMigrationProg.Migrations
             var ext = files.Select(x => Path.GetExtension(x));
             var indexPhp = files.SingleOrDefault(x => Path.GetFileName(x) == "index.php");
             var lista = files.SingleOrDefault(x => Path.GetFileName(x) == "lista.txt");
-            if (pdf != null &&
-                indexPhp != null)
-            {
-                var configLines = new List<string> { Path.GetFileNameWithoutExtension(pdf) };
-                repoService.Methods.CreateConfig(address, configLines);
-                return false;
-            }
 
-            if (indexPhp != null &&
-            lista != null &&
-                files.Count() == 1)
-            {
-                var configLines = new List<string> { Path.GetFileNameWithoutExtension("??") };
-                repoService.Methods.CreateConfig(address, configLines);
-                return false;
-            }
+            // todo
+            //if (pdf != null &&
+            //    indexPhp != null)
+            //{
+            //    var configLines = new List<string> { Path.GetFileNameWithoutExtension(pdf) };
+            //    repoService.Methods.CreateConfig(address, configLines);
+            //    return false;
+            //}
 
-            if (indexPhp == null &&
-                lista == null &&
-                indexFolders.Count() > 0)
-            {
-                var configLines = new List<string> { Path.GetFileNameWithoutExtension("??") };
-                repoService.Methods.CreateConfig(address, configLines);
-                File.Copy("Old/FolderIndexPhp/index.php", path + "/" + "index.php");
-                return false;
-            }
+            //if (indexPhp != null &&
+            //lista != null &&
+            //    files.Count() == 1)
+            //{
+            //    var configLines = new List<string> { Path.GetFileNameWithoutExtension("??") };
+            //    repoService.Methods.CreateConfig(address, configLines);
+            //    return false;
+            //}
 
-            if (indexPhp != null &&
-                nameFile == null)
-            {
-                var configLines = new List<string> { Path.GetFileNameWithoutExtension("??") };
-                repoService.Methods.CreateConfig(address, configLines);
-                return false;
-            }
+            //if (indexPhp == null &&
+            //    lista == null &&
+            //    indexFolders.Count() > 0)
+            //{
+            //    var configLines = new List<string> { Path.GetFileNameWithoutExtension("??") };
+            //    repoService.Methods.CreateConfig(address, configLines);
+            //    File.Copy("Old/FolderIndexPhp/index.php", path + "/" + "index.php");
+            //    return false;
+            //}
+
+            //if (indexPhp != null &&
+            //    nameFile == null)
+            //{
+            //    var configLines = new List<string> { Path.GetFileNameWithoutExtension("??") };
+            //    repoService.Methods.CreateConfig(address, configLines);
+            //    return false;
+            //}
 
             if (files.Count() == 0 &&
                 directories.Count() == 0)

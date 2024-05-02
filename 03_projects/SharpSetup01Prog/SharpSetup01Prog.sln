@@ -1,0 +1,79 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpSetup01Prog", "SharpSetup01Prog.csproj", "{126847B9-2704-4938-9E09-DE09D79E5005}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpConfigProg", "..\..\03_projects\SharpConfig\SharpConfigProg\SharpConfigProg.csproj", "{0331BC03-1300-4EBD-A5C5-27931E653EA5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpContainerProg", "..\..\03_projects\SharpContainer\SharpContainerProg\SharpContainerProg.csproj", "{A4EDA657-01A0-4045-9B0D-E09AD59E81F9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpFileServiceProg", "..\..\03_projects\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj", "{A38AEBBC-9CDC-4E5F-B139-CF2C3AD256C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGoogleSheetProg", "..\..\03_projects\SharpGoogleSheet\SharpGoogleSheetProg\SharpGoogleSheetProg.csproj", "{950E49D5-C4E3-40A3-8EFB-FA0205339577}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpRepoServiceProg", "..\..\03_projects\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj", "{52380722-C57F-4EB1-BAC8-B70C907810F9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGoogleDriveProg", "..\..\03_projects\SharpGoogleDrive\SharpGoogleDriveProg\SharpGoogleDriveProg.csproj", "{BF8739FB-3AAD-4FCF-909B-BD1ACFA9926F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGoogleDocsProg", "..\..\03_projects\SharpGoogleDocs\SharpGoogleDocsProg\SharpGoogleDocsProg.csproj", "{F43C33ED-B8DD-49C7-9586-8FA0492A65EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpVideoServiceProg", "..\..\03_projects\SharpVideoService\SharpVideoServiceProg\SharpVideoServiceProg.csproj", "{A756ABDB-B99C-4C5C-AD4B-0F7AE63A9CE4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpTtsServiceProg", "..\..\03_projects\SharpTtsService\SharpTtsServiceProg\SharpTtsServiceProg.csproj", "{693FC74D-B826-4782-B4A5-D85114E77E4C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{126847B9-2704-4938-9E09-DE09D79E5005}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{126847B9-2704-4938-9E09-DE09D79E5005}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{126847B9-2704-4938-9E09-DE09D79E5005}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{126847B9-2704-4938-9E09-DE09D79E5005}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0331BC03-1300-4EBD-A5C5-27931E653EA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0331BC03-1300-4EBD-A5C5-27931E653EA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0331BC03-1300-4EBD-A5C5-27931E653EA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0331BC03-1300-4EBD-A5C5-27931E653EA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4EDA657-01A0-4045-9B0D-E09AD59E81F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4EDA657-01A0-4045-9B0D-E09AD59E81F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4EDA657-01A0-4045-9B0D-E09AD59E81F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4EDA657-01A0-4045-9B0D-E09AD59E81F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A38AEBBC-9CDC-4E5F-B139-CF2C3AD256C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A38AEBBC-9CDC-4E5F-B139-CF2C3AD256C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A38AEBBC-9CDC-4E5F-B139-CF2C3AD256C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A38AEBBC-9CDC-4E5F-B139-CF2C3AD256C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{950E49D5-C4E3-40A3-8EFB-FA0205339577}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{950E49D5-C4E3-40A3-8EFB-FA0205339577}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{950E49D5-C4E3-40A3-8EFB-FA0205339577}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{950E49D5-C4E3-40A3-8EFB-FA0205339577}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52380722-C57F-4EB1-BAC8-B70C907810F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52380722-C57F-4EB1-BAC8-B70C907810F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52380722-C57F-4EB1-BAC8-B70C907810F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52380722-C57F-4EB1-BAC8-B70C907810F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF8739FB-3AAD-4FCF-909B-BD1ACFA9926F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF8739FB-3AAD-4FCF-909B-BD1ACFA9926F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF8739FB-3AAD-4FCF-909B-BD1ACFA9926F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF8739FB-3AAD-4FCF-909B-BD1ACFA9926F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F43C33ED-B8DD-49C7-9586-8FA0492A65EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F43C33ED-B8DD-49C7-9586-8FA0492A65EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F43C33ED-B8DD-49C7-9586-8FA0492A65EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F43C33ED-B8DD-49C7-9586-8FA0492A65EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A756ABDB-B99C-4C5C-AD4B-0F7AE63A9CE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A756ABDB-B99C-4C5C-AD4B-0F7AE63A9CE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A756ABDB-B99C-4C5C-AD4B-0F7AE63A9CE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A756ABDB-B99C-4C5C-AD4B-0F7AE63A9CE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{693FC74D-B826-4782-B4A5-D85114E77E4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{693FC74D-B826-4782-B4A5-D85114E77E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{693FC74D-B826-4782-B4A5-D85114E77E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{693FC74D-B826-4782-B4A5-D85114E77E4C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8CF09508-518A-45C4-AD9D-73AFA76A2CC5}
+	EndGlobalSection
+EndGlobal

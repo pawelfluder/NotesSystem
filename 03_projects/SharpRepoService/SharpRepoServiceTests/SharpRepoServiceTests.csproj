@@ -19,7 +19,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj" />
-    <ProjectReference Include="..\RepoServiceCoreProj\SharpRepoServiceProj.csproj" />
+    <ProjectReference Include="..\..\SharpSetup01Prog\SharpSetup01Prog.csproj" />
+    <ProjectReference Include="..\SharpRepoServiceProg\SharpRepoServiceProg.csproj" />
   </ItemGroup>
 
 </Project>

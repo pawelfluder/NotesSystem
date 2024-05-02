@@ -63,15 +63,16 @@ namespace SharpNotesMigrationProg.Migrations
             }
         }
 
+        // todo
         private void ClearNameFile((string Repo, string Loca) address)
         {
-            var path = repoService.Methods.GetConfigPath(address);
-            var exists = File.Exists(path);
-            if (!exists)
-            {
-                using (File.Create(path))
-                {}
-            }
+            //var path = repoService.Methods.GetConfigPath(address);
+            //var exists = File.Exists(path);
+            //if (!exists)
+            //{
+            //    using (File.Create(path))
+            //    {}
+            //}
         }
 
         public void MigrateOneAddress((string Repo, string Loca) address)
@@ -113,14 +114,14 @@ namespace SharpNotesMigrationProg.Migrations
 
         private bool IsJustOneLine((string, string) address, out string line)
         {
-            var path = repoService.Methods.GetConfigPath(address);
-            var lineList = File.ReadAllLines(path);
-            //var success = repoService.Methods.TryGetConfigLines(address, out var lines);
-            if (lineList.Count() == 1)
-            {
-                line = lineList.First();
-                return true;
-            }
+            //var path = repoService.Methods.GetConfigPath(address);
+            //var lineList = File.ReadAllLines(path);
+            ////var success = repoService.Methods.TryGetConfigLines(address, out var lines);
+            //if (lineList.Count() == 1)
+            //{
+            //    line = lineList.First();
+            //    return true;
+            //}
 
             line = null;
             return false;
@@ -266,7 +267,8 @@ namespace SharpNotesMigrationProg.Migrations
 
             if (agree)
             {
-                repoService.Methods.CreateConfig(address, new List<string> { newLines });
+                // todo
+                //repoService.Methods.CreateConfig(address, new List<string> { newLines });
             }
 
             return newLines;

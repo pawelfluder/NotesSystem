@@ -72,7 +72,9 @@ namespace SharpNotesMigrationTests
             var repoServer = MyBorder.Container.Resolve<IRepoService>();
 
             var address = (repoName, loca);
-            var folderPath = repoServer.Methods.GetElemPath((repoName, loca));
+
+            // todo 
+            //var folderPath = repoServer.Methods.GetElemPath((repoName, loca));
 
             // act
             //migrator03.MigrateOneFolder(address);

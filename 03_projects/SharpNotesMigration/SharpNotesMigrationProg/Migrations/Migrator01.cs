@@ -40,7 +40,8 @@ namespace SharpNotesMigrationProg.Migrations
             foreach (var repo in allRepos)
             {
                 var content = $"name: {repo}";
-                repoService.Methods.CreateRepoConfig(repo, content);
+                // todo
+                // repoService.Methods.CreateRepoConfig(repo, content);
             }
         }
 

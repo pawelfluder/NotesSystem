@@ -1,1 +1,3 @@
 "name": "test01"
+"type": "Text"
+"id": ""

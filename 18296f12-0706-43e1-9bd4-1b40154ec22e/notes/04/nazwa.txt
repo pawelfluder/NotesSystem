@@ -1,1 +1,3 @@
 "name": "special characters - ąśćżńć"
+"type": "Text"
+"id": ""

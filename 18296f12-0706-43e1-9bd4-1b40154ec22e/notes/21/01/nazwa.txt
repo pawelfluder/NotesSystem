@@ -1,1 +1,3 @@
 "name": "text file 01/01"
+"type": "Text"
+"id": ""

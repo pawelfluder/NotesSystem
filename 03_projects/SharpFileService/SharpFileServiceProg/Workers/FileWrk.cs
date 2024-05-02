@@ -3,7 +3,7 @@ using SharpRepoServiceProg.FileOperations;
 
 namespace SharpFileServiceProg.Service
 {
-    internal partial class FileService
+    internal partial class fileService
     {
         internal class FileWrk : IFileService.IFileWrk
         {

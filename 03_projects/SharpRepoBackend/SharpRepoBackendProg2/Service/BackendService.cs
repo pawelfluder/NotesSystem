@@ -8,10 +8,10 @@ using SharpRepoBackendProg.Repetition;
 using PdfService.PdfService;
 using System.Diagnostics;
 using SharpRepoServiceProg.AAPublic;
-using SharpRepoServiceProg.RepoOperations;
 using System.Text.Json.Nodes;
 using SharpGoogleDriveProg.AAPublic;
 using SharpGoogleDocsProg.AAPublic;
+using SharpRepoServiceProg.Workers;
 
 namespace SharpRepoBackendProg.Service
 {
@@ -126,7 +126,8 @@ namespace SharpRepoBackendProg.Service
                 {
                     var type = args[2];
                     var name = args[3];
-                    var item = repoService.Methods.CreateItem(address, type, name);
+                    
+                    var item = repoService.Item.CreateItem(address, type, name);
                     return item;
                 }
 
@@ -340,7 +341,7 @@ namespace SharpRepoBackendProg.Service
         private string CreateGoogledoc((string repo, string loca) address)
         {
             var name = repoService.Methods.GetLocalName(address);
-            var id = repoService.Methods.TryGetConfigValue(
+            var id = repoService.Methods.GetConfigKey(
                 address, ConfigKeys.googleDocId.ToString());
             var documentExists = id != null;
 
@@ -398,7 +399,7 @@ namespace SharpRepoBackendProg.Service
         {
             try
             {
-                var methodList = typeof(RepoWorker).GetMethods().Where(x => x.Name == methodName);
+                var methodList = typeof(MethodWorker).GetMethods().Where(x => x.Name == methodName);
                 var method = methodList.SingleOrDefault(x => x.GetParameters().Length == args.Length);
 
                 var result = method.Invoke(

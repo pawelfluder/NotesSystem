@@ -5,7 +5,7 @@ namespace SharpFileServiceProg.AAPublic
     {
         public static IFileService FileService()
         {
-            return new FileService();
+            return new fileService();
         }
     }
 }

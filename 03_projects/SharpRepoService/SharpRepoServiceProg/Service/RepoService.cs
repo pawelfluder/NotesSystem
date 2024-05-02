@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SharpFileServiceProg.Service;
 using SharpRepoServiceCoreProj;
 using SharpRepoServiceProg.AAPublic;
-using SharpRepoServiceProg.RepoOperations;
+using SharpRepoServiceProg.Workers;
 
 namespace SharpRepoServiceProg.Service
 {
@@ -15,8 +15,8 @@ namespace SharpRepoServiceProg.Service
         private bool repoWorkerInit;
         private bool itemWorkerInit;
 
-        private RepoWorker methods;
-        private ItemWorker item;
+        private MethodWorker methods;
+        private JsonWorker item;
 
         private bool isRepoInit;
 
@@ -28,13 +28,13 @@ namespace SharpRepoServiceProg.Service
             this.fileService = fileService;
         }
 
-        public RepoWorker Methods
+        public MethodWorker Methods
         {
             get
             {
                 if (!isRepoInit)
                 {
-                    methods = new RepoWorker(fileService, serverInfo, localInfo);
+                    methods = new MethodWorker(fileService, serverInfo, localInfo);
                     isRepoInit = true;
                 }
 
@@ -42,14 +42,14 @@ namespace SharpRepoServiceProg.Service
             }
         }
 
-        public ItemWorker Item
+        public JsonWorker Item
         {
             get
             {
                 if (!itemWorkerInit)
                 {
                     var methods = Methods;
-                    item = new ItemWorker(methods, fileService);
+                    item = new JsonWorker();
                     itemWorkerInit = true;
                 }
 
