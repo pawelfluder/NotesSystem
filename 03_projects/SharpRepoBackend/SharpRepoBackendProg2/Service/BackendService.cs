@@ -126,7 +126,7 @@ namespace SharpRepoBackendProg.Service
                 {
                     var type = args[2];
                     var name = args[3];
-                    
+
                     var item = repoService.Item.CreateItem(address, type, name);
                     return item;
                 }

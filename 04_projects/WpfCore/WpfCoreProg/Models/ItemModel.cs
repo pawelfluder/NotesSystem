@@ -5,8 +5,6 @@ namespace WpfNotesSystemProg3.Models
 {
     public class RepoItem
     {
-        
-
         public string Name { get; set; }
 
         public string Type { get; set; }

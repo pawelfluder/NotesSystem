@@ -38,10 +38,10 @@ namespace SharpRepoServiceProg.Workers
             var address = fileService.RepoAddress.CreateUrlFromAddress(adrTuple);
             item.Settings = new Dictionary<string, object>()
             {
-                { ItemFields.Id, Guid.NewGuid().ToString() },
-                { ItemFields.Type, ItemTypeNames.Text },
-                { ItemFields.Name, name },
-                { ItemFields.Address, address }
+                { Fields_Item.Id, Guid.NewGuid().ToString() },
+                { Fields_Item.Type, ItemTypeNames.Text },
+                { Fields_Item.Name, name },
+                { Fields_Item.Address, address }
             };
 
             // body
@@ -144,15 +144,15 @@ namespace SharpRepoServiceProg.Workers
             string content)
         {
             var item = new ItemModel();
-            item.AdrTuple = adrTuple;
 
             // config
-            item.Settings = new Dictionary<string, object>()
+            var settings = new Dictionary<string, object>()
             {
-                { "id", Guid.NewGuid().ToString() },
-                { "type", ItemTypeNames.Text },
-                { "name", name }
+                { Fields_Item.Id, Guid.NewGuid().ToString() },
+                { Fields_Item.Type, ItemTypeNames.Text },
+                { Fields_Item.Name, name },
             };
+            cw.AddSettingsToModel(item, adrTuple, settings);
 
             // body
             item.Body = content;

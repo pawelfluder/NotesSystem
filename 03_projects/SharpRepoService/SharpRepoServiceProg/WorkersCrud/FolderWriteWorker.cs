@@ -1,5 +1,6 @@
 ﻿using SharpFileServiceProg.Service;
 using SharpRepoServiceProg.Models;
+using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.WorkersSystem;
 using SharpTinderComplexTests;
@@ -96,17 +97,14 @@ namespace SharpRepoServiceProg.Workers
         {
             var item = new ItemModel();
 
-
-            //item.AdrTuple = adrTuple;
-
             // config
-            item.Settings = new Dictionary<string, object>()
+            var settings = new Dictionary<string, object>()
             {
-                { "id", Guid.NewGuid().ToString() },
-                { "type", ItemTypeNames.Folder },
-                { "name", name }
+                { Fields_Item.Id, Guid.NewGuid().ToString() },
+                { Fields_Item.Type, ItemTypeNames.Folder },
+                { Fields_Item.Name, name },
             };
-
+            cw.AddSettingsToModel(item, adrTuple, settings);
             return item;
         }
 

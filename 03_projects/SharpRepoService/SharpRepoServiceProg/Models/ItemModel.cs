@@ -29,7 +29,7 @@ namespace SharpRepoServiceProg.Models
             }
         }
 
-        internal (string Repo, string Loca) AdrTuple { get; set; }
+        internal (string Repo, string Loca) AdrTuple { get; private set; }
 
         public object Body { get; set; }
 
@@ -46,10 +46,10 @@ namespace SharpRepoServiceProg.Models
         private void SetIndentificators(
             Dictionary<string, object> dict)
         {
-            Name = dict[ItemFields.Name].ToString();
-            Id = dict[ItemFields.Id].ToString();
-            Type = dict[ItemFields.Type].ToString();
-            Address = dict[ItemFields.Address].ToString();
+            Name = dict[Fields_Item.Name].ToString();
+            Id = dict[Fields_Item.Id].ToString();
+            Type = dict[Fields_Item.Type].ToString();
+            Address = dict[Fields_Item.Address].ToString();
         }
     }
 }

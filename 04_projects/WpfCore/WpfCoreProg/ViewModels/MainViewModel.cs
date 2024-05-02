@@ -72,8 +72,14 @@ namespace WpfNotesSystem.ViewModels
         public IItemViewModel CreateViewModel(string type, (string, string) adrTuple)
         {
             IItemViewModel viewModel = null;
-            if (type == "Text") { viewModel = MyBorder.Container.Resolve<TextViewModel>(); }
-            if (type == "Folder") { viewModel = MyBorder.Container.Resolve<FolderViewModel>(); }
+            if (type == "Text")
+            {
+                viewModel = MyBorder.Container.Resolve<TextViewModel>();
+            }
+            if (type == "Folder")
+            {
+                viewModel = MyBorder.Container.Resolve<FolderViewModel>();
+            }
             viewModel.Address = CreateAddress(adrTuple);
             return viewModel;
         }

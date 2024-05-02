@@ -23,7 +23,7 @@ namespace SharpRepoServiceProg.WorkersSystem
         private void SetNames()
         {
             configFileName = "nazwa.txt";
-            contentFileName = "content.txt";
+            contentFileName = "lista.txt";
         }
 
         public string GetItemPath(

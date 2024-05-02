@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using static SharpFileServiceProg.Service.IFileService;
 
 namespace SharpRepoServiceProg.Workers
@@ -57,14 +58,13 @@ namespace SharpRepoServiceProg.Workers
 
             // config
             var settings =  GetConfigDict(adrTuple);
-            var address = fileService.RepoAddress.CreateUrlFromAddress(adrTuple);
-            settings.Add(ItemFields.Address, address);
-            item.Settings = settings;
+            cw.AddSettingsToModel(item, adrTuple, settings);
 
             // body
             if (item.Type == ItemTypes.Text)
             {
-                item.Body = bw.GetText2(adrTuple);
+                var body = bw.GetText2(adrTuple);
+                item.Body = body;
             }
 
             if (item.Type == ItemTypes.Folder &&
@@ -199,15 +199,8 @@ namespace SharpRepoServiceProg.Workers
             (string Repo, string Loca) adrTuple)
         {
             var item = new ItemModel();
-
             var settings = GetConfigDict(adrTuple);
-            var address = fileService.RepoAddress.CreateUrlFromAddress(adrTuple);
-            settings.Add(ItemFields.Address, address);
-            item.Settings = settings;
-            //item.Type = item.Settings[ItemFields.Type].ToString();
-            //item.Name = item.Settings[ItemFields.Name].ToString();
-            //item.Id = item.Settings[ItemFields.Id].ToString();
-            //item.AdrTuple = adrTuple;
+            cw.AddSettingsToModel(item, adrTuple, settings);
             return item;
         }
 

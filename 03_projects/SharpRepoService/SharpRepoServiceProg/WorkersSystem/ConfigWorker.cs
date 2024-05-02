@@ -1,8 +1,12 @@
 ﻿using SharpFileServiceProg.Service;
+using SharpRepoServiceProg.Models;
+using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Registration;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using YamlDotNet.Serialization;
 using static SharpFileServiceProg.Service.IFileService;
 
 namespace SharpRepoServiceProg.WorkersSystem
@@ -54,6 +58,16 @@ namespace SharpRepoServiceProg.WorkersSystem
             var configFilePath = pw.GetConfigPath(adrTuple);
             var configLines = File.ReadAllLines(configFilePath).ToList();
             return configLines;
+        }
+
+        public void AddSettingsToModel(
+            ItemModel model,
+            (string Repo, string Loca) adrTuple,
+            Dictionary<string, object> settings)
+        {
+            var newAddress = fileService.RepoAddress.CreateUrlFromAddress(adrTuple);
+            settings[Fields_Item.Address] = newAddress;
+            model.Settings = settings;
         }
 
         public void CreateConfig(

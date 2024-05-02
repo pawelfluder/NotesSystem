@@ -1,6 +1,6 @@
 ﻿namespace SharpRepoServiceProg.Names
 {
-    public static class ItemFields
+    public static class Fields_Item
     {
         public static string Type = "type";
         public static string Name = "name";
