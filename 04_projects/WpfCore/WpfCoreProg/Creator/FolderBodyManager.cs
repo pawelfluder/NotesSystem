@@ -15,7 +15,8 @@ namespace WpfNotesSystem.Creator
 
         public void Run(IContentCreator creator, object content)
         {
-            var gg = (content as List<object>).Select(x => x.ToString()).Skip(4).ToArray();
+            var gg = (content as List<object>).Select(x => x.ToString()).ToArray();
+            //var gg = (content as List<object>).Select(x => x.ToString()).Skip(4).ToArray();
 
             var tuplesList = fileService.Header.Select2.GetElements(gg);
 

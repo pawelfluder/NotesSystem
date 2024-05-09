@@ -154,7 +154,8 @@ namespace WpfNotesSystemProg.Converter
             }
 
             var tmp = dict.Body.ToString();
-            var lines = tmp.Split('\n').Skip(4).ToArray();
+            //var lines = tmp.Split('\n').Skip(4).ToArray();
+            var lines = tmp.Split('\n').ToArray();
 
             contentManager.Run(creator, lines);
 

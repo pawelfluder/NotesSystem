@@ -39,7 +39,8 @@ namespace SharpNotesExporter
         {
             var textLines = repoService.Methods.GetTextLines((repo, loca));
             var name = repoService.Methods.GetLocalName((repo, loca));
-            var elementsList = headerNotesService.GetElements2(textLines.Skip(4).ToArray());
+            //var elementsList = headerNotesService.GetElements2(textLines.Skip(4).ToArray());
+            var elementsList = headerNotesService.GetElements2(textLines.ToArray());
 
             //var text = GetGoogleDocText(elementsList);
 

@@ -56,7 +56,8 @@ namespace SharpRepoServiceProg.WorkersSystem
             (string Repo, string Loca) adrTuple)
         {
             var path = pw.GetBodyPath(adrTuple);
-            var lines = File.ReadAllLines(path).Skip(4);
+            //var lines = File.ReadAllLines(path).Skip(4);
+            var lines = File.ReadAllLines(path);
             var content = string.Join(newLine, lines);
             return content;
         }

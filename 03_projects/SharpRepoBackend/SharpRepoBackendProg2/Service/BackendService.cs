@@ -372,7 +372,7 @@ namespace SharpRepoBackendProg.Service
             var itemPath = repoService.Methods.GetElemPath(address);
             var pdfService = MyBorder.Container.Resolve<IPdfService2>();
             var textLines = repoService.Methods.GetTextLines((address.Repo, address.Loca));
-            var elementsList = headerNotesService.GetElements2(textLines.Skip(4).ToArray());
+            var elementsList = headerNotesService.GetElements2(textLines.ToArray());
             var pdfFilePath = itemPath + "/" + "lista.pdf";
             var pdfCreated = pdfService.Export(elementsList, pdfFilePath);
             return pdfFilePath;

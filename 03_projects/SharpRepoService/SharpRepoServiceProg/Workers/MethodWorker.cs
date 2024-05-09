@@ -205,7 +205,7 @@ namespace SharpRepoServiceProg.Workers
 
         public List<string> GetTextLines(
             (string repo, string loca) adrTuple)
-            => GetTextLines(adrTuple);
+            => rw.GetTextLines(adrTuple);
 
 
 
@@ -213,7 +213,7 @@ namespace SharpRepoServiceProg.Workers
         public object TryGetConfigValue(
             (string repo, string loca) adrTuple,
             string keyName)
-            => TryGetConfigValue(adrTuple, keyName);
+            => rw.TryGetConfigValue(adrTuple, keyName);
 
         
 
