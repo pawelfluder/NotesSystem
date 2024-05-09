@@ -21,7 +21,9 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/05_projects/BlazorInterAutoProj/BlazorInterAutoProj.csproj", // removed ${workspaceFolder}/
+                "${workspaceFolder}/05_projects/BlazorNotesSystem/BlazorNotesSystem.csproj", // removed ${workspaceFolder}/
+                //05_projects/BlazorNotesSystem/BlazorNotesSystem.csproj
+                
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -46,6 +48,19 @@
             "args": [
                 "build",
                 "${workspaceFolder}/24_projects/SharpImageSplitter/SharpImageSplitterProg/SharpImageSplitterProg.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary",
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build; SharpTinderComplexTests",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/24_projects/SharpTinderComplex/SharpTinderComplexTests/SharpTinderComplexTests.csproj",
+                // 24_projects/SharpTinderComplex/SharpTinderComplexTests/SharpTinderComplexTests.csproj
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary",
             ],

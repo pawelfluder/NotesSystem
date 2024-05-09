@@ -41,7 +41,6 @@ namespace SharpSQLiteProj
 
         private void CreateTable(SqliteConnection conn)
         {
-
             SqliteCommand sqlite_cmd;
             string Createsql = "CREATE TABLE SampleTable (Col1 VARCHAR(20), Col2 INT)";
             string Createsql1 = "CREATE TABLE SampleTable1 (Col1 VARCHAR(20), Col2 INT)";
@@ -50,7 +49,6 @@ namespace SharpSQLiteProj
             sqlite_cmd.ExecuteNonQuery();
             sqlite_cmd.CommandText = Createsql1;
             sqlite_cmd.ExecuteNonQuery();
-
         }
 
         private void InsertData(SqliteConnection conn)
@@ -104,4 +102,3 @@ namespace SharpSQLiteProj
         }
     }
 }
-
