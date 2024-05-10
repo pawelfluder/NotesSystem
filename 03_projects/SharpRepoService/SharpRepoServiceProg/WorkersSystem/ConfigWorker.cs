@@ -2,6 +2,7 @@
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Registration;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -67,7 +68,36 @@ namespace SharpRepoServiceProg.WorkersSystem
         {
             var newAddress = fileService.RepoAddress.CreateUrlFromAddress(adrTuple);
             settings[Fields_Item.Address] = newAddress;
+            var saveNeeded = false;
+            if (!settings.ContainsKey(Fields_Item.Id))
+            {
+                settings[Fields_Item.Id] = Guid.NewGuid().ToString();
+                saveNeeded = true;
+            }
+            if (!settings.ContainsKey(Fields_Item.Type))
+            {
+                var type = AssumeType(adrTuple);
+                settings[Fields_Item.Type] = type;
+                saveNeeded = true;
+            }
             model.Settings = settings;
+
+            if (saveNeeded)
+            {
+                CreateConfig(adrTuple, settings);
+            }
+        }
+
+        public string AssumeType(
+            (string repo, string loca) adrTuple)
+        {
+            var contentFilePath = pw.GetBodyPath(adrTuple);
+            if (File.Exists(contentFilePath))
+            {
+                return ItemTypes.Text;
+            }
+
+            return ItemTypes.Folder;
         }
 
         public void CreateConfig(

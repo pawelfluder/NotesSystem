@@ -257,7 +257,8 @@ namespace SharpRepoServiceProg.Workers
 
             var items = GetItemConfigList(adrTuple);
             var kv = items.Select(x => new KeyValuePair<string, string>(w2.IndexToString(w1.GetLastLocaIndex(x.Address)), x.Name));
-            var dict = kv.ToDictionary(x => x.Key, x => x.Value);
+            
+            var dict = kv.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
             return dict;
         }
 
@@ -386,7 +387,7 @@ namespace SharpRepoServiceProg.Workers
                 return "RefText";
             }
 
-            var contentFilePath = pw.GetItemPath(adrTuple);
+            var contentFilePath = pw.GetBodyPath(adrTuple);
             if (File.Exists(contentFilePath))
             {
                 return "Text";
