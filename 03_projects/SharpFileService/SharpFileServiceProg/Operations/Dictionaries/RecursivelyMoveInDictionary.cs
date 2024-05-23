@@ -24,7 +24,12 @@
             {
                 if (keyQlevelDict.TryGetValue(key.ToString(), out var level))
                 {
-                    var newParent = parentStack.ElementAt(parentStack.Count - 1 - level);
+                    var index = parentStack.Count - 1 - level;
+                    if (index < 0){
+                        index = 0;
+                    }
+
+                    var newParent = parentStack.ElementAt(index);
                     var value = parent[key];
                     var action = new Action(() =>
                     {

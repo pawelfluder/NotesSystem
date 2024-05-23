@@ -66,5 +66,18 @@
             ],
             "problemMatcher": "$msCompile"
         },
+        {
+            "label": "build; SharpTinderGoogleDocsTests",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/24_projects/SharpTinderGoogleDocs/SharpTinderGoogleDocsTests/SharpTinderGoogleDocsTests.csproj",
+                // 24_projects/SharpTinderComplex/SharpTinderComplexTests/SharpTinderComplexTests.csproj
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary",
+            ],
+            "problemMatcher": "$msCompile"
+        },
     ]
 }

@@ -72,5 +72,19 @@
             "console": "internalConsole",
             "justMyCode": false,
         },
+        {
+
+            "name": "run; SharpTinderGoogleDocsTests",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build; SharpTinderGoogleDocsTests",
+            "program": "${workspaceFolder}/Binaries/SharpTinderGoogleDocsTests/bin/Debug/net6.0/SharpTinderGoogleDocsTests.dll",
+            // 24_projects/SharpTinderComplex/SharpTinderComplexTests/SharpTinderComplexTests.csproj
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "justMyCode": false,
+        },
     ]
 }
