@@ -1,8 +1,15 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
+using WDSE.Decorators;
+using WDSE.ScreenshotMaker;
+using OpenQA.Selenium.Support.Extensions;
+using WDSE;
+
+
+//https://www.linkedin.com/pulse/capturing-full-webpage-screenshot-using-selenium-c-test-choudhary-1c/
+//https://www.nuget.org/packages/Noksa.WebDriver.ScreenshotsExtensions/
+// https://www.youtube.com/watch?v=MUVCE550yw8
 
 namespace SharpWebCaptureProg
 {
@@ -10,40 +17,18 @@ namespace SharpWebCaptureProg
     {
         static IWebDriver driver;
         private readonly GoogleProfile googleProfile;
+        private readonly JsWorker jsWorker;
 
         public SeleniumWorker()
         {
-            gg = new GoogleProfile();
+            googleProfile = new GoogleProfile();
+            jsWorker = new JsWorker();
         }
 
         public void ScreenShot()
         {
-            //driver = new ChromeDriver();
-            //var chromePath = @"C:\03_synch\02_programs_portable\07_pawelfluder\GoogleChromePortable.exe";
-            //chromeCapabilities.BinaryLocation = chromePath;
-            //var path = @"C:\03_synch\02_programs_portable\02_chrome\01_pawelfluder\Data\profile";
-            // chrome
-            // firefox
-            //var firefoxCapabilities = new FirefoxOptions();
-            //driver = new FirefoxDriver();
-
             ChromeOptions chromeCapabilities = new ChromeOptions();
-            chromeCapabilities.EnableMobileEmulation(ChromeEmulations.IphoneX);
-
-            //var path = "/Users/pawelfluder/Library/Application\\ Support/Google/Chrome/Profile\\ 1";
-            //var path = "\"/Users/pawelfluder/Library/Application Support/Google/Chrome/Profile 1\"";
-            var path = "/Users/pawelfluder/Library/Application Support/Google/Chrome";
-            var profile = "Profile 2";
-
-
-            //var path = @"C:\03_synch\02_programs_portable\07_pawelfluder\Data\profile";
-            //var args = $"--user-data-dir={path}";
-
-            // https://github.com/ultrafunkamsterdam/undetected-chromedriver/issues/1150
-            // options.add_argument(r'--user-data-dir=/Users/vishruth/Library/Application Support/Google/Chrome/')
-            // options.add_argument(r'--profile-directory=Profile 3')
-
-
+            //chromeCapabilities.EnableMobileEmulation(ChromeEmulations.IphoneX);
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 var arg1 = $"--user-data-dir={googleProfile.TryGetUserDataDir()}";
@@ -63,6 +48,16 @@ namespace SharpWebCaptureProg
             try
             {
                 driver = new ChromeDriver(chromeCapabilities);
+
+
+                driver.Url = "https://www.selenium.dev/";
+
+                // ((ITakesScreenshot)driver).GetScreenshot().SaveAsFile("oldFirefox.png");
+
+                VerticalCombineDecorator vcd = new VerticalCombineDecorator(new ScreenshotMaker().RemoveScrollBarsWhileShooting());
+                var gg = driver.TakeScreenshot(vcd);
+                //.ToMagickImage().ToBitmap().Save("newChrome.png");
+
                 driver.Navigate().GoToUrl(weburl);
 
                 System.Threading.Thread.Sleep(100);
@@ -71,12 +66,31 @@ namespace SharpWebCaptureProg
                 var imageFolderPath = "./../../../shot/";
                 Directory.CreateDirectory(imageFolderPath);
 
+                var vcs = new VerticalCombineDecorator(new ScreenshotMaker());
+                var webDrive = driver as IWebDriver;
+                var screen = webDrive.TakeScreenshot(vcs);
+
+
+
                 var js = driver as IJavaScriptExecutor;
 
-                var gg = "return document.querySelector('[aria-label^=\"Wiadomości\"]');";
-                var gg2= js.ExecuteScript(gg);
 
 
+                jsWorker.DefineSetBox01(js);
+                js.ExecuteScript("SetBox01()");
+
+                jsWorker.DefineGetDeepestNestedDiv(js);
+                js.ExecuteScript("var box02 = getDeepestNestedDiv(box01)");
+
+                
+
+
+                //var tmp3 = js.ExecuteScript(script01);
+
+                var tmp4 = js.ExecuteScript("return box01");
+
+                //var gg = "return document.querySelector('[aria-label^=\"Wiadomości\"]');";
+                //var gg2 = js.ExecuteScript(gg);
 
                 var isNotTop = true;
                 var previousHeight = 0;

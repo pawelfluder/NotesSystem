@@ -2,6 +2,10 @@
 
 namespace SharpWebCaptureProg
 {
+    // https://github.com/ultrafunkamsterdam/undetected-chromedriver/issues/1150
+    // options.add_argument(r'--user-data-dir=/Users/vishruth/Library/Application Support/Google/Chrome/')
+    // options.add_argument(r'--profile-directory=Profile 3')
+
     internal class GoogleProfile
     {
         public string TryGetUserDataDir()
@@ -15,7 +19,8 @@ namespace SharpWebCaptureProg
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                return "C:\\03_synch\\02_programs_portable\\02_chrome\\01_pawelfluder\\Data\\profile";
+                return "C:\\03_synch\\02_programs_portable\\07_pawelfluder\\Data\\profile";
+                //return "C:\\03_synch\\02_programs_portable\\02_chrome\\01_pawelfluder\\Data\\profile";
             }
 
             return default;

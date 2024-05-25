@@ -1,6 +1,4 @@
-﻿using PuppeteerSharp;
-
-namespace SharpWebCaptureProg
+﻿namespace SharpWebCaptureProg
 {
     class Program
     {
