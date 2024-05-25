@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
@@ -8,6 +9,12 @@ namespace SharpWebCaptureProg
     public class SeleniumWorker
     {
         static IWebDriver driver;
+        private readonly GoogleProfile googleProfile;
+
+        public SeleniumWorker()
+        {
+            gg = new GoogleProfile();
+        }
 
         public void ScreenShot()
         {
@@ -28,18 +35,28 @@ namespace SharpWebCaptureProg
             var path = "/Users/pawelfluder/Library/Application Support/Google/Chrome";
             var profile = "Profile 2";
 
+
             //var path = @"C:\03_synch\02_programs_portable\07_pawelfluder\Data\profile";
             //var args = $"--user-data-dir={path}";
 
             // https://github.com/ultrafunkamsterdam/undetected-chromedriver/issues/1150
             // options.add_argument(r'--user-data-dir=/Users/vishruth/Library/Application Support/Google/Chrome/')
             // options.add_argument(r'--profile-directory=Profile 3')
-            
 
-            var arg1 = $"--user-data-dir={path}";
-            var arg2 = $"--profile-directory={profile}";
-            chromeCapabilities.AddArgument(arg1);
-            chromeCapabilities.AddArgument(arg2);
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                var arg1 = $"--user-data-dir={googleProfile.TryGetUserDataDir()}";
+                var arg2 = $"--profile-directory={googleProfile.TryGetProfileDir()}";
+                chromeCapabilities.AddArgument(arg1);
+                chromeCapabilities.AddArgument(arg2);
+            }
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                var arg = $"--user-data-dir={googleProfile.TryGetUserDataDir()}";
+                chromeCapabilities.AddArgument(arg);
+            }
 
             var weburl = "https://www.instagram.com/direct/t/116544883068511/";
             
