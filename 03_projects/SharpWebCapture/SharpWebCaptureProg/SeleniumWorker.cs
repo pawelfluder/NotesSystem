@@ -26,7 +26,7 @@ namespace SharpWebCaptureProg
             //var path = "/Users/pawelfluder/Library/Application\\ Support/Google/Chrome/Profile\\ 1";
             //var path = "\"/Users/pawelfluder/Library/Application Support/Google/Chrome/Profile 1\"";
             var path = "/Users/pawelfluder/Library/Application Support/Google/Chrome";
-            var profile = "Default";
+            var profile = "Profile 2";
 
             //var path = @"C:\03_synch\02_programs_portable\07_pawelfluder\Data\profile";
             //var args = $"--user-data-dir={path}";
