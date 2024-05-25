@@ -242,6 +242,137 @@ namespace SharpGoogleDocsProg.Worker
             return request;
         }
 
+        public void StackChangeMarginRequest(
+            double top,
+            double bottom,
+            double left,
+            double right)
+        {
+            var rate = 28.3286;
+            top *= rate;
+            bottom *= rate;
+            left *= rate;
+            right *= rate;
+            var req = GetChangeMarginRequest(top, bottom, left, right);
+            stack.Add(req);
+        }
+
+        public Request GetChangeMarginRequest(
+            double top,
+            double bottom,
+            double left,
+            double right)
+        {
+            var unit = "PT";
+            var request = new Request()
+            {
+                UpdateDocumentStyle = new UpdateDocumentStyleRequest()
+                {
+                    Fields = "marginTop,marginBottom,marginLeft,marginRight",
+                    DocumentStyle = new DocumentStyle
+                    {
+                        MarginTop = new Dimension
+                        {
+                            Unit = unit,
+                            Magnitude = top,
+                        },
+                        MarginBottom = new Dimension
+                        {
+                            Unit = unit,
+                            Magnitude = bottom,
+                        },
+                        MarginLeft = new Dimension
+                        {
+                            Unit = unit,
+                            Magnitude = left,
+                        },
+                        MarginRight = new Dimension
+                        {
+                            Unit = unit,
+                            Magnitude = right,
+                        }
+                    },
+                }
+            };
+
+            return request;
+        }
+
+        public void StackCreateFooterRequest()
+        {
+            var req = GetCreateFooterRequest();
+            stack.Add(req);
+        }
+
+        public Request GetCreateFooterRequest()
+        {
+            var request = new Request()
+            {
+                CreateFooter = new CreateFooterRequest()
+                {
+                    SectionBreakLocation = new Location()
+                    {
+                        Index = 0,
+                    },
+                    Type = "DEFAULT",
+
+                },
+                
+            };
+
+            return request;
+        }
+
+        //public Request GetCreateFooterRequest2()
+        //{
+        //    var request = new Request()
+        //    {
+        //        CreateParagraphBullets = new CreateParagraphBulletsRequest
+        //        {
+        //            d
+        //        }
+        //        InsertText = new Element()
+        //        {
+        //            d
+        //        }
+        //        pa = new Paragraph()
+        //        {
+        //            i
+        //            Elements = new List<ParagraphElement>
+        //            {
+        //                new AutoText
+        //                {
+        //                    Type = ""
+        //                }
+        //            },
+        //            Type = "DEFAULT",
+        //        },
+        //    };
+
+        //    return request;
+        //}
+
+
+        //        {
+        //  "requests": [
+        //    {
+        //      "updateDocumentStyle": {
+        //        "documentStyle": {
+        //          "marginTop": {
+        //            "magnitude": 100,
+        //            "unit": "PT"
+        //          },
+        //          "marginLeft": {
+        //            "magnitude": 500,
+        //            "unit": "PT"
+        //          }
+        //        },
+        //        "fields": "marginTop,marginLeft"
+        //      }
+        //    }
+        //  ]
+        //}
+
         private Request GetInsertTextRequest(int? lastEndIndex, string text)
         {//??
             var insertTextRequest = new Request()
