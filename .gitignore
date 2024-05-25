@@ -9,6 +9,12 @@ Binaries
 23_projects
 24_projects
 publish_new
+
+
+**/*.png
+*/*.png
+/*.png
+
 ####################
 
 # Most important
