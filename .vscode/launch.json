@@ -86,5 +86,18 @@
             "console": "internalConsole",
             "justMyCode": false,
         },
+        {
+
+            "name": "run; SharpWebCaptureProg",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build; SharpWebCaptureProg",
+            "program": "${workspaceFolder}/Binaries/SharpWebCaptureProg/bin/Debug/net6.0/SharpWebCaptureProg.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "justMyCode": false,
+        },
     ]
 }

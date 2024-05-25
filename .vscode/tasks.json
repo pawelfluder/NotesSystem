@@ -79,5 +79,17 @@
             ],
             "problemMatcher": "$msCompile"
         },
+        {
+            "label": "build; SharpWebCaptureProg",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/03_projects/SharpWebCapture/SharpWebCaptureProg/SharpWebCaptureProg.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary",
+            ],
+            "problemMatcher": "$msCompile"
+        },
     ]
 }
