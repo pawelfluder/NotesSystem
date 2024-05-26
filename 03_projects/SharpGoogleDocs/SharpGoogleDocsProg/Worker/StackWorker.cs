@@ -323,34 +323,29 @@ namespace SharpGoogleDocsProg.Worker
             return request;
         }
 
-        //public Request GetCreateFooterRequest2()
-        //{
-        //    var request = new Request()
-        //    {
-        //        CreateParagraphBullets = new CreateParagraphBulletsRequest
-        //        {
-        //            d
-        //        }
-        //        InsertText = new Element()
-        //        {
-        //            d
-        //        }
-        //        pa = new Paragraph()
-        //        {
-        //            i
-        //            Elements = new List<ParagraphElement>
-        //            {
-        //                new AutoText
-        //                {
-        //                    Type = ""
-        //                }
-        //            },
-        //            Type = "DEFAULT",
-        //        },
-        //    };
+        public Request GetRequestAddPageNumberToFooter()
+        {
+            var footer = document.Footers.First();
+            if (footer != null)
+            {
+                string footerId = footer.Key;
+                
+                var request = new Request
+                {
+                    InsertText = new InsertTextRequest
+                    {
+                        Text = "This is the footer text.",
+                        Location = new Location
+                        {
+                            SegmentId = footerId,
+                            Index = 0 // Insert at the beginning of the footer
+                        }
+                    }
+                };
+            }
 
-        //    return request;
-        //}
+           return request;
+        }
 
 
         //        {
