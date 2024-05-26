@@ -55,6 +55,7 @@ namespace SharpGoogleDriveProg.Service
         public (string Id, string Name) GetFileByName(string name)
         {
             var files = GetFilesRequest($"name='{name}'");
+            files = files.OrderByDescending(x => x.CreatedTime).ToList();
             var file = files.First();
             var result = (file.Id, file.Name);
             return result;
@@ -174,13 +175,16 @@ namespace SharpGoogleDriveProg.Service
             driveFile.Name = fileName;
             driveFile.MimeType = fileMime;
 
-            var request = service.Files.Create(driveFile, fileStream, fileMime);
+            FilesResource.CreateMediaUpload request = service.Files.Create(driveFile, fileStream, fileMime);
             request.Fields = "id";
 
             var response = request.Upload();
-
             fileStream.DisposeAsync();
-            return default;
+
+            var file = GetFileByName(fileName);
+            SetAnyoneReadPermission(file.Id);
+
+            return file;
         }
 
         public (string, string) UploadFile(
