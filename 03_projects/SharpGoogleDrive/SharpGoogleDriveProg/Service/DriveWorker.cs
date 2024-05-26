@@ -10,6 +10,7 @@ namespace SharpGoogleDriveProg.Service
     {
         private readonly GoogleDriveService parentService;
         private DriveService service;
+        private readonly object credentials;
         private (string Id, string Name) tempFolder;
 
         public DriveWorker(
@@ -163,7 +164,31 @@ namespace SharpGoogleDriveProg.Service
             var response = request.Execute();
         }
 
-        public (string, string) UploadFile(Stream fileStream, string fileName, string fileDescription, string fileMime, List<string> parents)
+        public (string, string) UploadFileDocx(
+            Stream fileStream,
+            string fileName)
+        {
+            var fileMime = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+            var driveFile = new DriveFile();
+            driveFile.Name = fileName;
+            driveFile.MimeType = fileMime;
+
+            var request = service.Files.Create(driveFile, fileStream, fileMime);
+            request.Fields = "id";
+
+            var response = request.Upload();
+
+            fileStream.DisposeAsync();
+            return default;
+        }
+
+        public (string, string) UploadFile(
+            Stream fileStream,
+            string fileName,
+            string fileDescription,
+            string fileMime,
+            List<string> parents)
         {
             var driveFile = new DriveFile();
             driveFile.Name = fileName; // fileName;

@@ -9,5 +9,6 @@ namespace SharpConfigProg.AAPublic
             string embeddedResourceFile);
 
         string GetEmbeddedResource(AssemblyName assemblyName, string filename);
+        Stream GetEmbeddedResourceStream(AssemblyName assemblyName, string filename);
     }
 }

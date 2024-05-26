@@ -3,6 +3,7 @@ using Google.Apis.Docs.v1.Data;
 using GoogleDocument = Google.Apis.Docs.v1.Data.Document;
 using GoogleDocsRange = Google.Apis.Docs.v1.Data.Range;
 using static Google.Apis.Docs.v1.DocumentsResource;
+using System.Reflection.Metadata.Ecma335;
 
 namespace SharpGoogleDocsProg.Worker
 {
@@ -224,6 +225,11 @@ namespace SharpGoogleDocsProg.Worker
             return true;
         }
 
+        public void StackInsertTableRequest((int RowsCount, int ColumnsCount) size)
+        {
+            stack.Add(GetInsertTableRequest(size));
+        }
+
         public Request GetInsertTableRequest((int RowsCount, int ColumnsCount) size)
         {
             var request = new Request()
@@ -238,9 +244,54 @@ namespace SharpGoogleDocsProg.Worker
                     Rows = size.RowsCount,
                 }
             };
+            return request;
+        }
+
+        public void StackRequestUpdateTableColumnProp(int width, int tableIndex)
+        {
+            stack.Add(GetRequestUpdateTableColumnProp(width, tableIndex));
+        }
+
+        public Request GetRequestUpdateTableColumnProp(int width, int tableIndex)
+        {
+            //var tableIndex = 0;
+            //var width = 100;
+            var request = new Request()
+            {
+                UpdateTableColumnProperties = new UpdateTableColumnPropertiesRequest()
+                {
+                    TableStartLocation = new Location
+                    {
+                        Index = tableIndex,
+                    },
+                    TableColumnProperties = new TableColumnProperties
+                    {
+                        WidthType = "FIXED_WIDTH",
+                        Width = new Dimension
+                        {
+                            Magnitude = width,
+                            Unit = "PT"
+                        }
+                    },
+                    Fields = "*"
+                }
+            };
 
             return request;
         }
+
+    //    'updateTableColumnProperties': {
+    //          'tableStartLocation': {'index': t_idx
+    //},
+    //          'columnIndices': [0],
+    //          'tableColumnProperties': {
+    //            'widthType': 'FIXED_WIDTH',
+    //            'width': {
+    //              'magnitude': 100,
+    //              'unit': 'PT'
+    //           }
+    //         },
+    //         'fields': '*'
 
         public void StackChangeMarginRequest(
             double top,
@@ -323,10 +374,17 @@ namespace SharpGoogleDocsProg.Worker
             return request;
         }
 
+        public void StackRequestAddPageNumberToFooter()
+        {
+            var req = GetRequestAddPageNumberToFooter();
+            stack.Add(req);
+        }
+
         public Request GetRequestAddPageNumberToFooter()
         {
-            var footer = document.Footers.First();
-            if (footer != null)
+            var footer = document.Footers.FirstOrDefault();
+            var text = "a_{{PAGE}}_e";
+            if (!footer.Equals(default(KeyValuePair<string, Footer>)))
             {
                 string footerId = footer.Key;
                 
@@ -334,7 +392,7 @@ namespace SharpGoogleDocsProg.Worker
                 {
                     InsertText = new InsertTextRequest
                     {
-                        Text = "This is the footer text.",
+                        Text = text,
                         Location = new Location
                         {
                             SegmentId = footerId,
@@ -342,9 +400,11 @@ namespace SharpGoogleDocsProg.Worker
                         }
                     }
                 };
+
+                return request;
             }
 
-           return request;
+            return default;
         }
 
 
@@ -438,12 +498,6 @@ namespace SharpGoogleDocsProg.Worker
         {
             stack = new List<Request>();
         }
-
-        public void StackInsertTableRequest((int RowsCount, int ColumnsCount) size)
-        {
-            stack.Add(GetInsertTableRequest(size));
-        }
-
 
         private int? GetLastIndex()
         {

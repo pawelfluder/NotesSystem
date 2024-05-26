@@ -39,5 +39,22 @@ namespace SharpConfigProg.Credentials
                 }
             }
         }
+
+        public Stream GetEmbeddedResourceStream(AssemblyName assemblyName, string filename)
+        {
+            var namespacename = assemblyName.Name;
+            var resourceName = namespacename + "." + filename;
+            var assembly = Assembly.Load(assemblyName);
+
+            var stream = assembly.GetManifestResourceStream(resourceName);
+
+            if (stream == null)
+            {
+                throw new Exception("CredentialWorker - Please check assembly file path, bacause file stream was null!");
+            }
+
+            var reader = new StreamReader(stream);
+            return stream;
+        }
     }
 }
