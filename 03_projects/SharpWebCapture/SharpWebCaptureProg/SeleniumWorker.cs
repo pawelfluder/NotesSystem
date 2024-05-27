@@ -28,7 +28,7 @@ namespace SharpWebCaptureProg
         public void ScreenShot()
         {
             ChromeOptions chromeCapabilities = new ChromeOptions();
-            //chromeCapabilities.EnableMobileEmulation(ChromeEmulations.IphoneX);
+            chromeCapabilities.EnableMobileEmulation(ChromeEmulations.IphoneX);
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 var arg1 = $"--user-data-dir={googleProfile.TryGetUserDataDir()}";
@@ -50,7 +50,7 @@ namespace SharpWebCaptureProg
                 driver = new ChromeDriver(chromeCapabilities);
 
 
-                driver.Url = "https://www.selenium.dev/";
+                //driver.Url = "https://www.selenium.dev/";
 
                 // ((ITakesScreenshot)driver).GetScreenshot().SaveAsFile("oldFirefox.png");
 

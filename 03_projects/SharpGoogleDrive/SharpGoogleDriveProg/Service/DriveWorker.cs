@@ -1,5 +1,6 @@
 ﻿using Google.Apis.Drive.v3;
 using Google.Apis.Drive.v3.Data;
+using System.IO;
 using DriveFile = Google.Apis.Drive.v3.Data.File;
 
 namespace SharpGoogleDriveProg.Service
@@ -169,16 +170,35 @@ namespace SharpGoogleDriveProg.Service
             Stream fileStream,
             string fileName)
         {
-            var fileMime = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            var googleDocument = "application/vnd.google-apps.document";
 
-            var driveFile = new DriveFile();
-            driveFile.Name = fileName;
-            driveFile.MimeType = fileMime;
+            var fileMetadata = new DriveFile() // please note this is Google.Apis.Drive.v3.Data.File;
+            {
+                Name = fileName,
+                MimeType = googleDocument
+            };
 
-            FilesResource.CreateMediaUpload request = service.Files.Create(driveFile, fileStream, fileMime);
-            request.Fields = "id";
+            var request2 = service.Files.Create(
+            fileMetadata,
+                fileStream,
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document" // please note this is the mimeType of the source file not the tartget
+            );
+            request2.Fields = "id";
+            var result2 = request2.UploadAsync();
+            var gg = result2.Result;
 
-            var response = request.Upload();
+
+            //var fileMime = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            //var fileMime = "application/vnd.google-apps.document";
+
+            //var driveFile = new DriveFile();
+            //driveFile.Name = fileName;
+            //driveFile.MimeType = fileMime;
+
+            //FilesResource.CreateMediaUpload request = service.Files.Create(driveFile, fileStream, fileMime);
+            //request.Fields = "id";
+
+            //var response = request.Upload();
             fileStream.DisposeAsync();
 
             var file = GetFileByName(fileName);

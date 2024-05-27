@@ -134,6 +134,23 @@ namespace SharpGoogleDocsProg.Worker
             return googleDocument;
         }
 
+        public string CreateDocFile2(string title)
+        {
+            var body = new GoogleDocument { Title = title };
+            var request = new CreateRequest(service, body);
+            var googleDocument = request.Execute();
+            var docId = googleDocument.DocumentId;
+            return docId;
+        }
+
+        public string CreateDocFile3(GoogleDocument document)
+        {
+            var request = new CreateRequest(service, document);
+            var googleDocument = request.Execute();
+            var docId = googleDocument.DocumentId;
+            return docId;
+        }
+
         private Request GetUpdateMarginsRequest(
             (double left, double right) leftRight,
             (double top, double bottom) topBottom)
@@ -550,6 +567,21 @@ namespace SharpGoogleDocsProg.Worker
 
             var indexes = GetTableIndexes(firstTableElement.Table);
             return indexes;
+        }
+
+        public int GetCellLastIndex(int cellIndex)
+        {
+            var firstTableElement = document.Body.Content.FirstOrDefault(x => x.Table != null);
+            if (firstTableElement == null)
+            {
+                throw new Exception();
+            }
+
+            var paragraph = firstTableElement.Table.TableRows.First().TableCells.First().Content;
+            var paragraph2 = paragraph.First().Paragraph;
+            var last = paragraph2.Elements.Last();
+            var lastIndex = last.EndIndex ?? default(int);
+            return lastIndex - 1;
         }
 
         public List<int> GetTableIndexes(Table table)
