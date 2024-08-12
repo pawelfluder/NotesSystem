@@ -8,19 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Repetition\EmbeddedResources\21-09-30_Notki-info_GameStatistics.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Repetition\EmbeddedResources\21-09-30_Notki-info_GameStatistics.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\SharpContainer\SharpContainerProg\SharpContainerProg.csproj" />
     <ProjectReference Include="..\..\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj" />
     <ProjectReference Include="..\..\SharpGoogleDocs\SharpGoogleDocsProg\SharpGoogleDocsProg.csproj" />
     <ProjectReference Include="..\..\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj" />
     <ProjectReference Include="..\..\SharpTextHeaderAnalyzer\SharpTextHeaderAnalyzerProg\SharpTextHeaderAnalyzerProg.csproj" />
   </ItemGroup>
-
+  
 </Project>

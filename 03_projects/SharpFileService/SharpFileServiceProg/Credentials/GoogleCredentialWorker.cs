@@ -19,6 +19,13 @@ namespace SharpConfigProg.Credentials
             return (clientId, clientSecret);
         }
 
+        public AssemblyName GetAssemblyName(object obj)
+        {
+            var assembly = Assembly.GetAssembly(obj.GetType());
+            var assebmlyName = assembly.GetName();
+            return assebmlyName;
+        }
+
         public string GetEmbeddedResource(AssemblyName assemblyName, string filename)
         {
             var namespacename = assemblyName.Name;

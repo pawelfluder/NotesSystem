@@ -1,6 +1,7 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
+using SharpFileServiceProg.Service;
 using SharpGoogleDriveProg.AAPublic;
 using SharpGoogleDriveProg.Names;
 
@@ -20,14 +21,17 @@ namespace SharpGoogleDriveProg.Service
         private string clientSecret;
         private string applicationName;
         private string user;
+        private IFileService _fileService;
 
         public GoogleDriveService()
         {
         }
 
         public GoogleDriveService(
-            Dictionary<string, object> settingDict)
+            Dictionary<string, object> settingDict,
+            IFileService fileService)
         {
+            _fileService = fileService;
             ReWriteSettings(settingDict);
         }
 
@@ -83,7 +87,7 @@ namespace SharpGoogleDriveProg.Service
             ApplySettings();
             var initializer = GetInitilizer(clientId, clientSecret);
             var service = new DriveService(initializer);
-            worker = new DriveWorker(this, service);
+            worker = new DriveWorker(this, service, _fileService);
         }
 
         public BaseClientService.Initializer GetInitilizer(string clientId, string clientSecret)

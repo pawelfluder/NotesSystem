@@ -321,7 +321,7 @@ namespace SharpRepoBackendProg.Service
 
             if (!documentExists)
             {
-                var docIdQName = CreateNewDocFile(name);
+                var docIdQName = CreateNewDocBySheetService(name);
                 id = docIdQName.id;
                 repoService.Methods.CreateConfigKey(
                     address, ConfigKeys.googleDocId.ToString(),
@@ -347,7 +347,10 @@ namespace SharpRepoBackendProg.Service
 
             if (!documentExists)
             {
-                var docIdQName = CreateNewDocFile(name);
+                //var docIdQName = CreateNewDocBySheetService(name);
+                var docIdQName = CreateNewDocByDriveService(name);
+                
+
                 id = docIdQName.id;
                 repoService.Methods.CreateConfigKey(
                     address, ConfigKeys.googleDocId.ToString(),
@@ -378,15 +381,20 @@ namespace SharpRepoBackendProg.Service
             return pdfFilePath;
         }
 
-        private (string id, string name) CreateNewDocFile(string fileName)
+        private (string id, string name) CreateNewDocBySheetService(string title)
         {
-            // Opcja druga za pomocą google drive
-            // var nameQId = driveService.Worker.CreateNewDocFile(null, fileName);
-
-            var document = docsService.StackWkr.CreateDocFile(fileName);
+            var document = docsService.StackWkr.CreateDocFile(title);
             var permission = driveService.Worker.AddReadPermissionForAnyone(document.DocumentId);
-            var result = (document.DocumentId, document.Title);            
-            return result;
+            var docIdQName = (document.DocumentId, document.Title);            
+            return docIdQName;
+        }
+
+        private (string id, string name) CreateNewDocByDriveService(string title)
+        {
+            var docId = driveService.Worker.CreateDocFile(title);
+            var permission = driveService.Worker.AddReadPermissionForAnyone(docId);
+            var docIdQName = (docId, title);
+            return docIdQName;
         }
 
         private (string id, string name) SetDocFileName(string fileName)

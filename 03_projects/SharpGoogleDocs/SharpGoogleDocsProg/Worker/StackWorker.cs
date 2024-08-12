@@ -143,14 +143,6 @@ namespace SharpGoogleDocsProg.Worker
             return docId;
         }
 
-        public string CreateDocFile3(GoogleDocument document)
-        {
-            var request = new CreateRequest(service, document);
-            var googleDocument = request.Execute();
-            var docId = googleDocument.DocumentId;
-            return docId;
-        }
-
         private Request GetUpdateMarginsRequest(
             (double left, double right) leftRight,
             (double top, double bottom) topBottom)

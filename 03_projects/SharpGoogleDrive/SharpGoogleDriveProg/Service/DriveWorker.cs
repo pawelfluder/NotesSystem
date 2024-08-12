@@ -1,6 +1,9 @@
 ﻿using Google.Apis.Drive.v3;
 using Google.Apis.Drive.v3.Data;
+using SharpConfigProg.AAPublic;
+using SharpFileServiceProg.Service;
 using System.IO;
+using System.Reflection;
 using DriveFile = Google.Apis.Drive.v3.Data.File;
 
 namespace SharpGoogleDriveProg.Service
@@ -9,17 +12,21 @@ namespace SharpGoogleDriveProg.Service
     // https://github.com/LindaLawton/Google-Dotnet-Samples/blob/master/Samples/Drive%20API/v3/FilesSample.cs
     public class DriveWorker
     {
+        private readonly IFileService fileService;
         private readonly GoogleDriveService parentService;
         private DriveService service;
-        private readonly object credentials;
+        private readonly IGoogleCredentialWorker credentials;
         private (string Id, string Name) tempFolder;
 
         public DriveWorker(
             GoogleDriveService parentService,
-            DriveService service)
+            DriveService service,
+            IFileService fileService)
         {
+            this.fileService = fileService;
             this.parentService = parentService;
             this.service = service;
+            this.credentials = fileService.Credentials;
         }
 
         public DriveFile GetFolderByNameAndId(string name, string id)
@@ -28,6 +35,15 @@ namespace SharpGoogleDriveProg.Service
             var file = files.Single(x => x.Id == id);
 
             return file;
+        }
+
+        public string CreateDocFile(string title)
+        {
+            var templateName = "EmbeddedResources.template04.docx";
+            var assemblyName = credentials.GetAssemblyName(this);
+            var stream = credentials.GetEmbeddedResourceStream(assemblyName, templateName);
+            (var docId, var outTitle) = UploadFileDocx(stream, title);
+            return docId;
         }
 
         public Permission AddReadPermissionForAnyone(string fileId)
