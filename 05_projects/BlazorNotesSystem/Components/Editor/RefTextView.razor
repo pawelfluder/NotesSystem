@@ -99,6 +99,11 @@
 
     private void ReloadComponent()
     {
+        if (Item?.Body == null)
+        {
+            return;
+        }
+
         var tmp = Item?.Body.ToString();
         var lines = tmp.Split("\n").ToList();
         linesList = lines;
