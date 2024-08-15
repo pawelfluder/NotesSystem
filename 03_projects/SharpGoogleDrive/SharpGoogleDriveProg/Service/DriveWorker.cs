@@ -42,7 +42,7 @@ namespace SharpGoogleDriveProg.Service
             var templateName = "EmbeddedResources.template04.docx";
             var assemblyName = credentials.GetAssemblyName(this);
             var stream = credentials.GetEmbeddedResourceStream(assemblyName, templateName);
-            (var docId, var outTitle) = UploadFileDocx(stream, title);
+            (var docId, var outTitle) = UploadFileDocx(title, stream);
             return docId;
         }
 
@@ -183,8 +183,19 @@ namespace SharpGoogleDriveProg.Service
         }
 
         public (string, string) UploadFileDocx(
-            Stream fileStream,
-            string fileName)
+            string fileName,
+            string docTemplateStrategy)
+        {
+            var embededFilePath = "EmbeddedResources." + docTemplateStrategy + ".docx";
+            var assemblyName = fileService.Credentials.GetAssemblyName(this);
+            var stream = credentials.GetEmbeddedResourceStream(assemblyName, embededFilePath);
+            (string Id, string Name) IdQName = UploadFileDocx(fileName, stream);
+            return IdQName;
+        }
+
+        public (string, string) UploadFileDocx(
+            string fileName,
+            Stream fileStream)
         {
             var googleDocument = "application/vnd.google-apps.document";
 
@@ -217,7 +228,7 @@ namespace SharpGoogleDriveProg.Service
             //var response = request.Upload();
             fileStream.DisposeAsync();
 
-            var file = GetFileByName(fileName);
+            (string Id, string Name) file = GetFileByName(fileName);
             SetAnyoneReadPermission(file.Id);
 
             return file;
