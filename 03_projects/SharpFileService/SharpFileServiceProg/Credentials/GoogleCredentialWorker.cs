@@ -53,6 +53,7 @@ namespace SharpConfigProg.Credentials
             var resourceName = namespacename + "." + filename;
             var assembly = Assembly.Load(assemblyName);
 
+            // correct example - 
             var stream = assembly.GetManifestResourceStream(resourceName);
 
             if (stream == null)
