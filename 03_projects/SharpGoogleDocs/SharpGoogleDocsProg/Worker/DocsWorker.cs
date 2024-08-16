@@ -36,11 +36,11 @@ namespace SharpGoogleDocsProg.Worker
             return lastEndIndex;
         }
 
-        public Request GetInsertPhotosRequests(int width, string uri, int index)
-        {
-            var gg = GetInsertPhotosRequest(width, uri, index);
-            return gg;
-        }
+        // public Request GetInsertPhotosRequests(int width, string uri, int index)
+        // {
+        //     var gg = GetInsertPhotosRequest(width, uri, index);
+        //     return gg;
+        // }
 
         public List<Request> GetUrlMessagesRequests(Dictionary<string, List<(string, string)>> input, GoogleDocument document)
         {

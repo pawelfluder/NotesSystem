@@ -17,10 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="EmbeddedResources\template01.docx" />
-    <EmbeddedResource Include="EmbeddedResources\template02.docx" />
-    <EmbeddedResource Include="EmbeddedResources\template03.docx" />
-    <EmbeddedResource Include="EmbeddedResources\template04.docx" />
+    <EmbeddedResource Include="EmbeddedResources\Template01.docx" />
+    <EmbeddedResource Include="EmbeddedResources\Template02.docx" />
+    <EmbeddedResource Include="EmbeddedResources\Template03.docx" />
+    <EmbeddedResource Include="EmbeddedResources\Template04.docx" />
     <EmbeddedResource Include="EmbeddedResources\Template05.docx" />
   </ItemGroup>
 
