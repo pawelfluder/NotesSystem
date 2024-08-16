@@ -53,7 +53,7 @@ namespace SharpConfigProg.Credentials
             var resourceName = namespacename + "." + filename;
             var assembly = Assembly.Load(assemblyName);
 
-            // correct example - 
+            // correct example - SharpGoogleDriveProg.EmbeddedResources.Template05.docx
             var stream = assembly.GetManifestResourceStream(resourceName);
 
             if (stream == null)
