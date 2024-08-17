@@ -3,11 +3,10 @@ using Google.Apis.Docs.v1.Data;
 using GoogleDocument = Google.Apis.Docs.v1.Data.Document;
 using GoogleDocsRange = Google.Apis.Docs.v1.Data.Range;
 using static Google.Apis.Docs.v1.DocumentsResource;
-using System.Reflection.Metadata.Ecma335;
 
 namespace SharpGoogleDocsProg.Worker
 {
-    public class StackWorker
+    public class StackCoposite
     {
         //https://developers.google.com/docs/api/how-tos/format-text
         DocsService service;
@@ -18,7 +17,7 @@ namespace SharpGoogleDocsProg.Worker
 
         public int LastIndex => lastIndex;
 
-        public StackWorker(DocsService service)
+        public StackCoposite(DocsService service)
         {
             this.service = service;
             stack = new List<Request>();
@@ -61,11 +60,11 @@ namespace SharpGoogleDocsProg.Worker
             return lastIndex;
         }
 
-        public Request GetInsertPhotosRequests(int width, string uri, int index)
-        {
-            var gg = GetInsertPhotosRequest(width, uri, index);
-            return gg;
-        }
+        // public Request GetInsertPhotosRequests(int width, string uri, int index)
+        // {
+        //     var gg = GetInsertPhotosRequest(width, uri, index);
+        //     return gg;
+        // }
 
         public List<Request> GetUrlMessagesRequests(Dictionary<string, List<(string, string)>> input, GoogleDocument document)
         {

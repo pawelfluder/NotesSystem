@@ -10,7 +10,7 @@ namespace SharpGoogleDriveProg.Service
     public class GoogleDriveService : IGoogleDriveService
     {
         //workers
-        private DriveWorker worker;
+        private DriveComposite composite;
         private DriveService service;
         private bool isWorkerInit;
 
@@ -35,7 +35,7 @@ namespace SharpGoogleDriveProg.Service
             ReWriteSettings(settingDict);
         }
 
-        public DriveWorker Worker
+        public DriveComposite Composite
         {
             get
             {
@@ -44,7 +44,7 @@ namespace SharpGoogleDriveProg.Service
                     WorkerInit();
                     isWorkerInit = true;
                 }
-                return worker;
+                return composite;
             }
         }
 
@@ -87,7 +87,7 @@ namespace SharpGoogleDriveProg.Service
             ApplySettings();
             var initializer = GetInitilizer(clientId, clientSecret);
             var service = new DriveService(initializer);
-            worker = new DriveWorker(this, service, _fileService);
+            composite = new DriveComposite(this, service, _fileService);
         }
 
         public BaseClientService.Initializer GetInitilizer(string clientId, string clientSecret)

@@ -4,7 +4,8 @@ namespace SharpGoogleDocsProg.AAPublic
 {
     public interface IGoogleDocsService
     {
-        StackWorker StackWkr { get; }
+        StackCoposite Stack { get; }
+        ExecuteComposite Execute { get; }
         void Initialize();
         void OverrideSettings(Dictionary<string, object> settingDict);
     }

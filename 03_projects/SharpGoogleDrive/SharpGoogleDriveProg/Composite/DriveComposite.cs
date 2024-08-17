@@ -1,16 +1,16 @@
-﻿using Google.Apis.Drive.v3;
+﻿using System.Text.RegularExpressions;
+using Google.Apis.Drive.v3;
 using Google.Apis.Drive.v3.Data;
 using SharpConfigProg.AAPublic;
 using SharpFileServiceProg.Service;
-using System.IO;
-using System.Reflection;
 using DriveFile = Google.Apis.Drive.v3.Data.File;
+using File = System.IO.File;
 
 namespace SharpGoogleDriveProg.Service
 {
-    // goog examples
+    // google examples
     // https://github.com/LindaLawton/Google-Dotnet-Samples/blob/master/Samples/Drive%20API/v3/FilesSample.cs
-    public class DriveWorker
+    public class DriveComposite
     {
         private readonly IFileService fileService;
         private readonly GoogleDriveService parentService;
@@ -18,7 +18,7 @@ namespace SharpGoogleDriveProg.Service
         private readonly IGoogleCredentialWorker credentials;
         private (string Id, string Name) tempFolder;
 
-        public DriveWorker(
+        public DriveComposite(
             GoogleDriveService parentService,
             DriveService service,
             IFileService fileService)
@@ -33,7 +33,6 @@ namespace SharpGoogleDriveProg.Service
         {
             var files = GetFilesRequest($"name='{name}'");
             var file = files.Single(x => x.Id == id);
-
             return file;
         }
 
@@ -99,7 +98,7 @@ namespace SharpGoogleDriveProg.Service
             return result;
         }
 
-        public (string, string) UploadTempPhotoFile(Stream fileStream)
+        public (string id, string name) UploadTempPhotoFile(Stream fileStream)
         {
             var guid = Guid.NewGuid();
             var fileName = "temp-" + guid + ".jpg";
@@ -110,6 +109,46 @@ namespace SharpGoogleDriveProg.Service
 
             var result = UploadFile(fileStream, fileName, description, fileMime, parents);
             return result;
+        }
+
+        public string UploadTempPhotoFile((string folderPath, string fileName) folderQfile)
+        {
+            var photoFilePath = Path.Combine(folderQfile.folderPath, folderQfile.fileName);
+            photoFilePath = photoFilePath.Replace("\\", "/");
+            var photoFileStream = File.Open(photoFilePath, FileMode.Open);
+            var idQname = UploadTempPhotoFile(photoFileStream);
+            var uri = $"https://drive.google.com/u/0/uc?id={idQname.Item1}&export=download";
+            return uri;
+        }
+        
+        public void DoPhotoActionAndRemove(
+            (string folderPath, string fileName) photoFilePath,
+            Action<string> photoAction)
+        {
+            var uri = UploadTempPhotoFile(photoFilePath);
+            var id = GetIdFromUri(uri);
+            
+            photoAction.Invoke(uri);
+            RemoveFile(id);
+        }
+
+        public string GetIdFromUri(string uri)
+        {
+            string pattern = @"https:\/\/drive.google.com\/u\/0\/uc\?id=([^&]+)&export=download";
+            Match match = Regex.Match(uri, pattern);
+            if (match.Success)
+            {
+                string id = match.Groups[1].Value;
+                return id;
+            }
+
+            throw new InvalidOperationException();
+        }
+        
+        static string ParseName(string arg) {
+            var regex = new Regex(@"^OU=([a-zA-Z\\]+\,\s+[a-zA-Z\\]+)\,.*$");
+            var match = regex.Match(arg);
+            return match.Groups[1].Value;
         }
 
         public void DeleteTempFolder()
@@ -234,7 +273,7 @@ namespace SharpGoogleDriveProg.Service
             return file;
         }
 
-        public (string, string) UploadFile(
+        public (string id, string name) UploadFile(
             Stream fileStream,
             string fileName,
             string fileDescription,

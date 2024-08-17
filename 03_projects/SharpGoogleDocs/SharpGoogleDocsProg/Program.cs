@@ -1,4 +1,4 @@
-﻿using GoogleDocsServiceProj.Service;
+﻿using SharpGoogleDocsProg.Service;
 
 namespace GoogleDocsServiceProj
 {

@@ -2,89 +2,90 @@
 using Google.Apis.Docs.v1;
 using Google.Apis.Services;
 using SharpGoogleDocsProg.AAPublic;
+using SharpGoogleDocsProg.Composits;
 using SharpGoogleDocsProg.Names;
 using SharpGoogleDocsProg.Worker;
 
-namespace GoogleDocsServiceProj.Service
+namespace SharpGoogleDocsProg.Service
 {
     internal class GoogleDocsService : IGoogleDocsService
     {
-        // workers
-        private StackWorker stackWkr;
-        private DocsWorker worker;
+        // composits
+        private DocumentComposite documentComposite;
+        private RequestsCoposite requestsComposite;
+        private StackCoposite stackComposite;
+        private ExecuteComposite executeComposite;
+        
+        // init
+        private bool isSettingsInit;
+        private bool isDocumentInit;
+        private bool isRequestsInit;
         private bool isStackInit;
+        private bool isExecuteInit;
 
         // settings
-        private Dictionary<string, object> settings;
+        private Dictionary<string, object> _settings;
         private List<string> scopes;
         private string clientId;
         private string clientSecret;
         private string applicationName;
         private string user;
-
-        public GoogleDocsService()
+        
+        public DocumentComposite Document { get
         {
-        }
+            if (!isDocumentInit){ DocumentInit(); isDocumentInit = true; }
+            return documentComposite;
+        }}
+        public StackCoposite Stack { get
+        {
+            if (!isStackInit){ StackInit(); isStackInit = true; }
+            return stackComposite;
+        }}
 
+        public ExecuteComposite Execute { get
+        {
+            if (!isExecuteInit){ ExecuteInit(); isStackInit = true; }
+            return executeComposite;
+        }}
+        
+        // public GoogleDocsService()
+        // {
+        // }
+        
         public GoogleDocsService(
             Dictionary<string, object> settingDict)
         {
             ReWriteSettings(settingDict);
         }
-
-        public StackWorker StackWkr
-        {
-            get
-            {
-                if (!isStackInit)
-                {
-                    StackInit();
-                    isStackInit = true;
-                }
-                return stackWkr;
-            }
-        }
-
-        public void Initialize()
-        {
-            StackInit();
-        }
-
+        
+        // settings
         public void OverrideSettings(Dictionary<string, object> settingDict)
         {
             ReWriteSettings(settingDict);
             ApplySettings();
         }
-
         private void ReWriteSettings(Dictionary<string, object> inputDict)
         {
-            this.settings = new Dictionary<string, object>();
-            TryAdd(inputDict, settings, VarNames.GoogleClientId);
-            TryAdd(inputDict, settings, VarNames.GoogleClientSecret);
-            TryAdd(inputDict, settings, VarNames.GoogleApplicationName);
-            TryAdd(inputDict, settings, VarNames.GoogleUserName);
+            _settings = new Dictionary<string, object>();
+            TryAdd(inputDict, _settings, VarNames.GoogleClientId);
+            TryAdd(inputDict, _settings, VarNames.GoogleClientSecret);
+            TryAdd(inputDict, _settings, VarNames.GoogleApplicationName);
+            TryAdd(inputDict, _settings, VarNames.GoogleUserName);
         }
-
-        private void ApplySettings()
+        private void ApplySettings(bool rewrite = false)
         {
-            this.scopes ??= new List<string>();
-            this.clientId = settings[VarNames.GoogleClientId].ToString();
-            this.clientSecret = settings[VarNames.GoogleClientSecret].ToString();
-            this.applicationName = settings[VarNames.GoogleApplicationName].ToString();
-            this.user = settings[VarNames.GoogleUserName].ToString();
-
-            this.scopes.Add(DocsService.ScopeConstants.Documents);
+            if (!isSettingsInit || rewrite)
+            {
+                this.scopes ??= new List<string>();
+                this.scopes.Add(DocsService.ScopeConstants.Documents);
+                this.clientId = _settings[VarNames.GoogleClientId].ToString();
+                this.clientSecret = _settings[VarNames.GoogleClientSecret].ToString();
+                this.applicationName = _settings[VarNames.GoogleApplicationName].ToString();
+                this.user = _settings[VarNames.GoogleUserName].ToString();
+                isSettingsInit = true;
+            }
         }
-
-        private void StackInit()
-        {
-            ApplySettings();
-            var initializer = GetInitilizer(clientId, clientSecret);
-            var service = new DocsService(initializer);
-            worker = new DocsWorker(service);
-            stackWkr = new StackWorker(service);
-        }
-
+        // http client initializer
         public BaseClientService.Initializer GetInitilizer(string clientId, string clientSecret)
         {
             var secrets = new ClientSecrets();
@@ -126,6 +127,39 @@ namespace GoogleDocsServiceProj.Service
             }
 
             return false;
+        }
+        // init
+        public void Initialize()
+        {
+            StackInit();
+        }
+        private void DocumentInit()
+        {
+            ApplySettings();
+            
+            requestsComposite = new RequestsCoposite(service);
+            stackComposite = new StackCoposite(service);
+        }
+        private void ExecuteInit()
+        {
+            throw new NotImplementedException();
+        }
+        private void RequestInit()
+        {
+            throw new NotImplementedException();
+        }
+        private void StackInit()
+        {
+            ApplySettings();
+            var initializer = GetInitilizer(clientId, clientSecret);
+            var service = new DocsService(initializer);
+            requestsComposite = new RequestsCoposite(service);
+            stackComposite = new StackCoposite(service);
+        }
+        private void DocsSericeInit()
+        {
+            var initializer = GetInitilizer(clientId, clientSecret);
+            var service = new DocsService(initializer);
         }
     }
 }

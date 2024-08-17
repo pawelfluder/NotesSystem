@@ -25,6 +25,15 @@ namespace SharpFileServiceProg.Operations.Files
             return path;
         }
 
+        public List<(string, string)> GetFolderQFileList(string path)
+        {
+            var files = Directory.GetFiles(path);
+            var folderQfileList = files
+                .Select(x => (System.IO.Path.GetDirectoryName(x), System.IO.Path.GetFileName(x)))
+                .ToList();
+            return folderQfileList;
+        }
+
         public string TryGetBinPath(out bool success)
         {
             try

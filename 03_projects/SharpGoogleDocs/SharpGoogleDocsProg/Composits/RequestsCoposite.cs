@@ -1,15 +1,16 @@
-﻿using Google.Apis.Docs.v1;
+﻿using System.Text.RegularExpressions;
+using Google.Apis.Docs.v1;
 using Google.Apis.Docs.v1.Data;
 using GoogleDocument = Google.Apis.Docs.v1.Data.Document;
 using GoogleDocsRange = Google.Apis.Docs.v1.Data.Range;
 
 namespace SharpGoogleDocsProg.Worker
 {
-    public class DocsWorker
+    public class RequestsCoposite
     {
         DocsService service;
 
-        public DocsWorker(DocsService service)
+        public RequestsCoposite(DocsService service)
         {
             this.service = service;
         }
@@ -36,11 +37,35 @@ namespace SharpGoogleDocsProg.Worker
             return lastEndIndex;
         }
 
-        // public Request GetInsertPhotosRequests(int width, string uri, int index)
-        // {
-        //     var gg = GetInsertPhotosRequest(width, uri, index);
-        //     return gg;
-        // }
+        public Request GetInsertPhotosRequest(int width, string uri, int index)
+        {
+            return new Request()
+            {
+                InsertInlineImage = new()
+                {
+                    //Uri = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgI2LGva1JuYa--ODqOja1y0haWB7XPOXArUO2Lkdumw&s",
+                    //Uri = "D:/01_Synchronized/01_Programming_Files/8c0f7763-7149-4b4d-9d6a-b28d3984552f/15_Zbior/PythonTinderApiDataExport/Output/ExportedApplicationData/635e47ac1e983b01004469ac/636971af18d4b20100b9d22c/640x800_ce036b17-abc8-4230-bb03-2be1690b74f8.jpg",
+                    Uri = uri,
+                    ObjectSize = new Size()
+                    {
+                        //Height = new Dimension()
+                        //{
+                        //    Magnitude = height,
+                        //    Unit = "PT",
+                        //},
+                        Width = new Dimension()
+                        {
+                            Magnitude = width,
+                            Unit = "PT",
+                        }
+                    },
+                    Location = new Location()
+                    {
+                        Index = index,
+                    }
+                },
+            };
+        }
 
         public List<Request> GetUrlMessagesRequests(Dictionary<string, List<(string, string)>> input, GoogleDocument document)
         {
@@ -75,22 +100,31 @@ namespace SharpGoogleDocsProg.Worker
             return requests;
         }
 
-        public void ExecuteBatchUpdate(Request request, string id)
+        public void ExecuteRequest(Request request, string id)
         {
             var requestsList = new List<Request>() { request };
-
-            if (requestsList.Count > 0)
-            {
-                TryExecuteBatchUpdate(requestsList, id, 1);
-            }
+            TryExecuteBatchRequests(requestsList, id, 1);
         }
 
         public void ExecuteBatchUpdate(List<Request> requestsList, string id)
         {
             if (requestsList.Count > 0)
             {
-                TryExecuteBatchUpdate(requestsList, id, 1);
+                TryExecuteBatchRequests(requestsList, id, 1);
             }
+        }
+        
+        public string GetIdFromUri(string uri)
+        {
+            string pattern = @"https://drive.google.com/u/0/uc?id=([^&]+)&export=download";
+            Match match = Regex.Match(uri, pattern);
+            if (match.Success)
+            {
+                string id = match.Groups[1].Value;
+                return id;
+            }
+
+            throw new InvalidOperationException();
         }
 
         public BatchUpdateDocumentResponse ExecuteBatchUpdateRequest(BatchUpdateDocumentRequest batchRequest, string id)
@@ -101,41 +135,40 @@ namespace SharpGoogleDocsProg.Worker
 
         public void TryExecuteBatchUpdate(List<Request> requestsList, string id)
         {
-            TryExecuteBatchUpdate(requestsList, id, 1);
+            TryExecuteBatchRequests(requestsList, id, 1);
         }
 
-        public void TryExecuteBatchUpdate(List<Request> requestsList, string id, int maxAttemptCount)
+        public void TryExecuteBatchRequests(List<Request> requestsList, string id, int maxAttemptCount)
         {
-            var attemptCount = 0;
-            if (maxAttemptCount >= 1)
+            if (maxAttemptCount < 1)
             {
-                while (attemptCount != -1)
-                {
-                    try
-                    {
-                        var batchUpdateRequest = new BatchUpdateDocumentRequest()
-                        {
-                            Requests = requestsList,
-                        };
-                        var result = service.Documents.BatchUpdate(batchUpdateRequest, id).Execute();
-                        return;
-                    }
-                    catch (Exception ex)
-                    {
-                        attemptCount++;
-                    }
+                return;
+            }
 
-                    if (attemptCount > maxAttemptCount)
+            var attemptCount = 0;
+            
+            while (attemptCount != -1)
+            {
+                try
+                {
+                    var batchUpdateRequest = new BatchUpdateDocumentRequest()
                     {
-                        return;
-                        //
-                    }
+                        Requests = requestsList,
+                    };
+                    service.Documents.BatchUpdate(batchUpdateRequest, id).Execute();
+                }
+                catch (Exception ex)
+                {
+                    attemptCount++;
+                }
+
+                if (attemptCount > maxAttemptCount)
+                {
+                    return;
                 }
             }
         }
-
-
-
+        
         private Request GetInsertTableRequest((int ColumnsCount, int RowsCount) size)
         {
             var request = new Request()
@@ -182,39 +215,9 @@ namespace SharpGoogleDocsProg.Worker
             //https://developers.google.com/docs/api/how-tos/format-text
 
             var request = GetInsertTextRequest(lastEndIndex, text);
-            ExecuteBatchUpdate(request, id);
+            ExecuteRequest(request, id);
         }
-
-        public Request GetInsertPhotosRequest(int width, string uri, int index)
-        {
-            return new Request()
-            {
-                InsertInlineImage = new()
-                {
-                    //Uri = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgI2LGva1JuYa--ODqOja1y0haWB7XPOXArUO2Lkdumw&s",
-                    //Uri = "D:/01_Synchronized/01_Programming_Files/8c0f7763-7149-4b4d-9d6a-b28d3984552f/15_Zbior/PythonTinderApiDataExport/Output/ExportedApplicationData/635e47ac1e983b01004469ac/636971af18d4b20100b9d22c/640x800_ce036b17-abc8-4230-bb03-2be1690b74f8.jpg",
-                    Uri = uri,
-                    ObjectSize = new Size()
-                    {
-                        //Height = new Dimension()
-                        //{
-                        //    Magnitude = height,
-                        //    Unit = "PT",
-                        //},
-                        Width = new Dimension()
-                        {
-                            Magnitude = width,
-                            Unit = "PT",
-                        }
-                    },
-                    Location = new Location()
-                    {
-                        Index = index,
-                    }
-                },
-            };
-        }
-
+        
         public List<int> GetTableIndexes(Table table)
         {
             var indexes = new List<int>();
