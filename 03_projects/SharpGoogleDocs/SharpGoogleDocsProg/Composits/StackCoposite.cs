@@ -1,25 +1,28 @@
 ﻿using Google.Apis.Docs.v1;
 using Google.Apis.Docs.v1.Data;
+using SharpGoogleDocsProg.Composits;
 using GoogleDocument = Google.Apis.Docs.v1.Data.Document;
 using GoogleDocsRange = Google.Apis.Docs.v1.Data.Range;
 using static Google.Apis.Docs.v1.DocumentsResource;
 
 namespace SharpGoogleDocsProg.Worker
 {
+    // todo - move link to notes
+    // https://developers.google.com/docs/api/how-tos/format-text
     public class StackCoposite
     {
-        //https://developers.google.com/docs/api/how-tos/format-text
         DocsService service;
-        GoogleDocument document;
-        string docId;
-        private int lastIndex;
         private List<Request> stack;
+        private readonly DocumentComposite _documentCompo;
 
-        public int LastIndex => lastIndex;
+        //public int LastIndex => _documentCompo.
 
-        public StackCoposite(DocsService service)
+        public StackCoposite(
+            DocsService service,
+            DocumentComposite documentComposite)
         {
             this.service = service;
+            _documentCompo = documentComposite;
             stack = new List<Request>();
         }
 
@@ -28,21 +31,21 @@ namespace SharpGoogleDocsProg.Worker
             var stack2 = stack.Where(x => x != null).ToList();
             var success = TryExecuteBatchUpdate(stack2);
             ClearStack();
-            LoadDocument(docId);
+            _documentCompo.ReLoadDocument();
             return success;
         }
 
-        public void LoadDocument(string docId)
-        {
-            var request = service.Documents.Get(docId);
-            var document = request.Execute();
-            this.document = document;
-            this.docId = document.DocumentId;
-            lastIndex = (int)document.Body.Content.Last().EndIndex - 1;
-
-            Paragraph gg;
-            SectionBreak gg2;
-        }
+        // public void LoadDocument(string docId)
+        // {
+        //     var request = service.Documents.Get(docId);
+        //     var document = request.Execute();
+        //     this.document = document;
+        //     this.docId = document.DocumentId;
+        //     lastIndex = (int)document.Body.Content.Last().EndIndex - 1;
+        //
+        //     Paragraph gg;
+        //     SectionBreak gg2;
+        // }
 
         public int GetDocumentLastIndex(GoogleDocument document)
         {
@@ -50,15 +53,15 @@ namespace SharpGoogleDocsProg.Worker
             return lastEndIndex;
         }
 
-        public int GetDocumentLastIndex(string docId)
-        {
-            var request = service.Documents.Get(docId);
-            var document = request.Execute();
-            this.document = document;
-            this.docId = document.DocumentId;
-            lastIndex = (int)document.Body.Content.Last().EndIndex - 1;
-            return lastIndex;
-        }
+        // public int GetDocumentLastIndex(string docId)
+        // {
+        //     var request = service.Documents.Get(docId);
+        //     var document = request.Execute();
+        //     this.document = document;
+        //     this.docId = document.DocumentId;
+        //     lastIndex = (int)document.Body.Content.Last().EndIndex - 1;
+        //     return lastIndex;
+        // }
 
         // public Request GetInsertPhotosRequests(int width, string uri, int index)
         // {
@@ -198,7 +201,7 @@ namespace SharpGoogleDocsProg.Worker
 
         public bool TryExecuteBatchUpdate(List<Request> requestsList)
         {
-            var success = TryExecuteBatchUpdate(requestsList, docId, 1);
+            var success = TryExecuteBatchUpdate(requestsList, _documentCompo.DocId, 1);
             return success;
         }
 
@@ -390,7 +393,8 @@ namespace SharpGoogleDocsProg.Worker
 
         public Request GetRequestAddPageNumberToFooter()
         {
-            var footer = document.Footers.FirstOrDefault();
+            var footer = _documentCompo.Document
+                .Footers.FirstOrDefault();
             var text = "a_{{PAGE}}_e";
             if (!footer.Equals(default(KeyValuePair<string, Footer>)))
             {
@@ -455,7 +459,7 @@ namespace SharpGoogleDocsProg.Worker
 
         public void AppendToDocument(string id, List<string> lines, int lastEndIndex, string sep)
         {
-            LoadDocument(id);
+            _documentCompo.LoadDocument(id);
             var text = ConcatLines(lines, sep);
             AppendToDocument(text);
         }
@@ -463,7 +467,7 @@ namespace SharpGoogleDocsProg.Worker
         public void AppendToDocument(string text)
         {
             var request = GetInsertTextRequest(GetLastIndex(), text);
-            ExecuteBatchUpdate(request, docId);
+            ExecuteBatchUpdate(request, _documentCompo.DocId);
         }
 
         public void StackOverrideContentRequest(string text)
@@ -507,16 +511,17 @@ namespace SharpGoogleDocsProg.Worker
             stack = new List<Request>();
         }
 
-        private int? GetLastIndex()
-        {
-            if (lastIndex == default)
-            {
-                LoadDocument(docId);
-                lastIndex = (int)document.Body.Content.Last().EndIndex - 1;
-            }
-
-            return lastIndex;
-        }
+        private int? GetLastIndex() => _documentCompo.LastIndex;
+        // {
+        //     if (_documentCompo.LastIndex == default)
+        //     {
+        //         ;
+        //         LoadDocument(_documentCompo.);
+        //         lastIndex = (int)document.Body.Content.Last().EndIndex - 1;
+        //     }
+        //
+        //     return lastIndex;
+        // }
 
         public Request GetInsertPhotosRequest(int width, string uri, int index)
         {
@@ -550,7 +555,8 @@ namespace SharpGoogleDocsProg.Worker
 
         public List<int> GetFirstTableCellsIndexes()
         {
-            var firstTableElement = document.Body.Content.FirstOrDefault(x => x.Table != null);
+            var firstTableElement = _documentCompo.Document
+                .Body.Content.FirstOrDefault(x => x.Table != null);
             if (firstTableElement == null)
             {
                 throw new Exception();
@@ -562,7 +568,8 @@ namespace SharpGoogleDocsProg.Worker
 
         public int GetCellLastIndex(int cellIndex)
         {
-            var firstTableElement = document.Body.Content.FirstOrDefault(x => x.Table != null);
+            var firstTableElement = _documentCompo.Document
+                .Body.Content.FirstOrDefault(x => x.Table != null);
             if (firstTableElement == null)
             {
                 throw new Exception();
@@ -591,17 +598,7 @@ namespace SharpGoogleDocsProg.Worker
             return indexes;
         }
 
-        public int GetFirstTableIndex()
-        {
-            var firstTableElement = document.Body.Content.FirstOrDefault(x => x.Table != null);
-            if (firstTableElement == null)
-            {
-                throw new Exception();
-            }
-
-            var index = firstTableElement.StartIndex;
-            return (int)index;
-        }
+        
 
         public void StackMergeCellsRequest((int RowIndex, int ColumnIndex) location, int index, (int RowSpan, int ColumnSpan) range)
         {
@@ -805,13 +802,13 @@ namespace SharpGoogleDocsProg.Worker
 
         public List<string> GetDocumentTextLines()
         {
-            var lines = GetTextLines(document);
+            var lines = GetTextLines(_documentCompo.Document);
             return lines;
         }
 
         public string GetDocumentAllText()
         {
-            var lines = GetTextLines(document);
+            var lines = GetTextLines(_documentCompo.Document);
             var text = ConcatLines(lines, string.Empty);
             return text;
         }

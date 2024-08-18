@@ -1,6 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using Google.Apis.Docs.v1;
 using Google.Apis.Docs.v1.Data;
+using GoogleDocsServiceProj.Models;
+using SharpGoogleDocsProg.Composits;
 using GoogleDocument = Google.Apis.Docs.v1.Data.Document;
 using GoogleDocsRange = Google.Apis.Docs.v1.Data.Range;
 
@@ -8,11 +10,15 @@ namespace SharpGoogleDocsProg.Worker
 {
     public class RequestsCoposite
     {
-        DocsService service;
+        DocsService _service;
+        private readonly DocumentComposite _documentComposite;
 
-        public RequestsCoposite(DocsService service)
+        public RequestsCoposite(
+            DocsService service,
+            DocumentComposite documentComposite)
         {
-            this.service = service;
+            _service = service;
+            _documentComposite = documentComposite;
         }
 
         public string UpdateDocument(string id, List<string> lines, string sep)
@@ -100,10 +106,15 @@ namespace SharpGoogleDocsProg.Worker
             return requests;
         }
 
-        public void ExecuteRequest(Request request, string id)
+        public ResponseStatus ExecuteRequest(
+            Request request,
+            string id = null,
+            int maxAttemptsCount = 2)
         {
+            if (id == null) { id = _documentComposite.Document.DocumentId; }
+            
             var requestsList = new List<Request>() { request };
-            TryExecuteBatchRequests(requestsList, id, 1);
+            return TryExecuteBatchRequests(requestsList, id, maxAttemptsCount);
         }
 
         public void ExecuteBatchUpdate(List<Request> requestsList, string id)
@@ -129,25 +140,27 @@ namespace SharpGoogleDocsProg.Worker
 
         public BatchUpdateDocumentResponse ExecuteBatchUpdateRequest(BatchUpdateDocumentRequest batchRequest, string id)
         {
-            var result = service.Documents.BatchUpdate(batchRequest, id).Execute();
+            var result = _service.Documents.BatchUpdate(batchRequest, id).Execute();
             return result;
         }
 
-        public void TryExecuteBatchUpdate(List<Request> requestsList, string id)
+        public ResponseStatus TryExecuteBatchUpdate(List<Request> requestsList, string id)
         {
-            TryExecuteBatchRequests(requestsList, id, 1);
+            var status = TryExecuteBatchRequests(requestsList, id, 1);
+            return status;
         }
 
-        public void TryExecuteBatchRequests(List<Request> requestsList, string id, int maxAttemptCount)
+        public ResponseStatus TryExecuteBatchRequests(List<Request> requestsList, string id, int maxAttemptCount)
         {
             if (maxAttemptCount < 1)
             {
-                return;
+                return new ResponseStatus(ResponseStatusNames.ZeroMaxAttemptsError);
             }
 
-            var attemptCount = 0;
+            var attemptCount = 1;
+            var exceptions = new List<Exception>();
             
-            while (attemptCount != -1)
+            while (attemptCount <= maxAttemptCount)
             {
                 try
                 {
@@ -155,18 +168,27 @@ namespace SharpGoogleDocsProg.Worker
                     {
                         Requests = requestsList,
                     };
-                    service.Documents.BatchUpdate(batchUpdateRequest, id).Execute();
+                    var response = _service.Documents.BatchUpdate(batchUpdateRequest, id).Execute();
+                    return new ResponseStatus(ResponseStatusNames.Success, response, exceptions);
                 }
                 catch (Exception ex)
                 {
+                    exceptions.Add(ex);
                     attemptCount++;
                 }
 
                 if (attemptCount > maxAttemptCount)
                 {
-                    return;
+                    if (exceptions.Count > 0)
+                    {
+                        return new ResponseStatus(ResponseStatusNames.Exceptions, null, exceptions);
+                    }
+
+                    return new ResponseStatus(ResponseStatusNames.AnotherProblem);
                 }
             }
+
+            throw new InvalidOperationException();
         }
         
         private Request GetInsertTableRequest((int ColumnsCount, int RowsCount) size)
@@ -344,12 +366,12 @@ namespace SharpGoogleDocsProg.Worker
                 deleteContentRequest,
             };
 
-            var result = service.Documents.BatchUpdate(batchUpdateRequest, id).Execute();
+            var result = _service.Documents.BatchUpdate(batchUpdateRequest, id).Execute();
         }
 
         public List<string> GetDocumentTextLines(string id)
         {
-            var request = service.Documents.Get(id);
+            var request = _service.Documents.Get(id);
             var document = request.Execute();
             var lines = GetLines(document);
             return lines;
@@ -357,7 +379,7 @@ namespace SharpGoogleDocsProg.Worker
 
         public GoogleDocument GetDocument(string id)
         {
-            var request = service.Documents.Get(id);
+            var request = _service.Documents.Get(id);
             GoogleDocument? document = request.Execute();
             return document;
         }

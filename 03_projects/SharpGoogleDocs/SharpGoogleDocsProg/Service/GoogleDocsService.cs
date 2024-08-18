@@ -11,17 +11,19 @@ namespace SharpGoogleDocsProg.Service
     internal class GoogleDocsService : IGoogleDocsService
     {
         // composits
-        private DocumentComposite documentComposite;
-        private RequestsCoposite requestsComposite;
-        private StackCoposite stackComposite;
-        private ExecuteComposite executeComposite;
+        private DocumentComposite _documentComposite;
+        private RequestsCoposite _requestsComposite;
+        private StackCoposite _stackComposite;
+        private ExecuteComposite _executeComposite;
+        private DocsService _docsService;
         
         // init
-        private bool isSettingsInit;
-        private bool isDocumentInit;
-        private bool isRequestsInit;
-        private bool isStackInit;
-        private bool isExecuteInit;
+        private bool _isSettingsInit;
+        private bool _isDocsServiceInit;
+        private bool _isDocumentInit;
+        private bool _isRequestsInit;
+        private bool _isStackInit;
+        private bool _isExecuteInit;
 
         // settings
         private Dictionary<string, object> _settings;
@@ -30,22 +32,22 @@ namespace SharpGoogleDocsProg.Service
         private string clientSecret;
         private string applicationName;
         private string user;
-        
+
         public DocumentComposite Document { get
         {
-            if (!isDocumentInit){ DocumentInit(); isDocumentInit = true; }
-            return documentComposite;
+            if (!_isDocumentInit){ DocumentInit(); _isDocumentInit = true; }
+            return _documentComposite;
         }}
         public StackCoposite Stack { get
         {
-            if (!isStackInit){ StackInit(); isStackInit = true; }
-            return stackComposite;
+            if (!_isStackInit){ StackInit(); _isStackInit = true; }
+            return _stackComposite;
         }}
 
         public ExecuteComposite Execute { get
         {
-            if (!isExecuteInit){ ExecuteInit(); isStackInit = true; }
-            return executeComposite;
+            if (!_isExecuteInit){ ExecuteInit(); _isExecuteInit = true; }
+            return _executeComposite;
         }}
         
         // public GoogleDocsService()
@@ -74,7 +76,7 @@ namespace SharpGoogleDocsProg.Service
         }
         private void ApplySettings(bool rewrite = false)
         {
-            if (!isSettingsInit || rewrite)
+            if (!_isSettingsInit || rewrite)
             {
                 this.scopes ??= new List<string>();
                 this.scopes.Add(DocsService.ScopeConstants.Documents);
@@ -82,7 +84,7 @@ namespace SharpGoogleDocsProg.Service
                 this.clientSecret = _settings[VarNames.GoogleClientSecret].ToString();
                 this.applicationName = _settings[VarNames.GoogleApplicationName].ToString();
                 this.user = _settings[VarNames.GoogleUserName].ToString();
-                isSettingsInit = true;
+                _isSettingsInit = true;
             }
         }
         // http client initializer
@@ -135,31 +137,36 @@ namespace SharpGoogleDocsProg.Service
         }
         private void DocumentInit()
         {
-            ApplySettings();
-            
-            requestsComposite = new RequestsCoposite(service);
-            stackComposite = new StackCoposite(service);
+            if (!_isDocsServiceInit) { DocsServiceInit(); }
+            _documentComposite = new DocumentComposite(_docsService);
         }
         private void ExecuteInit()
         {
-            throw new NotImplementedException();
+            if (!_isRequestsInit) { RequestInit(); }
+            if (!_isDocumentInit) { DocumentInit(); }
+            _executeComposite = new ExecuteComposite(_requestsComposite, _documentComposite);
+            _isExecuteInit = true;
         }
         private void RequestInit()
         {
-            throw new NotImplementedException();
+            if (!_isDocsServiceInit) { DocsServiceInit(); }
+            if (!_isDocumentInit) { DocumentInit(); }
+            _requestsComposite = new RequestsCoposite(_docsService, _documentComposite);
+            _isRequestsInit = true;
         }
         private void StackInit()
         {
-            ApplySettings();
-            var initializer = GetInitilizer(clientId, clientSecret);
-            var service = new DocsService(initializer);
-            requestsComposite = new RequestsCoposite(service);
-            stackComposite = new StackCoposite(service);
+            if (!_isDocsServiceInit) { DocsServiceInit(); }
+            if (!_isDocumentInit) { DocsServiceInit(); }
+            _stackComposite = new StackCoposite(_docsService, _documentComposite);
+            _isStackInit = true;
         }
-        private void DocsSericeInit()
+        private void DocsServiceInit()
         {
+            if (!_isSettingsInit) { ApplySettings(); }
             var initializer = GetInitilizer(clientId, clientSecret);
-            var service = new DocsService(initializer);
+            _docsService = new DocsService(initializer);
+            _isDocsServiceInit = true;
         }
     }
 }

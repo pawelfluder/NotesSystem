@@ -126,10 +126,10 @@ namespace SharpGoogleDriveProg.Service
             Action<string> photoAction)
         {
             var uri = UploadTempPhotoFile(photoFilePath);
-            var id = GetIdFromUri(uri);
+            var photoId = GetIdFromUri(uri);
             
             photoAction.Invoke(uri);
-            RemoveFile(id);
+            RemoveFile(photoId);
         }
 
         public string GetIdFromUri(string uri)
