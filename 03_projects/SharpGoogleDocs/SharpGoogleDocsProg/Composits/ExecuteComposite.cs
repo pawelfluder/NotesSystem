@@ -26,8 +26,8 @@ public class ExecuteComposite
     
     public void InsertPhotoToBottomOfFirstTable(int width, string uri)
     {
-        // todo - bottom index finding
-        _documentCoposite.ReLoadDocument();
+        // todo - check if reload is not needed
+        // _documentCoposite.ReLoadDocument();
         var lastIndex = _documentCoposite.GetLastIndexOfFirstCellOfFistTable();
         ResponseStatus status = InsertPhotoToFirstTable(width, uri, lastIndex);
     }

@@ -12,7 +12,7 @@ using static SharpFileServiceProg.Service.IFileService;
 
 namespace SharpFileServiceProg.Service
 {
-    internal partial class fileService : IFileService
+    internal partial class FileService : IFileService
     {
         public IFileWrk File { get; private set; }
         public IIndexWrk Index { get; private set; }
@@ -24,7 +24,7 @@ namespace SharpFileServiceProg.Service
         public IReflectionOperations Reflection { get; private set; }
         public IJsonOperations Json { get; private set; }
 
-        public fileService()
+        public FileService()
         {
             File = new FileWrk(this);
             Index = new IndexOperations();
