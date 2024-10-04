@@ -1,5 +1,4 @@
-﻿using SharpFileServiceProg.Service;
-using SharpRepoServiceCoreProj;
+﻿using SharpRepoServiceCoreProj;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.WorkersSystem;
@@ -8,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SharpRepoServiceProg.AAPublic.Names;
 
 namespace SharpRepoServiceProg.Workers
 {
@@ -171,7 +171,7 @@ namespace SharpRepoServiceProg.Workers
         public string GetType(
             (string repo, string loca) adrTuple)
         {
-            var type = rw.GetConfigKey(adrTuple, Fields_Item.Type);
+            var type = rw.GetConfigKey(adrTuple, FieldsForUniItem.Type);
             if(type == null)
             {
                 var type2 = GuesTypeByFiles(adrTuple);

@@ -1,11 +1,11 @@
-﻿using SharpFileServiceProg.Service;
-using SharpRepoServiceProg.Models;
+﻿using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.WorkersSystem;
 using SharpTinderComplexTests;
 using System;
 using System.Collections.Generic;
+using SharpRepoServiceProg.AAPublic.Names;
 
 namespace SharpRepoServiceProg.Workers
 {
@@ -38,10 +38,10 @@ namespace SharpRepoServiceProg.Workers
             var address = fileService.RepoAddress.CreateUrlFromAddress(adrTuple);
             item.Settings = new Dictionary<string, object>()
             {
-                { Fields_Item.Id, Guid.NewGuid().ToString() },
-                { Fields_Item.Type, ItemTypeNames.Text },
-                { Fields_Item.Name, name },
-                { Fields_Item.Address, address }
+                { FieldsForUniItem.Id, Guid.NewGuid().ToString() },
+                { FieldsForUniItem.Type, ItemTypeNames.Text },
+                { FieldsForUniItem.Name, name },
+                { FieldsForUniItem.Address, address }
             };
 
             // body
@@ -148,9 +148,9 @@ namespace SharpRepoServiceProg.Workers
             // config
             var settings = new Dictionary<string, object>()
             {
-                { Fields_Item.Id, Guid.NewGuid().ToString() },
-                { Fields_Item.Type, ItemTypeNames.Text },
-                { Fields_Item.Name, name },
+                { FieldsForUniItem.Id, Guid.NewGuid().ToString() },
+                { FieldsForUniItem.Type, ItemTypeNames.Text },
+                { FieldsForUniItem.Name, name },
             };
             cw.AddSettingsToModel(item, adrTuple, settings);
 

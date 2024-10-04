@@ -1,5 +1,4 @@
-﻿using SharpFileServiceProg.Service;
-using SharpNotesMigrationProg.AAPublic;
+﻿using SharpNotesMigrationProg.AAPublic;
 using SharpRepoServiceProg.AAPublic;
 
 namespace SharpNotesMigrationProg.Migrations

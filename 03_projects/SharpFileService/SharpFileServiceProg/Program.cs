@@ -1,4 +1,4 @@
-﻿namespace FileServiceCoreApp
+﻿namespace SharpFileServiceProg
 {
     class Program
     {

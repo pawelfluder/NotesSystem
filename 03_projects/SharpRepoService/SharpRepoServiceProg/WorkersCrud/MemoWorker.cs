@@ -1,5 +1,4 @@
-﻿using SharpFileServiceProg.Service;
-using SharpRepoServiceProg.Registration;
+﻿using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.WorkersSystem;
 using System;
 using System.Collections.Generic;

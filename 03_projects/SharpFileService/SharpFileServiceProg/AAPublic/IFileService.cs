@@ -1,21 +1,6 @@
-﻿using SharpConfigProg.AAPublic;
-using SharpFileServiceProg.AAPublic;
-using SharpFileServiceProg.Operations.Files;
-using SharpFileServiceProg.Operations.Headers;
-using SharpFileServiceProg.Operations.RepoAddress;
-
-namespace SharpFileServiceProg.Service
+﻿namespace SharpFileServiceProg.AAPublic
 {
-    public partial interface IFileService
+    public interface IFileService
     {
-        IFileWrk File { get; }
-        IIndexWrk Index { get; }
-        IYamlWrk Yaml { get; }
-        IPathsOperations Path { get; }
-        HeadersOperations Header { get; }
-        IRepoAddressOperations RepoAddress { get; }
-        IGoogleCredentialWorker Credentials { get; }
-        IReflectionOperations Reflection { get; }
-        IJsonOperations Json { get; }
     }
 }

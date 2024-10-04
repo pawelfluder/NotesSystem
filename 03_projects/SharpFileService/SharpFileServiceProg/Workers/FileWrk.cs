@@ -1,27 +1,21 @@
-﻿using SharpFileServiceProg.Operations.FileSize;
-using SharpRepoServiceProg.FileOperations;
+﻿using SharpFileServiceProg.AAPublic;
+using SharpFileServiceProg.Recursively;
 
-namespace SharpFileServiceProg.Service
+namespace SharpFileServiceProg.Workers
 {
-    internal partial class FileService
+    internal class FileWrk : IFileWrk
     {
-        internal class FileWrk : IFileService.IFileWrk
+        private readonly IFileService fileService;
+
+        public FileWrk(IFileService fileService)
         {
-            private readonly IFileService fileService;
-
-            public FileWrk(IFileService fileService)
-            {
-                this.fileService = fileService;
-            }
-
-            public IFileService.IVisit GetNewRecursivelyVisitDirectory()
-                => new VisitDirectoriesRecursively();
-
-            public IFileService.IParentVisit GetNewVisitDirectoriesRecursivelyWithParentMemory()
-                => new VisitDirectoriesRecursivelyWithParentMemory();
-
-            public IRepoAddressesObtainer NewRepoAddressesObtainer()
-                => new GetRepoAddresses(fileService);
+            this.fileService = fileService;
         }
+
+        public IFileVisit GetNewRecursivelyVisitDirectory()
+            => new VisitDirectoriesRecursively();
+
+        public IParentVisit GetNewVisitDirectoriesRecursivelyWithParentMemory()
+            => new VisitDirectoriesRecursivelyWithParentMemory();
     }
 }

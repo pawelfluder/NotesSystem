@@ -1,5 +1,4 @@
-﻿using SharpFileServiceProg.Service;
-using SharpRepoServiceProg.Models;
+﻿using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Registration;
 using System;
@@ -7,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using SharpRepoServiceProg.AAPublic.Names;
 using YamlDotNet.Serialization;
 using static SharpFileServiceProg.Service.IFileService;
 
@@ -67,17 +67,17 @@ namespace SharpRepoServiceProg.WorkersSystem
             Dictionary<string, object> settings)
         {
             var newAddress = fileService.RepoAddress.CreateUrlFromAddress(adrTuple);
-            settings[Fields_Item.Address] = newAddress;
+            settings[FieldsForUniItem.Address] = newAddress;
             var saveNeeded = false;
-            if (!settings.ContainsKey(Fields_Item.Id))
+            if (!settings.ContainsKey(FieldsForUniItem.Id))
             {
-                settings[Fields_Item.Id] = Guid.NewGuid().ToString();
+                settings[FieldsForUniItem.Id] = Guid.NewGuid().ToString();
                 saveNeeded = true;
             }
-            if (!settings.ContainsKey(Fields_Item.Type))
+            if (!settings.ContainsKey(FieldsForUniItem.Type))
             {
                 var type = AssumeType(adrTuple);
-                settings[Fields_Item.Type] = type;
+                settings[FieldsForUniItem.Type] = type;
                 saveNeeded = true;
             }
             model.Settings = settings;

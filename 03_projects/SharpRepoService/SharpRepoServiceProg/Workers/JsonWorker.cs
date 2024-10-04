@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using SharpFileServiceProg.Service;
 using SharpRepoServiceCoreProj;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
@@ -115,7 +114,10 @@ namespace SharpRepoServiceProg.Workers
         //    }
         //}
 
-        public string CreateItem((string repo, string loca) address, string type, string name)
+        public string CreateItem(
+            (string repo, string loca) address,
+            string type,
+            string name)
         {
             ItemModel item = null;
             if (type == "Text")

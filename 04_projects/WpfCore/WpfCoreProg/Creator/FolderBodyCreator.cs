@@ -1,5 +1,4 @@
-﻿using SharpFileServiceProg.Service;
-using WpfNotesSystem.ViewModels;
+﻿using WpfNotesSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

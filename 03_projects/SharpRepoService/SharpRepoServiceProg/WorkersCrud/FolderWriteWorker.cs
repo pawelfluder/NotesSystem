@@ -1,11 +1,11 @@
-﻿using SharpFileServiceProg.Service;
-using SharpRepoServiceProg.Models;
+﻿using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.WorkersSystem;
 using SharpTinderComplexTests;
 using System;
 using System.Collections.Generic;
+using SharpRepoServiceProg.AAPublic.Names;
 
 namespace SharpRepoServiceProg.Workers
 {
@@ -100,9 +100,9 @@ namespace SharpRepoServiceProg.Workers
             // config
             var settings = new Dictionary<string, object>()
             {
-                { Fields_Item.Id, Guid.NewGuid().ToString() },
-                { Fields_Item.Type, ItemTypeNames.Folder },
-                { Fields_Item.Name, name },
+                { FieldsForUniItem.Id, Guid.NewGuid().ToString() },
+                { FieldsForUniItem.Type, ItemTypeNames.Folder },
+                { FieldsForUniItem.Name, name },
             };
             cw.AddSettingsToModel(item, adrTuple, settings);
             return item;

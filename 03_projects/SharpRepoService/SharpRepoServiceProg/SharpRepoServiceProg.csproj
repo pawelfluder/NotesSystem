@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="AAPublic\Names\" />
     <Folder Include="FileOperations\" />
     <Folder Include="NewFolder\" />
   </ItemGroup>
