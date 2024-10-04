@@ -7,8 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
-using static SharpFileServiceProg.Service.IFileService;
+using SharpFileServiceProg.AAPublic;
 
 namespace SharpRepoServiceProg.Workers
 {

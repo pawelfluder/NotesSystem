@@ -5,14 +5,14 @@ namespace SharpOperationsProg.Operations.FilesRecursively
 {
     public class GetRepoAddresses : IRepoAddressesObtainer
     {
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private List<string> locaList;
         private string repoName;
         private IParentVisit vdr;
 
-        public GetRepoAddresses(IFileService fileService)
+        public GetRepoAddresses(IOperationsService operationsService)
         {
-            this.fileService = fileService;
+            this.operationsService = operationsService;
             ReInitialize();
         }
 
@@ -24,7 +24,7 @@ namespace SharpOperationsProg.Operations.FilesRecursively
         public List<string> Visit(string path)
         {
             this.repoName = System.IO.Path.GetFileName(path);
-            vdr = fileService.File.GetNewVisitDirectoriesRecursivelyWithParentMemory();
+            vdr = operationsService.File.GetNewVisitDirectoriesRecursivelyWithParentMemory();
             var fileAction = FileAction;
             var folderAction = FolderAction;
             vdr.Visit(path, fileAction, folderAction);
@@ -39,7 +39,7 @@ namespace SharpOperationsProg.Operations.FilesRecursively
 
         private void FolderAction(DirectoryInfo directoryInfo)
         {
-            if (fileService.Index
+            if (operationsService.Index
                 .IsCorrectIndex(directoryInfo.FullName, out var index))
             {
                 var parents = vdr.Parents;

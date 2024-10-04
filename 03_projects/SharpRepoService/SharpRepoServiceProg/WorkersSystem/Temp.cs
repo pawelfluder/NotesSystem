@@ -16,14 +16,14 @@
 //        private char newLine = '\n';
 //        private PathWorker pw;
 //        private ReadWorker iw;
-//        private readonly IFileService fileService;
+//        private readonly IOperationsService operationsService;
 //        private readonly IYamlOperations yamlOperations;
 
 //        public Temp(
-//            IFileService fileService)
+//            IOperationsService operationsService)
 //        {
-//            this.fileService = fileService;
-//            yamlOperations = fileService.Yaml.Custom03;
+//            this.operationsService = operationsService;
+//            yamlOperations = operationsService.Yaml.Custom03;
 
 //            pw = MyBorder.Container.Resolve<PathWorker>();
 //            iw = MyBorder.Container.Resolve<ReadWorker>();

@@ -5,11 +5,11 @@ namespace SharpFileServiceProg.Workers
 {
     internal class FileWrk : IFileWrk
     {
-        private readonly IFileService fileService;
+        private readonly IFileService operationsService;
 
-        public FileWrk(IFileService fileService)
+        public FileWrk(IFileService operationsService)
         {
-            this.fileService = fileService;
+            this.operationsService = operationsService;
         }
 
         public IFileVisit GetNewRecursivelyVisitDirectory()

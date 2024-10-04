@@ -18,7 +18,7 @@ namespace WpfNotesSystemProg.Converter
     public class HeadersDictConverter : MarkupExtension, IValueConverter
     {
         private object converter;
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
 
         public HeadersDictConverter()
         {

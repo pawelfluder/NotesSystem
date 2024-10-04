@@ -9,12 +9,12 @@ namespace SharpConfigProg.Service
 
     public class GuidFolderPreparer : IPreparer
     {
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private IConfigService configService;
 
-        public GuidFolderPreparer(IFileService fileService)
+        public GuidFolderPreparer(IOperationsService operationsService)
         {
-            this.fileService = fileService;
+            this.operationsService = operationsService;
         }
 
         public Dictionary<string, object> Prepare()
@@ -33,7 +33,7 @@ namespace SharpConfigProg.Service
 
         public List<object> GetRepoSearchPaths2()
         {
-            var programDataFolderPath = fileService.Path.GetProjectFolderPath("18296f12-0706-43e1-9bd4-1b40154ec22e");
+            var programDataFolderPath = operationsService.Path.GetProjectFolderPath("18296f12-0706-43e1-9bd4-1b40154ec22e");
             var searchPaths = new List<object> { programDataFolderPath };
             return searchPaths;
         }

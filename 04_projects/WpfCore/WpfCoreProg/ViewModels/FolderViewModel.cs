@@ -12,7 +12,7 @@ namespace WpfNotesSystem.ViewModels
     public class FolderViewModel : BaseViewModel, IItemViewModel
     {
         private readonly IBackendService backendService;
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private ICommand addCommand;
         private ICommand folderCommand;
         private ICommand contentCommand;

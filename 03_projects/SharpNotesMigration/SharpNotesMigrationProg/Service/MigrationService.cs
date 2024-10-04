@@ -7,17 +7,17 @@ namespace SharpNotesMigrationProg.Service
 {
     public class MigrationService : IMigrationService
     {
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private readonly IConfigService configService;
         private readonly IRepoService repoService;
 
         private List<IMigrator> migratorsList;
 
         public MigrationService(
-            IFileService fileService,
+            IOperationsService operationsService,
             IRepoService repoService)
         {
-            this.fileService = fileService;
+            this.operationsService = operationsService;
             this.repoService = repoService;
 
             migratorsList = new List<IMigrator>()

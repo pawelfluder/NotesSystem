@@ -25,7 +25,7 @@ namespace WpfNotesSystem.ViewModels
 
         public (string repo, string loca) AdrTuple => CreateAdrTuple(Address);
 
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private readonly ITtsService ttsService;
 
         public TextViewModel()

@@ -6,9 +6,9 @@ namespace SharpConfigProg.Service
 {
     internal partial class ConfigService : IConfigService
     {
-        private readonly IFileService.IYamlOperations yamlOperations;
+        private readonly IoperationsService.IYamlOperations yamlOperations;
 
-        public IFileService fileService;
+        public IOperationsService operationsService;
 
         public string ConfigFilePath { get; private set; }
         public Dictionary<string, object> SettingsDict
@@ -30,11 +30,11 @@ namespace SharpConfigProg.Service
         }
 
         public ConfigService(
-            IFileService fileService)
+            IOperationsService operationsService)
         {
             SettingsDict = new Dictionary<string, object>();
-            this.fileService = fileService;
-            yamlOperations = this.fileService.Yaml.Custom03;
+            this.operationsService = operationsService;
+            yamlOperations = this.operationsService.Yaml.Custom03;
         }
 
         public List<string> GetRepoSearchPaths()

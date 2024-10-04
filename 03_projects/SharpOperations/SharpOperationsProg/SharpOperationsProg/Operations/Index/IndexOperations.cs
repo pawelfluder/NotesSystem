@@ -3,7 +3,7 @@ using SharpOperationsProg.AAPublic;
 
 namespace SharpOperationsProg.Operations.Index
 {
-    internal class IndexOperations : IFileService.IIndexWrk
+    internal class IndexOperations : IoperationsService.IIndexWrk
     {
         private char slash = '/';
         public int GetLocaLast(string loca)

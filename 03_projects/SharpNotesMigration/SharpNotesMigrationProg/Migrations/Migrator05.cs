@@ -5,9 +5,9 @@ namespace SharpNotesMigrationProg.Migrations
 {
     internal class Migrator05 : IMigrator, IMigrator05
     {
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private readonly IRepoService repoService;
-        private readonly IFileService.IYamlOperations yamlOperations;
+        private readonly IoperationsService.IYamlOperations yamlOperations;
         private bool agree;
 
         public string Description
@@ -23,12 +23,12 @@ namespace SharpNotesMigrationProg.Migrations
         public List<(int, string, string, string)> Changes { get; private set; }
 
         public Migrator05(
-            IFileService fileService,
+            IOperationsService operationsService,
             IRepoService repoService)
         {
-            this.fileService = fileService;
+            this.operationsService = operationsService;
             this.repoService = repoService;
-            yamlOperations = fileService.Yaml.Custom03;
+            yamlOperations = operationsService.Yaml.Custom03;
             Changes = new List<(int, string, string, string)>();
         }
 

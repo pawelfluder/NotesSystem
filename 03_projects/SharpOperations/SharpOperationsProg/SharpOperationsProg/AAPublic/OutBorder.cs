@@ -4,7 +4,7 @@ namespace SharpOperationsProg.AAPublic
 {
     public class OutBorder
     {
-        public static IFileService FileService()
+        public static IOperationsService operationsService()
         {
             return new FileService();
         }

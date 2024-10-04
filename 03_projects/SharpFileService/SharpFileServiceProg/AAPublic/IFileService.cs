@@ -2,5 +2,6 @@
 {
     public interface IFileService
     {
+        IYamlWrk Yaml { get; }
     }
 }

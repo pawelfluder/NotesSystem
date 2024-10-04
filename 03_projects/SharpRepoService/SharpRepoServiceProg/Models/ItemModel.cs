@@ -24,7 +24,7 @@ namespace SharpRepoServiceProg.Models
             {
                 address = value;
                 var fileService = MyBorder.Container.Resolve<IFileService>();
-                var adrTuple = fileService.RepoAddress.CreateAddressFromString(address);
+                var adrTuple = operationsService.RepoAddress.CreateAddressFromString(address);
                 AdrTuple = adrTuple;
             }
         }

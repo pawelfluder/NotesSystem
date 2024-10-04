@@ -5,7 +5,7 @@ namespace SharpNotesMigrationProg.Migrations
 {
     internal class Migrator01 : IMigrator, IMigrationService.IMigrator01
     {
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private readonly IRepoService repoService;
 
         public string Description
@@ -19,10 +19,10 @@ namespace SharpNotesMigrationProg.Migrations
         }
 
         public Migrator01(
-            IFileService fileService,
+            IOperationsService operationsService,
             IRepoService repoService)
         {
-            this.fileService = fileService;
+            this.operationsService = operationsService;
             this.repoService = repoService;
         }
 

@@ -3,7 +3,7 @@ using IFileService = SharpFileServiceProg.AAPublic.IFileService;
 
 namespace SharpOperationsProg.Operations.Yaml
 {
-    internal class VYamlCoreOperations : IFileService.IYamlOperations
+    internal class VYamlCoreOperations : IoperationsService.IYamlOperations
     {
         public string Serialize(object input)
         {

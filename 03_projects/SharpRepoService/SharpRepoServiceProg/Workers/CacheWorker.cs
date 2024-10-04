@@ -7,15 +7,15 @@
 //{
 //    private Dictionary<string, string> idQlocaDict;
 //    private JsonWorker itemWorker;
-//    private IFileService fileService;
+//    private IOperationsService operationsService;
 
 //    private (string, string) idQLocaAdrTuple;
 
 //    public IdQLocaCacheWorker(
-//        IFileService fileService,
+//        IOperationsService operationsService,
 //        JsonWorker itemWorker)
 //    {
-//        this.fileService = fileService;
+//        this.operationsService = operationsService;
 //        this.itemWorker = itemWorker;
 //        Load();
 //    }
@@ -62,7 +62,7 @@
 
 //    private bool Save()
 //    {
-//        var idQlocaJson = fileService.Json.SerializeObject(idQlocaDict);
+//        var idQlocaJson = operationsService.Json.SerializeObject(idQlocaDict);
 //        itemWorker.PutItem(idQLocaAdrTuple, ItemTypes.Text, null, idQlocaJson);
 //        return true;
 //    }

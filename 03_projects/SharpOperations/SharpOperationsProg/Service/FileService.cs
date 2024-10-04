@@ -1,5 +1,5 @@
-﻿using SharpFileServiceProg;
-using SharpFileServiceProg.AAPublic;
+﻿using SharpoperationsServiceProg;
+using SharpoperationsServiceProg.AAPublic;
 using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpOperationsProg.Operations.Credentials;
@@ -12,7 +12,7 @@ using SharpOperationsProg.Operations.RepoAddress;
 
 namespace SharpOperationsProg.Service
 {
-    internal class OperationService : IFileService
+    internal class OperationService : IOperationsService
     {
         public IFileWrk File { get; private set; }
         public IIndexWrk Index { get; private set; }

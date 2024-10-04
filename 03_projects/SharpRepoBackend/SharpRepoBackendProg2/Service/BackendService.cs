@@ -17,7 +17,7 @@ namespace SharpRepoBackendProg.Service
     public class BackendService : IBackendService
     {
         // services
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private readonly IPdfService2 pdfService;
         private readonly IGoogleDriveService driveService;
         private readonly IGoogleDocsService docsService;

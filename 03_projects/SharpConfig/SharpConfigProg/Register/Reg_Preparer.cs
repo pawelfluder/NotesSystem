@@ -5,7 +5,7 @@ namespace SharpConfigProg.Register
 {
     internal class Reg_Preparer
     {
-        public void Register(IFileService fileService)
+        public void Register(IOperationsService operationsService)
         {
             MyBorder.Registration
                 .RegisterByFunc<IPreparer>(()

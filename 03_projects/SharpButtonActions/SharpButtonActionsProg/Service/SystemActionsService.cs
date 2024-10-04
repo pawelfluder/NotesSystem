@@ -1,20 +1,21 @@
 ﻿using System.Diagnostics;
 using SharpButtonActionsProg.AAPublic;
 using SharpButtonActionsProg.Workers;
+using SharpOperationsProg.AAPublic;
 
 namespace SharpButtonActionsProj.Service
 {
     public class SystemActionsService : ISystemActionsService
     {
         static char space = ' ';
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private MacWorker mac;
         private WindowsWorker windows;
 
-        public SystemActionsService(IFileService fileService)
+        public SystemActionsService(IOperationsService operationsService)
         {
-            this.fileService = fileService;
-            mac = new MacWorker(fileService);
+            this.operationsService = operationsService;
+            mac = new MacWorker(operationsService);
             windows = new WindowsWorker();
         }
 

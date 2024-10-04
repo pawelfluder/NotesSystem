@@ -1,8 +1,9 @@
 ﻿using System.Text.RegularExpressions;
 using Google.Apis.Drive.v3;
 using Google.Apis.Drive.v3.Data;
-using SharpConfigProg.AAPublic;
-using SharpFileServiceProg.Service;
+using SharpFileServiceProg;
+using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic;
 using DriveFile = Google.Apis.Drive.v3.Data.File;
 using File = System.IO.File;
 
@@ -12,7 +13,7 @@ namespace SharpGoogleDriveProg.Service
     // https://github.com/LindaLawton/Google-Dotnet-Samples/blob/master/Samples/Drive%20API/v3/FilesSample.cs
     public class DriveComposite
     {
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private readonly GoogleDriveService parentService;
         private DriveService service;
         private readonly IGoogleCredentialWorker credentials;
@@ -21,12 +22,12 @@ namespace SharpGoogleDriveProg.Service
         public DriveComposite(
             GoogleDriveService parentService,
             DriveService service,
-            IFileService fileService)
+            IOperationsService operationsService)
         {
-            this.fileService = fileService;
+            this.operationsService = operationsService;
             this.parentService = parentService;
             this.service = service;
-            this.credentials = fileService.Credentials;
+            this.credentials = operationsService.Credentials;
         }
 
         public DriveFile GetFolderByNameAndId(string name, string id)
@@ -226,7 +227,7 @@ namespace SharpGoogleDriveProg.Service
             string docTemplateStrategy)
         {
             var embededFilePath = "EmbeddedResources." + docTemplateStrategy + ".docx";
-            var assemblyName = fileService.Credentials.GetAssemblyName(this);
+            var assemblyName = operationsService.Credentials.GetAssemblyName(this);
             var stream = credentials.GetEmbeddedResourceStream(assemblyName, embededFilePath);
             (string Id, string Name) IdQName = UploadFileDocx(fileName, stream);
             return IdQName;

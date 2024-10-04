@@ -1,9 +1,9 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
-using SharpFileServiceProg.Service;
 using SharpGoogleDriveProg.AAPublic;
 using SharpGoogleDriveProg.Names;
+using SharpOperationsProg.AAPublic;
 
 namespace SharpGoogleDriveProg.Service
 {
@@ -21,7 +21,7 @@ namespace SharpGoogleDriveProg.Service
         private string clientSecret;
         private string applicationName;
         private string user;
-        private IFileService _fileService;
+        private IOperationsService _fileService;
 
         public GoogleDriveService()
         {
@@ -29,9 +29,9 @@ namespace SharpGoogleDriveProg.Service
 
         public GoogleDriveService(
             Dictionary<string, object> settingDict,
-            IFileService fileService)
+            IOperationsService operationsService)
         {
-            _fileService = fileService;
+            _fileService = operationsService;
             ReWriteSettings(settingDict);
         }
 

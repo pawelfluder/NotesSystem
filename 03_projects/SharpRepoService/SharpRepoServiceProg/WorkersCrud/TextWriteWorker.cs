@@ -5,6 +5,7 @@ using SharpRepoServiceProg.WorkersSystem;
 using SharpTinderComplexTests;
 using System;
 using System.Collections.Generic;
+using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
 
 namespace SharpRepoServiceProg.Workers
@@ -35,7 +36,7 @@ namespace SharpRepoServiceProg.Workers
             var item = new ItemModel();
 
             // config
-            var address = fileService.RepoAddress.CreateUrlFromAddress(adrTuple);
+            var address = operationsService.RepoAddress.CreateUrlFromAddress(adrTuple);
             item.Settings = new Dictionary<string, object>()
             {
                 { FieldsForUniItem.Id, Guid.NewGuid().ToString() },
@@ -90,9 +91,9 @@ namespace SharpRepoServiceProg.Workers
 
             var lastIndex = rw.GetFolderLastNumber(adrTuple);
             var newIndex = lastIndex + 1;
-            var newIndexString = fileService.Index.IndexToString(newIndex);
+            var newIndexString = operationsService.Index.IndexToString(newIndex);
 
-            var newAdrTuple = fileService.RepoAddress.AdrTupleJoinLoca(adrTuple, newIndexString);
+            var newAdrTuple = operationsService.RepoAddress.AdrTupleJoinLoca(adrTuple, newIndexString);
             item = PrepareItem(name, newAdrTuple, content);
             Put(item);
             return item;
@@ -125,7 +126,7 @@ namespace SharpRepoServiceProg.Workers
             }
 
             var lastNumber = rw.GetFolderLastNumber(address);
-            var newAddress = fileService.Index.SelectAddress(address, lastNumber + 1);
+            var newAddress = operationsService.Index.SelectAddress(address, lastNumber + 1);
             Put(name, newAddress, content);
             return newAddress;
         }

@@ -1,10 +1,10 @@
 ﻿using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.WorkersSystem;
 using SharpTinderComplexTests;
 using System;
 using System.Collections.Generic;
+using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
 
 namespace SharpRepoServiceProg.Workers
@@ -23,11 +23,11 @@ namespace SharpRepoServiceProg.Workers
         {
             this.fileService = fileService;
 
-            this.rw = MyBorder.Container.Resolve<ReadWorker>();
-            this.pw = MyBorder.Container.Resolve<PathWorker>();
-            this.cw = MyBorder.Container.Resolve<ConfigWorker>();
-            this.bw = MyBorder.Container.Resolve<BodyWorker>();
-            this.sw = MyBorder.Container.Resolve<SystemWorker>();
+            rw = MyBorder.Container.Resolve<ReadWorker>();
+            pw = MyBorder.Container.Resolve<PathWorker>();
+            cw = MyBorder.Container.Resolve<ConfigWorker>();
+            bw = MyBorder.Container.Resolve<BodyWorker>();
+            sw = MyBorder.Container.Resolve<SystemWorker>();
         }
 
         public void Put(

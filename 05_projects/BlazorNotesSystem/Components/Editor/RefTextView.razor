@@ -1,7 +1,7 @@
 ﻿@using Newtonsoft.Json
 @using SharpRepoBackendProg.Service
 @using BlazorInterAutoProj.Repet.Models
-@inject IFileService fileService
+@inject IOperationsService operationsService
 @inject BackendService backendService
 @rendermode InteractiveServer
 
@@ -112,21 +112,21 @@
 
     private void ContentClicked()
     {
-        var adrTuple = fileService.RepoAddress
+        var adrTuple = operationsService.RepoAddress
               .CreateAddressFromString(Item.Address);
         var itemJson = backendService.CommandApi("OpenContent", adrTuple.Item1, adrTuple.Item2);
     }
 
     private void ConfigClicked()
     {
-        var adrTuple = fileService.RepoAddress
+        var adrTuple = operationsService.RepoAddress
               .CreateAddressFromString(Item.Address);
         var itemJson = backendService.CommandApi("OpenConfig", adrTuple.Item1, adrTuple.Item2);
     }
     
     private void GoogleDocClicked()
     {
-        var adrTuple = fileService.RepoAddress
+        var adrTuple = operationsService.RepoAddress
               .CreateAddressFromString(Item.Address);
         if (formGoogleDocType == "Open")
         {
@@ -140,12 +140,12 @@
 
     private void OnBtnClicked(string idxString)
     {
-        var index = fileService.Index.StringToIndex(idxString);
-        var adrTuple = fileService.RepoAddress
+        var index = operationsService.Index.StringToIndex(idxString);
+        var adrTuple = operationsService.RepoAddress
              .CreateAddressFromString(Item.Address);
-        var newAddress = fileService.Index.JoinIndexWithLoca(adrTuple, index);
+        var newAddress = operationsService.Index.JoinIndexWithLoca(adrTuple, index);
         var itemJString = GetItem(newAddress);
-        var itemObj = fileService.Json.TryDeserializeObject<ItemModel>(itemJString);
+        var itemObj = operationsService.Json.TryDeserializeObject<ItemModel>(itemJString);
 
         if (itemObj.Type != myType)
         {
@@ -165,7 +165,7 @@
             return;
         }
 
-        var adrTuple = fileService.RepoAddress
+        var adrTuple = operationsService.RepoAddress
              .CreateAddressFromString(Item.Address);
         // todo
         // var itemJson = backendService
@@ -174,7 +174,7 @@
 
     private void OnFolderClicked()
     {
-        var adrTuple = fileService.RepoAddress
+        var adrTuple = operationsService.RepoAddress
              .CreateAddressFromString(Item.Address);
         var itemJson = backendService
             .CommandApi("OpenFolder", adrTuple.Item1, adrTuple.Item2);

@@ -11,7 +11,7 @@ namespace SharpNotesExporter
     public class NotesExporterService
     {
         private readonly IGoogleDocsService docsService;
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private readonly HeaderNotesService headerNotesService;
         private readonly IRepoService repoService;
         private readonly HeadersOperations headersOp;
@@ -22,7 +22,7 @@ namespace SharpNotesExporter
             fileService = MyBorder.Container.Resolve<IFileService>();
             headerNotesService = new HeaderNotesService();
             this.repoService = repoService;
-            headersOp = fileService.Header;
+            headersOp = operationsService.Header;
         }
 
         public void GetMatch(string path, string docId)

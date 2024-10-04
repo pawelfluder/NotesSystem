@@ -9,13 +9,13 @@ namespace SharpConfigProg.OverrideConfig
         private string beforeFileName;
         private string afterFileName;
 
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private readonly IConfigService configService;
 
         private string configFolderPath;
 
         public BeforeAfter(
-            IFileService fileService,
+            IOperationsService operationsService,
             IConfigService configService)
         {
             configFolderName = "config";
@@ -23,7 +23,7 @@ namespace SharpConfigProg.OverrideConfig
             beforeFileName = "before.cfg";
             afterFileName = "after.cfg";
 
-            this.fileService = fileService;
+            this.operationsService = operationsService;
             this.configService = configService;
         }
 
@@ -52,14 +52,14 @@ namespace SharpConfigProg.OverrideConfig
         private void SaveBefore()
         {
             var path = configFolderPath + "/" + beforeFileName;
-            fileService.Yaml.Custom03
+            operationsService.Yaml.Custom03
                 .SerializeToFile(path, configService.SettingsDict);
         }
 
         private void SaveAfter()
         {
             var path = configFolderPath + "/" + afterFileName;
-            fileService.Yaml.Custom03
+            operationsService.Yaml.Custom03
                 .SerializeToFile(path, configService.SettingsDict);
         }
 
@@ -78,7 +78,7 @@ namespace SharpConfigProg.OverrideConfig
             try
             {
                 var path = configFolderPath + "/" + overrideFileName;
-                var dict = fileService.Yaml.Custom03
+                var dict = operationsService.Yaml.Custom03
                     .DeserializeFile<Dictionary<string, object>>(path);
 
                 foreach (var kvp in dict)

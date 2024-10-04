@@ -1,7 +1,7 @@
 ﻿@using Newtonsoft.Json
 @using SharpRepoBackendProg.Service
 @using BlazorInterAutoProj.Repet.Models
-@inject IFileService fileService
+@inject IOperationsService operationsService
 @inject BackendService backendService
 @rendermode InteractiveServer
 
@@ -81,7 +81,7 @@
     {
         if (Item.Type == myType)
         {
-            var tmp = fileService.Json.TryDeserializeObject<Dictionary<string, string>>(Item?.Body.ToString());
+            var tmp = operationsService.Json.TryDeserializeObject<Dictionary<string, string>>(Item?.Body.ToString());
             if (tmp is Dictionary<string, string> dict)
             {
                 return dict;
@@ -99,7 +99,7 @@
             return;
         }
 
-        var adrTuple = fileService.RepoAddress
+        var adrTuple = operationsService.RepoAddress
              .CreateAddressFromString(Item.Address);
         var itemJson = backendService
             .CommandApi("CreateItem", adrTuple.Item1, adrTuple.Item2, formSelectedType, formAddValue);
@@ -107,7 +107,7 @@
 
     private void OnFolderClicked()
     {
-        var adrTuple = fileService.RepoAddress
+        var adrTuple = operationsService.RepoAddress
              .CreateAddressFromString(Item.Address);
         var itemJson = backendService
             .CommandApi("OpenFolder", adrTuple.Item1, adrTuple.Item2);
@@ -115,26 +115,26 @@
 
     private void ConfigClicked()
     {
-        var adrTuple = fileService.RepoAddress
+        var adrTuple = operationsService.RepoAddress
               .CreateAddressFromString(Item.Address);
         var itemJson = backendService.CommandApi("OpenConfig", adrTuple.Item1, adrTuple.Item2);
     }
     
     private void TerminalClicked()
     {
-        var adrTuple = fileService.RepoAddress
+        var adrTuple = operationsService.RepoAddress
               .CreateAddressFromString(Item.Address);
         var itemJson = backendService.CommandApi("OpenTerminal", adrTuple.Item1, adrTuple.Item2);
     }
 
     private void OnBtnClicked(string idxString)
     {
-        var index = fileService.Index.StringToIndex(idxString);
-        var adrTuple = fileService.RepoAddress
+        var index = operationsService.Index.StringToIndex(idxString);
+        var adrTuple = operationsService.RepoAddress
              .CreateAddressFromString(Item.Address);
-        var newAddress = fileService.Index.JoinIndexWithLoca(adrTuple, index);
+        var newAddress = operationsService.Index.JoinIndexWithLoca(adrTuple, index);
         var itemJString = GetItem(newAddress);
-        var itemObj = fileService.Json.TryDeserializeObject<ItemModel>(itemJString);
+        var itemObj = operationsService.Json.TryDeserializeObject<ItemModel>(itemJString);
 
         if (itemObj?.Type != myType)
         {

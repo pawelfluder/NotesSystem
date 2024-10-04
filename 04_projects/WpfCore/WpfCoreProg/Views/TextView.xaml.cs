@@ -32,7 +32,7 @@ namespace WpfNotesSystem.Views
         //    var item = backendService.RepoApi(address.Item1, address.Item2);
         //    if (item.Contains("error")) { return; }
         //    var fileService = MyBorder.Container.Resolve<IFileService>();
-        //    var gg = fileService.Yaml.Custom03
+        //    var gg = operationsService.Yaml.Custom03
         //        .Deserialize<Dictionary<string, object>>(item);
 
         //    try

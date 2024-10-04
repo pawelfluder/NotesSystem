@@ -5,14 +5,14 @@ namespace SharpNotesMigrationProg.Migrations
 {
     internal class Migrator02 : IMigrator, IMigrationService.IMigrator02
     {
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private readonly IRepoService repoService;
 
         public Migrator02(
-            IFileService fileService,
+            IOperationsService operationsService,
             IRepoService repoService)
         {
-            this.fileService = fileService;
+            this.operationsService = operationsService;
             this.repoService = repoService;
         }
 
@@ -69,7 +69,7 @@ namespace SharpNotesMigrationProg.Migrations
             var files = Directory.GetFiles(path);
             var directories = Directory.GetDirectories(path);
             var indexFolders = directories
-                .Where(x => fileService.Index.IsCorrectIndex(Path.GetFileName(x)));
+                .Where(x => operationsService.Index.IsCorrectIndex(Path.GetFileName(x)));
             var pdf = files.SingleOrDefault(x => Path.GetExtension(x) == ".pdf");
             var nameFile = files.SingleOrDefault(x => Path.GetFileName(x) == "name.txt");
             var ext = files.Select(x => Path.GetExtension(x));

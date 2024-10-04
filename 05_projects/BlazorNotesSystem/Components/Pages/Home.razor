@@ -7,7 +7,7 @@
 @using System.Diagnostics
 
 @inject BackendService backendService
-@inject IFileService fileService
+@inject IOperationsService operationsService
 
 @rendermode InteractiveServer
 
@@ -56,14 +56,14 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        var adrTuple = fileService.RepoAddress
+        var adrTuple = operationsService.RepoAddress
              .CreateAddressFromString(item.Address);
         ReloadItem(adrTuple);
     }
     protected void ReloadItem((string Repo, string Loca) address)
     {
         var itemJString = GetItem(address);
-        var itemObj = fileService.Json.TryDeserializeObject<ItemModel>(itemJString);
+        var itemObj = operationsService.Json.TryDeserializeObject<ItemModel>(itemJString);
         if (itemObj != null)
         {
             ReloadItem(itemObj);
@@ -73,7 +73,7 @@
     protected void ReloadItem(ItemModel itemObj)
     {
         item = itemObj;
-        var adrTuple = fileService.RepoAddress
+        var adrTuple = operationsService.RepoAddress
             .CreateAddressFromString(item.Address);
         formRepoName = adrTuple.Item1;
         formLocaName = adrTuple.Item2;
@@ -92,7 +92,7 @@
     protected void ReloadItem(ItemModel item, bool reloadState)
     {
         this.item = item;
-        var adrTuple = fileService.RepoAddress
+        var adrTuple = operationsService.RepoAddress
              .CreateAddressFromString(item.Address);
         formRepoName = adrTuple.Item1;
         formLocaName = adrTuple.Item2;
@@ -125,9 +125,9 @@
 
     private async Task OnBackArrowBtnClicked(MouseEventArgs e)
     {
-        var newAddress = fileService.RepoAddress
+        var newAddress = operationsService.RepoAddress
              .MoveOneLocaBack(item.Address);
-        var newAdrTuple = fileService.RepoAddress
+        var newAdrTuple = operationsService.RepoAddress
              .CreateAddressFromString(newAddress);
         ReloadItem(newAdrTuple);
     }

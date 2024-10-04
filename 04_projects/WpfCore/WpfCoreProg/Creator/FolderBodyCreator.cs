@@ -13,15 +13,15 @@ namespace WpfNotesSystem.Creator
 {
     public class FolderBodyCreator
     {
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private readonly Grid table;
         private readonly MainViewModel mainViewModel;
 
         public FolderBodyCreator(
             Grid grid,
-            IFileService fileService)
+            IOperationsService operationsService)
         {
-            this.fileService = fileService;
+            this.operationsService = operationsService;
             table = grid;
             mainViewModel = MyBorder.Container.Resolve<MainViewModel>();
         }
@@ -101,7 +101,7 @@ namespace WpfNotesSystem.Creator
             hyperlink.FontFamily = new FontFamily("Arial");
 
             var index = int.Parse(indexString);
-            hyperlink.NavigateUri = fileService.RepoAddress.
+            hyperlink.NavigateUri = operationsService.RepoAddress.
                 CreateUriFromAddress(mainViewModel.AdrTuple, index);
             hyperlink.RequestNavigate += HyperlinkRequestNavigate;
 
@@ -125,7 +125,7 @@ namespace WpfNotesSystem.Creator
                 var addressString = hyperLink.NavigateUri.OriginalString
                     .Replace("https://", string.Empty);
 
-                var address = fileService.RepoAddress
+                var address = operationsService.RepoAddress
                     .CreateAddressFromString(addressString);
                 mainViewModel.GoAction(address);
             }

@@ -6,7 +6,7 @@ namespace SharpConfigProg.AAPublic
     public static partial class OutBorder
     {
         public static IConfigService ConfigService(
-            IFileService fileService)
+            IOperationsService operationsService)
         {
             if (!MyBorder.Container.IsRegistered<IPreparer>())
             {

@@ -4,16 +4,16 @@ namespace WpfNotesSystem.Creator
 {
     public class ContentManager
     {
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
 
-        public ContentManager(IFileService fileService)
+        public ContentManager(IOperationsService operationsService)
         {
-            this.fileService = fileService;
+            this.operationsService = operationsService;
         }
 
         public void Run(IContentCreator creator, string[] lines)
         {
-            var tuplesList = fileService.Header.Select2.GetElements(lines);
+            var tuplesList = operationsService.Header.Select2.GetElements(lines);
 
             if (tuplesList.Any())
             {

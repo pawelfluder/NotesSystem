@@ -7,7 +7,7 @@ namespace SharpTtsServiceProg.Service
 {
     internal class TtsService : ITtsService
     {
-        private IFileService fileService;
+        private IOperationsService operationsService;
         private IRepoService repoService;
         private IVideoService videoService;
 
@@ -37,11 +37,11 @@ namespace SharpTtsServiceProg.Service
         }
 
         public TtsService(
-            IFileService fileService,
+            IOperationsService operationsService,
             IRepoService repoService,
             IVideoService videoService)
         {
-            this.fileService = fileService;
+            this.operationsService = operationsService;
             this.repoService = repoService;
             this.videoService = videoService;
         }

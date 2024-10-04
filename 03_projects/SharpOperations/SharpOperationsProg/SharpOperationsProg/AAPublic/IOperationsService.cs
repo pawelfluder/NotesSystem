@@ -15,7 +15,7 @@ public interface IOperationsService
     IPathsOperations Path { get; }
     HeadersOperations Header { get; }
     IRepoAddressOperations RepoAddress { get; }
-    IUnitItemOperations NotesItem { get; }
+    IUnitItemOperations RepoItem { get; }
     IGoogleCredentialWorker Credentials { get; }
     IReflectionOperations Reflection { get; }
     IJsonOperations Json { get; }

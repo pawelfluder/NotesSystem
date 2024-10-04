@@ -3,7 +3,7 @@
 namespace SharpOperationsProg.Operations.FilesRecursively
 {
     internal class VisitDirectoriesRecursivelyWithParentMemory
-        : IFileService.IParentVisit
+        : IoperationsService.IParentVisit
     {
         private Action<FileInfo> fileAction;
         private Action<DirectoryInfo> directoryAction;

@@ -1,19 +1,20 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using SharpOperationsProg.AAPublic;
 
 namespace SharpButtonActionsProg.Workers
 {
     public class MacWorker
     {
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private string osaFileName;
         private string osaFilePath;
 
-        public MacWorker(IFileService fileService)
+        public MacWorker(IOperationsService operationsService)
         {
             osaFileName = "osaScript.scpt";
-            this.fileService = fileService;
+            this.operationsService = operationsService;
             osaFilePath = GetBinFilePath(osaFileName);
         }
 
@@ -90,7 +91,7 @@ namespace SharpButtonActionsProg.Workers
         {
             var path = "OsaScripts." + fileName;
 
-            var script = fileService.Credentials
+            var script = operationsService.Credentials
                 .GetEmbeddedResource(GetAssembly().GetName(), path);
 
             foreach (var item in dict)

@@ -8,14 +8,14 @@ namespace SharpNotesMigrationProg.Repetition
     public class OutBorder
     {
         public static IMigrationService MigrationService(
-            IFileService fileService,
+            IOperationsService operationsService,
             IRepoService repoService)
         {
             return new MigrationService(fileService, repoService);
         }
 
         public static IMigrator03 Migrator03(
-            IFileService fileService,
+            IOperationsService operationsService,
             IRepoService repoService)
         {
             return new Migrator03(fileService, repoService);

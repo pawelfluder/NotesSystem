@@ -6,8 +6,8 @@ namespace SharpOperationsProg.Operations.FilesRecursively
 {
     internal class AppendNotepadWorkspace
     {
-        private readonly IFileService fileService;
-        private Service.IFileService.IVisit rvd;
+        private readonly IOperationsService operationsService;
+        private Service.IoperationsService.IVisit rvd;
         private Action<FileInfo> fileAction;
         private Action<DirectoryInfo> folderAction;
 
@@ -16,11 +16,11 @@ namespace SharpOperationsProg.Operations.FilesRecursively
         private Dictionary<string, XElement> folderElementsDict;
 
         public AppendNotepadWorkspace(
-            IFileService fileService)
+            IOperationsService operationsService)
         {
-            this.fileService = fileService;
+            this.operationsService = operationsService;
 
-            rvd = fileService.File.GetNewRecursivelyVisitDirectory();
+            rvd = operationsService.File.GetNewRecursivelyVisitDirectory();
             Clear();
         }
 

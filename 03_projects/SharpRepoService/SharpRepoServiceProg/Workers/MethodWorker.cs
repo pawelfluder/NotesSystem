@@ -7,15 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
 
 namespace SharpRepoServiceProg.Workers
 {
     public class MethodWorker
     {
-        // services
+        // services§
         private readonly IFileService fileService;
-        private readonly IFileService.IYamlOperations yamlOperations;
+        private readonly IYamlOperations yamlOperations;
 
         private readonly ReadWorker rw;
         private readonly MemoWorker mw;
@@ -46,10 +47,10 @@ namespace SharpRepoServiceProg.Workers
            ServerInfo serverInfo,
            LocalInfo localInfo)
         {
-            this.fileService = fileService;
+            this.fileService = this.fileService;
             this.serverInfo = serverInfo;
             this.localInfo = localInfo;
-            yamlOperations = fileService.Yaml.Custom03;
+            yamlOperations = this.fileService.Yaml.Custom03;
 
             this.rw = MyBorder.Container.Resolve<ReadWorker>();
             this.mw = MyBorder.Container.Resolve<MemoWorker>();
@@ -403,7 +404,7 @@ namespace SharpRepoServiceProg.Workers
         //    string content = "")
         //{
         //    var lastNumber = GetFolderLastNumber(address);
-        //    var newAddress = fileService.Index.SelectAddress(address, lastNumber + 1);
+        //    var newAddress = operationsService.Index.SelectAddress(address, lastNumber + 1);
         //    bw.CreateTextGenerate(newAddress, name, string.Empty);
         //    return newAddress;
         //}
@@ -507,7 +508,7 @@ namespace SharpRepoServiceProg.Workers
         //    string content)
         //{
         //    var lastNumber = GetFolderLastNumber(address);
-        //    var newAddress = fileService.Index.SelectAddress(address, lastNumber + 1);
+        //    var newAddress = operationsService.Index.SelectAddress(address, lastNumber + 1);
         //    CreateTextGenerate(newAddress, name, content);
         //    return newAddress;
         //}
@@ -518,7 +519,7 @@ namespace SharpRepoServiceProg.Workers
         //    string content)
         //{
         //    var lastNumber = GetFolderLastNumber(address);
-        //    var newAddress = fileService.Index.SelectAddress(address, lastNumber + 1);
+        //    var newAddress = operationsService.Index.SelectAddress(address, lastNumber + 1);
         //    CreateRefTextGenerate(newAddress, name, content);
         //    return newAddress;
         //}
@@ -702,7 +703,7 @@ namespace SharpRepoServiceProg.Workers
         //    var repoPath = bw.ReposPathsList.SingleOrDefault(x => Path.GetFileName(x) == repoName);
         //    if (repoPath == null) { throw new Exception(); }
 
-        //    fileService.File.GetNewRecursivelyVisitDirectory();
+        //    operationsService.File.GetNewRecursivelyVisitDirectory();
 
         //    return null;
         //}
@@ -729,8 +730,8 @@ namespace SharpRepoServiceProg.Workers
         //    {
         //        var subAddress = (address.repo, subLoca);
         //        var name = GetName(subAddress);
-        //        var lastInt = fileService.Index.GetLocaLast(subLoca);
-        //        var lastString = fileService.Index.IndexToString(lastInt);
+        //        var lastInt = operationsService.Index.GetLocaLast(subLoca);
+        //        var lastString = operationsService.Index.IndexToString(lastInt);
         //        names.Add(lastString, name);
         //    }
 
@@ -744,7 +745,7 @@ namespace SharpRepoServiceProg.Workers
         //    var directories = GetDirectories(path);
         //    var locaList = directories.Select(x => x.Replace(path, "")).ToList();
 
-        //    var adrTupleList = locaList.Select(x => fileService.RepoAddress.AdrTupleJoinLoca(adrTuple, x))
+        //    var adrTupleList = locaList.Select(x => operationsService.RepoAddress.AdrTupleJoinLoca(adrTuple, x))
         //        .ToList();
         //    return adrTupleList;
         //}

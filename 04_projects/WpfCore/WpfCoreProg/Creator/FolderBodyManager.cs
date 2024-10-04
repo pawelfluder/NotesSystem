@@ -5,11 +5,11 @@ namespace WpfNotesSystem.Creator
 {
     public class FolderBodyManager
     {
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
 
-        public FolderBodyManager(IFileService fileService)
+        public FolderBodyManager(IOperationsService operationsService)
         {
-            this.fileService = fileService;
+            this.operationsService = operationsService;
         }
 
         public void Run(IContentCreator creator, object content)
@@ -17,7 +17,7 @@ namespace WpfNotesSystem.Creator
             var gg = (content as List<object>).Select(x => x.ToString()).ToArray();
             //var gg = (content as List<object>).Select(x => x.ToString()).Skip(4).ToArray();
 
-            var tuplesList = fileService.Header.Select2.GetElements(gg);
+            var tuplesList = operationsService.Header.Select2.GetElements(gg);
 
             var imax = tuplesList.Select(x => x.Item2).Max();
             var jmax = tuplesList.Count();

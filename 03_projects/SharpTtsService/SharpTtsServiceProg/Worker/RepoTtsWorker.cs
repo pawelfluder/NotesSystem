@@ -10,19 +10,19 @@ namespace SharpTtsServiceProg.Worker
     public class RepoTtsWorker : MethodRunner
     {
         private readonly TtsBuilderWorker ttsWorker;
-        private readonly IFileService fileService;
+        private readonly IOperationsService operationsService;
         private readonly IRepoService repoService;
         private readonly IVideoService videoService;
 
         private string fileName;
 
         public RepoTtsWorker(
-            IFileService fileService,
+            IOperationsService operationsService,
             IRepoService repoService,
             IVideoService videoService)
             : base()
         {
-            this.fileService = fileService;
+            this.operationsService = operationsService;
             this.repoService = repoService;
             this.videoService = videoService;
             ttsWorker = new TtsBuilderWorker();
@@ -151,7 +151,7 @@ namespace SharpTtsServiceProg.Worker
         private PromptBuilder GetBuilder((string Repo, string Loca) adrTuple, CultureInfo culture)
         {
             var text = repoService.Methods.GetText2(adrTuple);
-            var elements = fileService.Header.Select2.GetElements(text);
+            var elements = operationsService.Header.Select2.GetElements(text);
             var builder = new PromptBuilder();
             builder.Culture = culture;
 

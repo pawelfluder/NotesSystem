@@ -10,12 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SharpFileServiceProg.AAPublic;
 
 namespace SharpRepoServiceProg.Workers
 {
     public class JsonWorker
     {
-        private readonly IFileService fileService;
+        private readonly IFileService operationsService;
         private readonly ReadWorker rw;
         private readonly BodyWorker bw;
         private readonly PathWorker pw;
@@ -51,8 +52,8 @@ namespace SharpRepoServiceProg.Workers
 
             foreach (var tmp2 in tmp)
             {
-                var index = fileService.Index.StringToIndex(tmp2);
-                var newAddress = fileService.Index.SelectAddress(address, index);
+                var index = operationsService.Index.StringToIndex(tmp2);
+                var newAddress = operationsService.Index.SelectAddress(address, index);
                 var content = bw.GetText2(newAddress);
                 contentsList.Add(content);
             }

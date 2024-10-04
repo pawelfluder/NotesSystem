@@ -9,7 +9,7 @@ namespace SharpFileServiceProg
     {
         private readonly AppendNotepadWorkspace appendNotepadWorkspace;
 
-        public XmlWorker(IFileService fileService)
+        public XmlWorker(IOperationsService operationsService)
         {
             this.appendNotepadWorkspace = new AppendNotepadWorkspace();
         }
