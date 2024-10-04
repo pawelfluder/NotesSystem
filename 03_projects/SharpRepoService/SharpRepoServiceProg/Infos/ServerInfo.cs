@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace SharpRepoServiceCoreProj
+namespace SharpRepoServiceProg.Infos
 {
     public class ServerInfo
     {

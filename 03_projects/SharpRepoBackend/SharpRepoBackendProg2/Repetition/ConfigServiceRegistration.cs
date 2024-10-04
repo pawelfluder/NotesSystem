@@ -1,8 +1,4 @@
-﻿using SharpConfigProg.Service;
-using Unity;
-using OutBorder2 = SharpConfigProg.AAPublic.OutBorder;
-
-namespace SharpRepoBackendProg.Repetition
+﻿namespace SharpRepoBackendProg2.Repetition
 {
     internal partial class ConfigServiceRegistration : AdditionalRegistrationBase
     {

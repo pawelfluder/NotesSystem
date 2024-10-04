@@ -1,9 +1,8 @@
 ﻿using SharpRepoServiceProg.AAPublic;
 using SharpVideoServiceProg.AAPublic;
 using System.Globalization;
-using System.Linq;
 using System.Speech.Synthesis;
-using System.Text.RegularExpressions;
+using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpTtsServiceProg.Worker
 {
@@ -20,7 +19,6 @@ namespace SharpTtsServiceProg.Worker
             IOperationsService operationsService,
             IRepoService repoService,
             IVideoService videoService)
-            : base()
         {
             this.operationsService = operationsService;
             this.repoService = repoService;

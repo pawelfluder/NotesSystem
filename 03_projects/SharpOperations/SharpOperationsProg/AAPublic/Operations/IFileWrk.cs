@@ -1,8 +1,11 @@
+using SharpFileServiceProg.AAPublic;
+using SharpRepoServiceProg.Operations.Files;
+
 namespace SharpOperationsProg.AAPublic.Operations;
 
 public interface IFileWrk
 {
-    IVisit GetNewRecursivelyVisitDirectory();
+    IFileVisit GetNewRecursivelyVisitDirectory();
     IParentVisit GetNewVisitDirectoriesRecursivelyWithParentMemory();
     IRepoAddressesObtainer NewRepoAddressesObtainer();
 }

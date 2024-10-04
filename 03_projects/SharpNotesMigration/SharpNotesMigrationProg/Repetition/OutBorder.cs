@@ -1,6 +1,7 @@
 ﻿using SharpNotesMigrationProg.AAPublic;
 using SharpNotesMigrationProg.Migrations;
 using SharpNotesMigrationProg.Service;
+using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoServiceProg.AAPublic;
 
 namespace SharpNotesMigrationProg.Repetition
@@ -11,14 +12,14 @@ namespace SharpNotesMigrationProg.Repetition
             IOperationsService operationsService,
             IRepoService repoService)
         {
-            return new MigrationService(fileService, repoService);
+            return new MigrationService(operationsService, repoService);
         }
 
         public static IMigrator03 Migrator03(
             IOperationsService operationsService,
             IRepoService repoService)
         {
-            return new Migrator03(fileService, repoService);
+            return new Migrator03(operationsService, repoService);
         }
     }
 }

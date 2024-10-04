@@ -1,4 +1,5 @@
-﻿using SharpRepoServiceProg.AAPublic;
+﻿using SharpOperationsProg.AAPublic.Operations;
+using SharpRepoServiceProg.AAPublic;
 using SharpTtsServiceProg.AAPublic;
 using SharpTtsServiceProg.Worker;
 using SharpVideoServiceProg.AAPublic;
@@ -33,7 +34,7 @@ namespace SharpTtsServiceProg.Service
         private void TtsWorkerInit()
         {
             Tts = new TtsBuilderWorker();
-            repoTts = new RepoTtsWorker(fileService, repoService, videoService);
+            repoTts = new RepoTtsWorker(operationsService, repoService, videoService);
         }
 
         public TtsService(

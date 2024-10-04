@@ -1,22 +1,22 @@
 ﻿using Newtonsoft.Json;
-using SharpRepoServiceCoreProj;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.Service;
 using SharpRepoServiceProg.WorkersSystem;
-using SharpTinderComplexTests;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SharpFileServiceProg.AAPublic;
+using SharpRepoServiceProg.Operations;
+using SharpRepoServiceProg.WorkersCrud;
 
 namespace SharpRepoServiceProg.Workers
 {
     public class JsonWorker
     {
-        private readonly IFileService operationsService;
+        private readonly OperationsService _operationsService;
         private readonly ReadWorker rw;
         private readonly BodyWorker bw;
         private readonly PathWorker pw;
@@ -24,10 +24,12 @@ namespace SharpRepoServiceProg.Workers
         private readonly SystemWorker sw;
         private readonly TextWriteWorker tww;
         private readonly FolderWriteWorker fww;
+        private readonly IFileService _fileService;
 
         public JsonWorker()
         {
-            fileService = MyBorder.Container.Resolve<IFileService>();
+            _fileService = MyBorder.Container.Resolve<IFileService>();
+            _operationsService = MyBorder.Container.Resolve<OperationsService>();
             rw = MyBorder.Container.Resolve<ReadWorker>();
             bw = MyBorder.Container.Resolve<BodyWorker>();
             pw = MyBorder.Container.Resolve<PathWorker>();
@@ -52,8 +54,8 @@ namespace SharpRepoServiceProg.Workers
 
             foreach (var tmp2 in tmp)
             {
-                var index = operationsService.Index.StringToIndex(tmp2);
-                var newAddress = operationsService.Index.SelectAddress(address, index);
+                var index = _operationsService.Index.StringToIndex(tmp2);
+                var newAddress = _operationsService.Index.SelectAddress(address, index);
                 var content = bw.GetText2(newAddress);
                 contentsList.Add(content);
             }

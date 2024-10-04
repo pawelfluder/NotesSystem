@@ -1,6 +1,7 @@
-﻿using SharpOperationsProg.AAPublic.Operations;
+﻿using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 using DotnetSerializer = YamlDotNet.Serialization.Serializer;
-using IOperationsService = SharpoperationsServiceProg.AAPublic.IOperationsService;
+using IFileService = SharpFileServiceProg.AAPublic.IFileService;
 
 namespace SharpOperationsProg.Operations.Yaml
 {

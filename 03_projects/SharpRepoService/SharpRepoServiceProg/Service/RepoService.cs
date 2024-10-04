@@ -1,8 +1,8 @@
 ﻿ using System;
 using System.Collections.Generic;
 using SharpFileServiceProg.AAPublic;
-using SharpRepoServiceCoreProj;
 using SharpRepoServiceProg.AAPublic;
+using SharpRepoServiceProg.Infos;
 using SharpRepoServiceProg.Workers;
 
 namespace SharpRepoServiceProg.Service

@@ -1,38 +1,40 @@
-﻿using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Names;
-using SharpRepoServiceProg.Registration;
-using SharpRepoServiceProg.WorkersSystem;
-using SharpTinderComplexTests;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SharpFileServiceProg.AAPublic;
+using SharpRepoServiceProg.Models;
+using SharpRepoServiceProg.Names;
+using SharpRepoServiceProg.Operations;
+using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.WorkersSystem;
 
-namespace SharpRepoServiceProg.Workers
+namespace SharpRepoServiceProg.WorkersCrud
 {
     internal class ReadWorker
     {
-        private IFileService fileService;
-        private readonly PathWorker pw;
-        private readonly BodyWorker bw;
-        private readonly ConfigWorker cw;
-        private readonly SystemWorker sw;
-        private readonly MemoWorker mw;
+        private IFileService _fileService;
+        private readonly PathWorker _pw;
+        private readonly BodyWorker _bw;
+        private readonly ConfigWorker _cw;
+        private readonly SystemWorker _sw;
+        private readonly MemoWorker _mw;
 
-        private readonly IYamlOperations yamlOperations;
+        private readonly IYamlOperations _yamlOperations;
+        private readonly OperationsService _operationsService;
 
         public object ErrorValue { get; internal set; }
 
         public ReadWorker()
         {
-            this.fileService = MyBorder.Container.Resolve<IFileService>();
-            this.yamlOperations = fileService.Yaml.Custom03;
-            this.pw = MyBorder.Container.Resolve<PathWorker>();
-            this.bw = MyBorder.Container.Resolve<BodyWorker>();
-            this.cw = MyBorder.Container.Resolve<ConfigWorker>();
-            this.sw = MyBorder.Container.Resolve<SystemWorker>();
-            this.mw = MyBorder.Container.Resolve<MemoWorker>();
+            _fileService = MyBorder.Container.Resolve<IFileService>();
+            _operationsService = MyBorder.Container.Resolve<OperationsService>();
+            _yamlOperations = _fileService.Yaml.Default;
+            _pw = MyBorder.Container.Resolve<PathWorker>();
+            _bw = MyBorder.Container.Resolve<BodyWorker>();
+            _cw = MyBorder.Container.Resolve<ConfigWorker>();
+            _sw = MyBorder.Container.Resolve<SystemWorker>();
+            _mw = MyBorder.Container.Resolve<MemoWorker>();
         }
 
         // read; body
@@ -40,9 +42,10 @@ namespace SharpRepoServiceProg.Workers
             (string Repo, string Loca) adrTuple)
         {
             var item = new ItemModel();
-            var address = fileService.RepoAddress.CreateUrlFromAddress(adrTuple);
+            var address = _operationsService.UniAddress
+                .CreateUrlFromAddress(adrTuple);
             //item.AdrTuple = adrTuple;
-            item.Body = bw.GetText2(adrTuple);
+            item.Body = _bw.GetText2(adrTuple);
             return item;
         }
 
@@ -56,12 +59,12 @@ namespace SharpRepoServiceProg.Workers
 
             // config
             var settings =  GetConfigDict(adrTuple);
-            cw.AddSettingsToModel(item, adrTuple, settings);
+            _cw.AddSettingsToModel(item, adrTuple, settings);
 
             // body
             if (item.Type == ItemTypes.Text)
             {
-                var body = bw.GetText2(adrTuple);
+                var body = _bw.GetText2(adrTuple);
                 item.Body = body;
             }
 
@@ -93,7 +96,7 @@ namespace SharpRepoServiceProg.Workers
             (string Repo, string Loca) adrTuple,
             string key)
         {
-            var dict = cw.GetConfigDictionary(adrTuple);
+            var dict = _cw.GetConfigDictionary(adrTuple);
             var exists = dict.TryGetValue(key, out var value);
             if (exists)
             {
@@ -107,7 +110,7 @@ namespace SharpRepoServiceProg.Workers
             (string repo, string loca) adrTuple)
         {
             var item = GetItemBody(adrTuple);
-            var configLines = item.Body.ToString().Split(sw.NewLine).ToList();
+            var configLines = item.Body.ToString().Split(_sw.NewLine).ToList();
             return configLines;
         }
 
@@ -173,7 +176,8 @@ namespace SharpRepoServiceProg.Workers
             {
                 if (item.Type == ItemTypes.Text)
                 {
-                    var index = fileService.RepoAddress.GetLastLocaIndex(item.Address);
+                    var index = _operationsService.UniAddress
+                        .GetLastLocaIndex(item.Address);
                     contentsList.Add((index, item.Body.ToString()));
                 }
             }
@@ -198,7 +202,7 @@ namespace SharpRepoServiceProg.Workers
         {
             var item = new ItemModel();
             var settings = GetConfigDict(adrTuple);
-            cw.AddSettingsToModel(item, adrTuple, settings);
+            _cw.AddSettingsToModel(item, adrTuple, settings);
             return item;
         }
 
@@ -207,8 +211,8 @@ namespace SharpRepoServiceProg.Workers
             (string Repo, string Loca) address,
             params string[] keyArray)
         {
-            var text = cw.GetConfigText(address);
-            var success = yamlOperations
+            var text = _cw.GetConfigText(address);
+            var success = _yamlOperations
                 .TryDeserialize<Dictionary<string, object>>(text, out var configDict);
             var resultDict = new Dictionary<string, object>();
 
@@ -243,20 +247,25 @@ namespace SharpRepoServiceProg.Workers
             (string Repo, string Loca) adrTuple)
         {
             var items = GetItemConfigList(adrTuple);
-            var result = items.Select(x => (fileService.RepoAddress.GetLastLocaIndex(x.Address), x.Name)).ToList();
+            var result = items
+                .Select(x => (_operationsService.UniAddress.GetLastLocaIndex(x.Address), x.Name))
+                .ToList();
             return result;
         }
 
         public Dictionary<string, string> GetIndexesQNames2(
             (string Repo, string Loca) adrTuple)
         {
-            var w1 = fileService.RepoAddress;
-            var w2 = fileService.Index;
+            var w1 = _operationsService.UniAddress;
+            var w2 = _operationsService.Index;
 
             var items = GetItemConfigList(adrTuple);
-            var kv = items.Select(x => new KeyValuePair<string, string>(w2.IndexToString(w1.GetLastLocaIndex(x.Address)), x.Name));
+            var kv = items
+                .Select(x => new KeyValuePair<string, string>(w2.IndexToString(w1.GetLastLocaIndex(x.Address)), x.Name));
             
-            var dict = kv.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
+            var dict = kv
+                .OrderBy(x => x.Key)
+                .ToDictionary(x => x.Key, x => x.Value);
             return dict;
         }
 
@@ -301,8 +310,9 @@ namespace SharpRepoServiceProg.Workers
                 return default;
             }
 
-            var index = this.fileService.RepoAddress.GetLastLocaIndex(found.Address);
-            var indexString = this.fileService.Index.IndexToString(index);
+            var index = _operationsService.UniAddress
+                .GetLastLocaIndex(found.Address);
+            var indexString = _operationsService.Index.IndexToString(index);
             var result = (indexString, found.Name);
             return result;
         }
@@ -310,7 +320,7 @@ namespace SharpRepoServiceProg.Workers
         // read; config
         public List<string> GetConfigLines(
             (string Repo, string Loca) adrTuple)
-            => cw.GetConfigLines(adrTuple);
+            => _cw.GetConfigLines(adrTuple);
 
         // read; config
         public bool TryGetConfigLines(
@@ -330,7 +340,7 @@ namespace SharpRepoServiceProg.Workers
                 return default;
             }
 
-            var foundAdrTuple = fileService.RepoAddress
+            var foundAdrTuple = _operationsService.UniAddress
                 .CreateAddressFromString(found.Address);
             return foundAdrTuple;
         }
@@ -356,8 +366,8 @@ namespace SharpRepoServiceProg.Workers
             (string Repo, string Loca) address,
             string key)
         {
-            var text = cw.GetConfigText(address);
-            var success = yamlOperations
+            var text = _cw.GetConfigText(address);
+            var success = _yamlOperations
                 .TryDeserialize<Dictionary<string, object>>(text, out var resultDict);
 
             if (!success)
@@ -385,7 +395,7 @@ namespace SharpRepoServiceProg.Workers
                 return "RefText";
             }
 
-            var contentFilePath = pw.GetBodyPath(adrTuple);
+            var contentFilePath = _pw.GetBodyPath(adrTuple);
             if (File.Exists(contentFilePath))
             {
                 return "Text";
@@ -416,9 +426,9 @@ namespace SharpRepoServiceProg.Workers
         public int GetFolderLastNumber(
             (string Repo, string Loca) address)
         {
-            var directories = sw.GetDirectories(address);
+            var directories = _sw.GetDirectories(address);
             var numbers = directories
-                .Select(x => fileService.Index.StringToIndex(Path.GetFileName(x)))
+                .Select(x => _operationsService.Index.StringToIndex(Path.GetFileName(x)))
                 .ToList();
             if (numbers.Count != 0)
             {
@@ -432,9 +442,9 @@ namespace SharpRepoServiceProg.Workers
         public List<(string, string)> GetSubAddresses(
             (string Repo, string Loca) adrTuple)
         {
-            var itemPath = pw.GetItemPath(adrTuple);
-            var dirs = sw.GetDirectories(itemPath);
-            var subAddresses = dirs.Select(x => (adrTuple.Repo, mw.SelectDirToSection(adrTuple.Loca, x))).ToList();
+            var itemPath = _pw.GetItemPath(adrTuple);
+            var dirs = _sw.GetDirectories(itemPath);
+            var subAddresses = dirs.Select(x => (adrTuple.Repo, _mw.SelectDirToSection(adrTuple.Loca, x))).ToList();
             return subAddresses;
         }
 
@@ -443,15 +453,17 @@ namespace SharpRepoServiceProg.Workers
             string repoName)
         {
             var adrTuple = (repoName, "");
-            var path = pw.GetItemPath(adrTuple);
-            var tmp = fileService.File.NewRepoAddressesObtainer().Visit(path);
-            var result = tmp.Select(x => (adrTuple.Item1, fileService.RepoAddress.JoinLoca(adrTuple.Item2, x))).ToList();
+            var path = _pw.GetItemPath(adrTuple);
+            var tmp = _operationsService.File.NewRepoAddressesObtainer().Visit(path);
+            var result = tmp
+                .Select(x => (adrTuple.Item1, _operationsService.UniAddress.JoinLoca(adrTuple.Item2, x)))
+                .ToList();
             return result;
         }
 
         public List<string> GetAllReposNames()
         {
-            var repos = pw.GetAllReposPaths()
+            var repos = _pw.GetAllReposPaths()
                 .Select(x => Path.GetFileName(x)).ToList();
             return repos;
         }
@@ -461,13 +473,13 @@ namespace SharpRepoServiceProg.Workers
         {
             throw new Exception();
 
-            var repos = pw.GetAllReposPaths()
+            var repos = _pw.GetAllReposPaths()
                 .Select(x => Path.GetFileName(x)).ToList();
             return repos;
         }
 
         public string GetText2(
             (string Repo, string Loca) adrTuple)
-            => bw.GetText2(adrTuple);
+            => _bw.GetText2(adrTuple);
     }
 }

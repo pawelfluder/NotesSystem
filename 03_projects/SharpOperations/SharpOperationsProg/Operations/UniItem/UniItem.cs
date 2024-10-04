@@ -1,13 +1,12 @@
-using SharpoperationsServiceProg.AAPublic;
-using SharpOperationsProg.AAPublic;
+using SharpOperationsProg.Operations.UniAddress;
 
 namespace SharpOperationsProg.Operations.UniItem;
 
 internal class UniItem
 {
-    private string address;
+    private string _address;
 
-    private Dictionary<string, object> settings;
+    private Dictionary<string, object> _settings;
 
     internal string Name { get; set; }
 
@@ -17,12 +16,11 @@ internal class UniItem
 
     internal string Address
     {
-        get => address;
+        get => _address;
         set
         {
-            address = value;
-            var operationsService = MyBorder.Container.Resolve<IOperationsService>();
-            var adrTuple = operationsService.RepoAddress.CreateAddressFromString(address);
+            _address = value;
+            var adrTuple = IUniAddressOperations.CreateAddressFromString(_address);
             AdrTuple = adrTuple;
         }
     }
@@ -33,11 +31,11 @@ internal class UniItem
 
     public Dictionary<string, object> Settings
     {
-        get => settings;
+        get => _settings;
         set
         {
-            settings = value;
-            SetIndentificators(settings);
+            _settings = value;
+            SetIndentificators(_settings);
         }
     }
 

@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj" />
       <ProjectReference Include="..\..\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj" />
     </ItemGroup>
 

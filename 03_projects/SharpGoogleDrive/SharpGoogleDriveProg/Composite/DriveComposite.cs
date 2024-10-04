@@ -1,13 +1,12 @@
 ﻿using System.Text.RegularExpressions;
 using Google.Apis.Drive.v3;
 using Google.Apis.Drive.v3.Data;
-using SharpFileServiceProg;
-using SharpFileServiceProg.AAPublic;
-using SharpOperationsProg.AAPublic;
+using SharpGoogleDriveProg.Service;
+using SharpOperationsProg.AAPublic.Operations;
 using DriveFile = Google.Apis.Drive.v3.Data.File;
 using File = System.IO.File;
 
-namespace SharpGoogleDriveProg.Service
+namespace SharpGoogleDriveProg.Composite
 {
     // google examples
     // https://github.com/LindaLawton/Google-Dotnet-Samples/blob/master/Samples/Drive%20API/v3/FilesSample.cs

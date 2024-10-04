@@ -1,5 +1,5 @@
 ﻿
-namespace SharpTinderComplexTests
+namespace SharpRepoServiceProg
 {
     internal static class ItemTypeNames
     {

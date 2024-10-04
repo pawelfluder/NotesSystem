@@ -1,9 +1,10 @@
-﻿using VYaml.Serialization;
-using IOperationsService = SharpoperationsServiceProg.AAPublic.IOperationsService;
+﻿using SharpFileServiceProg.AAPublic;
+using VYaml.Serialization;
+using IFileService = SharpFileServiceProg.AAPublic.IFileService;
 
 namespace SharpOperationsProg.Operations.Yaml
 {
-    internal class VYamlCoreOperations : IOperationsService.IYamlOperations
+    internal class VYamlCoreOperations : IYamlOperations
     {
         public string Serialize(object input)
         {

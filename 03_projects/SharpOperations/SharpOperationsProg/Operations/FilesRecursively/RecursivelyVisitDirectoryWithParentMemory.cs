@@ -1,9 +1,10 @@
-﻿using IOperationsService = SharpoperationsServiceProg.AAPublic.IOperationsService;
+﻿using SharpFileServiceProg.AAPublic;
+using IFileService = SharpFileServiceProg.AAPublic.IFileService;
 
 namespace SharpOperationsProg.Operations.FilesRecursively
 {
     internal class VisitDirectoriesRecursivelyWithParentMemory
-        : IOperationsService.IParentVisit
+        : IParentVisit
     {
         private Action<FileInfo> fileAction;
         private Action<DirectoryInfo> directoryAction;

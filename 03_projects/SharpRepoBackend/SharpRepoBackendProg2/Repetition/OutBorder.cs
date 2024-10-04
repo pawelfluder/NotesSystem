@@ -1,7 +1,6 @@
-﻿using SharpRepoBackendProg.Service;
-using Unity;
+﻿using SharpRepoBackendProg2.Service;
 
-namespace SharpRepoBackendProg.Repetition
+namespace SharpRepoBackendProg2.Repetition
 {
     public class OutBorder
     {

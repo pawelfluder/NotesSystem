@@ -1,7 +1,7 @@
 ﻿using Unity;
 using Unity.Injection;
 
-namespace SharpRepoBackendProg.Repetition
+namespace SharpNotesMigrationProg.Repetition
 {
     internal abstract class RegistrationBase
     {

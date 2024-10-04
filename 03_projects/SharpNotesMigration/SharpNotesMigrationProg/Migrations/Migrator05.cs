@@ -1,14 +1,17 @@
-﻿using SharpNotesMigrationProg.AAPublic;
+﻿using SharpFileServiceProg.AAPublic;
+using SharpNotesMigrationProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoServiceProg.AAPublic;
 
 namespace SharpNotesMigrationProg.Migrations
 {
     internal class Migrator05 : IMigrator, IMigrator05
     {
-        private readonly IOperationsService operationsService;
-        private readonly IRepoService repoService;
-        private readonly IoperationsService.IYamlOperations yamlOperations;
+        private readonly IOperationsService _operationsService;
+        private readonly IRepoService _repoService;
+        private readonly IYamlOperations _yamlOperations;
         private bool agree;
+        private readonly IFileService _fileService;
 
         public string Description
         {
@@ -26,9 +29,10 @@ namespace SharpNotesMigrationProg.Migrations
             IOperationsService operationsService,
             IRepoService repoService)
         {
-            this.operationsService = operationsService;
-            this.repoService = repoService;
-            yamlOperations = operationsService.Yaml.Custom03;
+            _operationsService = operationsService;
+            _fileService = _operationsService.GetFileService();
+            _repoService = repoService;
+            _yamlOperations = _fileService.Yaml.Custom03;
             Changes = new List<(int, string, string, string)>();
         }
 
@@ -39,7 +43,7 @@ namespace SharpNotesMigrationProg.Migrations
 
         public void MigrateOneFolder((string Repo, string Loca) adrTuple)
         {
-            var foundAddressList = repoService.Methods
+            var foundAddressList = _repoService.Methods
                 .GetAllRepoAddresses(adrTuple).ToList();
 
             MigrateOneAddress(adrTuple);
@@ -53,18 +57,18 @@ namespace SharpNotesMigrationProg.Migrations
         private void MigrateOneAddress(
             (string Repo, string Loca) adrTuple)
         {
-            var type = repoService.Methods.GetType(adrTuple);
+            var type = _repoService.Methods.GetType(adrTuple);
 
             if (type == "Text")
             {
                 var newText = RemoveTopEmptyLines(adrTuple);
-                repoService.Methods.PatchText(newText, adrTuple);
+                _repoService.Methods.PatchText(newText, adrTuple);
             }
         }
 
         private string RemoveTopEmptyLines((string Repo, string Loca) adrTuple)
         {
-            var lines = repoService.Methods.GetTextLines(adrTuple);
+            var lines = _repoService.Methods.GetTextLines(adrTuple);
             for (var i = 0; i < 4; i++)
             {
                 var line = lines[0];

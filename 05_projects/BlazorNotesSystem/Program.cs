@@ -1,8 +1,7 @@
 using BlazorInterAutoProj.Registrations;
 using BlazorNotesSystem.Client.Pages;
 using BlazorNotesSystem.Components;
-using SharpRepoBackendProg.Service;
-
+using SharpRepoBackendProg2.Service;
 using OutBorder01 = SharpSetup21ProgPrivate.AAPublic.OutBorder;
 
 OutBorder01.GetPreparer("PrivateNotesPreparer").Prepare();

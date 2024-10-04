@@ -1,9 +1,11 @@
 ﻿using TextHeaderAnalyzerCoreProj.Service;
 using System.Text;
-using SharpFileServiceProg.Operations.Headers;
+using SharpFileServiceProg.AAPublic;
 using ElementType = TextHeaderAnalyzerCoreProj.ElementType;
 using SharpGoogleDocsProg.AAPublic;
 using SharpNotesExporterProg.Register;
+using SharpOperationsProg.AAPublic.Operations;
+using SharpOperationsProg.Operations.Headers;
 using SharpRepoServiceProg.AAPublic;
 
 namespace SharpNotesExporter
@@ -11,18 +13,20 @@ namespace SharpNotesExporter
     public class NotesExporterService
     {
         private readonly IGoogleDocsService docsService;
-        private readonly IOperationsService operationsService;
+        private readonly IOperationsService _operationsService;
         private readonly HeaderNotesService headerNotesService;
         private readonly IRepoService repoService;
         private readonly HeadersOperations headersOp;
+        private readonly IFileService _fileService;
 
         public NotesExporterService(IRepoService repoService)
         {
+            _fileService = MyBorder.Container.Resolve<IFileService>();
+            _operationsService = MyBorder.Container.Resolve<IOperationsService>();
             docsService = MyBorder.Container.Resolve<IGoogleDocsService>();
-            fileService = MyBorder.Container.Resolve<IFileService>();
             headerNotesService = new HeaderNotesService();
             this.repoService = repoService;
-            headersOp = operationsService.Header;
+            headersOp = _operationsService.Header;
         }
 
         public void GetMatch(string path, string docId)
@@ -47,24 +51,24 @@ namespace SharpNotesExporter
             var tableSize = GetTableSize(elementsList);
 
             // stack 1
-            docsService.StackWkr.LoadDocument(docId);
-            if (docsService.StackWkr.LastIndex != 1)
+            docsService.Document.LoadDocument(docId);
+            if (docsService.Document.LastIndex != 1)
             {
-                docsService.StackWkr.StackDeleteAllContentRequest();
+                docsService.Stack.StackDeleteAllContentRequest();
             }
-            var s9 = docsService.StackWkr.ExecuteStack();
+            var s9 = docsService.Stack.ExecuteStack();
 
-            docsService.StackWkr.StackInsertTextRequest(1, name);
-            var s1 = docsService.StackWkr.ExecuteStack();
-            docsService.StackWkr.StackInsertTableRequest(tableSize);
-            var s2 = docsService.StackWkr.ExecuteStack();
-            docsService.StackWkr.StackUpdateMarginsRequest((42, 14), (14, 14));
-            var success1 = docsService.StackWkr.ExecuteStack();
+            docsService.Stack.StackInsertTextRequest(1, name);
+            var s1 = docsService.Stack.ExecuteStack();
+            docsService.Stack.StackInsertTableRequest(tableSize);
+            var s2 = docsService.Stack.ExecuteStack();
+            docsService.Stack.StackUpdateMarginsRequest((42, 14), (14, 14));
+            var success1 = docsService.Stack.ExecuteStack();
 
             // computations 2
             var columnNumbers = Enumerable.Range(0, tableSize.ColumnCount - 1).ToList();
             var convertedList = headersOp.Convert.ToLinesList(elementsList);
-            var cellsIndexes = docsService.StackWkr.GetFirstTableCellsIndexes();
+            var cellsIndexes = docsService.Stack.GetFirstTableCellsIndexes();
             var neededIndexes = headersOp.Select.GetNeededIndexes(cellsIndexes, convertedList);
             headersOp.Select.CheckCorrectnes(neededIndexes, convertedList);
             var finalIndexes = headersOp.Select.FinalIndexes(neededIndexes, convertedList);
@@ -72,20 +76,20 @@ namespace SharpNotesExporter
             // stack 2
             //var finalIndexes = GetFinalIndexes3(tableIndexes, elementsList);
             //var headersIndexes = GetOnlyHeaderIndexes(tableIndexes, elementsList);
-            var tableMainIndex = docsService.StackWkr.GetFirstTableIndex();
+            var tableMainIndex = docsService.Document.GetFirstTableIndex();
 
             //stack
-            docsService.StackWkr.StackUpdateTableColumnPropertiesRequest(tableMainIndex, 5, columnNumbers);
-            var success2 = docsService.StackWkr.ExecuteStack();
+            docsService.Stack.StackUpdateTableColumnPropertiesRequest(tableMainIndex, 5, columnNumbers);
+            var success2 = docsService.Stack.ExecuteStack();
             StackMergeCellsRequests(tableMainIndex, elementsList);
-            var success3 = docsService.StackWkr.ExecuteStack();
+            var success3 = docsService.Stack.ExecuteStack();
             StackInsertTextRequests2(finalIndexes.ToList(), convertedList);
-            var success4 = docsService.StackWkr.ExecuteStack();
+            var success4 = docsService.Stack.ExecuteStack();
 
             if (createTwoColumns)
             {
-                docsService.StackWkr.StackTwoColumnsDocumentRequest();
-                var success5 = docsService.StackWkr.ExecuteStack();
+                docsService.Stack.StackTwoColumnsDocumentRequest();
+                var success5 = docsService.Stack.ExecuteStack();
             }
         }
 
@@ -100,14 +104,14 @@ namespace SharpNotesExporter
                 var converted = convertedList[i];
                 if (index.Item1 == ElementType.Header.ToString())
                 {
-                    docsService.StackWkr.StackInsertBoldTextRequests(index.Index, converted.Value.ToString());
+                    docsService.Stack.StackInsertBoldTextRequests(index.Index, converted.Value.ToString());
                 }
 
                 if (index.Item1 == ElementType.LinesList.ToString())
                 {
                     var tmp = converted.Value as List<string>;
                     var text = string.Join('\n', tmp);
-                    docsService.StackWkr.StackInsertBoldTextRequests(index.Index, text);
+                    docsService.Stack.StackInsertBoldTextRequests(index.Index, text);
                 }
 
                 i++;
@@ -437,7 +441,7 @@ namespace SharpNotesExporter
                     var colIndex = elem.Level - 1;
                     var rowSpan = 1;
                     var colSpan = columnCount - elem.Level + 2;
-                    docsService.StackWkr.StackMergeCellsRequest(
+                    docsService.Stack.StackMergeCellsRequest(
                         (rowIndex, colIndex),
                         tableIndex,
                         (rowSpan, colSpan));
@@ -450,7 +454,7 @@ namespace SharpNotesExporter
                     var colIndex = elem.Level;
                     var rowSpan = 1;
                     var colSpan = columnCount - elem.Level + 1;
-                    docsService.StackWkr.StackMergeCellsRequest(
+                    docsService.Stack.StackMergeCellsRequest(
                         (rowIndex, colIndex),
                         tableIndex,
                         (rowSpan, colSpan));
@@ -469,7 +473,7 @@ namespace SharpNotesExporter
             var colIndex = elem.Level;
             var rowSpan = 1;
             var colSpan = columnCount - elem.Level;
-            docsService.StackWkr.StackMergeCellsRequest(
+            docsService.Stack.StackMergeCellsRequest(
                 (rowIndex, colIndex),
                 tableIndex,
                 (rowSpan, colSpan));

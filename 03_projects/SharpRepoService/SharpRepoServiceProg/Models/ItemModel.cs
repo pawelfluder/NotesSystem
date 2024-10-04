@@ -1,7 +1,8 @@
 ﻿using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Registration;
 using System.Collections.Generic;
-using SharpRepoServiceProg.AAPublic.Names;
+using SharpFileServiceProg.AAPublic;
+using SharpRepoServiceProg.Operations;
 
 namespace SharpRepoServiceProg.Models
 {
@@ -23,8 +24,8 @@ namespace SharpRepoServiceProg.Models
             set
             {
                 address = value;
-                var fileService = MyBorder.Container.Resolve<IFileService>();
-                var adrTuple = operationsService.RepoAddress.CreateAddressFromString(address);
+                var operationsService = MyBorder.Container.Resolve<OperationsService>();
+                var adrTuple = operationsService.UniAddress.CreateAddressFromString(address);
                 AdrTuple = adrTuple;
             }
         }

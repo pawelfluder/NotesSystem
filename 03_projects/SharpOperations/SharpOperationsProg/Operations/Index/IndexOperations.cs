@@ -1,9 +1,10 @@
-﻿using SharpoperationsServiceProg.AAPublic;
+﻿using SharpFileServiceProg.AAPublic;
 using SharpOperationsProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpOperationsProg.Operations.Index
 {
-    internal class IndexOperations : IOperationsService.IIndexWrk
+    internal class IndexOperations : IIndexWrk
     {
         private char slash = '/';
         public int GetLocaLast(string loca)

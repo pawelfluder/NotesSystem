@@ -1,4 +1,4 @@
-﻿namespace SharpRepoServiceProg.AAPublic.Names
+﻿namespace SharpRepoServiceProg.Names
 {
     public static class FieldsForUniItem
     {

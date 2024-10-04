@@ -1,5 +1,7 @@
 ﻿using SharpContainerProg.AAPublic;
+using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Workers;
+using SharpRepoServiceProg.WorkersCrud;
 using SharpRepoServiceProg.WorkersSystem;
 
 namespace SharpRepoServiceProg.Registration
@@ -28,6 +30,9 @@ namespace SharpRepoServiceProg.Registration
 
             var jsonWorker = new JsonWorker();
             RegisterByFunc(() => jsonWorker);
+
+            var operationsService = new OperationsService();
+            RegisterByFunc(() => operationsService);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using SharpOperationsProg.AAPublic.Operations;
+﻿using SharpFileServiceProg.AAPublic;
 using SharpOperationsProg.Operations.Yaml;
 
 namespace SharpOperationsProg.Operations.Files
@@ -10,7 +10,9 @@ namespace SharpOperationsProg.Operations.Files
         public IYamlOperations Byjson { get; }
         public IYamlOperations Custom01 { get; }
         public IYamlOperations Custom02 { get; }
-        public IYamlOperations Custom03 { get; }
+        
+        public IYamlOperations Custom03 { get; set; }
+        public IYamlDefaultOperations Default { get; }
 
         public YamlWorker()
         {

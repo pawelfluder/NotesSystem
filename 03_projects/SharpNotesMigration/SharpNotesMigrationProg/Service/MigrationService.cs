@@ -2,29 +2,33 @@
 using SharpNotesMigrationProg.Migrations;
 using SharpRepoServiceProg.AAPublic;
 using System.Reflection;
+using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpNotesMigrationProg.Service
 {
     public class MigrationService : IMigrationService
     {
-        private readonly IOperationsService operationsService;
+        private readonly IOperationsService _operationsService;
         private readonly IConfigService configService;
-        private readonly IRepoService repoService;
+        private readonly IRepoService _repoService;
 
         private List<IMigrator> migratorsList;
+        private readonly IFileService _fileService;
 
         public MigrationService(
             IOperationsService operationsService,
             IRepoService repoService)
         {
-            this.operationsService = operationsService;
-            this.repoService = repoService;
+            _operationsService = operationsService;
+            _repoService = repoService;
+            _fileService = _operationsService.GetFileService();
 
             migratorsList = new List<IMigrator>()
             {
-                new Migrator03(fileService, repoService),
-                new Migrator04(fileService, repoService),
-                new Migrator05(fileService, repoService),
+                new Migrator03(_operationsService, repoService),
+                new Migrator04(_operationsService, repoService),
+                new Migrator05(_operationsService, repoService),
             };
         }
 

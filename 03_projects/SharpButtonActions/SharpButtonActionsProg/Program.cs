@@ -1,5 +1,4 @@
-﻿using SharpButtonActionsProj.Service;
-namespace ButtonActionsCoreProj
+﻿namespace SharpButtonActionsProg
 {
     class Program
     {

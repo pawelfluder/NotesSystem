@@ -1,4 +1,4 @@
-﻿namespace SharpRepoServiceCoreProj
+﻿namespace SharpRepoServiceProg.Infos
 {
     public interface IServerInfo
     {

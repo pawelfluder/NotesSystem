@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SharpFileServiceProg.AAPublic;
-using SharpRepoServiceProg.AAPublic.Names;
+using SharpRepoServiceProg.Operations;
 
 namespace SharpRepoServiceProg.WorkersSystem
 {
@@ -16,12 +16,14 @@ namespace SharpRepoServiceProg.WorkersSystem
         private readonly IYamlOperations yamlOperations;
         private readonly PathWorker pw;
         private readonly SystemWorker sw;
+        private readonly OperationsService _operationsService;
         public object ErrorValue { get; internal set; }
 
         public ConfigWorker()
         {
             fileService = MyBorder.Container.Resolve<IFileService>();
-            yamlOperations = fileService.Yaml.Custom03;
+            _operationsService = MyBorder.Container.Resolve<OperationsService>();
+            yamlOperations = fileService.Yaml.Default;
             pw = MyBorder.Container.Resolve<PathWorker>();
             sw = MyBorder.Container.Resolve<SystemWorker>();
         }
@@ -64,7 +66,7 @@ namespace SharpRepoServiceProg.WorkersSystem
             (string Repo, string Loca) adrTuple,
             Dictionary<string, object> settings)
         {
-            var newAddress = fileService.RepoAddress.CreateUrlFromAddress(adrTuple);
+            var newAddress = _operationsService.UniAddress.CreateUrlFromAddress(adrTuple);
             settings[FieldsForUniItem.Address] = newAddress;
             var saveNeeded = false;
             if (!settings.ContainsKey(FieldsForUniItem.Id))

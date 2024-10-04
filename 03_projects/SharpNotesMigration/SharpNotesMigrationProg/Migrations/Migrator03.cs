@@ -1,14 +1,17 @@
 ﻿using SharpNotesMigrationProg.AAPublic;
 using SharpRepoServiceProg.AAPublic;
 using System.Text.RegularExpressions;
+using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpNotesMigrationProg.Migrations
 {
     internal class Migrator03 : IMigrator, IMigrator03
     {
-        private readonly IOperationsService operationsService;
+        private readonly IOperationsService _operationsService;
         private readonly IRepoService repoService;
-        private readonly IoperationsService.IYamlOperations yamlOperations;
+        private readonly IYamlOperations yamlOperations;
+        private readonly IFileService _fileService;
         private string pattern1;
         private string pattern2;
         private string pattern3;
@@ -22,9 +25,10 @@ namespace SharpNotesMigrationProg.Migrations
             IOperationsService operationsService,
             IRepoService repoService)
         {
-            this.operationsService = operationsService;
+            _operationsService = operationsService;
             this.repoService = repoService;
-            yamlOperations = operationsService.Yaml.Custom03;
+            _fileService = _operationsService.GetFileService();
+            yamlOperations = _fileService.Yaml.Custom03;
             Changes = new List<(int, string, string, string)>();
 
             SetPatterns();

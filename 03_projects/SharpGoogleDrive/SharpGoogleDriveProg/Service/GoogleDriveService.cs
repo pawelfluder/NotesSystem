@@ -2,8 +2,10 @@
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
 using SharpGoogleDriveProg.AAPublic;
+using SharpGoogleDriveProg.Composite;
 using SharpGoogleDriveProg.Names;
 using SharpOperationsProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpGoogleDriveProg.Service
 {

@@ -1,9 +1,6 @@
 ﻿using Google.Apis.Drive.v3;
-using System.IO;
-using System.Threading.Tasks;
 
-
-namespace GoogleDriveCoreApp
+namespace SharpGoogleDriveProg
 {
    class Program
    {

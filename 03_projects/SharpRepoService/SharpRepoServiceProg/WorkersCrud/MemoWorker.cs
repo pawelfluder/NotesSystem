@@ -1,11 +1,11 @@
-﻿using SharpRepoServiceProg.Registration;
-using SharpRepoServiceProg.WorkersSystem;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.WorkersSystem;
 
-namespace SharpRepoServiceProg.Workers
+namespace SharpRepoServiceProg.WorkersCrud
 {
     internal class MemoWorker
     {

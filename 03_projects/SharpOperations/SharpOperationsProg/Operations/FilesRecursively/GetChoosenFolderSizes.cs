@@ -1,13 +1,14 @@
 ﻿using System.Xml.Linq;
-using SharpoperationsServiceProg.AAPublic;
+using SharpFileServiceProg.AAPublic;
 using SharpOperationsProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpOperationsProg.Operations.FilesRecursively
 {
     internal class AppendNotepadWorkspace
     {
         private readonly IOperationsService operationsService;
-        private Service.IOperationsService.IVisit rvd;
+        private IFileVisit rvd;
         private Action<FileInfo> fileAction;
         private Action<DirectoryInfo> folderAction;
 

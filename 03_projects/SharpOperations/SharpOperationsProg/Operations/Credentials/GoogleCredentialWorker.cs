@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Newtonsoft.Json.Linq;
-using SharpoperationsServiceProg;
+using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpOperationsProg.Operations.Credentials
 {

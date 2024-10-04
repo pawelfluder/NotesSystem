@@ -1,13 +1,13 @@
-﻿using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Registration;
-using SharpRepoServiceProg.WorkersSystem;
-using SharpTinderComplexTests;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using SharpFileServiceProg.AAPublic;
-using SharpRepoServiceProg.AAPublic.Names;
+using SharpRepoServiceProg.Models;
+using SharpRepoServiceProg.Names;
+using SharpRepoServiceProg.Operations;
+using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.WorkersSystem;
 
-namespace SharpRepoServiceProg.Workers
+namespace SharpRepoServiceProg.WorkersCrud
 {
     public class FolderWriteWorker
     {
@@ -17,11 +17,13 @@ namespace SharpRepoServiceProg.Workers
         private readonly ConfigWorker cw;
         private readonly BodyWorker bw;
         private readonly SystemWorker sw;
+        private OperationsService _operationsService;
 
         public FolderWriteWorker(
             IFileService fileService)
         {
             this.fileService = fileService;
+            _operationsService = MyBorder.Container.Resolve<OperationsService>();
 
             rw = MyBorder.Container.Resolve<ReadWorker>();
             pw = MyBorder.Container.Resolve<PathWorker>();
@@ -61,9 +63,9 @@ namespace SharpRepoServiceProg.Workers
 
             var lastIndex = rw.GetFolderLastNumber(adrTuple);
             var newIndex = lastIndex + 1;
-            var newIndexString = fileService.Index.IndexToString(newIndex);
+            var newIndexString = _operationsService.Index.IndexToString(newIndex);
 
-            var newAdrTuple = fileService.RepoAddress.AdrTupleJoinLoca(adrTuple, newIndexString);
+            var newAdrTuple = _operationsService.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
             Put(name, newAdrTuple);
             return newAdrTuple;
         }
@@ -83,9 +85,9 @@ namespace SharpRepoServiceProg.Workers
 
             var lastIndex = rw.GetFolderLastNumber(adrTuple);
             var newIndex = lastIndex + 1;
-            var newIndexString = fileService.Index.IndexToString(newIndex);
+            var newIndexString = _operationsService.Index.IndexToString(newIndex);
 
-            var newAdrTuple = fileService.RepoAddress.AdrTupleJoinLoca(adrTuple, newIndexString);
+            var newAdrTuple = _operationsService.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
             item = PrepareItem(name, newAdrTuple);
             Put(item);
             return item;

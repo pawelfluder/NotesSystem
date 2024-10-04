@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using SharpRepoBackendProg.Service;
 using WpfNotesSystem.Commands;
 using System.Collections.Generic;
 using System.Windows.Input;
@@ -11,6 +10,7 @@ using System.Linq;
 using System.Windows.Controls;
 using WpfCoreProg.Debug;
 using System.ComponentModel;
+using SharpRepoBackendProg2.Service;
 using SharpRepoServiceProg.AAPublic;
 
 namespace WpfNotesSystem.ViewModels

@@ -1,5 +1,6 @@
 ﻿using SharpConfigProg.Register;
 using SharpConfigProg.Service;
+using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpConfigProg.AAPublic
 {
@@ -10,10 +11,10 @@ namespace SharpConfigProg.AAPublic
         {
             if (!MyBorder.Container.IsRegistered<IPreparer>())
             {
-                new Reg_Preparer().Register(fileService);
+                new Reg_Preparer().Register(operationsService);
             }
-
-            var configService = new ConfigService(fileService);
+            
+            var configService = new ConfigService(operationsService);
             return configService;
         }
     }

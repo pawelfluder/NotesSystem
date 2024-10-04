@@ -1,6 +1,6 @@
 ﻿using SharpContainerProg.AAPublic;
 
-namespace SharpRepoBackendProg.Repetition
+namespace SharpRepoBackendProg2.Repetition
 {
     internal static class MyBorder
     {

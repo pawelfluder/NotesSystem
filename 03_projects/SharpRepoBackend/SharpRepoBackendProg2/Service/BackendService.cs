@@ -1,18 +1,20 @@
-﻿using Newtonsoft.Json;
-using SharpButtonActionsProj.Service;
-using SharpConfigProg.Service;
-using SharpNotesExporter;
-using TextHeaderAnalyzerCoreProj.Service;
-using SharpRepoBackendProg.Repetition;
-using PdfService.PdfService;
-using System.Diagnostics;
-using SharpRepoServiceProg.AAPublic;
+﻿using System.Diagnostics;
 using System.Text.Json.Nodes;
-using SharpGoogleDriveProg.AAPublic;
+using Newtonsoft.Json;
+using PdfService.PdfService;
+using SharpButtonActionsProg.Service;
+using SharpConfigProg.Service;
+using SharpFileServiceProg.AAPublic;
 using SharpGoogleDocsProg.AAPublic;
+using SharpGoogleDriveProg.AAPublic;
+using SharpNotesExporter;
+using SharpOperationsProg.AAPublic.Operations;
+using SharpRepoBackendProg2.Repetition;
+using SharpRepoServiceProg.AAPublic;
 using SharpRepoServiceProg.Workers;
+using TextHeaderAnalyzerCoreProj.Service;
 
-namespace SharpRepoBackendProg.Service
+namespace SharpRepoBackendProg2.Service
 {
     public class BackendService : IBackendService
     {
@@ -26,17 +28,20 @@ namespace SharpRepoBackendProg.Service
         private readonly HeaderNotesService headerNotesService;
         private readonly SystemActionsService buttonActionService;
         private readonly NotesExporterService notesExporterService;
+        private readonly IOperationsService _operationsService;
+        private readonly IFileService _fileService;
 
         public BackendService()
         {
-            fileService = MyBorder.Container.Resolve<IFileService>();
+            _operationsService = MyBorder.Container.Resolve<IOperationsService>();
+            _fileService = _operationsService.GetFileService();
             pdfService = MyBorder.Container.Resolve<IPdfService2>();
             configService = MyBorder.Container.Resolve<IConfigService>();
             driveService = MyBorder.Container.Resolve<IGoogleDriveService>();
             docsService = MyBorder.Container.Resolve<IGoogleDocsService>();
             repoService = MyBorder.Container.Resolve<IRepoService>();
             headerNotesService = new HeaderNotesService();
-            buttonActionService = new SystemActionsService(fileService);
+            buttonActionService = new SystemActionsService(_operationsService);
             notesExporterService = new NotesExporterService(repoService);
         }
 
@@ -382,16 +387,16 @@ namespace SharpRepoBackendProg.Service
 
         private (string id, string name) CreateNewDocBySheetService(string title)
         {
-            var document = docsService.StackWkr.CreateDocFile(title);
-            var permission = driveService.Worker.AddReadPermissionForAnyone(document.DocumentId);
+            var document = docsService.Stack.CreateDocFile(title);
+            var permission = driveService.Composite.AddReadPermissionForAnyone(document.DocumentId);
             var docIdQName = (document.DocumentId, document.Title);            
             return docIdQName;
         }
 
         private (string id, string name) CreateNewDocByDriveService(string title)
         {
-            var docId = driveService.Worker.CreateDocFile(title);
-            var permission = driveService.Worker.AddReadPermissionForAnyone(docId);
+            var docId = driveService.Composite.CreateDocFile(title);
+            var permission = driveService.Composite.AddReadPermissionForAnyone(docId);
             var docIdQName = (docId, title);
             return docIdQName;
         }

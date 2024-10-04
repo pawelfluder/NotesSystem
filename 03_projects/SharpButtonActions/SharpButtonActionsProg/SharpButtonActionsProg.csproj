@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj" />
+    <ProjectReference Include="..\..\SharpOperations\SharpOperationsProg\SharpOperationsProg.csproj" />
     <ProjectReference Include="..\..\SharpOperations\SharpOperationsProg\SharpOperationsProg\SharpOperationsProg.csproj" />
   </ItemGroup>
 

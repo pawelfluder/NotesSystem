@@ -1,15 +1,17 @@
 ﻿using SharpNotesMigrationProg.AAPublic;
 using SharpRepoServiceProg.AAPublic;
-using System.Net;
+using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpNotesMigrationProg.Migrations
 {
     internal class Migrator04 : IMigrator, IMigrator04
     {
-        private readonly IOperationsService operationsService;
-        private readonly IRepoService repoService;
-        private readonly IoperationsService.IYamlOperations yamlOperations;
+        private readonly IOperationsService _operationsService;
+        private readonly IRepoService _repoService;
+        private readonly IYamlOperations _yamlOperations;
         private bool agree;
+        private readonly IFileService _fileService;
 
         public string Description
         {
@@ -26,9 +28,10 @@ namespace SharpNotesMigrationProg.Migrations
             IOperationsService operationsService,
             IRepoService repoService)
         {
-            this.operationsService = operationsService;
-            this.repoService = repoService;
-            yamlOperations = operationsService.Yaml.Custom03;
+            _operationsService = operationsService;
+            _repoService = repoService;
+            _fileService = _operationsService.GetFileService();
+            _yamlOperations = _fileService.Yaml.Custom03;
             Changes = new List<(int, string, string, string)>();
         }
 
@@ -39,7 +42,7 @@ namespace SharpNotesMigrationProg.Migrations
 
         public void MigrateOneFolder((string Repo, string Loca) adrTuple)
         {
-            var foundAddressList = repoService.Methods
+            var foundAddressList = _repoService.Methods
                 .GetAllRepoAddresses(adrTuple).ToList();
 
             MigrateOneAddress(adrTuple);
@@ -53,14 +56,14 @@ namespace SharpNotesMigrationProg.Migrations
 
         public void MigrateOneAddress((string Repo, string Loca) adrTuple)
         {
-            var dict = repoService.Methods.GetConfigKeyDict(adrTuple);
-            var type = repoService.Methods.GetType(adrTuple);
+            var dict = _repoService.Methods.GetConfigKeyDict(adrTuple);
+            var type = _repoService.Methods.GetType(adrTuple);
             var s1 = dict.TryAdd("id", Guid.NewGuid().ToString());
             var s2 = dict.TryAdd("type", type);
 
             if (agree)
             {
-                repoService.Methods.CreateConfig(adrTuple, dict);
+                _repoService.Methods.CreateConfig(adrTuple, dict);
             }
         }
 

@@ -1,5 +1,7 @@
 ﻿using FFMpegCore;
+using SharpFileServiceProg.AAPublic;
 using SharpFileServiceProg.Service;
+using SharpOperationsProg.AAPublic.Operations;
 using SharpVideoServiceProg.AAPublic;
 
 namespace SharpVideoServiceProg.Service
@@ -9,13 +11,13 @@ namespace SharpVideoServiceProg.Service
 
     internal class VideoService : IVideoService
     {
-        private IFileService fileService;
+        private IOperationsService operationsService;
         private string nugetGlobalFolderPath;
         private bool initialized;
 
-        public VideoService(IFileService fileService)
+        public VideoService(IOperationsService operationsService)
         {
-            this.fileService = fileService;
+            this.operationsService = operationsService;
             this.nugetGlobalFolderPath = GetNugetGlobalFolderPath();
             initialized = false;
         }
@@ -85,7 +87,7 @@ namespace SharpVideoServiceProg.Service
             var expression = "5(2,2)";
             try
             {
-                var folderPath = fileService.Path
+                var folderPath = operationsService.Path
                 .FindFolder(searchFolderName, Environment.CurrentDirectory, expression);
                 var inputFilePath1 = folderPath + "/" + fileName1;
                 var inputFilePath2 = folderPath + "/" + fileName2;

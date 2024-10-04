@@ -1,8 +1,9 @@
 ﻿using System.Text;
+using SharpFileServiceProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpOperationsProg.Operations.Yaml.Custom.Emitter;
 using YamlDotNet.Serialization;
-using IOperationsService = SharpoperationsServiceProg.AAPublic.IOperationsService;
+using IFileService = SharpFileServiceProg.AAPublic.IFileService;
 
 namespace SharpOperationsProg.Operations.Yaml
 {

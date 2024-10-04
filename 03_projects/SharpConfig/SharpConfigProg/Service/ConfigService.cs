@@ -1,14 +1,17 @@
 ﻿using SharpConfigProg.AAPublic;
 using SharpConfigProg.OverrideConfig;
 using SharpConfigProg.Register;
+using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpConfigProg.Service
 {
     internal partial class ConfigService : IConfigService
     {
-        private readonly IoperationsService.IYamlOperations yamlOperations;
+        private readonly IYamlOperations yamlOperations;
 
-        public IOperationsService operationsService;
+        public IOperationsService _operationsService;
+        private readonly IFileService _fileService;
 
         public string ConfigFilePath { get; private set; }
         public Dictionary<string, object> SettingsDict
@@ -32,9 +35,10 @@ namespace SharpConfigProg.Service
         public ConfigService(
             IOperationsService operationsService)
         {
+            _fileService = operationsService.GetFileService();
             SettingsDict = new Dictionary<string, object>();
-            this.operationsService = operationsService;
-            yamlOperations = this.operationsService.Yaml.Custom03;
+            this._operationsService = operationsService;
+            yamlOperations = _fileService.Yaml.Default;
         }
 
         public List<string> GetRepoSearchPaths()
@@ -57,20 +61,20 @@ namespace SharpConfigProg.Service
             preparer.SetConfigService(this);
             var settings = preparer.Prepare();
             SettingsDict = settings;
-            new BeforeAfter(fileService, this).Run();
+            new BeforeAfter(_operationsService, this).Run();
         }
 
         public void Prepare(IPreparer preparer)
         {
             preparer.SetConfigService(this);
             SettingsDict = preparer.Prepare(); ;
-            new BeforeAfter(fileService, this).Run();
+            new BeforeAfter(_operationsService, this).Run();
         }
 
         public void Prepare(Dictionary<string, object> dict)
         {
             SettingsDict = new Dictionary<string, object>(dict);
-            new BeforeAfter(fileService, this).Run();
+            new BeforeAfter(_operationsService, this).Run();
         }
 
         public void Prepare(Type preparerClassType)
@@ -79,7 +83,7 @@ namespace SharpConfigProg.Service
             var preparer = (tmp as IPreparer);
             preparer.SetConfigService(this);
             SettingsDict = preparer.Prepare(); ;
-            new BeforeAfter(fileService, this).Run();
+            new BeforeAfter(_operationsService, this).Run();
         }
 
         public void AddSetting(string key, object value)

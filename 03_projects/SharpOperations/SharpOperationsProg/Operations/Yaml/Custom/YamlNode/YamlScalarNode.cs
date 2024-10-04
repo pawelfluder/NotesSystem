@@ -5,7 +5,7 @@
 //using SharpYaml.Events;
 //using SharpYaml.Serialization;
 
-//namespace SharpoperationsServiceProg.Operations.Yaml
+//namespace SharpFileServiceProg.Operations.Yaml
 //{
 //    /// <summary>
 //    /// Represents a scalar node in the YAML document.

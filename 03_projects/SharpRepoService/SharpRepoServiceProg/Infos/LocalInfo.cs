@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SharpRepoServiceCoreProj
+namespace SharpRepoServiceProg.Infos
 {
     public class LocalInfo
     {

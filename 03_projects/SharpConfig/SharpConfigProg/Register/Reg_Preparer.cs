@@ -1,5 +1,6 @@
 ﻿using SharpConfigProg.AAPublic;
 using SharpConfigProg.Service;
+using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpConfigProg.Register
 {
@@ -9,7 +10,7 @@ namespace SharpConfigProg.Register
         {
             MyBorder.Registration
                 .RegisterByFunc<IPreparer>(()
-                => new GuidFolderPreparer(fileService));
+                => new GuidFolderPreparer(operationsService));
         }
     }
 }

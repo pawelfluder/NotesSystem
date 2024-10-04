@@ -1,4 +1,7 @@
 using Newtonsoft.Json;
+using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic;
+using SharpOperationsProg.Operations.UniAddress;
 using SharpRepoServiceProg.AAPublic;
 
 namespace SharpOperationsProg.Operations.UniItem;
@@ -23,7 +26,7 @@ public static class UnitItemOperationExtensions
         string parentAddress,
         string name)
     {
-        var parentAdrTuple = IOperationService.RepoAddress
+        var parentAdrTuple = IUniAddressOperations
             .CreateAddressFromString(parentAddress);
         var typeAdrTuple = repoService.Methods
             .GetAdrTupleByName(parentAdrTuple, name);
@@ -36,5 +39,16 @@ public static class UnitItemOperationExtensions
 
         var objectsList = repoService.GetItemList<T>(typeAdrTuple);
         return objectsList;
+    }
+    
+    public static IEnumerable<T> GetItemList<T>(
+        this IRepoService repoService,
+        (string Repo, string Loca) adrTuple)
+    {
+        var jsonString = repoService.Methods.GetItem(adrTuple);
+        var item = JsonConvert.DeserializeObject<UniItem>(jsonString);
+        var body = item.Body.ToString();
+        var itemList = IYamlDefaultOperations.Deserialize<List<T>>(body);
+        return itemList;
     }
 }

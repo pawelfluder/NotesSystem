@@ -1,4 +1,4 @@
-﻿//namespace SharpoperationsServiceProg.Operations.Yaml.Descriptor
+﻿//namespace SharpFileServiceProg.Operations.Yaml.Descriptor
 //{
 //    using System;
 

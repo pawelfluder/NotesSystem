@@ -1,4 +1,6 @@
 ﻿using SharpConfigProg.Service;
+using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpConfigProg.OverrideConfig
 {
@@ -13,6 +15,7 @@ namespace SharpConfigProg.OverrideConfig
         private readonly IConfigService configService;
 
         private string configFolderPath;
+        private readonly IFileService _fileService;
 
         public BeforeAfter(
             IOperationsService operationsService,
@@ -25,6 +28,7 @@ namespace SharpConfigProg.OverrideConfig
 
             this.operationsService = operationsService;
             this.configService = configService;
+            _fileService = operationsService.GetFileService();
         }
 
         public void Run()
@@ -52,14 +56,14 @@ namespace SharpConfigProg.OverrideConfig
         private void SaveBefore()
         {
             var path = configFolderPath + "/" + beforeFileName;
-            operationsService.Yaml.Custom03
+            _fileService.Yaml.Custom03
                 .SerializeToFile(path, configService.SettingsDict);
         }
 
         private void SaveAfter()
         {
             var path = configFolderPath + "/" + afterFileName;
-            operationsService.Yaml.Custom03
+            _fileService.Yaml.Custom03
                 .SerializeToFile(path, configService.SettingsDict);
         }
 
@@ -78,7 +82,7 @@ namespace SharpConfigProg.OverrideConfig
             try
             {
                 var path = configFolderPath + "/" + overrideFileName;
-                var dict = operationsService.Yaml.Custom03
+                var dict = _fileService.Yaml.Custom03
                     .DeserializeFile<Dictionary<string, object>>(path);
 
                 foreach (var kvp in dict)

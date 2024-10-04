@@ -1,4 +1,5 @@
-﻿using SharpRepoServiceProg.AAPublic;
+﻿using SharpOperationsProg.AAPublic.Operations;
+using SharpRepoServiceProg.AAPublic;
 using SharpTtsServiceProg.Service;
 using SharpVideoServiceProg.AAPublic;
 
@@ -11,7 +12,7 @@ namespace SharpTtsServiceProg.AAPublic
             IRepoService repoService,
             IVideoService videoService)
         {
-            return new TtsService(fileService, repoService, videoService);
+            return new TtsService(operationsService, repoService, videoService);
         }
     }
 }

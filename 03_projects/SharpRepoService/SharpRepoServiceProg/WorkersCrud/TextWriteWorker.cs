@@ -1,31 +1,29 @@
-﻿using SharpRepoServiceProg.Models;
+﻿using System;
+using System.Collections.Generic;
+using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
+using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.WorkersSystem;
-using SharpTinderComplexTests;
-using System;
-using System.Collections.Generic;
-using SharpFileServiceProg.AAPublic;
-using SharpRepoServiceProg.AAPublic.Names;
 
-namespace SharpRepoServiceProg.Workers
+namespace SharpRepoServiceProg.WorkersCrud
 {
     public class TextWriteWorker
     {
         private readonly PathWorker pw;
-        private readonly SystemWorker sw;
-        private readonly ConfigWorker cw;
-        private readonly BodyWorker bw;
-        private readonly ReadWorker rw;
-        private readonly IFileService fileService;
+        private readonly SystemWorker _sw;
+        private readonly ConfigWorker _cw;
+        private readonly BodyWorker _bw;
+        private readonly ReadWorker _rw;
+        private readonly OperationsService _operationsService;
 
         public TextWriteWorker()
         {
-            this.rw = MyBorder.Container.Resolve<ReadWorker>();
-            this.bw = MyBorder.Container.Resolve<BodyWorker>();
-            this.cw = MyBorder.Container.Resolve<ConfigWorker>();
-            this.sw = MyBorder.Container.Resolve<SystemWorker>();
-            this.fileService = MyBorder.Container.Resolve<IFileService>();
+            _rw = MyBorder.Container.Resolve<ReadWorker>();
+            _bw = MyBorder.Container.Resolve<BodyWorker>();
+            _cw = MyBorder.Container.Resolve<ConfigWorker>();
+            _sw = MyBorder.Container.Resolve<SystemWorker>();
+            _operationsService = MyBorder.Container.Resolve<OperationsService>();
         }
 
         public void Put(
@@ -36,7 +34,7 @@ namespace SharpRepoServiceProg.Workers
             var item = new ItemModel();
 
             // config
-            var address = operationsService.RepoAddress.CreateUrlFromAddress(adrTuple);
+            var address = _operationsService.UniAddress.CreateUrlFromAddress(adrTuple);
             item.Settings = new Dictionary<string, object>()
             {
                 { FieldsForUniItem.Id, Guid.NewGuid().ToString() },
@@ -54,13 +52,13 @@ namespace SharpRepoServiceProg.Workers
         internal ItemModel Put(ItemModel item)
         {
             // directory
-            sw.CreateDirectoryIfNotExists(item.AdrTuple);
+            _sw.CreateDirectoryIfNotExists(item.AdrTuple);
 
             // config
-            cw.CreateConfig(item.AdrTuple, item.Settings);
+            _cw.CreateConfig(item.AdrTuple, item.Settings);
 
             // body
-            bw.CreateBody(item.AdrTuple, item.Body.ToString());
+            _bw.CreateBody(item.AdrTuple, item.Body.ToString());
 
             return item;
         }
@@ -80,20 +78,20 @@ namespace SharpRepoServiceProg.Workers
             string content)
         {
             ItemModel item = null;
-            var foundAdrTuple = rw.GetAdrTupleByName(adrTuple, name);
+            var foundAdrTuple = _rw.GetAdrTupleByName(adrTuple, name);
             if (foundAdrTuple != default)
             {
-                item = rw.GetItemConfig(foundAdrTuple);
+                item = _rw.GetItemConfig(foundAdrTuple);
                 item.Body = content;
                 Put(name, foundAdrTuple, content);
                 return item;
             }
 
-            var lastIndex = rw.GetFolderLastNumber(adrTuple);
+            var lastIndex = _rw.GetFolderLastNumber(adrTuple);
             var newIndex = lastIndex + 1;
-            var newIndexString = operationsService.Index.IndexToString(newIndex);
+            var newIndexString = _operationsService.Index.IndexToString(newIndex);
 
-            var newAdrTuple = operationsService.RepoAddress.AdrTupleJoinLoca(adrTuple, newIndexString);
+            var newAdrTuple = _operationsService.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
             item = PrepareItem(name, newAdrTuple, content);
             Put(item);
             return item;
@@ -103,7 +101,7 @@ namespace SharpRepoServiceProg.Workers
             string content,
             (string Repo, string Loca) adrTuple)
         {
-            var item = rw.GetItem(adrTuple);
+            var item = _rw.GetItem(adrTuple);
             if (item == default)
             {
                 throw new Exception();
@@ -118,15 +116,15 @@ namespace SharpRepoServiceProg.Workers
             string name,
             string content)
         {
-            var existingItem = rw.GetAdrTupleByName(address, name);
+            var existingItem = _rw.GetAdrTupleByName(address, name);
             if (existingItem != default)
             {
                 Append(existingItem, content);
                 return existingItem;
             }
 
-            var lastNumber = rw.GetFolderLastNumber(address);
-            var newAddress = operationsService.Index.SelectAddress(address, lastNumber + 1);
+            var lastNumber = _rw.GetFolderLastNumber(address);
+            var newAddress = _operationsService.Index.SelectAddress(address, lastNumber + 1);
             Put(name, newAddress, content);
             return newAddress;
         }
@@ -153,7 +151,7 @@ namespace SharpRepoServiceProg.Workers
                 { FieldsForUniItem.Type, ItemTypeNames.Text },
                 { FieldsForUniItem.Name, name },
             };
-            cw.AddSettingsToModel(item, adrTuple, settings);
+            _cw.AddSettingsToModel(item, adrTuple, settings);
 
             // body
             item.Body = content;

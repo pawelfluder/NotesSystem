@@ -1,6 +1,6 @@
 ﻿using Unity;
 
-namespace SharpRepoBackendProg.Repetition
+namespace SharpNotesMigrationProg.Repetition
 {
     internal static class MyBorder
     {

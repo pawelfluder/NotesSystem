@@ -10,6 +10,7 @@ namespace SharpFileServiceProg.Yaml
         public IYamlOperations Custom01 { get; }
         public IYamlOperations Custom02 { get; }
         public IYamlOperations Custom03 { get; }
+        public IYamlDefaultOperations Default { get; }
 
         public YamlWorker()
         {

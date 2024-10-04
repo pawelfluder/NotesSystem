@@ -1,7 +1,7 @@
-﻿using SharpRepoBackendProg.Service;
-using WpfNotesSystem.ViewModels;
-using OutBorder3 = SharpRepoBackendProg.Repetition.OutBorder;
+﻿using WpfNotesSystem.ViewModels;
+using OutBorder3 = SharpRepoBackendProg2.Repetition.OutBorder;
 using SharpContainerProg.AAPublic;
+using SharpRepoBackendProg2.Service;
 
 namespace WpfNotesSystem.Repetition
 {

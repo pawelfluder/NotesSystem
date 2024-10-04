@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
-namespace SharpRepoServiceCoreProj
+namespace SharpRepoServiceProg.Infos
 {
    public class ServerInfoBase
    {

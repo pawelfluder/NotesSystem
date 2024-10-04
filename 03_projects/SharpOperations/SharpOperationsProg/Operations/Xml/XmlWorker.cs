@@ -1,9 +1,9 @@
 ﻿using System.Xml;
 using System.Xml.Linq;
-using SharpoperationsServiceProg.AAPublic;
-using SharpOperationsProg.Operations.Xml;
+using SharpOperationsProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 
-namespace SharpoperationsServiceProg
+namespace SharpOperationsProg.Operations.Xml
 {
     public class XmlWorker
     {
@@ -29,7 +29,7 @@ namespace SharpoperationsServiceProg
 
             var gg2 = doc.GetElementsByTagName("File").Cast<XmlNode>().Where(x => x.Attributes[0].Value.Contains("nazwa.txt")).ToList();
 
-            var path2 = Path.GetDirectoryName(path);
+            var path2 = System.IO.Path.GetDirectoryName(path);
             var gg3 = gg2.Select(x => GetName(x, path2)).ToList();
 
             gg3.ForEach(x => ChangeName(x));
@@ -73,7 +73,7 @@ namespace SharpoperationsServiceProg
 
         private (XmlNode, string) GetName(XmlNode node, string path)
         {
-            var path2 = Path.Combine(path, node.Attributes[0].Value);
+            var path2 = System.IO.Path.Combine(path, node.Attributes[0].Value);
             var name = File.ReadAllLines(path2).First();
 
             return (node, name);
