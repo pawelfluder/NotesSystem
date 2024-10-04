@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Input;
+using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoBackendProg2.Service;
 using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.Models;
@@ -35,7 +37,7 @@ namespace WpfNotesSystem.ViewModels
         public FolderViewModel()
         {
             backendService = MyBorder.Container.Resolve<IBackendService>();
-            fileService = MyBorder.Container.Resolve<IFileService>();
+            operationsService = MyBorder.Container.Resolve<IOperationsService>();
             ItemTypes = new List<string>{ "Text", "Folder" };
             ValueToAdd = string.Empty;
         }

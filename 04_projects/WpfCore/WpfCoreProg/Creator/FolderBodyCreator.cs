@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using SharpOperationsProg.AAPublic.Operations;
 using WpfNotesSystem.Repetition;
 
 namespace WpfNotesSystem.Creator
@@ -101,8 +102,8 @@ namespace WpfNotesSystem.Creator
             hyperlink.FontFamily = new FontFamily("Arial");
 
             var index = int.Parse(indexString);
-            hyperlink.NavigateUri = operationsService.RepoAddress.
-                CreateUriFromAddress(mainViewModel.AdrTuple, index);
+            hyperlink.NavigateUri = operationsService.UniAddress
+                .CreateUriFromAddress(mainViewModel.AdrTuple, index);
             hyperlink.RequestNavigate += HyperlinkRequestNavigate;
 
             TextBlock txt2 = new TextBlock();
@@ -125,7 +126,7 @@ namespace WpfNotesSystem.Creator
                 var addressString = hyperLink.NavigateUri.OriginalString
                     .Replace("https://", string.Empty);
 
-                var address = operationsService.RepoAddress
+                var address = operationsService.UniAddress
                     .CreateAddressFromString(addressString);
                 mainViewModel.GoAction(address);
             }

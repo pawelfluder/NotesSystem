@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using SharpOperationsProg.AAPublic.Operations;
 
 namespace WpfNotesSystem.Creator
 {

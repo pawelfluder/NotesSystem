@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
+using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoBackendProg2.Service;
 using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.Models;
@@ -32,7 +34,7 @@ namespace WpfNotesSystem.ViewModels
         {
             //this.mainViewModel = mainViewModel;
             this.backendService = MyBorder.Container.Resolve<IBackendService>();
-            fileService = MyBorder.Container.Resolve<IFileService>();
+            operationsService = MyBorder.Container.Resolve<IOperationsService>();
 
             ttsService = MyBorder.Container.Resolve<ITtsService>();
             ValueToAdd = string.Empty;

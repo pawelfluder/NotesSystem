@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
+using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 using Unity;
 using WpfNotesSystem.Creator;
 using WpfNotesSystem.Repetition;
@@ -22,7 +24,7 @@ namespace WpfNotesSystemProg.Converter
 
         public HeadersDictConverter()
         {
-            fileService = MyBorder.Container.Resolve<IFileService>();
+            operationsService = MyBorder.Container.Resolve<IOperationsService>();
         }
 
         public override object ProvideValue(IServiceProvider serviceProvider)

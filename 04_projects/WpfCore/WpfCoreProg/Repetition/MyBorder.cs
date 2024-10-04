@@ -1,8 +1,4 @@
-﻿using GoogleDocsServiceProj.Service;
-using SharpConfigProg.Service;
-using SharpContainerProg.AAPublic;
-using SharpGoogleDriveProg.Service;
-using Unity;
+﻿using SharpContainerProg.AAPublic;
 
 namespace WpfNotesSystem.Repetition
 {
