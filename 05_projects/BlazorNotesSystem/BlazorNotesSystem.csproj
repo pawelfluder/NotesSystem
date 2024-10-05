@@ -7,16 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BlazorNotesSystem.Client\BlazorNotesSystem.Client.csproj" />
+    
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BlazorNotesSystem.Client\BlazorNotesSystem.Client.csproj" />
+    <ProjectReference Include="..\..\03_projects\SharpOperations\SharpOperationsProg\SharpOperationsProg.csproj" />
     <ProjectReference Include="..\..\03_projects\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj" />
     <ProjectReference Include="..\..\03_projects\SharpRepoBackend\SharpRepoBackendProg2\SharpRepoBackendProg2.csproj" />
     <ProjectReference Include="..\..\03_projects\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj" />
     <ProjectReference Include="..\..\22_projects\SharpSetup21ProgPrivate\SharpSetup21ProgPrivate.csproj" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 </Project>
