@@ -1,18 +1,17 @@
 ﻿using SharpRepoServiceProg.Workers;
 using System.Collections.Generic;
 
-namespace SharpRepoServiceProg.AAPublic
+namespace SharpRepoServiceProg.AAPublic;
+
+public partial interface IRepoService
 {
-    public partial interface IRepoService
-    {
-        MethodWorker Methods { get; }
+    //ItemWorker Items { get; }
 
-        JsonWorker Item { get; }
+    JsonWorker Item { get; }
 
-        //TextWriteWorker Text { get; }
+    //TextWriteWorker Text { get; }
 
-        //FolderWriteWorker Folder { get; }
+    //FolderWriteWorker Folder { get; }
 
-        void PutPaths(List<string> searchPaths);
-    }
+    void PutPaths(List<string> searchPaths);
 }

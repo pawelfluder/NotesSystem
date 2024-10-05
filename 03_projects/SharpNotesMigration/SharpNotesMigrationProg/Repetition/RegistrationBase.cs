@@ -1,48 +1,47 @@
 ﻿using Unity;
 using Unity.Injection;
 
-namespace SharpNotesMigrationProg.Repetition
+namespace SharpNotesMigrationProg.Repetition;
+
+internal abstract class RegistrationBase
 {
-    internal abstract class RegistrationBase
+    public UnityContainer container;
+
+    public RegistrationBase()
     {
-        public UnityContainer container;
+        container = new UnityContainer();
+        Registrations();
+    }
 
-        public RegistrationBase()
+    public UnityContainer Start()
+    {
+        return container;
+    }
+
+    protected abstract void Registrations();
+
+    public void RegisterByFunc<R>(Func<R> func)
+    {
+        var factory = new InjectionFactory(c =>
         {
-            container = new UnityContainer();
-            Registrations();
-        }
+            return func.Invoke();
+        });
+        container.RegisterSingleton<R>(factory);
+    }
 
-        public UnityContainer Start()
+    public void RegisterByFunc<R, T1>(Func<T1, R> func, T1 t1)
+    {
+        container.RegisterSingleton<R>(new InjectionFactory(c =>
         {
-            return container;
-        }
+            return func.Invoke(t1);
+        }));
+    }
 
-        protected abstract void Registrations();
-
-        public void RegisterByFunc<R>(Func<R> func)
+    public void RegisterSingleton<R, T1, T2>(Func<T1, T2, R> func, T1 t1, T2 t2)
+    {
+        container.RegisterType<R>(new InjectionFactory(c =>
         {
-            var factory = new InjectionFactory(c =>
-            {
-                return func.Invoke();
-            });
-            container.RegisterSingleton<R>(factory);
-        }
-
-        public void RegisterByFunc<R, T1>(Func<T1, R> func, T1 t1)
-        {
-            container.RegisterSingleton<R>(new InjectionFactory(c =>
-            {
-                return func.Invoke(t1);
-            }));
-        }
-
-        public void RegisterSingleton<R, T1, T2>(Func<T1, T2, R> func, T1 t1, T2 t2)
-        {
-            container.RegisterType<R>(new InjectionFactory(c =>
-            {
-                return func.Invoke(t1, t2);
-            }));
-        }
+            return func.Invoke(t1, t2);
+        }));
     }
 }

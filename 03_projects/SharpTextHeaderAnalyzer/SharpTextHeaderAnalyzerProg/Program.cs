@@ -1,62 +1,61 @@
 ﻿using System.IO;
 using TextHeaderAnalyzerCoreProj.Service;
 
-namespace TextHeaderAnalyzerFrameProj
+namespace TextHeaderAnalyzerFrameProj;
+
+class Program
 {
-    class Program
+   //Todo
+   //Dopisać logikę i testy do omijania i usuwania niepotrzenych tabów i pustych lini
+
+   //Dyskusyjne
+   //Czy pomiędzy headerami ma byc nowa linia bez tab'ów? Jak to rozwiązać?
+   //Najpierw filtr usuwający tab'y w pustych liniach?
+
+   //Todo
+   //Zrobić alias git Update
+   //Zaisntalować notepad compare plugin
+   //Porównać z HeaderPrinterTests dlaczego jest różnica
+   //Zaczac już pisac logike do callStackRecorder
+   //Stworzyć już solucję i folder App
+   //Wyrówanie w plikach poprawic
+   //Visualization expected i Visualization input
+
+   //Stworzyć plik .gitignore id excludować .vs bin i config
+   //Napisać StringService - często używane ciągi znaków i znaki
+   //Dodać testy do obu solucji zwykłej i core we wspólnym folderze
+
+   //Install-Package NUnit -Version 3.12.0
+   //https://social.technet.microsoft.com/wiki/contents/articles/51338.net-core-application-unit-testing-using-mstest.aspx
+
+   static void Main(string[] args)
    {
-      //Todo
-      //Dopisać logikę i testy do omijania i usuwania niepotrzenych tabów i pustych lini
+      HeaderNotesService analyzer = new HeaderNotesService();
 
-      //Dyskusyjne
-      //Czy pomiędzy headerami ma byc nowa linia bez tab'ów? Jak to rozwiązać?
-      //Najpierw filtr usuwający tab'y w pustych liniach?
+      var path = GetMyProjectsInputPath();
 
-      //Todo
-      //Zrobić alias git Update
-      //Zaisntalować notepad compare plugin
-      //Porównać z HeaderPrinterTests dlaczego jest różnica
-      //Zaczac już pisac logike do callStackRecorder
-      //Stworzyć już solucję i folder App
-      //Wyrówanie w plikach poprawic
-      //Visualization expected i Visualization input
+      var headers = analyzer.AnalyzeFile(path);
 
-      //Stworzyć plik .gitignore id excludować .vs bin i config
-      //Napisać StringService - często używane ciągi znaków i znaki
-      //Dodać testy do obu solucji zwykłej i core we wspólnym folderze
 
-      //Install-Package NUnit -Version 3.12.0
-      //https://social.technet.microsoft.com/wiki/contents/articles/51338.net-core-application-unit-testing-using-mstest.aspx
+   }
 
-      static void Main(string[] args)
+   private static string GetMyProjectsInputPath()
+   {
+      var up = @"..\";
+      var slash = @"\";
+      var myProjectDirectoryName = "01_Moje-projekty";
+
+      var currentDirectoryPath = Directory.GetCurrentDirectory();
+      var folderName = Path.GetFileName(currentDirectoryPath);
+      while (folderName != myProjectDirectoryName)
       {
-         HeaderNotesService analyzer = new HeaderNotesService();
-
-         var path = GetMyProjectsInputPath();
-
-         var headers = analyzer.AnalyzeFile(path);
-
-
+         currentDirectoryPath = Path.GetFullPath(Path.Combine(currentDirectoryPath, up));
+         folderName = Path.GetFileName(Path.GetDirectoryName(currentDirectoryPath));
       }
 
-      private static string GetMyProjectsInputPath()
-      {
-         var up = @"..\";
-         var slash = @"\";
-         var myProjectDirectoryName = "01_Moje-projekty";
+      var inputDirectoryName = "Input";
+      var inputFileName = "Input.txt";
 
-         var currentDirectoryPath = Directory.GetCurrentDirectory();
-         var folderName = Path.GetFileName(currentDirectoryPath);
-         while (folderName != myProjectDirectoryName)
-         {
-            currentDirectoryPath = Path.GetFullPath(Path.Combine(currentDirectoryPath, up));
-            folderName = Path.GetFileName(Path.GetDirectoryName(currentDirectoryPath));
-         }
-
-         var inputDirectoryName = "Input";
-         var inputFileName = "Input.txt";
-
-         return currentDirectoryPath + inputDirectoryName + slash + inputFileName;
-      }
+      return currentDirectoryPath + inputDirectoryName + slash + inputFileName;
    }
 }

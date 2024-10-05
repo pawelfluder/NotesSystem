@@ -3,109 +3,108 @@ using SharpNotesMigrationProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoServiceProg.AAPublic;
 
-namespace SharpNotesMigrationProg.Migrations
+namespace SharpNotesMigrationProg.Migrations;
+
+internal class Migrator05 : IMigrator, IMigrator05
 {
-    internal class Migrator05 : IMigrator, IMigrator05
+    private readonly IOperationsService _operationsService;
+    private readonly IRepoService _repoService;
+    private readonly IYamlOperations _yamlOperations;
+    private bool agree;
+    private readonly IFileService _fileService;
+
+    public string Description
     {
-        private readonly IOperationsService _operationsService;
-        private readonly IRepoService _repoService;
-        private readonly IYamlOperations _yamlOperations;
-        private bool agree;
-        private readonly IFileService _fileService;
-
-        public string Description
+        get
         {
-            get
-            {
-                return @"Previously - there was 4 empty lines at the top of body file.
+            return @"Previously - there was 4 empty lines at the top of body file.
                          After update - there is no empty lines at the top.";
-            }
         }
+    }
 
-        // 
-        public List<(int, string, string, string)> Changes { get; private set; }
+    // 
+    public List<(int, string, string, string)> Changes { get; private set; }
 
-        public Migrator05(
-            IOperationsService operationsService,
-            IRepoService repoService)
+    public Migrator05(
+        IOperationsService operationsService,
+        IRepoService repoService)
+    {
+        _operationsService = operationsService;
+        _fileService = _operationsService.GetFileService();
+        _repoService = repoService;
+        _yamlOperations = _fileService.Yaml.Custom03;
+        Changes = new List<(int, string, string, string)>();
+    }
+
+    public void MigrateEverything()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void MigrateOneFolder((string Repo, string Loca) adrTuple)
+    {
+        var foundAddressList = _repoService.Methods
+            .GetAllRepoAddresses(adrTuple).ToList();
+
+        MigrateOneAddress(adrTuple);
+
+        foreach (var foundAddress in foundAddressList)
         {
-            _operationsService = operationsService;
-            _fileService = _operationsService.GetFileService();
-            _repoService = repoService;
-            _yamlOperations = _fileService.Yaml.Custom03;
-            Changes = new List<(int, string, string, string)>();
+            MigrateOneAddress(foundAddress);
         }
+    }
 
-        public void MigrateEverything()
+    private void MigrateOneAddress(
+        (string Repo, string Loca) adrTuple)
+    {
+        var type = _repoService.Methods.GetType(adrTuple);
+
+        if (type == "Text")
         {
-            throw new NotImplementedException();
+            var newText = RemoveTopEmptyLines(adrTuple);
+            _repoService.Methods.PatchText(newText, adrTuple);
         }
+    }
 
-        public void MigrateOneFolder((string Repo, string Loca) adrTuple)
+    private string RemoveTopEmptyLines((string Repo, string Loca) adrTuple)
+    {
+        var lines = _repoService.Methods.GetTextLines(adrTuple);
+        for (var i = 0; i < 4; i++)
         {
-            var foundAddressList = _repoService.Methods
-                .GetAllRepoAddresses(adrTuple).ToList();
-
-            MigrateOneAddress(adrTuple);
-
-            foreach (var foundAddress in foundAddressList)
+            var line = lines[0];
+            if (line == string.Empty)
             {
-                MigrateOneAddress(foundAddress);
+                lines.RemoveAt(0);
             }
-        }
 
-        private void MigrateOneAddress(
-            (string Repo, string Loca) adrTuple)
-        {
-            var type = _repoService.Methods.GetType(adrTuple);
-
-            if (type == "Text")
+            if (line != string.Empty)
             {
-                var newText = RemoveTopEmptyLines(adrTuple);
-                _repoService.Methods.PatchText(newText, adrTuple);
+                break;
             }
         }
 
-        private string RemoveTopEmptyLines((string Repo, string Loca) adrTuple)
-        {
-            var lines = _repoService.Methods.GetTextLines(adrTuple);
-            for (var i = 0; i < 4; i++)
-            {
-                var line = lines[0];
-                if (line == string.Empty)
-                {
-                    lines.RemoveAt(0);
-                }
+        var text = string.Join("\n", lines);
 
-                if (line != string.Empty)
-                {
-                    break;
-                }
-            }
+        return text;
+    }
 
-            var text = string.Join("\n", lines);
+    void IMigrator.MigrateOneAddress((string Repo, string Loca) address)
+    {
+        throw new NotImplementedException();
+    }
 
-            return text;
-        }
+    public void MigrateOneRepo(string repoName)
+    {
+        throw new NotImplementedException();
+    }
 
-        void IMigrator.MigrateOneAddress((string Repo, string Loca) address)
-        {
-            throw new NotImplementedException();
-        }
+    public void MigrateAllRepos()
+    {
+        throw new NotImplementedException();
+    }
 
-        public void MigrateOneRepo(string repoName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void MigrateAllRepos()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetAgree(bool agree)
-        {
-            this.agree = agree;
-        }
+    public void SetAgree(bool agree)
+    {
+        this.agree = agree;
     }
 }

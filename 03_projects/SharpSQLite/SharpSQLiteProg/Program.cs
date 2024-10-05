@@ -1,10 +1,9 @@
-﻿namespace SharpSQLiteProj
+﻿namespace SharpSQLiteProj;
+
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
             
-        }
     }
 }

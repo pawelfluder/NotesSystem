@@ -1,89 +1,88 @@
-﻿namespace SharpOperationsProg.Operations.Dictionaries
+﻿namespace SharpOperationsProg.Operations.Dictionaries;
+
+public class RecursivelyMoveInDictionaries
 {
-    public class RecursivelyMoveInDictionaries
+    private Action<Dictionary<object, object>, object> itemAction;
+
+    private readonly Dictionary<string, int> keyQlevelDict;
+
+    List<Dictionary<object, object>> parentStack;
+
+    private List<Action> actionsList;
+
+    public RecursivelyMoveInDictionaries(Dictionary<string, int> keyQlevelDict)
     {
-        private Action<Dictionary<object, object>, object> itemAction;
+        parentStack = new List<Dictionary<object, object>>();
+        actionsList = new List<Action>();
+        this.keyQlevelDict = keyQlevelDict;
+        itemAction = GetAction();
+    }
 
-        private readonly Dictionary<string, int> keyQlevelDict;
-
-        List<Dictionary<object, object>> parentStack;
-
-        private List<Action> actionsList;
-
-        public RecursivelyMoveInDictionaries(Dictionary<string, int> keyQlevelDict)
+    public Action<Dictionary<object, object>, object> GetAction()
+    {
+        return (parent, key) =>
         {
-            parentStack = new List<Dictionary<object, object>>();
-            actionsList = new List<Action>();
-            this.keyQlevelDict = keyQlevelDict;
-            itemAction = GetAction();
-        }
-
-        public Action<Dictionary<object, object>, object> GetAction()
-        {
-            return (parent, key) =>
+            if (keyQlevelDict.TryGetValue(key.ToString(), out var level))
             {
-                if (keyQlevelDict.TryGetValue(key.ToString(), out var level))
-                {
-                    var index = parentStack.Count - 1 - level;
-                    if (index < 0){
-                        index = 0;
-                    }
-
-                    var newParent = parentStack.ElementAt(index);
-                    var value = parent[key];
-                    var action = new Action(() =>
-                    {
-                        parent.Remove(key);
-                        newParent.Add(key, value);
-                    });
-                    actionsList.Add(action);
+                var index = parentStack.Count - 1 - level;
+                if (index < 0){
+                    index = 0;
                 }
-            };
+
+                var newParent = parentStack.ElementAt(index);
+                var value = parent[key];
+                var action = new Action(() =>
+                {
+                    parent.Remove(key);
+                    newParent.Add(key, value);
+                });
+                actionsList.Add(action);
+            }
+        };
+    }
+
+    public void Finalize()
+    {
+        actionsList.ForEach(x => x.Invoke());
+    }
+
+    public void Visit(Dictionary<object, object> dict)
+    {
+        if (dict == null)
+        {
+            throw new Exception();
         }
 
-        public void Finalize()
+        parentStack.Add(dict);
+        foreach (var kv in dict)
         {
-            actionsList.ForEach(x => x.Invoke());
-        }
+            itemAction.Invoke(dict, kv.Key);
 
-        public void Visit(Dictionary<object, object> dict)
-        {
-            if (dict == null)
+            if (kv.Value is Dictionary<object, object> dict2)
             {
-                throw new Exception();
+                Visit(dict2);
             }
 
-            parentStack.Add(dict);
-            foreach (var kv in dict)
+            if (kv.Value is List<object> list)
             {
-                itemAction.Invoke(dict, kv.Key);
-
-                if (kv.Value is Dictionary<object, object> dict2)
-                {
-                    Visit(dict2);
-                }
-
-                if (kv.Value is List<object> list)
-                {
-                    VisitList(list);
-                }
-            }
-            parentStack.Remove(dict);
-
-            if (parentStack.Count == 0)
-            {
-                Finalize();
+                VisitList(list);
             }
         }
+        parentStack.Remove(dict);
 
-        public void VisitList(List<object> list)
+        if (parentStack.Count == 0)
         {
-            foreach (var elem in list)
+            Finalize();
+        }
+    }
+
+    public void VisitList(List<object> list)
+    {
+        foreach (var elem in list)
+        {
+            if (elem is Dictionary<object, object> dict)
             {
-                if (elem is Dictionary<object, object> dict)
-                {
-                    Visit(dict);
-                }
+                Visit(dict);
             }
         }
     }

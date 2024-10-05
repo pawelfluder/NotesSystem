@@ -5,46 +5,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WpfCoreProg.Debug
+namespace WpfCoreProg.Debug;
+
+public class DebugState : INotifyPropertyChanged
 {
-    public class DebugState : INotifyPropertyChanged
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    protected void OnPropertyChanged(string propertyName)
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 
-        protected void OnPropertyChanged(string propertyName)
+    public DebugState()
+    {
+        Visibility = "Hidden";
+        //Visibility = "Visible";
+        MinWidth = 0;
+    }
+
+    public int MinWidth { get; set; }
+
+    private string _visibility;
+    public string Visibility
+    {
+        get => _visibility;
+        set
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            _visibility = value;
+            OnPropertyChanged(nameof(Visibility));
         }
+    }
 
-        public DebugState()
+    private string _body;
+    public string Body
+    {
+        get => _body;
+        set
         {
-            Visibility = "Hidden";
-            //Visibility = "Visible";
-            MinWidth = 0;
-        }
-
-        public int MinWidth { get; set; }
-
-        private string _visibility;
-        public string Visibility
-        {
-            get => _visibility;
-            set
-            {
-                _visibility = value;
-                OnPropertyChanged(nameof(Visibility));
-            }
-        }
-
-        private string _body;
-        public string Body
-        {
-            get => _body;
-            set
-            {
-                _body = value;
-                OnPropertyChanged(nameof(Body));
-            }
+            _body = value;
+            OnPropertyChanged(nameof(Body));
         }
     }
 }

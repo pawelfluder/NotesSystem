@@ -5,139 +5,138 @@ using SharpOperationsProg.Operations.Yaml.Custom.Emitter;
 using YamlDotNet.Serialization;
 using IFileService = SharpFileServiceProg.AAPublic.IFileService;
 
-namespace SharpOperationsProg.Operations.Yaml
+namespace SharpOperationsProg.Operations.Yaml;
+
+internal class Custom03YamlOperations : IYamlOperations
 {
-    internal class Custom03YamlOperations : IYamlOperations
+    private readonly IDeserializer custom03Deserializer;
+    private readonly ISerializer custom03Serializer;
+
+    public Custom03YamlOperations()
     {
-        private readonly IDeserializer custom03Deserializer;
-        private readonly ISerializer custom03Serializer;
+        var builder = new DeserializerBuilder();
+        custom03Deserializer = builder.Build();
 
-        public Custom03YamlOperations()
+        var builder2 = new SerializerBuilder().
+            WithEventEmitter(next => new QuotedScalarEventEmitter(next));
+        custom03Serializer = builder2.Build();
+    }
+
+    public string Serialize(object input)
+    {
+        try
         {
-            var builder = new DeserializerBuilder();
-            custom03Deserializer = builder.Build();
-
-            var builder2 = new SerializerBuilder().
-                WithEventEmitter(next => new QuotedScalarEventEmitter(next));
-            custom03Serializer = builder2.Build();
-        }
-
-        public string Serialize(object input)
-        {
-            try
-            {
-                var result = custom03Serializer.Serialize(input);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
-        }
-
-        public string SerializeToFile(string filePath, object input)
-        {
-            try
-            {
-                var result = custom03Serializer.Serialize(input);
-                File.WriteAllText(filePath, result);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
-        }
-
-        public object Deserialize(string yamlText)
-        {
-            try
-            {
-                var result = custom03Deserializer.Deserialize<object>(yamlText);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
-        }
-
-        public object DeserializeFile(string path)
-        {
-            try
-            {
-                var yamlText = File.ReadAllText(path);
-                var result = custom03Deserializer.Deserialize<object>(yamlText);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
-        }
-
-        public T Deserialize<T>(string yamlText)
-        {
-            var result = custom03Deserializer.Deserialize<T>(yamlText);
+            var result = custom03Serializer.Serialize(input);
             return result;
         }
-
-        public T DeserializeFile<T>(string path)
+        catch (Exception ex)
         {
-            try
-            {
-                var yamlText = FileReadText(path);
-                var result = custom03Deserializer.Deserialize<T>(yamlText);
+            HandleError(ex);
+            return default;
+        }
+    }
+
+    public string SerializeToFile(string filePath, object input)
+    {
+        try
+        {
+            var result = custom03Serializer.Serialize(input);
+            File.WriteAllText(filePath, result);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            HandleError(ex);
+            return default;
+        }
+    }
+
+    public object Deserialize(string yamlText)
+    {
+        try
+        {
+            var result = custom03Deserializer.Deserialize<object>(yamlText);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            HandleError(ex);
+            return default;
+        }
+    }
+
+    public object DeserializeFile(string path)
+    {
+        try
+        {
+            var yamlText = File.ReadAllText(path);
+            var result = custom03Deserializer.Deserialize<object>(yamlText);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            HandleError(ex);
+            return default;
+        }
+    }
+
+    public T Deserialize<T>(string yamlText)
+    {
+        var result = custom03Deserializer.Deserialize<T>(yamlText);
+        return result;
+    }
+
+    public T DeserializeFile<T>(string path)
+    {
+        try
+        {
+            var yamlText = FileReadText(path);
+            var result = custom03Deserializer.Deserialize<T>(yamlText);
                 
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
+            return result;
         }
-
-        private void HandleError(Exception ex)
+        catch (Exception ex)
         {
-            //throw ex;
+            HandleError(ex);
+            return default;
         }
+    }
 
-        public bool TryDeserialize<T>(string yamlText, out T result)
+    private void HandleError(Exception ex)
+    {
+        //throw ex;
+    }
+
+    public bool TryDeserialize<T>(string yamlText, out T result)
+    {
+        try
         {
-            try
-            {
-                result = Deserialize<T>(yamlText);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                result = default;
-                return false;
-            }
+            result = Deserialize<T>(yamlText);
+            return true;
         }
-
-        private IEnumerable<string> FileReadLines(string filePath)
+        catch (Exception ex)
         {
-            var text = FileReadText(filePath);
-
-            var lines = text.Split('\n');
-            return lines;
+            result = default;
+            return false;
         }
+    }
 
-        private string FileReadText(string filePath)
+    private IEnumerable<string> FileReadLines(string filePath)
+    {
+        var text = FileReadText(filePath);
+
+        var lines = text.Split('\n');
+        return lines;
+    }
+
+    private string FileReadText(string filePath)
+    {
+        var text = string.Empty;
+        using (StreamReader streamReader = new StreamReader(filePath, Encoding.UTF8, true))
         {
-            var text = string.Empty;
-            using (StreamReader streamReader = new StreamReader(filePath, Encoding.UTF8, true))
-            {
-                text = streamReader.ReadToEnd();
-            }
-
-            return text;
+            text = streamReader.ReadToEnd();
         }
+
+        return text;
     }
 }

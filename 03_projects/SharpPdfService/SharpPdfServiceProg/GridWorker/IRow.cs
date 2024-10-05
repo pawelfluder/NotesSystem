@@ -1,25 +1,24 @@
 using System.Collections.Generic;
 
-namespace PdfService.GridWorker
+namespace PdfService.GridWorker;
+
+public interface IRow
 {
-   public interface IRow
-    {
-        string Data
-        {
-            get;
-            set;
-        }
+   string Data
+   {
+      get;
+      set;
+   }
 
-        bool IsHeader
-        {
-           get;
-           set;
-        }
+   bool IsHeader
+   {
+      get;
+      set;
+   }
 
-        int Level
-        {
-           get;
-           set;
-        }
+   int Level
+   {
+      get;
+      set;
    }
 }

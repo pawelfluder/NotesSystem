@@ -1,8 +1,7 @@
-﻿namespace SharpRepoServiceProg.Names
+﻿namespace SharpRepoServiceProg.Names;
+
+public static class SettingsKeys
 {
-    public static class SettingsKeys
-    {
-        public static string RefLocaStr = "refLoca";
-        public static string RefGuidStr = "refGuid";
-    }
+    public static string RefLocaStr = "refLoca";
+    public static string RefGuidStr = "refGuid";
 }

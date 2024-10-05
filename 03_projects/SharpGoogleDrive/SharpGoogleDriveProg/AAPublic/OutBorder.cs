@@ -3,16 +3,15 @@ using SharpGoogleDriveProg.Service;
 using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 
-namespace SharpGoogleDriveProg.AAPublic
+namespace SharpGoogleDriveProg.AAPublic;
+
+public class OutBorder
 {
-    public class OutBorder
+    public static IGoogleDriveService GoogleDriveService(
+        Dictionary<string, object> settingsDict,
+        IOperationsService fileService)
     {
-        public static IGoogleDriveService GoogleDriveService(
-            Dictionary<string, object> settingsDict,
-            IOperationsService fileService)
-        {
-            var googleDocsService = new GoogleDriveService(settingsDict, fileService);
-            return googleDocsService;
-        }
+        var googleDocsService = new GoogleDriveService(settingsDict, fileService);
+        return googleDocsService;
     }
 }

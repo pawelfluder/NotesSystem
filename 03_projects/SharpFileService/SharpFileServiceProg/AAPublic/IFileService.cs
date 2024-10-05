@@ -1,11 +1,10 @@
 ﻿using SharpFileServiceProg.Workers;
 
-namespace SharpFileServiceProg.AAPublic
+namespace SharpFileServiceProg.AAPublic;
+
+public interface IFileService
 {
-    public interface IFileService
-    {
-        IYamlWrk Yaml { get; }
+    IYamlWrk Yaml { get; }
         
-        IFileWrk File { get; }
-    }
+    IFileWrk File { get; }
 }

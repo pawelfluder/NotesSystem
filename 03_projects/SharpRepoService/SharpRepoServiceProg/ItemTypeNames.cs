@@ -1,15 +1,14 @@
 ﻿
-namespace SharpRepoServiceProg
+namespace SharpRepoServiceProg;
+
+internal static class ItemTypeNames
 {
-    internal static class ItemTypeNames
-    {
-        public static string Folder
-            = "Folder";
+    public static string Folder
+        = "Folder";
 
-        public static string Text
-            = "Text";
+    public static string Text
+        = "Text";
 
-        public static string RefText
-            = "RefText";
-    }
+    public static string RefText
+        = "RefText";
 }

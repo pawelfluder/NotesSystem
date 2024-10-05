@@ -14,175 +14,174 @@ using WpfNotesSystem.Creator;
 using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.Models;
 
-namespace WpfNotesSystemProg.Converter
+namespace WpfNotesSystemProg.Converter;
+
+[ValueConversion(typeof(RepoItem), typeof(StackPanel))]
+public class HeadersDictConverter : MarkupExtension, IValueConverter
 {
-    [ValueConversion(typeof(RepoItem), typeof(StackPanel))]
-    public class HeadersDictConverter : MarkupExtension, IValueConverter
+    private object converter;
+    private readonly IOperationsService operationsService;
+
+    public HeadersDictConverter()
     {
-        private object converter;
-        private readonly IOperationsService operationsService;
+        operationsService = MyBorder.Container.Resolve<IOperationsService>();
+    }
 
-        public HeadersDictConverter()
+    public override object ProvideValue(IServiceProvider serviceProvider)
+    {
+        if (converter == null)
         {
-            operationsService = MyBorder.Container.Resolve<IOperationsService>();
+            converter = new HeadersDictConverter();
         }
 
-        public override object ProvideValue(IServiceProvider serviceProvider)
-        {
-            if (converter == null)
-            {
-                converter = new HeadersDictConverter();
-            }
+        return converter;
+    }
 
-            return converter;
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value == null)
+        {
+            return null;
         }
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        var itemModel = value as RepoItem;
+        Grid myGrid = null;
+        StackPanel stackPanel = null;
+        try
         {
-            if (value == null)
+            var type = itemModel.Type;
+            if (type == "Text")
             {
-                return null;
+                myGrid = ConvertTextItem(itemModel);
             }
-            var itemModel = value as RepoItem;
-            Grid myGrid = null;
-            StackPanel stackPanel = null;
-            try
+            if (type == "Folder")
             {
-                var type = itemModel.Type;
-                if (type == "Text")
-                {
-                    myGrid = ConvertTextItem(itemModel);
-                }
-                if (type == "Folder")
-                {
-                    myGrid = ConvertFolderItem(itemModel);
-                }
+                myGrid = ConvertFolderItem(itemModel);
+            }
 
-                //var resourceDict = new ResourceDictionary();
-                //resourceDict.Source = new Uri("Style/AppResources.xaml",
-                //    UriKind.RelativeOrAbsolute);
+            //var resourceDict = new ResourceDictionary();
+            //resourceDict.Source = new Uri("Style/AppResources.xaml",
+            //    UriKind.RelativeOrAbsolute);
 
-                //var buttonStyle = resourceDict["Converter_StackPanel"] as Style;
+            //var buttonStyle = resourceDict["Converter_StackPanel"] as Style;
 
 
-                var width = 600;
+            var width = 600;
 
-                //myGrid.MinWidth = width;
-                //myGrid.MaxWidth = width;
-                stackPanel = new StackPanel();
-                if (myGrid != null)
-                {
-                    stackPanel.Children.Add(myGrid);
-                }
+            //myGrid.MinWidth = width;
+            //myGrid.MaxWidth = width;
+            stackPanel = new StackPanel();
+            if (myGrid != null)
+            {
+                stackPanel.Children.Add(myGrid);
+            }
                 
 
-                //stackPanel.MinWidth = width;
-                //stackPanel.MaxWidth = width;
+            //stackPanel.MinWidth = width;
+            //stackPanel.MaxWidth = width;
 
-                var stackPanelStyle = Application.Current.Resources["Converter_StackPanel"] as Style;
-                if (stackPanelStyle != null)
-                {
-                    stackPanel.Style = stackPanelStyle;
-                }
-
-                var gridPanelStyle = Application.Current.Resources["Converter_Grid"] as Style;
-                if (gridPanelStyle != null)
-                {
-                    myGrid.Style = gridPanelStyle;
-                }
-
-
-
-                //stackPanel.Style = new System.Windows.Style();
-
-                //var w = 150;
-                //var h = 150;
-                ////myGrid.MinHeight = h;
-                ////myGrid.MinWidth = w;
-                //if (myGrid.Height < h )//||
-                //    //Double.IsNaN(myGrid.Height))
-                //{
-                //    myGrid.Height = h;
-                //}
-                //if (myGrid.Width < w )//||
-                //    //Double.IsNaN(myGrid.Width))
-                //{
-                //    myGrid.Width = w;
-                //}
-                //stackPanel.Height = myGrid.Height;
-                //stackPanel.Width = myGrid.Width;
-
-                //stackPanel.MinHeight = h;
-                //stackPanel.MinWidth = w;
-
-                //stackPanel.Width = 500;
+            var stackPanelStyle = Application.Current.Resources["Converter_StackPanel"] as Style;
+            if (stackPanelStyle != null)
+            {
+                stackPanel.Style = stackPanelStyle;
             }
-            catch { }
-            return stackPanel;
+
+            var gridPanelStyle = Application.Current.Resources["Converter_Grid"] as Style;
+            if (gridPanelStyle != null)
+            {
+                myGrid.Style = gridPanelStyle;
+            }
+
+
+
+            //stackPanel.Style = new System.Windows.Style();
+
+            //var w = 150;
+            //var h = 150;
+            ////myGrid.MinHeight = h;
+            ////myGrid.MinWidth = w;
+            //if (myGrid.Height < h )//||
+            //    //Double.IsNaN(myGrid.Height))
+            //{
+            //    myGrid.Height = h;
+            //}
+            //if (myGrid.Width < w )//||
+            //    //Double.IsNaN(myGrid.Width))
+            //{
+            //    myGrid.Width = w;
+            //}
+            //stackPanel.Height = myGrid.Height;
+            //stackPanel.Width = myGrid.Width;
+
+            //stackPanel.MinHeight = h;
+            //stackPanel.MinWidth = w;
+
+            //stackPanel.Width = 500;
+        }
+        catch { }
+        return stackPanel;
+    }
+
+    private Grid ConvertFolderItem(RepoItem itemModel)
+    {
+        var grid = new Grid();
+        //var body = itemModel.Body as Dictionary<string, string>;
+
+        if (itemModel.Body == null)
+        {
+            // log error
         }
 
-        private Grid ConvertFolderItem(RepoItem itemModel)
-        {
-            var grid = new Grid();
-            //var body = itemModel.Body as Dictionary<string, string>;
-
-            if (itemModel.Body == null)
-            {
-                // log error
-            }
-
-            var indexQnameDict = JsonConvert
-                .DeserializeObject<Dictionary<string, string>>(itemModel.Body.ToString());
-            var creator = new FolderBodyCreator(grid, fileService);
-            creator.Run(indexQnameDict);
+        var indexQnameDict = JsonConvert
+            .DeserializeObject<Dictionary<string, string>>(itemModel.Body.ToString());
+        var creator = new FolderBodyCreator(grid, fileService);
+        creator.Run(indexQnameDict);
             
-            //var indexQnameList = tmp.ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value);
-            //var indexQnameList = tmp.Select(kv => (kv.Key, kv.Value)).ToDictionary(x => x.Key);
+        //var indexQnameList = tmp.ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value);
+        //var indexQnameList = tmp.Select(kv => (kv.Key, kv.Value)).ToDictionary(x => x.Key);
 
-            return grid;
-        }
+        return grid;
+    }
 
-        private Grid ConvertTextItem(RepoItem dict)
+    private Grid ConvertTextItem(RepoItem dict)
+    {
+        var grid = new Grid();
+
+        var creator = new ContentCreator(grid);
+        var contentManager = new ContentManager(fileService);
+
+        if (dict.Body == null)
         {
-            var grid = new Grid();
-
-            var creator = new ContentCreator(grid);
-            var contentManager = new ContentManager(fileService);
-
-            if (dict.Body == null)
-            {
-                // log error
-            }
-
-            var tmp = dict.Body.ToString();
-            //var lines = tmp.Split('\n').Skip(4).ToArray();
-            var lines = tmp.Split('\n').ToArray();
-
-            contentManager.Run(creator, lines);
-
-            return grid;
+            // log error
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        var tmp = dict.Body.ToString();
+        //var lines = tmp.Split('\n').Skip(4).ToArray();
+        var lines = tmp.Split('\n').ToArray();
+
+        contentManager.Run(creator, lines);
+
+        return grid;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+
+    private static void ClearGrid(Grid? myGrid)
+    {
+        var rowsCount = myGrid.RowDefinitions.Count();
+        if (rowsCount > 0)
         {
-            throw new NotImplementedException();
+            myGrid.RowDefinitions.RemoveRange(0, rowsCount);
         }
-
-        private static void ClearGrid(Grid? myGrid)
+        var collsCount = myGrid.ColumnDefinitions.Count();
+        if (collsCount > 0)
         {
-            var rowsCount = myGrid.RowDefinitions.Count();
-            if (rowsCount > 0)
-            {
-                myGrid.RowDefinitions.RemoveRange(0, rowsCount);
-            }
-            var collsCount = myGrid.ColumnDefinitions.Count();
-            if (collsCount > 0)
-            {
-                myGrid.ColumnDefinitions.RemoveRange(0, collsCount);
-            }
-
-            var childrenCount = myGrid.Children.Count;
-            myGrid.Children.Clear();
+            myGrid.ColumnDefinitions.RemoveRange(0, collsCount);
         }
+
+        var childrenCount = myGrid.Children.Count;
+        myGrid.Children.Clear();
     }
 }

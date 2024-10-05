@@ -1,39 +1,38 @@
 ﻿using System.Reflection;
 
-namespace SharpContainerProg.Register
+namespace SharpContainerProg.Register;
+
+internal partial class AdditionalRegistrationBase
 {
-    internal partial class AdditionalRegistrationBase
+    public List<Action> ActionList { get; private set; }
+
+    public AdditionalRegistrationBase()
     {
-        public List<Action> ActionList { get; private set; }
+        ActionList = new List<Action>();
+        AddMethodsToList();
+    }
 
-        public AdditionalRegistrationBase()
+    public void Invoke()
+    {
+        foreach (var action in ActionList)
         {
-            ActionList = new List<Action>();
-            AddMethodsToList();
+            action.Invoke();
         }
+    }
 
-        public void Invoke()
-        {
-            foreach (var action in ActionList)
-            {
-                action.Invoke();
-            }
-        }
+    public void AddMethodsToList()
+    {
+        //Type type = typeof(PreparerRegistration);
+        //MethodInfo[] methods = type.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 
-        public void AddMethodsToList()
-        {
-            //Type type = typeof(PreparerRegistration);
-            //MethodInfo[] methods = type.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-
-            //foreach (MethodInfo methodInfo in methods)
-            //{
-            //    if (methodInfo.DeclaringType == type &&
-            //        methodInfo.Name.StartsWith("Register"))
-            //    {
-            //        Action methodAction = (Action)Delegate.CreateDelegate(typeof(Action), this, methodInfo);
-            //        ActionList.Add(methodAction);
-            //    }
-            //}
-        }
+        //foreach (MethodInfo methodInfo in methods)
+        //{
+        //    if (methodInfo.DeclaringType == type &&
+        //        methodInfo.Name.StartsWith("Register"))
+        //    {
+        //        Action methodAction = (Action)Delegate.CreateDelegate(typeof(Action), this, methodInfo);
+        //        ActionList.Add(methodAction);
+        //    }
+        //}
     }
 }

@@ -2,14 +2,13 @@
 using SharpOperationsProg.AAPublic.Operations;
 using SharpOperationsProg.Service;
 
-namespace SharpOperationsProg.AAPublic
+namespace SharpOperationsProg.AAPublic;
+
+public class OutBorder
 {
-    public class OutBorder
+    public static IOperationsService OperationsService(
+        IFileService fileService)
     {
-        public static IOperationsService OperationsService(
-            IFileService fileService)
-        {
-            return new OperationService(fileService);
-        }
+        return new OperationService(fileService);
     }
 }

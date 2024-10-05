@@ -1,99 +1,98 @@
-﻿namespace SharpOperationsProg.Operations.Headers
+﻿namespace SharpOperationsProg.Operations.Headers;
+
+public class HeadersOperationsConversion
 {
-    public class HeadersOperationsConversion
+    public List<(string Type, int Level, object Value)> ToLinesList(
+        List<(string Type, int Level, string Text)> elementsList)
     {
-        public List<(string Type, int Level, object Value)> ToLinesList(
-            List<(string Type, int Level, string Text)> elementsList)
+        var previousElem = elementsList.First();
+        previousElem = default;
+
+        var resultList = new List<(string Type, int Level, object Value)>();
+
+        foreach (var elem in elementsList)
         {
-            var previousElem = elementsList.First();
-            previousElem = default;
-
-            var resultList = new List<(string Type, int Level, object Value)>();
-
-            foreach (var elem in elementsList)
+            if (elem.Type == ElementType.Header.ToString())
             {
-                if (elem.Type == ElementType.Header.ToString())
-                {
-                    resultList.Add((ElementType.Header.ToString(), elem.Level, elem.Text));
-                }
+                resultList.Add((ElementType.Header.ToString(), elem.Level, elem.Text));
+            }
 
-                if (elem.Type == ElementType.Line.ToString() &&
-                    elem == elementsList.First())
+            if (elem.Type == ElementType.Line.ToString() &&
+                elem == elementsList.First())
+            {
+                previousElem = elem;
+                var lines = new List<string> { elem.Text };
+                resultList.Add((ElementType.LinesList.ToString(), elem.Level, lines));
+                continue;
+            }
+
+            if (elem.Type == ElementType.Line.ToString())
+            {
+                if (previousElem.Type == ElementType.Header.ToString())
                 {
-                    previousElem = elem;
                     var lines = new List<string> { elem.Text };
                     resultList.Add((ElementType.LinesList.ToString(), elem.Level, lines));
-                    continue;
                 }
-
-                if (elem.Type == ElementType.Line.ToString())
+                else
                 {
-                    if (previousElem.Type == ElementType.Header.ToString())
+                    var tmp = resultList.Last().Value;
+                    if (resultList.Last().Value is List<string> tmp2)
                     {
-                        var lines = new List<string> { elem.Text };
-                        resultList.Add((ElementType.LinesList.ToString(), elem.Level, lines));
+                        tmp2.Add(elem.Text);
                     }
                     else
                     {
-                        var tmp = resultList.Last().Value;
-                        if (resultList.Last().Value is List<string> tmp2)
-                        {
-                            tmp2.Add(elem.Text);
-                        }
-                        else
-                        {
-                            throw new Exception();
-                        }
+                        throw new Exception();
                     }
                 }
-
-                previousElem = elem;
             }
 
-            return resultList;
+            previousElem = elem;
         }
 
-        public void NumberOneEverywhere(
-            List<(string Type, int Level, string Text)> elementsList)
-        {
-            for (int i = 0; i < elementsList.Count; i++)
-            {
-                var item = elementsList[i];
-                elementsList[i] = (item.Type, item.Level, "1");
-            }
-        }
+        return resultList;
+    }
 
-        public List<(string Type, int Level, object Value)> Convert2(
+    public void NumberOneEverywhere(
         List<(string Type, int Level, string Text)> elementsList)
+    {
+        for (int i = 0; i < elementsList.Count; i++)
         {
-            var previousElem = elementsList.First();
-            previousElem = default;
+            var item = elementsList[i];
+            elementsList[i] = (item.Type, item.Level, "1");
+        }
+    }
 
-            var resultList = new List<(string Type, int Level, object Value)>();
+    public List<(string Type, int Level, object Value)> Convert2(
+        List<(string Type, int Level, string Text)> elementsList)
+    {
+        var previousElem = elementsList.First();
+        previousElem = default;
 
-            foreach (var elem in elementsList)
+        var resultList = new List<(string Type, int Level, object Value)>();
+
+        foreach (var elem in elementsList)
+        {
+            if (elem.Type == ElementType.Header.ToString())
             {
-                if (elem.Type == ElementType.Header.ToString())
-                {
-                    resultList.Add((ElementType.Header.ToString(), elem.Level, "1"));
-                }
-
-                if (elem.Type == ElementType.Line.ToString() & previousElem.Type == ElementType.Header.ToString())
-                {
-                    var lines = new List<string> { "1" };
-                    resultList.Add((ElementType.LinesList.ToString(), elem.Level, lines));
-                }
-
-                if (elem.Type == ElementType.Line.ToString() & previousElem.Type != ElementType.Header.ToString())
-                {
-                    var tmp = resultList.Last().Value as List<string>;
-                    tmp.Add("1");
-                }
-
-                previousElem = elem;
+                resultList.Add((ElementType.Header.ToString(), elem.Level, "1"));
             }
 
-            return resultList;
+            if (elem.Type == ElementType.Line.ToString() & previousElem.Type == ElementType.Header.ToString())
+            {
+                var lines = new List<string> { "1" };
+                resultList.Add((ElementType.LinesList.ToString(), elem.Level, lines));
+            }
+
+            if (elem.Type == ElementType.Line.ToString() & previousElem.Type != ElementType.Header.ToString())
+            {
+                var tmp = resultList.Last().Value as List<string>;
+                tmp.Add("1");
+            }
+
+            previousElem = elem;
         }
+
+        return resultList;
     }
 }

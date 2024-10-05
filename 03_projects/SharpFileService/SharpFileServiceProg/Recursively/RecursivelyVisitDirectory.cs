@@ -1,84 +1,83 @@
 ﻿using SharpFileServiceProg.AAPublic;
 using IFileService = SharpFileServiceProg.AAPublic.IFileService;
 
-namespace SharpFileServiceProg.Recursively
+namespace SharpFileServiceProg.Recursively;
+
+internal class VisitDirectoriesRecursively : IFileVisit
 {
-    internal class VisitDirectoriesRecursively : IFileVisit
+    private Action<FileInfo> fileAction;
+    private Action<DirectoryInfo> directoryAction;
+    private List<string> excludedFolderList;
+
+    public VisitDirectoriesRecursively()
     {
-        private Action<FileInfo> fileAction;
-        private Action<DirectoryInfo> directoryAction;
-        private List<string> excludedFolderList;
+        excludedFolderList = new List<string>() { ".git" };
+        ClearAll();
+    }
 
-        public VisitDirectoriesRecursively()
+    public string FormatBytes(long bytes)
+    {
+        string[] Suffix = { "B", "KB", "MB", "GB", "TB" };
+        int i;
+        double dblSByte = bytes;
+        for (i = 0; i < Suffix.Length && bytes >= 1024; i++, bytes /= 1024)
         {
-            excludedFolderList = new List<string>() { ".git" };
-            ClearAll();
+            dblSByte = bytes / 1024.0;
         }
 
-        public string FormatBytes(long bytes)
-        {
-            string[] Suffix = { "B", "KB", "MB", "GB", "TB" };
-            int i;
-            double dblSByte = bytes;
-            for (i = 0; i < Suffix.Length && bytes >= 1024; i++, bytes /= 1024)
-            {
-                dblSByte = bytes / 1024.0;
-            }
+        return string.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
+    }
 
-            return string.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
+    public void Visit(
+        string path,
+        Action<FileInfo> fileAction,
+        Action<DirectoryInfo> directoryAction)
+    {
+        this.fileAction = fileAction;
+        this.directoryAction = directoryAction;
+        var directories = Directory.GetDirectories(path);
+        var mainDirInfo = new DirectoryInfo(path);
+        VisitOnlyFiles(mainDirInfo);
+
+        foreach (var dir in directories)
+        {
+            var dirInfo = new DirectoryInfo(dir);
+            VisitDirectory(dirInfo);
         }
 
-        public void Visit(
-            string path,
-            Action<FileInfo> fileAction,
-            Action<DirectoryInfo> directoryAction)
+        ClearAll();
+    }
+
+    private void VisitOnlyFiles(DirectoryInfo d)
+    {
+        FileInfo[] fis = d.GetFiles();
+        foreach (FileInfo fi in fis)
         {
-            this.fileAction = fileAction;
-            this.directoryAction = directoryAction;
-            var directories = Directory.GetDirectories(path);
-            var mainDirInfo = new DirectoryInfo(path);
-            VisitOnlyFiles(mainDirInfo);
+            fileAction(fi);
+        }
+    }
 
-            foreach (var dir in directories)
-            {
-                var dirInfo = new DirectoryInfo(dir);
-                VisitDirectory(dirInfo);
-            }
-
-            ClearAll();
+    private void VisitDirectory(DirectoryInfo d)
+    {
+        if (excludedFolderList.Any(x => x == d.Name))
+        {
+            return;
         }
 
-        private void VisitOnlyFiles(DirectoryInfo d)
+        VisitOnlyFiles(d);
+
+        DirectoryInfo[] dis = d.GetDirectories();
+        foreach (DirectoryInfo di in dis)
         {
-            FileInfo[] fis = d.GetFiles();
-            foreach (FileInfo fi in fis)
-            {
-                fileAction(fi);
-            }
+            VisitDirectory(di);
         }
 
-        private void VisitDirectory(DirectoryInfo d)
-        {
-            if (excludedFolderList.Any(x => x == d.Name))
-            {
-                return;
-            }
+        directoryAction(d);
+    }
 
-            VisitOnlyFiles(d);
-
-            DirectoryInfo[] dis = d.GetDirectories();
-            foreach (DirectoryInfo di in dis)
-            {
-                VisitDirectory(di);
-            }
-
-            directoryAction(d);
-        }
-
-        private void ClearAll()
-        {
-            fileAction = null;
-            directoryAction = null;
-        }
+    private void ClearAll()
+    {
+        fileAction = null;
+        directoryAction = null;
     }
 }

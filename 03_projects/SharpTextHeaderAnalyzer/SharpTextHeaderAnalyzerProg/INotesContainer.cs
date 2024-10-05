@@ -1,6 +1,5 @@
-﻿namespace TextHeaderAnalyzerCoreProj
+﻿namespace TextHeaderAnalyzerCoreProj;
+
+public interface INotesContainer
 {
-    public interface INotesContainer
-    {
-    }
 }

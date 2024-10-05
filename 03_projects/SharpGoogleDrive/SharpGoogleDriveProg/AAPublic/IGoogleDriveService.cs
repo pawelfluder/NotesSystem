@@ -1,11 +1,10 @@
 ﻿using SharpGoogleDriveProg.Composite;
 using SharpGoogleDriveProg.Service;
 
-namespace SharpGoogleDriveProg.AAPublic
+namespace SharpGoogleDriveProg.AAPublic;
+
+public interface IGoogleDriveService
 {
-    public interface IGoogleDriveService
-    {
-        void OverrideSettings(Dictionary<string, object> settingDict);
-        public DriveComposite Composite { get; }
-    }
+    void OverrideSettings(Dictionary<string, object> settingDict);
+    public DriveComposite Composite { get; }
 }

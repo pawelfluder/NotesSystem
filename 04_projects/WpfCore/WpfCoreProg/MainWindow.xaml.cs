@@ -5,15 +5,14 @@ using System.Windows.Controls;
 using Unity;
 using WpfNotesSystem.Repetition;
 
-namespace WpfNotesSystem
+namespace WpfNotesSystem;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    public partial class MainWindow : Window
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -1,11 +1,10 @@
 ﻿using SharpGoogleSheetProg.Service;
 
-namespace SharpGoogleSheetProg.AAPublic
+namespace SharpGoogleSheetProg.AAPublic;
+
+public interface IGoogleSheetService
 {
-    public interface IGoogleSheetService
-    {
-        SheetWorker Worker { get; }
-        void Initialize();
-        void OverrideSettings(Dictionary<string, object> settingDict);
-    }
+    SheetWorker Worker { get; }
+    void Initialize();
+    void OverrideSettings(Dictionary<string, object> settingDict);
 }

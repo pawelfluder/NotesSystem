@@ -4,35 +4,34 @@ using SharpRepoServiceProg.Workers;
 using SharpRepoServiceProg.WorkersCrud;
 using SharpRepoServiceProg.WorkersSystem;
 
-namespace SharpRepoServiceProg.Registration
+namespace SharpRepoServiceProg.Registration;
+
+internal class Registration : RegistrationBase
 {
-    internal class Registration : RegistrationBase
+    public override void Registrations()
     {
-        public override void Registrations()
-        {
-            var pathWorker = new PathWorker();
-            RegisterByFunc(() => pathWorker);
+        var pathWorker = new PathWorker();
+        RegisterByFunc(() => pathWorker);
 
-            var systemWorker = new SystemWorker();
-            RegisterByFunc(() => systemWorker);
+        var systemWorker = new SystemWorker();
+        RegisterByFunc(() => systemWorker);
 
-            var bodyWorker = new BodyWorker();
-            RegisterByFunc(() => bodyWorker);
+        var bodyWorker = new BodyWorker();
+        RegisterByFunc(() => bodyWorker);
 
-            var configWorker = new ConfigWorker();
-            RegisterByFunc(() => configWorker);
+        var configWorker = new ConfigWorker();
+        RegisterByFunc(() => configWorker);
 
-            var memoWorker = new MemoWorker();
-            RegisterByFunc(() => memoWorker);
+        var memoWorker = new MemoryWorker();
+        RegisterByFunc(() => memoWorker);
 
-            var itemWorker = new ReadWorker();
-            RegisterByFunc(() => itemWorker);
+        var itemWorker = new ReadWorker();
+        RegisterByFunc(() => itemWorker);
 
-            var jsonWorker = new JsonWorker();
-            RegisterByFunc(() => jsonWorker);
+        var jsonWorker = new JsonWorker();
+        RegisterByFunc(() => jsonWorker);
 
-            var operationsService = new OperationsService();
-            RegisterByFunc(() => operationsService);
-        }
+        var operationsService = new OperationsService();
+        RegisterByFunc(() => operationsService);
     }
 }

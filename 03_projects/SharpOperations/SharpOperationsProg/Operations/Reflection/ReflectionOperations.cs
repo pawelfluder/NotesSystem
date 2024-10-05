@@ -1,44 +1,43 @@
 ﻿using System.Reflection;
 using SharpOperationsProg.AAPublic;
 
-namespace SharpOperationsProg.Operations.Reflection
+namespace SharpOperationsProg.Operations.Reflection;
+
+public class ReflectionOperations : IReflectionOperations
 {
-    public class ReflectionOperations : IReflectionOperations
+    public IEnumerable<(string, string)> GetPropTuples(object obj)
     {
-        public IEnumerable<(string, string)> GetPropTuples(object obj)
-        {
-            var properties = obj.GetType().GetProperties();
-            var tuples = properties.Select(x => (x.Name, x.GetValue(obj).ToString()));
-            return tuples;
-        }
+        var properties = obj.GetType().GetProperties();
+        var tuples = properties.Select(x => (x.Name, x.GetValue(obj).ToString()));
+        return tuples;
+    }
 
-        public List<string> GetPropNames<T>(params string[] propArray)
-        {
-            var type = typeof(T);
-            var propNames = type.GetProperties().Select(x => x.Name).ToList();
-            return propNames;
-        }
+    public List<string> GetPropNames<T>(params string[] propArray)
+    {
+        var type = typeof(T);
+        var propNames = type.GetProperties().Select(x => x.Name).ToList();
+        return propNames;
+    }
 
-        public List<PropertyInfo> GetPropList<T>(params string[] propArray)
-        {
-            var type = typeof(T);
-            var propList = type.GetProperties().ToList();
-            return propList;
-        }
+    public List<PropertyInfo> GetPropList<T>(params string[] propArray)
+    {
+        var type = typeof(T);
+        var propList = type.GetProperties().ToList();
+        return propList;
+    }
 
-        public bool HasProp<T>(params string[] propArray)
+    public bool HasProp<T>(params string[] propArray)
+    {
+        var type = typeof(T);
+        var propNames = type.GetProperties().Select(x => x.Name).ToList();
+        foreach (var prop in propArray)
         {
-            var type = typeof(T);
-            var propNames = type.GetProperties().Select(x => x.Name).ToList();
-            foreach (var prop in propArray)
+            if (!propNames.Any(x => x == prop))
             {
-                if (!propNames.Any(x => x == prop))
-                {
-                    return false;
-                }
+                return false;
             }
-
-            return true;
         }
+
+        return true;
     }
 }

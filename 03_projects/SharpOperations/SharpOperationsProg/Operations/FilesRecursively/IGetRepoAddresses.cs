@@ -1,7 +1,6 @@
-﻿namespace SharpOperationsProg.Operations.FilesRecursively
+﻿namespace SharpOperationsProg.Operations.FilesRecursively;
+
+public interface IRepoAddressesObtainer
 {
-    public interface IRepoAddressesObtainer
-    {
-        List<string> Visit(string path);
-    }
+    List<string> Visit(string path);
 }

@@ -1,128 +1,127 @@
 ﻿using SharpFileServiceProg.AAPublic;
 using YamlDotNet.Serialization;
 
-namespace SharpFileServiceProg.Yaml
+namespace SharpFileServiceProg.Yaml;
+
+internal class Custom01YamlOperations : IYamlOperations
 {
-    internal class Custom01YamlOperations : IYamlOperations
+    private readonly IDeserializer custom01Deserializer;
+    private readonly ISerializer custom01Serializer;
+
+    public Custom01YamlOperations()
     {
-        private readonly IDeserializer custom01Deserializer;
-        private readonly ISerializer custom01Serializer;
+        var builder = new DeserializerBuilder()
+            .WithAttemptingUnquotedStringTypeDeserialization();
+        custom01Deserializer = builder.Build();
 
-        public Custom01YamlOperations()
+        var builder2 = new SerializerBuilder()
+            .WithQuotingNecessaryStrings(true);
+        custom01Serializer = builder2.Build();
+    }
+
+    public string Serialize(object input)
+    {
+        try
         {
-            var builder = new DeserializerBuilder()
-                .WithAttemptingUnquotedStringTypeDeserialization();
-            custom01Deserializer = builder.Build();
-
-            var builder2 = new SerializerBuilder()
-                .WithQuotingNecessaryStrings(true);
-            custom01Serializer = builder2.Build();
+            var result = custom01Serializer.Serialize(input);
+            return result;
         }
-
-        public string Serialize(object input)
+        catch (Exception ex)
         {
-            try
-            {
-                var result = custom01Serializer.Serialize(input);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
+            HandleError(ex);
+            return default;
         }
+    }
 
-        public string SerializeToFile(string filePath, object input)
+    public string SerializeToFile(string filePath, object input)
+    {
+        try
         {
-            try
-            {
-                var result = custom01Serializer.Serialize(input);
-                File.WriteAllText(result, filePath);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
+            var result = custom01Serializer.Serialize(input);
+            File.WriteAllText(result, filePath);
+            return result;
         }
-
-        public object Deserialize(string yamlText)
+        catch (Exception ex)
         {
-            try
-            {
-                var result = custom01Deserializer.Deserialize<object>(yamlText);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
+            HandleError(ex);
+            return default;
         }
+    }
 
-        public object DeserializeFile(string path)
+    public object Deserialize(string yamlText)
+    {
+        try
         {
-            try
-            {
-                var yamlText = File.ReadAllText(path);
-                var result = custom01Deserializer.Deserialize<object>(yamlText);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
+            var result = custom01Deserializer.Deserialize<object>(yamlText);
+            return result;
         }
-
-        public T Deserialize<T>(string yamlText)
+        catch (Exception ex)
         {
-            try
-            {
-                var result = custom01Deserializer.Deserialize<T>(yamlText);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
+            HandleError(ex);
+            return default;
         }
+    }
 
-        public T DeserializeFile<T>(string path)
+    public object DeserializeFile(string path)
+    {
+        try
         {
-            try
-            {
-                var yamlText = File.ReadAllText(path);
-                var result = custom01Deserializer.Deserialize<T>(yamlText);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
+            var yamlText = File.ReadAllText(path);
+            var result = custom01Deserializer.Deserialize<object>(yamlText);
+            return result;
         }
-
-        private void HandleError(Exception ex)
+        catch (Exception ex)
         {
-            throw ex;
+            HandleError(ex);
+            return default;
         }
+    }
 
-        public bool TryDeserialize<T>(string yamlText, out T result)
+    public T Deserialize<T>(string yamlText)
+    {
+        try
         {
-            try
-            {
-                result = Deserialize<T>(yamlText);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                result = default;
-                return false;
-            }
+            var result = custom01Deserializer.Deserialize<T>(yamlText);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            HandleError(ex);
+            return default;
+        }
+    }
+
+    public T DeserializeFile<T>(string path)
+    {
+        try
+        {
+            var yamlText = File.ReadAllText(path);
+            var result = custom01Deserializer.Deserialize<T>(yamlText);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            HandleError(ex);
+            return default;
+        }
+    }
+
+    private void HandleError(Exception ex)
+    {
+        throw ex;
+    }
+
+    public bool TryDeserialize<T>(string yamlText, out T result)
+    {
+        try
+        {
+            result = Deserialize<T>(yamlText);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            result = default;
+            return false;
         }
     }
 }

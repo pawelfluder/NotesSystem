@@ -1,11 +1,10 @@
-﻿namespace WpfNotesSystemProg3.History
+﻿namespace WpfNotesSystemProg3.History;
+
+internal class HistoryElement : IHistoryElement
 {
-    internal class HistoryElement : IHistoryElement
+    public HistoryElement(object value)
     {
-        public HistoryElement(object value)
-        {
-            Value = value;
-        }
-        public object Value { get; }
+        Value = value;
     }
+    public object Value { get; }
 }

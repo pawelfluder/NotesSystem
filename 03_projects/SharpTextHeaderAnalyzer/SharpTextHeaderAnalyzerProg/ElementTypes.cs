@@ -1,10 +1,9 @@
-﻿namespace TextHeaderAnalyzerCoreProj
+﻿namespace TextHeaderAnalyzerCoreProj;
+
+public enum ElementType
 {
-    public enum ElementType
-    {
-        Line,
-        LinesList,
-        Header,
-        Attribute,
-    }
+    Line,
+    LinesList,
+    Header,
+    Attribute,
 }

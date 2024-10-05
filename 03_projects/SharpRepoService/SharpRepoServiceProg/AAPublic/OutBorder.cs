@@ -1,14 +1,13 @@
 ﻿using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.Service;
 
-namespace SharpRepoServiceProg.AAPublic
+namespace SharpRepoServiceProg.AAPublic;
+
+public class OutBorder
 {
-    public class OutBorder
+    public static IRepoService RepoService(
+        IFileService fileService)
     {
-        public static IRepoService RepoService(
-            IFileService fileService)
-        {
-            return new RepoService(fileService);
-        }
+        return new RepoService(fileService);
     }
 }

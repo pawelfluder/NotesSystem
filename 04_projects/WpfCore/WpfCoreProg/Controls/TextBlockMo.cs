@@ -5,41 +5,40 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace WpfNotesSystemProg3.Controls
+namespace WpfNotesSystemProg3.Controls;
+
+public partial class TextBlockMoo : TextBlock
 {
-    public partial class TextBlockMoo : TextBlock
+    TextPointer StartSelectPosition;
+    TextPointer EndSelectPosition;
+    public String SelectedText = "";
+
+    public delegate void TextSelectedHandler(string SelectedText);
+    public event TextSelectedHandler TextSelected;
+
+    protected override void OnMouseDown(MouseButtonEventArgs e)
     {
-        TextPointer StartSelectPosition;
-        TextPointer EndSelectPosition;
-        public String SelectedText = "";
+        base.OnMouseDown(e);
+        Point mouseDownPoint = e.GetPosition(this);
+        StartSelectPosition = this.GetPositionFromPoint(mouseDownPoint, true);
+    }
 
-        public delegate void TextSelectedHandler(string SelectedText);
-        public event TextSelectedHandler TextSelected;
+    protected override void OnMouseUp(MouseButtonEventArgs e)
+    {
+        base.OnMouseUp(e);
+        Point mouseUpPoint = e.GetPosition(this);
+        EndSelectPosition = this.GetPositionFromPoint(mouseUpPoint, true);
 
-        protected override void OnMouseDown(MouseButtonEventArgs e)
+        TextRange otr = new TextRange(this.ContentStart, this.ContentEnd);
+        otr.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.GreenYellow));
+
+        TextRange ntr = new TextRange(StartSelectPosition, EndSelectPosition);
+        ntr.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.White));
+
+        SelectedText = ntr.Text;
+        if (!(TextSelected == null))
         {
-            base.OnMouseDown(e);
-            Point mouseDownPoint = e.GetPosition(this);
-            StartSelectPosition = this.GetPositionFromPoint(mouseDownPoint, true);
-        }
-
-        protected override void OnMouseUp(MouseButtonEventArgs e)
-        {
-            base.OnMouseUp(e);
-            Point mouseUpPoint = e.GetPosition(this);
-            EndSelectPosition = this.GetPositionFromPoint(mouseUpPoint, true);
-
-            TextRange otr = new TextRange(this.ContentStart, this.ContentEnd);
-            otr.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.GreenYellow));
-
-            TextRange ntr = new TextRange(StartSelectPosition, EndSelectPosition);
-            ntr.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.White));
-
-            SelectedText = ntr.Text;
-            if (!(TextSelected == null))
-            {
-                TextSelected(SelectedText);
-            }
+            TextSelected(SelectedText);
         }
     }
 }

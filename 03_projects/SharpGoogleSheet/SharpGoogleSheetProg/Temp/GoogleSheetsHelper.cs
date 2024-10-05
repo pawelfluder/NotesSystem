@@ -10,197 +10,196 @@ using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
 
-namespace GoogleApiV4CoreApp
+namespace GoogleApiV4CoreApp;
+
+public class GoogleSheetsHelper2
 {
-   public class GoogleSheetsHelper2
+   static string[] Scopes = { SheetsService.Scope.Spreadsheets };
+   static string ApplicationName = "GoogleSheetsHelper";
+
+   private readonly SheetsService _sheetsService;
+   private readonly string _spreadsheetId;
+
+   public GoogleSheetsHelper2(string jsonPath, string spreadsheetId)
    {
-      static string[] Scopes = { SheetsService.Scope.Spreadsheets };
-      static string ApplicationName = "GoogleSheetsHelper";
+      UserCredential credential;
 
-      private readonly SheetsService _sheetsService;
-      private readonly string _spreadsheetId;
-
-      public GoogleSheetsHelper2(string jsonPath, string spreadsheetId)
+      using (var stream =
+             new FileStream(jsonPath, FileMode.Open, FileAccess.Read))
       {
-         UserCredential credential;
-
-         using (var stream =
-            new FileStream(jsonPath, FileMode.Open, FileAccess.Read))
-         {
-            // The file token.json stores the user's access and refresh tokens, and is created
-            // automatically when the authorization flow completes for the first time.
-            string credPath = "token.json";
-            credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-               GoogleClientSecrets.Load(stream).Secrets,
-               Scopes,
-               "user",
-               CancellationToken.None,
-               new FileDataStore(credPath, true)).Result;
-            Console.WriteLine("Credential file saved to: " + credPath);
-         }
-
-         _sheetsService = new SheetsService(new BaseClientService.Initializer()
-         {
-            HttpClientInitializer = credential,
-            ApplicationName = ApplicationName,
-         });
-
-         _spreadsheetId = spreadsheetId;
+         // The file token.json stores the user's access and refresh tokens, and is created
+         // automatically when the authorization flow completes for the first time.
+         string credPath = "token.json";
+         credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+            GoogleClientSecrets.Load(stream).Secrets,
+            Scopes,
+            "user",
+            CancellationToken.None,
+            new FileDataStore(credPath, true)).Result;
+         Console.WriteLine("Credential file saved to: " + credPath);
       }
 
-      public List<ExpandoObject> GetDataFromSheet(GoogleSheetParameters googleSheetParameters)
+      _sheetsService = new SheetsService(new BaseClientService.Initializer()
       {
-         googleSheetParameters = MakeGoogleSheetDataRangeColumnsZeroBased(googleSheetParameters);
-         var range = $"{googleSheetParameters.SheetName}!{GetColumnName(googleSheetParameters.RangeColumnStart)}{googleSheetParameters.RangeRowStart}:{GetColumnName(googleSheetParameters.RangeColumnEnd)}{googleSheetParameters.RangeRowEnd}";
+         HttpClientInitializer = credential,
+         ApplicationName = ApplicationName,
+      });
 
-         SpreadsheetsResource.ValuesResource.GetRequest request =
-             _sheetsService.Spreadsheets.Values.Get(_spreadsheetId, range);
+      _spreadsheetId = spreadsheetId;
+   }
 
-         var numberOfColumns = googleSheetParameters.RangeColumnEnd - googleSheetParameters.RangeColumnStart;
-         var columnNames = new List<string>();
-         var returnValues = new List<ExpandoObject>();
+   public List<ExpandoObject> GetDataFromSheet(GoogleSheetParameters googleSheetParameters)
+   {
+      googleSheetParameters = MakeGoogleSheetDataRangeColumnsZeroBased(googleSheetParameters);
+      var range = $"{googleSheetParameters.SheetName}!{GetColumnName(googleSheetParameters.RangeColumnStart)}{googleSheetParameters.RangeRowStart}:{GetColumnName(googleSheetParameters.RangeColumnEnd)}{googleSheetParameters.RangeRowEnd}";
 
-         if (!googleSheetParameters.FirstRowIsHeaders)
+      SpreadsheetsResource.ValuesResource.GetRequest request =
+         _sheetsService.Spreadsheets.Values.Get(_spreadsheetId, range);
+
+      var numberOfColumns = googleSheetParameters.RangeColumnEnd - googleSheetParameters.RangeColumnStart;
+      var columnNames = new List<string>();
+      var returnValues = new List<ExpandoObject>();
+
+      if (!googleSheetParameters.FirstRowIsHeaders)
+      {
+         for (var i = 0; i <= numberOfColumns; i++)
          {
-            for (var i = 0; i <= numberOfColumns; i++)
-            {
-               columnNames.Add($"Column{i}");
-            }
+            columnNames.Add($"Column{i}");
          }
+      }
 
-         var response = request.Execute();
+      var response = request.Execute();
 
-         int rowCounter = 0;
-         IList<IList<Object>> values = response.Values;
-         if (values != null && values.Count > 0)
+      int rowCounter = 0;
+      IList<IList<Object>> values = response.Values;
+      if (values != null && values.Count > 0)
+      {
+         foreach (var row in values)
          {
-            foreach (var row in values)
+            if (googleSheetParameters.FirstRowIsHeaders && rowCounter == 0)
             {
-               if (googleSheetParameters.FirstRowIsHeaders && rowCounter == 0)
+               for (var i = 0; i <= numberOfColumns; i++)
                {
-                  for (var i = 0; i <= numberOfColumns; i++)
-                  {
-                     columnNames.Add(row[i].ToString());
-                  }
-                  rowCounter++;
-                  continue;
+                  columnNames.Add(row[i].ToString());
                }
-
-               var expando = new ExpandoObject();
-               var expandoDict = expando as IDictionary<String, object>;
-               var columnCounter = 0;
-               foreach (var columnName in columnNames)
-               {
-                  expandoDict.Add(columnName, row[columnCounter].ToString());
-                  columnCounter++;
-               }
-               returnValues.Add(expando);
                rowCounter++;
+               continue;
             }
-         }
 
-         return returnValues;
-      }
-
-      public void AddCells(GoogleSheetParameters googleSheetParameters, List<GoogleSheetRow> rows)
-      {
-         var requests = new BatchUpdateSpreadsheetRequest { Requests = new List<Request>() };
-
-         var sheetId = GetSheetId(_sheetsService, _spreadsheetId, googleSheetParameters.SheetName);
-
-         GridCoordinate gc = new GridCoordinate
-         {
-            ColumnIndex = googleSheetParameters.RangeColumnStart - 1,
-            RowIndex = googleSheetParameters.RangeRowStart - 1,
-            SheetId = sheetId
-         };
-
-         var request = new Request { UpdateCells = new UpdateCellsRequest { Start = gc, Fields = "*" } };
-
-         var listRowData = new List<RowData>();
-
-         foreach (var row in rows)
-         {
-            var rowData = new RowData();
-            var listCellData = new List<CellData>();
-            foreach (var cell in row.Cells)
+            var expando = new ExpandoObject();
+            var expandoDict = expando as IDictionary<String, object>;
+            var columnCounter = 0;
+            foreach (var columnName in columnNames)
             {
-               var cellData = new CellData();
-               var extendedValue = new ExtendedValue { StringValue = cell.CellValue };
-
-               cellData.UserEnteredValue = extendedValue;
-               var cellFormat = new CellFormat { TextFormat = new TextFormat() };
-
-               if (cell.IsBold)
-               {
-                  cellFormat.TextFormat.Bold = true;
-               }
-
-               cellFormat.BackgroundColor = new Color { Blue = (float)cell.BackgroundColor.B / 255, Red = (float)cell.BackgroundColor.R / 255, Green = (float)cell.BackgroundColor.G / 255 };
-
-               cellData.UserEnteredFormat = cellFormat;
-               listCellData.Add(cellData);
+               expandoDict.Add(columnName, row[columnCounter].ToString());
+               columnCounter++;
             }
-            rowData.Values = listCellData;
-            listRowData.Add(rowData);
+            returnValues.Add(expando);
+            rowCounter++;
          }
-         request.UpdateCells.Rows = listRowData;
-
-         // It's a batch request so you can create more than one request and send them all in one batch. Just use reqs.Requests.Add() to add additional requests for the same spreadsheet
-         requests.Requests.Add(request);
-
-         _sheetsService.Spreadsheets.BatchUpdate(requests, _spreadsheetId).Execute();
       }
 
-      private string GetColumnName(int index)
-      {
-         const string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-         var value = "";
-
-         if (index >= letters.Length)
-            value += letters[index / letters.Length - 1];
-
-         value += letters[index % letters.Length];
-         return value;
-      }
-
-      private GoogleSheetParameters MakeGoogleSheetDataRangeColumnsZeroBased(GoogleSheetParameters googleSheetParameters)
-      {
-         googleSheetParameters.RangeColumnStart = googleSheetParameters.RangeColumnStart - 1;
-         googleSheetParameters.RangeColumnEnd = googleSheetParameters.RangeColumnEnd - 1;
-         return googleSheetParameters;
-      }
-
-      private int GetSheetId(SheetsService service, string spreadSheetId, string spreadSheetName)
-      {
-         var spreadsheet = service.Spreadsheets.Get(spreadSheetId).Execute();
-         var sheet = spreadsheet.Sheets.FirstOrDefault(s => s.Properties.Title == spreadSheetName);
-         int sheetId = (int)sheet.Properties.SheetId;
-         return sheetId;
-      }
+      return returnValues;
    }
 
-   public class GoogleSheetCell2
+   public void AddCells(GoogleSheetParameters googleSheetParameters, List<GoogleSheetRow> rows)
    {
-      public string CellValue { get; set; }
-      public bool IsBold { get; set; }
-      public System.Drawing.Color BackgroundColor { get; set; } = System.Drawing.Color.White;
+      var requests = new BatchUpdateSpreadsheetRequest { Requests = new List<Request>() };
+
+      var sheetId = GetSheetId(_sheetsService, _spreadsheetId, googleSheetParameters.SheetName);
+
+      GridCoordinate gc = new GridCoordinate
+      {
+         ColumnIndex = googleSheetParameters.RangeColumnStart - 1,
+         RowIndex = googleSheetParameters.RangeRowStart - 1,
+         SheetId = sheetId
+      };
+
+      var request = new Request { UpdateCells = new UpdateCellsRequest { Start = gc, Fields = "*" } };
+
+      var listRowData = new List<RowData>();
+
+      foreach (var row in rows)
+      {
+         var rowData = new RowData();
+         var listCellData = new List<CellData>();
+         foreach (var cell in row.Cells)
+         {
+            var cellData = new CellData();
+            var extendedValue = new ExtendedValue { StringValue = cell.CellValue };
+
+            cellData.UserEnteredValue = extendedValue;
+            var cellFormat = new CellFormat { TextFormat = new TextFormat() };
+
+            if (cell.IsBold)
+            {
+               cellFormat.TextFormat.Bold = true;
+            }
+
+            cellFormat.BackgroundColor = new Color { Blue = (float)cell.BackgroundColor.B / 255, Red = (float)cell.BackgroundColor.R / 255, Green = (float)cell.BackgroundColor.G / 255 };
+
+            cellData.UserEnteredFormat = cellFormat;
+            listCellData.Add(cellData);
+         }
+         rowData.Values = listCellData;
+         listRowData.Add(rowData);
+      }
+      request.UpdateCells.Rows = listRowData;
+
+      // It's a batch request so you can create more than one request and send them all in one batch. Just use reqs.Requests.Add() to add additional requests for the same spreadsheet
+      requests.Requests.Add(request);
+
+      _sheetsService.Spreadsheets.BatchUpdate(requests, _spreadsheetId).Execute();
    }
 
-   public class GoogleSheetParameters2
+   private string GetColumnName(int index)
    {
-      public int RangeColumnStart { get; set; }
-      public int RangeRowStart { get; set; }
-      public int RangeColumnEnd { get; set; }
-      public int RangeRowEnd { get; set; }
-      public string SheetName { get; set; }
-      public bool FirstRowIsHeaders { get; set; }
+      const string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      var value = "";
+
+      if (index >= letters.Length)
+         value += letters[index / letters.Length - 1];
+
+      value += letters[index % letters.Length];
+      return value;
    }
 
-   public class GoogleSheetRow2
+   private GoogleSheetParameters MakeGoogleSheetDataRangeColumnsZeroBased(GoogleSheetParameters googleSheetParameters)
    {
-      public GoogleSheetRow2() => Cells = new List<GoogleSheetCell>();
-
-      public List<GoogleSheetCell> Cells { get; set; }
+      googleSheetParameters.RangeColumnStart = googleSheetParameters.RangeColumnStart - 1;
+      googleSheetParameters.RangeColumnEnd = googleSheetParameters.RangeColumnEnd - 1;
+      return googleSheetParameters;
    }
+
+   private int GetSheetId(SheetsService service, string spreadSheetId, string spreadSheetName)
+   {
+      var spreadsheet = service.Spreadsheets.Get(spreadSheetId).Execute();
+      var sheet = spreadsheet.Sheets.FirstOrDefault(s => s.Properties.Title == spreadSheetName);
+      int sheetId = (int)sheet.Properties.SheetId;
+      return sheetId;
+   }
+}
+
+public class GoogleSheetCell2
+{
+   public string CellValue { get; set; }
+   public bool IsBold { get; set; }
+   public System.Drawing.Color BackgroundColor { get; set; } = System.Drawing.Color.White;
+}
+
+public class GoogleSheetParameters2
+{
+   public int RangeColumnStart { get; set; }
+   public int RangeRowStart { get; set; }
+   public int RangeColumnEnd { get; set; }
+   public int RangeRowEnd { get; set; }
+   public string SheetName { get; set; }
+   public bool FirstRowIsHeaders { get; set; }
+}
+
+public class GoogleSheetRow2
+{
+   public GoogleSheetRow2() => Cells = new List<GoogleSheetCell>();
+
+   public List<GoogleSheetCell> Cells { get; set; }
 }

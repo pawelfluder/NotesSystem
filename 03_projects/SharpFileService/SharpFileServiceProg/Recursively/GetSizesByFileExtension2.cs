@@ -1,48 +1,47 @@
-﻿namespace SharpFileServiceProg.Recursively
+﻿namespace SharpFileServiceProg.Recursively;
+
+public class GetSizesByFileExtension2
 {
-    public class GetSizesByFileExtension2
+    private VisitDirectoriesRecursively rvd;
+    private Action<FileInfo> fileAction;
+    private Action<DirectoryInfo> folderAction;
+    long generalSize;
+    long tempSize;
+    private Dictionary<string, Dictionary<string, string>> dictionarySize;
+
+    public GetSizesByFileExtension2()
     {
-        private VisitDirectoriesRecursively rvd;
-        private Action<FileInfo> fileAction;
-        private Action<DirectoryInfo> folderAction;
-        long generalSize;
-        long tempSize;
-        private Dictionary<string, Dictionary<string, string>> dictionarySize;
+        rvd = new VisitDirectoriesRecursively();
+        InitializeActions();
+    }
 
-        public GetSizesByFileExtension2()
-        {
-            rvd = new VisitDirectoriesRecursively();
-            InitializeActions();
-        }
+    public Dictionary<string, Dictionary<string, string>> Do
+        (string path, string[] typesToCount = null)
+    {
+        dictionarySize = new Dictionary<string, Dictionary<string, string>>();
+        rvd.Visit(path, fileAction, folderAction);
+        return dictionarySize;
+    }
 
-        public Dictionary<string, Dictionary<string, string>> Do
-            (string path, string[] typesToCount = null)
+    private void InitializeActions()
+    {
+        fileAction = new Action<FileInfo>((fileInfo) =>
         {
-            dictionarySize = new Dictionary<string, Dictionary<string, string>>();
-            rvd.Visit(path, fileAction, folderAction);
-            return dictionarySize;
-        }
+            var extension = fileInfo.Extension;
 
-        private void InitializeActions()
-        {
-            fileAction = new Action<FileInfo>((fileInfo) =>
+            if (!dictionarySize.ContainsKey(extension))
             {
-                var extension = fileInfo.Extension;
-
-                if (!dictionarySize.ContainsKey(extension))
-                {
-                    var tmp2 = new Dictionary<string, string>();
-                    dictionarySize.Add(extension, tmp2);
-                }
+                var tmp2 = new Dictionary<string, string>();
+                dictionarySize.Add(extension, tmp2);
+            }
                 
-                var tmp = dictionarySize[extension];
-                var size = rvd.FormatBytes(fileInfo.Length);
-                tmp.Add(fileInfo.FullName, size);
-            });
+            var tmp = dictionarySize[extension];
+            var size = rvd.FormatBytes(fileInfo.Length);
+            tmp.Add(fileInfo.FullName, size);
+        });
 
-            folderAction = new Action<DirectoryInfo>((directionryInfo) =>
-            {
-            });
-        }
+        folderAction = new Action<DirectoryInfo>((directionryInfo) =>
+        {
+        });
     }
 }

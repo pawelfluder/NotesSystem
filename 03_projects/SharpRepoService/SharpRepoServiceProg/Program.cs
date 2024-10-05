@@ -1,9 +1,8 @@
-﻿namespace SharpRepoServiceProg
+﻿namespace SharpRepoServiceProg;
+
+internal class Program
 {
-    internal class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-        }
     }
 }

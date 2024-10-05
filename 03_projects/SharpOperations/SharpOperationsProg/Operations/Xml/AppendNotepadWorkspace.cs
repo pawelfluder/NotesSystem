@@ -1,58 +1,57 @@
 ﻿using SharpOperationsProg.Operations.FilesRecursively;
 
-namespace SharpOperationsProg.Operations.Xml
+namespace SharpOperationsProg.Operations.Xml;
+
+internal class AppendNotepadWorkspace
 {
-    internal class AppendNotepadWorkspace
+    private VisitDirectoriesRecursively rvd;
+    private Action<FileInfo> fileAction;
+    private Action<DirectoryInfo> folderAction;
+    long generalSize;
+    long tempSize;
+    List<List<string>> tempResult;
+    DirectoryInfo inputDirInfo;
+
+    public AppendNotepadWorkspace()
     {
-        private VisitDirectoriesRecursively rvd;
-        private Action<FileInfo> fileAction;
-        private Action<DirectoryInfo> folderAction;
-        long generalSize;
-        long tempSize;
-        List<List<string>> tempResult;
-        DirectoryInfo inputDirInfo;
+        rvd = new VisitDirectoriesRecursively();
+        ClearAll();
+        InitializeActions();
+    }
 
-        public AppendNotepadWorkspace()
-        {
-            rvd = new VisitDirectoriesRecursively();
-            ClearAll();
-            InitializeActions();
-        }
+    private void ClearAll()
+    {
+        generalSize = 0;
+        tempSize = 0;
+        tempResult = new List<List<string>>();
+        inputDirInfo = null;
+    }
 
-        private void ClearAll()
-        {
-            generalSize = 0;
-            tempSize = 0;
-            tempResult = new List<List<string>>();
-            inputDirInfo = null;
-        }
+    public List<List<string>> Do(string path, string[] typesToCount = null)
+    {
+        inputDirInfo = new DirectoryInfo(path);
+        rvd.Visit(path, fileAction, folderAction);
+        var result = tempResult.ConvertAll(x => x);
+        result.Insert(0, new List<string> { path, rvd.FormatBytes(generalSize) });
+        ClearAll();
+        return result;
+    }
 
-        public List<List<string>> Do(string path, string[] typesToCount = null)
+    private void InitializeActions()
+    {
+        fileAction = new Action<FileInfo>((fileInfo) =>
         {
-            inputDirInfo = new DirectoryInfo(path);
-            rvd.Visit(path, fileAction, folderAction);
-            var result = tempResult.ConvertAll(x => x);
-            result.Insert(0, new List<string> { path, rvd.FormatBytes(generalSize) });
-            ClearAll();
-            return result;
-        }
+            tempSize += fileInfo.Length;
+        });
 
-        private void InitializeActions()
+        folderAction = new Action<DirectoryInfo>((directionryInfo) =>
         {
-            fileAction = new Action<FileInfo>((fileInfo) =>
+            if (directionryInfo.Parent.FullName ==inputDirInfo.FullName)
             {
-                tempSize += fileInfo.Length;
-            });
-
-            folderAction = new Action<DirectoryInfo>((directionryInfo) =>
-            {
-                if (directionryInfo.Parent.FullName ==inputDirInfo.FullName)
-                {
-                    generalSize += tempSize;
-                    tempResult.Add(new List<string> { rvd.FormatBytes(tempSize), directionryInfo.FullName });
-                    tempSize = 0;
-                }
-            });
-        }
+                generalSize += tempSize;
+                tempResult.Add(new List<string> { rvd.FormatBytes(tempSize), directionryInfo.FullName });
+                tempSize = 0;
+            }
+        });
     }
 }

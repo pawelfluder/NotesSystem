@@ -1,9 +1,8 @@
-namespace PdfService.GridWorker
+namespace PdfService.GridWorker;
+
+public enum CellType
 {
-    public enum CellType
-    {
-        String,
-        InlineString,
-        Number,
-    }
+    String,
+    InlineString,
+    Number,
 }

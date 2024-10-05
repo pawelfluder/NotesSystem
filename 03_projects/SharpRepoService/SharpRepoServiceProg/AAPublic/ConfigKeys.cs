@@ -1,8 +1,7 @@
-﻿namespace SharpRepoServiceProg.AAPublic
+﻿namespace SharpRepoServiceProg.AAPublic;
+
+public enum ConfigKeys
 {
-    public enum ConfigKeys
-    {
-        googleDocId,
-        name,
-    }
+    googleDocId,
+    name,
 }

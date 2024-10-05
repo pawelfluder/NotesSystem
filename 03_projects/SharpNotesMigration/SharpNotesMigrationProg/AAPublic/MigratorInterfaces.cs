@@ -1,18 +1,17 @@
-﻿namespace SharpNotesMigrationProg.AAPublic
+﻿namespace SharpNotesMigrationProg.AAPublic;
+
+public interface IMigrator03
 {
-    public interface IMigrator03
-    {
-        List<(int, string, string, string)> Changes { get; }
-        void MigrateOneAddress((string Repo, string Loca) address);
-        void MigrateOneRepo((string Repo, string Loca) address);
-        void SetAgree(bool agree);
-    };
+    List<(int, string, string, string)> Changes { get; }
+    void MigrateOneAddress((string Repo, string Loca) address);
+    void MigrateOneRepo((string Repo, string Loca) address);
+    void SetAgree(bool agree);
+};
 
-    public interface IMigrator04
-    {
-    }
+public interface IMigrator04
+{
+}
 
-    public interface IMigrator05
-    {
-    }
+public interface IMigrator05
+{
 }

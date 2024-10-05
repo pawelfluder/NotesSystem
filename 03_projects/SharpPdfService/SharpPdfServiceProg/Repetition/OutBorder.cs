@@ -1,13 +1,12 @@
 ﻿using PdfService.PdfService;
 using SharpPdfServiceProg.Service;
 
-namespace SharpPdfServiceProg.Repetition
+namespace SharpPdfServiceProg.Repetition;
+
+public class OutBorder
 {
-    public class OutBorder
+    public static IPdfService2 PdfService()
     {
-        public static IPdfService2 PdfService()
-        {
-            return new PdfExecutor2();
-        }
+        return new PdfExecutor2();
     }
 }

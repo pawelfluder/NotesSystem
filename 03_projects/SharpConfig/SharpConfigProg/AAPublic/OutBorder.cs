@@ -2,20 +2,19 @@
 using SharpConfigProg.Service;
 using SharpOperationsProg.AAPublic.Operations;
 
-namespace SharpConfigProg.AAPublic
+namespace SharpConfigProg.AAPublic;
+
+public static partial class OutBorder
 {
-    public static partial class OutBorder
+    public static IConfigService ConfigService(
+        IOperationsService operationsService)
     {
-        public static IConfigService ConfigService(
-            IOperationsService operationsService)
+        if (!MyBorder.Container.IsRegistered<IPreparer>())
         {
-            if (!MyBorder.Container.IsRegistered<IPreparer>())
-            {
-                new Reg_Preparer().Register(operationsService);
-            }
-            
-            var configService = new ConfigService(operationsService);
-            return configService;
+            new Reg_Preparer().Register(operationsService);
         }
+            
+        var configService = new ConfigService(operationsService);
+        return configService;
     }
 }

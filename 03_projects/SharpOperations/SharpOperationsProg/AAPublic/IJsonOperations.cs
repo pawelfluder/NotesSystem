@@ -1,10 +1,9 @@
-﻿namespace SharpOperationsProg.AAPublic
+﻿namespace SharpOperationsProg.AAPublic;
+
+public interface IJsonOperations
 {
-    public interface IJsonOperations
-    {
-        T DeserializeObject<T>(string jsonString);
-        T TryDeserializeObject<T>(string jsonString);
-        string SerializeObject(object obj);
-        string TrySerializeObject(object obj);
-    }
+    T DeserializeObject<T>(string jsonString);
+    T TryDeserializeObject<T>(string jsonString);
+    string SerializeObject(object obj);
+    string TrySerializeObject(object obj);
 }

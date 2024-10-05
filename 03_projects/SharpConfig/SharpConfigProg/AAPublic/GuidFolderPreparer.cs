@@ -2,47 +2,46 @@
 using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 
-namespace SharpConfigProg.Service
+namespace SharpConfigProg.Service;
+
+public partial interface IConfigService
 {
-    public partial interface IConfigService
+    public interface ILocalProgramDataPreparer : IPreparer { }
+}
+
+public class GuidFolderPreparer : IPreparer
+{
+    private readonly IOperationsService operationsService;
+    private IConfigService configService;
+
+    public GuidFolderPreparer(IOperationsService operationsService)
     {
-        public interface ILocalProgramDataPreparer : IPreparer { }
+        this.operationsService = operationsService;
     }
 
-    public class GuidFolderPreparer : IPreparer
+    public Dictionary<string, object> Prepare()
     {
-        private readonly IOperationsService operationsService;
-        private IConfigService configService;
+        var paths = new Dictionary<string, object>();
 
-        public GuidFolderPreparer(IOperationsService operationsService)
+        var repoRootPaths = GetRepoSearchPaths2();
+        paths = new Dictionary<string, object>()
         {
-            this.operationsService = operationsService;
-        }
+            { "repoRootPaths", repoRootPaths},
+        };
+        paths.ToList().ForEach(x => Console.WriteLine(x.Key + ": " + x.Value));
 
-        public Dictionary<string, object> Prepare()
-        {
-            var paths = new Dictionary<string, object>();
+        return paths;
+    }
 
-            var repoRootPaths = GetRepoSearchPaths2();
-            paths = new Dictionary<string, object>()
-            {
-                { "repoRootPaths", repoRootPaths},
-            };
-            paths.ToList().ForEach(x => Console.WriteLine(x.Key + ": " + x.Value));
+    public List<object> GetRepoSearchPaths2()
+    {
+        var programDataFolderPath = operationsService.Path.GetProjectFolderPath("18296f12-0706-43e1-9bd4-1b40154ec22e");
+        var searchPaths = new List<object> { programDataFolderPath };
+        return searchPaths;
+    }
 
-            return paths;
-        }
-
-        public List<object> GetRepoSearchPaths2()
-        {
-            var programDataFolderPath = operationsService.Path.GetProjectFolderPath("18296f12-0706-43e1-9bd4-1b40154ec22e");
-            var searchPaths = new List<object> { programDataFolderPath };
-            return searchPaths;
-        }
-
-        public void SetConfigService(IConfigService configService)
-        {
-            this.configService = configService;
-        }
+    public void SetConfigService(IConfigService configService)
+    {
+        this.configService = configService;
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace WpfNotesSystem
+namespace WpfNotesSystem;
+
+public interface IContentCreator
 {
-    public interface IContentCreator
-    {
-        void CreateRowsAndColls(int jmax, int imax);
-        void CreateHeader((int, int) pos, string text, int collSpan);
-        void CreateLines((int, int) pos, string line, int collSpan);
-        void CreateEmpty((int, int) pos);
-    }
+    void CreateRowsAndColls(int jmax, int imax);
+    void CreateHeader((int, int) pos, string text, int collSpan);
+    void CreateLines((int, int) pos, string line, int collSpan);
+    void CreateEmpty((int, int) pos);
 }

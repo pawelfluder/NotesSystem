@@ -1,25 +1,24 @@
 using PdfSharpCore.Drawing;
 
-namespace PdfService.GridWorker
+namespace PdfService.GridWorker;
+
+public class DataColumn
 {
-   public class DataColumn
+    public int Id
     {
-        public int Id
-        {
-            get;
-            set;
-        }
+        get;
+        set;
+    }
 
-        public XUnit Left
-        {
-            get;
-            set;
-        }
+    public XUnit Left
+    {
+        get;
+        set;
+    }
 
-        public string Header
-        {
-            get;
-            set;
-        }
+    public string Header
+    {
+        get;
+        set;
     }
 }

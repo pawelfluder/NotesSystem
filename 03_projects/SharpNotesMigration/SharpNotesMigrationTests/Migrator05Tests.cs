@@ -6,38 +6,37 @@ using SharpRepoServiceProg.AAPublic;
 using Unity;
 using OutBorder01 = SharpSetup21ProgPrivate.AAPublic.OutBorder;
 
-namespace SharpNotesMigrationTests
+namespace SharpNotesMigrationTests;
+
+[TestClass]
+public class Migrator05Tests
 {
-    [TestClass]
-    public class Migrator05Tests
+    public Migrator05Tests()
     {
-        public Migrator05Tests()
-        {
-            OutBorder01.GetPreparer("PrivateNotesPreparer").Prepare();
-        }
+        OutBorder01.GetPreparer("PrivateNotesPreparer").Prepare();
+    }
 
-        [TestMethod]
-        public void MigrateOneAddress()
-        {
-            // arrange
-            var migrationService = MyBorder.Container.Resolve<IMigrationService>();
-            var adrTuple = ("Winder2", "01/03/01/110");
-            var agree = true;
+    [TestMethod]
+    public void MigrateOneAddress()
+    {
+        // arrange
+        var migrationService = MyBorder.Container.Resolve<IMigrationService>();
+        var adrTuple = ("Winder2", "01/03/01/110");
+        var agree = true;
 
-            // act
-            migrationService.MigrateOneAddress(typeof(IMigrator05), adrTuple, agree);
-        }
+        // act
+        migrationService.MigrateOneAddress(typeof(IMigrator05), adrTuple, agree);
+    }
 
-        [TestMethod]
-        public void TestMethod3()
-        {
-            // arrange
-            var migrationService = MyBorder.Container.Resolve<IMigrationService>();
-            var adrTuple = ("Winder2", "01/03/01");
-            var agree = true;
+    [TestMethod]
+    public void TestMethod3()
+    {
+        // arrange
+        var migrationService = MyBorder.Container.Resolve<IMigrationService>();
+        var adrTuple = ("Winder2", "01/03/01");
+        var agree = true;
 
-            // act
-            migrationService.MigrateOneFolder(typeof(IMigrator05), adrTuple, agree);
-        }
+        // act
+        migrationService.MigrateOneFolder(typeof(IMigrator05), adrTuple, agree);
     }
 }

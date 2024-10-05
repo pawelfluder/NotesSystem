@@ -1,10 +1,9 @@
-﻿namespace SharpButtonActionsProg.AAPublic
+﻿namespace SharpButtonActionsProg.AAPublic;
+
+public interface ISystemActionsService
 {
-    public interface ISystemActionsService
-    {
-        void OpenFile(string path);
-        void OpenFolder(string path);
-        void OpenTerminal(string path);
-        void Run(string[] args);
-    }
+    void OpenFile(string path);
+    void OpenFolder(string path);
+    void OpenTerminal(string path);
+    void Run(string[] args);
 }

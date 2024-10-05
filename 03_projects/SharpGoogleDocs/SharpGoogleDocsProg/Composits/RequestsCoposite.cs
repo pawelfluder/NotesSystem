@@ -6,412 +6,411 @@ using SharpGoogleDocsProg.Composits;
 using GoogleDocument = Google.Apis.Docs.v1.Data.Document;
 using GoogleDocsRange = Google.Apis.Docs.v1.Data.Range;
 
-namespace SharpGoogleDocsProg.Worker
+namespace SharpGoogleDocsProg.Worker;
+
+public class RequestsCoposite
 {
-    public class RequestsCoposite
+    DocsService _service;
+    private readonly DocumentComposite _documentComposite;
+
+    public RequestsCoposite(
+        DocsService service,
+        DocumentComposite documentComposite)
     {
-        DocsService _service;
-        private readonly DocumentComposite _documentComposite;
+        _service = service;
+        _documentComposite = documentComposite;
+    }
 
-        public RequestsCoposite(
-            DocsService service,
-            DocumentComposite documentComposite)
+    public string UpdateDocument(string id, List<string> lines, string sep)
+    {
+        var lastEndIndex = GetDocumentLastIndex(id);
+        ClearDocument(id, lastEndIndex);
+        AppendToDocument(id, lines, 1, sep);
+
+        return null;
+    }
+
+    public int GetDocumentLastIndex(GoogleDocument document)
+    {
+        var lastEndIndex = (int)document.Body.Content.Last().EndIndex - 1;
+        return lastEndIndex;
+    }
+
+    public int GetDocumentLastIndex(string id)
+    {
+        GoogleDocument document = GetDocument(id);
+        var lastEndIndex = (int)document.Body.Content.Last().EndIndex - 1;
+        return lastEndIndex;
+    }
+
+    public Request GetInsertPhotosRequest(int width, string uri, int index)
+    {
+        return new Request()
         {
-            _service = service;
-            _documentComposite = documentComposite;
-        }
-
-        public string UpdateDocument(string id, List<string> lines, string sep)
-        {
-            var lastEndIndex = GetDocumentLastIndex(id);
-            ClearDocument(id, lastEndIndex);
-            AppendToDocument(id, lines, 1, sep);
-
-            return null;
-        }
-
-        public int GetDocumentLastIndex(GoogleDocument document)
-        {
-            var lastEndIndex = (int)document.Body.Content.Last().EndIndex - 1;
-            return lastEndIndex;
-        }
-
-        public int GetDocumentLastIndex(string id)
-        {
-            GoogleDocument document = GetDocument(id);
-            var lastEndIndex = (int)document.Body.Content.Last().EndIndex - 1;
-            return lastEndIndex;
-        }
-
-        public Request GetInsertPhotosRequest(int width, string uri, int index)
-        {
-            return new Request()
+            InsertInlineImage = new()
             {
-                InsertInlineImage = new()
+                //Uri = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgI2LGva1JuYa--ODqOja1y0haWB7XPOXArUO2Lkdumw&s",
+                //Uri = "D:/01_Synchronized/01_Programming_Files/8c0f7763-7149-4b4d-9d6a-b28d3984552f/15_Zbior/PythonTinderApiDataExport/Output/ExportedApplicationData/635e47ac1e983b01004469ac/636971af18d4b20100b9d22c/640x800_ce036b17-abc8-4230-bb03-2be1690b74f8.jpg",
+                Uri = uri,
+                ObjectSize = new Size()
                 {
-                    //Uri = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgI2LGva1JuYa--ODqOja1y0haWB7XPOXArUO2Lkdumw&s",
-                    //Uri = "D:/01_Synchronized/01_Programming_Files/8c0f7763-7149-4b4d-9d6a-b28d3984552f/15_Zbior/PythonTinderApiDataExport/Output/ExportedApplicationData/635e47ac1e983b01004469ac/636971af18d4b20100b9d22c/640x800_ce036b17-abc8-4230-bb03-2be1690b74f8.jpg",
-                    Uri = uri,
-                    ObjectSize = new Size()
+                    //Height = new Dimension()
+                    //{
+                    //    Magnitude = height,
+                    //    Unit = "PT",
+                    //},
+                    Width = new Dimension()
                     {
-                        //Height = new Dimension()
-                        //{
-                        //    Magnitude = height,
-                        //    Unit = "PT",
-                        //},
-                        Width = new Dimension()
-                        {
-                            Magnitude = width,
-                            Unit = "PT",
-                        }
-                    },
-                    Location = new Location()
-                    {
-                        Index = index,
+                        Magnitude = width,
+                        Unit = "PT",
                     }
                 },
-            };
-        }
-
-        public List<Request> GetUrlMessagesRequests(Dictionary<string, List<(string, string)>> input, GoogleDocument document)
-        {
-            var temp1 = document.Body.Content.Where(x => x.Paragraph != null).SelectMany(x => x.Paragraph.Elements);
-            var requests = new List<Request>();
-
-            foreach (var item in input)
-            {
-                if (item.Key == string.Empty)
+                Location = new Location()
                 {
-                    continue;
+                    Index = index,
                 }
+            },
+        };
+    }
 
-                var temp = temp1.SingleOrDefault(x => x.TextRun.Content.StartsWith(item.Key));
-                if (temp != null)
+    public List<Request> GetUrlMessagesRequests(Dictionary<string, List<(string, string)>> input, GoogleDocument document)
+    {
+        var temp1 = document.Body.Content.Where(x => x.Paragraph != null).SelectMany(x => x.Paragraph.Elements);
+        var requests = new List<Request>();
+
+        foreach (var item in input)
+        {
+            if (item.Key == string.Empty)
+            {
+                continue;
+            }
+
+            var temp = temp1.SingleOrDefault(x => x.TextRun.Content.StartsWith(item.Key));
+            if (temp != null)
+            {
+                var i = 0;
+                foreach (var value in item.Value)
                 {
-                    var i = 0;
-                    foreach (var value in item.Value)
+                    i++;
+                    var gg = temp1.SkipWhile(x => x != temp).Skip(i).FirstOrDefault();
+                    if (gg.TextRun.Content.StartsWith(value.Item1))
                     {
-                        i++;
-                        var gg = temp1.SkipWhile(x => x != temp).Skip(i).FirstOrDefault();
-                        if (gg.TextRun.Content.StartsWith(value.Item1))
-                        {
-                            var request = GetTextStyleUpdateRequest(((int)gg.StartIndex, (int)gg.EndIndex), value.Item2);
-                            requests.Add(request);
-                        }
+                        var request = GetTextStyleUpdateRequest(((int)gg.StartIndex, (int)gg.EndIndex), value.Item2);
+                        requests.Add(request);
                     }
-
                 }
-            }
 
-            return requests;
+            }
         }
 
-        public ResponseStatus ExecuteRequest(
-            Request request,
-            string id = null,
-            int maxAttemptsCount = 2)
-        {
-            if (id == null) { id = _documentComposite.Document.DocumentId; }
+        return requests;
+    }
+
+    public ResponseStatus ExecuteRequest(
+        Request request,
+        string id = null,
+        int maxAttemptsCount = 2)
+    {
+        if (id == null) { id = _documentComposite.Document.DocumentId; }
             
-            var requestsList = new List<Request>() { request };
-            return TryExecuteBatchRequests(requestsList, id, maxAttemptsCount);
-        }
+        var requestsList = new List<Request>() { request };
+        return TryExecuteBatchRequests(requestsList, id, maxAttemptsCount);
+    }
 
-        public void ExecuteBatchUpdate(List<Request> requestsList, string id)
+    public void ExecuteBatchUpdate(List<Request> requestsList, string id)
+    {
+        if (requestsList.Count > 0)
         {
-            if (requestsList.Count > 0)
-            {
-                TryExecuteBatchRequests(requestsList, id, 1);
-            }
+            TryExecuteBatchRequests(requestsList, id, 1);
         }
+    }
         
-        public string GetIdFromUri(string uri)
+    public string GetIdFromUri(string uri)
+    {
+        string pattern = @"https://drive.google.com/u/0/uc?id=([^&]+)&export=download";
+        Match match = Regex.Match(uri, pattern);
+        if (match.Success)
         {
-            string pattern = @"https://drive.google.com/u/0/uc?id=([^&]+)&export=download";
-            Match match = Regex.Match(uri, pattern);
-            if (match.Success)
-            {
-                string id = match.Groups[1].Value;
-                return id;
-            }
-
-            throw new InvalidOperationException();
+            string id = match.Groups[1].Value;
+            return id;
         }
 
-        public BatchUpdateDocumentResponse ExecuteBatchUpdateRequest(BatchUpdateDocumentRequest batchRequest, string id)
+        throw new InvalidOperationException();
+    }
+
+    public BatchUpdateDocumentResponse ExecuteBatchUpdateRequest(BatchUpdateDocumentRequest batchRequest, string id)
+    {
+        var result = _service.Documents.BatchUpdate(batchRequest, id).Execute();
+        return result;
+    }
+
+    public ResponseStatus TryExecuteBatchUpdate(List<Request> requestsList, string id)
+    {
+        var status = TryExecuteBatchRequests(requestsList, id, 1);
+        return status;
+    }
+
+    public ResponseStatus TryExecuteBatchRequests(List<Request> requestsList, string id, int maxAttemptCount)
+    {
+        if (maxAttemptCount < 1)
         {
-            var result = _service.Documents.BatchUpdate(batchRequest, id).Execute();
-            return result;
+            return new ResponseStatus(ResponseStatusNames.ZeroMaxAttemptsError);
         }
 
-        public ResponseStatus TryExecuteBatchUpdate(List<Request> requestsList, string id)
-        {
-            var status = TryExecuteBatchRequests(requestsList, id, 1);
-            return status;
-        }
-
-        public ResponseStatus TryExecuteBatchRequests(List<Request> requestsList, string id, int maxAttemptCount)
-        {
-            if (maxAttemptCount < 1)
-            {
-                return new ResponseStatus(ResponseStatusNames.ZeroMaxAttemptsError);
-            }
-
-            var attemptCount = 1;
-            var exceptions = new List<Exception>();
+        var attemptCount = 1;
+        var exceptions = new List<Exception>();
             
-            while (attemptCount <= maxAttemptCount)
+        while (attemptCount <= maxAttemptCount)
+        {
+            try
             {
-                try
+                var batchUpdateRequest = new BatchUpdateDocumentRequest()
                 {
-                    var batchUpdateRequest = new BatchUpdateDocumentRequest()
-                    {
-                        Requests = requestsList,
-                    };
-                    var response = _service.Documents.BatchUpdate(batchUpdateRequest, id).Execute();
-                    return new ResponseStatus(ResponseStatusNames.Success, response, exceptions);
-                }
-                catch (Exception ex)
-                {
-                    exceptions.Add(ex);
-                    attemptCount++;
-                }
-
-                if (attemptCount > maxAttemptCount)
-                {
-                    if (exceptions.Count > 0)
-                    {
-                        return new ResponseStatus(ResponseStatusNames.Exceptions, null, exceptions);
-                    }
-
-                    return new ResponseStatus(ResponseStatusNames.AnotherProblem);
-                }
+                    Requests = requestsList,
+                };
+                var response = _service.Documents.BatchUpdate(batchUpdateRequest, id).Execute();
+                return new ResponseStatus(ResponseStatusNames.Success, response, exceptions);
+            }
+            catch (Exception ex)
+            {
+                exceptions.Add(ex);
+                attemptCount++;
             }
 
-            throw new InvalidOperationException();
-        }
-        
-        private Request GetInsertTableRequest((int ColumnsCount, int RowsCount) size)
-        {
-            var request = new Request()
+            if (attemptCount > maxAttemptCount)
             {
-                InsertTable = new InsertTableRequest()
+                if (exceptions.Count > 0)
                 {
-                    EndOfSegmentLocation = new EndOfSegmentLocation
-                    {
-                        SegmentId = ""
-                    },
-                    Columns = size.ColumnsCount,
-                    Rows = size.RowsCount,
+                    return new ResponseStatus(ResponseStatusNames.Exceptions, null, exceptions);
                 }
-            };
 
-            return request;
+                return new ResponseStatus(ResponseStatusNames.AnotherProblem);
+            }
         }
 
-        public Request GetInsertTextRequest(int? lastEndIndex, string text)
+        throw new InvalidOperationException();
+    }
+        
+    private Request GetInsertTableRequest((int ColumnsCount, int RowsCount) size)
+    {
+        var request = new Request()
         {
-            var insertTextRequest = new Request()
+            InsertTable = new InsertTableRequest()
             {
-                InsertText = new InsertTextRequest()
+                EndOfSegmentLocation = new EndOfSegmentLocation
                 {
-                    Location = new Location()
-                    {
-                        Index = lastEndIndex,
-                    },
-                    Text = text,
+                    SegmentId = ""
                 },
-            };
-
-            return insertTextRequest;
-        }
-
-        public void AppendToDocument(string id, List<string> lines, int lastEndIndex, string sep)
-        {
-            var text = ConcatLines(lines, sep);
-            AppendToDocument(id, text, lastEndIndex);
-        }
-
-        public void AppendToDocument(string id, string text, int lastEndIndex)
-        {
-            //https://developers.google.com/docs/api/how-tos/format-text
-
-            var request = GetInsertTextRequest(lastEndIndex, text);
-            ExecuteRequest(request, id);
-        }
-        
-        public List<int> GetTableIndexes(Table table)
-        {
-            var indexes = new List<int>();
-            foreach (var row in table.TableRows)
-            {
-                foreach (var cell in row.TableCells)
-                {
-                    var index = cell.StartIndex + 1;
-                    indexes.Add(index ?? default);
-                }
+                Columns = size.ColumnsCount,
+                Rows = size.RowsCount,
             }
-            return indexes;
-        }
+        };
 
-        public List<int> GetFirstTableIndexes(GoogleDocument document)
-        {
-            var table = document.Body.Content.FirstOrDefault(x => x.Table != null).Table;
-            var indexes = GetTableIndexes(table);
-            return indexes;
-        }
+        return request;
+    }
 
-        public Request GetMergeCellsRequest((int, int) range, int index, (int, int) location)
+    public Request GetInsertTextRequest(int? lastEndIndex, string text)
+    {
+        var insertTextRequest = new Request()
         {
-            var insertTextRequest = new Request()
+            InsertText = new InsertTextRequest()
             {
-                MergeTableCells = new MergeTableCellsRequest()
+                Location = new Location()
                 {
-                    TableRange = new TableRange()
+                    Index = lastEndIndex,
+                },
+                Text = text,
+            },
+        };
+
+        return insertTextRequest;
+    }
+
+    public void AppendToDocument(string id, List<string> lines, int lastEndIndex, string sep)
+    {
+        var text = ConcatLines(lines, sep);
+        AppendToDocument(id, text, lastEndIndex);
+    }
+
+    public void AppendToDocument(string id, string text, int lastEndIndex)
+    {
+        //https://developers.google.com/docs/api/how-tos/format-text
+
+        var request = GetInsertTextRequest(lastEndIndex, text);
+        ExecuteRequest(request, id);
+    }
+        
+    public List<int> GetTableIndexes(Table table)
+    {
+        var indexes = new List<int>();
+        foreach (var row in table.TableRows)
+        {
+            foreach (var cell in row.TableCells)
+            {
+                var index = cell.StartIndex + 1;
+                indexes.Add(index ?? default);
+            }
+        }
+        return indexes;
+    }
+
+    public List<int> GetFirstTableIndexes(GoogleDocument document)
+    {
+        var table = document.Body.Content.FirstOrDefault(x => x.Table != null).Table;
+        var indexes = GetTableIndexes(table);
+        return indexes;
+    }
+
+    public Request GetMergeCellsRequest((int, int) range, int index, (int, int) location)
+    {
+        var insertTextRequest = new Request()
+        {
+            MergeTableCells = new MergeTableCellsRequest()
+            {
+                TableRange = new TableRange()
+                {
+                    TableCellLocation = new TableCellLocation()
                     {
-                        TableCellLocation = new TableCellLocation()
+                        TableStartLocation = new Location()
                         {
-                            TableStartLocation = new Location()
-                            {
-                                Index = 1,
-                                SegmentId = "1",
-                            },
-                            RowIndex = 1,
-                            ColumnIndex = 1,
+                            Index = 1,
+                            SegmentId = "1",
                         },
-                        ColumnSpan = 2,
-                        RowSpan = 2,
-                    }
+                        RowIndex = 1,
+                        ColumnIndex = 1,
+                    },
+                    ColumnSpan = 2,
+                    RowSpan = 2,
                 }
-            };
-
-            return insertTextRequest;
-        }
-
-        public Request GetBoldStyleUpdateRequest((int, int) range)
-        {
-            return new Request()
-            {
-                UpdateTextStyle = new()
-                {
-                    Fields = "Bold",
-                    TextStyle = new TextStyle()
-                    {
-                        Bold = true,
-                    },
-                    Range = new GoogleDocsRange()
-                    {
-                        StartIndex = range.Item1,
-                        EndIndex = range.Item2,
-                    }
-                },
-            };
-        }
-
-        public Request GetTextStyleUpdateRequest((int, int) range, string url)
-        {
-            return new Request()
-            {
-                UpdateTextStyle = new()
-                {
-                    Fields = "Link",
-                    TextStyle = new TextStyle()
-                    {
-                        Link = new Link() { Url = url }
-                    },
-                    Range = new GoogleDocsRange()
-                    {
-                        StartIndex = range.Item1,
-                        EndIndex = range.Item2,
-                    }
-                },
-            };
-        }
-
-        public void ClearDocument(string docId)
-        {
-            var lastIndex = GetDocumentLastIndex(docId);
-            ClearDocument(docId, lastIndex);
-        }
-
-        public void ClearDocument(string id, int lastEndIndex)
-        {
-            var batchUpdateRequest = new BatchUpdateDocumentRequest();
-            var deleteContentRequest = new Request();
-            if (lastEndIndex == 1)
-            {
-                return;
             }
-            deleteContentRequest.DeleteContentRange = new DeleteContentRangeRequest()
+        };
+
+        return insertTextRequest;
+    }
+
+    public Request GetBoldStyleUpdateRequest((int, int) range)
+    {
+        return new Request()
+        {
+            UpdateTextStyle = new()
             {
+                Fields = "Bold",
+                TextStyle = new TextStyle()
+                {
+                    Bold = true,
+                },
                 Range = new GoogleDocsRange()
                 {
-                    StartIndex = 1,
-                    EndIndex = lastEndIndex,
+                    StartIndex = range.Item1,
+                    EndIndex = range.Item2,
                 }
-            };
+            },
+        };
+    }
 
-            var deleteParagraphBullets = new Request();
-            deleteParagraphBullets.DeleteParagraphBullets = new DeleteParagraphBulletsRequest()
+    public Request GetTextStyleUpdateRequest((int, int) range, string url)
+    {
+        return new Request()
+        {
+            UpdateTextStyle = new()
             {
+                Fields = "Link",
+                TextStyle = new TextStyle()
+                {
+                    Link = new Link() { Url = url }
+                },
                 Range = new GoogleDocsRange()
                 {
-                    StartIndex = 1,
-                    EndIndex = 4,
+                    StartIndex = range.Item1,
+                    EndIndex = range.Item2,
                 }
-            };
+            },
+        };
+    }
 
-            batchUpdateRequest.Requests = new List<Request>()
+    public void ClearDocument(string docId)
+    {
+        var lastIndex = GetDocumentLastIndex(docId);
+        ClearDocument(docId, lastIndex);
+    }
+
+    public void ClearDocument(string id, int lastEndIndex)
+    {
+        var batchUpdateRequest = new BatchUpdateDocumentRequest();
+        var deleteContentRequest = new Request();
+        if (lastEndIndex == 1)
+        {
+            return;
+        }
+        deleteContentRequest.DeleteContentRange = new DeleteContentRangeRequest()
+        {
+            Range = new GoogleDocsRange()
             {
-                deleteContentRequest,
-            };
+                StartIndex = 1,
+                EndIndex = lastEndIndex,
+            }
+        };
 
-            var result = _service.Documents.BatchUpdate(batchUpdateRequest, id).Execute();
-        }
-
-        public List<string> GetDocumentTextLines(string id)
+        var deleteParagraphBullets = new Request();
+        deleteParagraphBullets.DeleteParagraphBullets = new DeleteParagraphBulletsRequest()
         {
-            var request = _service.Documents.Get(id);
-            var document = request.Execute();
-            var lines = GetLines(document);
-            return lines;
-        }
+            Range = new GoogleDocsRange()
+            {
+                StartIndex = 1,
+                EndIndex = 4,
+            }
+        };
 
-        public GoogleDocument GetDocument(string id)
+        batchUpdateRequest.Requests = new List<Request>()
         {
-            var request = _service.Documents.Get(id);
-            GoogleDocument? document = request.Execute();
-            return document;
-        }
+            deleteContentRequest,
+        };
 
-        public List<string> GetDocumentText(string id)
-        {
-            var document = GetDocument(id);
-            var lines = GetLines(document);
-            var text = ConcatLines(lines, string.Empty);
-            return lines;
-        }
+        var result = _service.Documents.BatchUpdate(batchUpdateRequest, id).Execute();
+    }
 
-        public List<string> GetDocumentText(GoogleDocument document)
-        {
-            var lines = GetLines(document);
-            var text = ConcatLines(lines, string.Empty);
-            return lines;
-        }
+    public List<string> GetDocumentTextLines(string id)
+    {
+        var request = _service.Documents.Get(id);
+        var document = request.Execute();
+        var lines = GetLines(document);
+        return lines;
+    }
 
-        private List<string> GetLines(GoogleDocument document)
-        {
-            var content = document.Body.Content;
-            var paragraphs = content.Where(x => x.Paragraph != null).Select(x => x.Paragraph).ToList();
-            var lines = paragraphs.Where(x => x.Elements != null).SelectMany(x => x.Elements).Select(x => x.TextRun.Content).ToList();
+    public GoogleDocument GetDocument(string id)
+    {
+        var request = _service.Documents.Get(id);
+        GoogleDocument? document = request.Execute();
+        return document;
+    }
 
-            return lines;
-        }
+    public List<string> GetDocumentText(string id)
+    {
+        var document = GetDocument(id);
+        var lines = GetLines(document);
+        var text = ConcatLines(lines, string.Empty);
+        return lines;
+    }
 
-        private string ConcatLines(List<string> lines, string newLine)
-        {
-            var result = string.Join(newLine, lines) + newLine;
-            return result;
-        }
+    public List<string> GetDocumentText(GoogleDocument document)
+    {
+        var lines = GetLines(document);
+        var text = ConcatLines(lines, string.Empty);
+        return lines;
+    }
+
+    private List<string> GetLines(GoogleDocument document)
+    {
+        var content = document.Body.Content;
+        var paragraphs = content.Where(x => x.Paragraph != null).Select(x => x.Paragraph).ToList();
+        var lines = paragraphs.Where(x => x.Elements != null).SelectMany(x => x.Elements).Select(x => x.TextRun.Content).ToList();
+
+        return lines;
+    }
+
+    private string ConcatLines(List<string> lines, string newLine)
+    {
+        var result = string.Join(newLine, lines) + newLine;
+        return result;
     }
 }

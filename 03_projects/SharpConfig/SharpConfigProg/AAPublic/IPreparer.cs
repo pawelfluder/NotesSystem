@@ -1,10 +1,9 @@
 ﻿using SharpConfigProg.Service;
 
-namespace SharpConfigProg.AAPublic
+namespace SharpConfigProg.AAPublic;
+
+public interface IPreparer
 {
-    public interface IPreparer
-    {
-        Dictionary<string, object> Prepare();
-        void SetConfigService(IConfigService configService);
-    }
+    Dictionary<string, object> Prepare();
+    void SetConfigService(IConfigService configService);
 }

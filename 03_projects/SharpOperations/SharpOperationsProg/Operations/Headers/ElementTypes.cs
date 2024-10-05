@@ -1,10 +1,9 @@
-﻿namespace SharpOperationsProg.Operations.Headers
+﻿namespace SharpOperationsProg.Operations.Headers;
+
+public enum ElementType
 {
-    public enum ElementType
-    {
-        Line,
-        LinesList,
-        Header,
-        Attribute,
-    }
+    Line,
+    LinesList,
+    Header,
+    Attribute,
 }

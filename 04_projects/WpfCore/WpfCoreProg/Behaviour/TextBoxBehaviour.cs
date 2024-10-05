@@ -2,48 +2,47 @@
 using System.Windows.Input;
 using System.Windows;
 
-namespace WpfNotesSystemProg.Behaviour
+namespace WpfNotesSystemProg.Behaviour;
+
+public static class TextBoxBehaviour
 {
-    public static class TextBoxBehaviour
+    public static readonly DependencyProperty CommandOnEnterPressedProperty = DependencyProperty.RegisterAttached("CommandOnEnterPressed", typeof(ICommand), typeof(TextBoxBehaviour),
+        new FrameworkPropertyMetadata(CommandOnEnterPressedPropertyChanged));
+
+    private static void CommandOnEnterPressedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        public static readonly DependencyProperty CommandOnEnterPressedProperty = DependencyProperty.RegisterAttached("CommandOnEnterPressed", typeof(ICommand), typeof(TextBoxBehaviour),
-                new FrameworkPropertyMetadata(CommandOnEnterPressedPropertyChanged));
+        var sender = (TextBox)d;
+        sender.KeyDown -= OnKeyDown;
 
-        private static void CommandOnEnterPressedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        if (e.NewValue is ICommand)
         {
-            var sender = (TextBox)d;
-            sender.KeyDown -= OnKeyDown;
+            sender.KeyDown += OnKeyDown;
+        }
+    }
 
-            if (e.NewValue is ICommand)
+    private static void OnKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            var tbx = (TextBox)sender;
+            var textBindigExpression = tbx.GetBindingExpression(TextBox.TextProperty);
+            if (textBindigExpression != null)
             {
-                sender.KeyDown += OnKeyDown;
+                textBindigExpression.UpdateSource();
             }
+            var command = GetCommandOnEnterPressed(tbx);
+            if (command.CanExecute(null)) command.Execute(null);
         }
+    }
 
-        private static void OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                var tbx = (TextBox)sender;
-                var textBindigExpression = tbx.GetBindingExpression(TextBox.TextProperty);
-                if (textBindigExpression != null)
-                {
-                    textBindigExpression.UpdateSource();
-                }
-                var command = GetCommandOnEnterPressed(tbx);
-                if (command.CanExecute(null)) command.Execute(null);
-            }
-        }
+    [AttachedPropertyBrowsableForType(typeof(TextBox))]
+    public static void SetCommandOnEnterPressed(TextBox elementName, ICommand value)
+    {
+        elementName.SetValue(CommandOnEnterPressedProperty, value);
+    }
 
-        [AttachedPropertyBrowsableForType(typeof(TextBox))]
-        public static void SetCommandOnEnterPressed(TextBox elementName, ICommand value)
-        {
-            elementName.SetValue(CommandOnEnterPressedProperty, value);
-        }
-
-        public static ICommand GetCommandOnEnterPressed(TextBox elementName)
-        {
-            return (ICommand)elementName.GetValue(CommandOnEnterPressedProperty);
-        }
+    public static ICommand GetCommandOnEnterPressed(TextBox elementName)
+    {
+        return (ICommand)elementName.GetValue(CommandOnEnterPressedProperty);
     }
 }

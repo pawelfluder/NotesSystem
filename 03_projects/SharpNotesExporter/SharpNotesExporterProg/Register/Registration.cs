@@ -1,11 +1,10 @@
 ﻿using SharpContainerProg.AAPublic;
 
-namespace SharpNotesExporterProg.Register
+namespace SharpNotesExporterProg.Register;
+
+internal class Registration : RegistrationBase
 {
-    internal class Registration : RegistrationBase
+    public override void Registrations()
     {
-        public override void Registrations()
-        {
-        }
     }
 }

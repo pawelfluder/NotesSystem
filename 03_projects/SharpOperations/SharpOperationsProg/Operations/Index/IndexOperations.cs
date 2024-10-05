@@ -2,140 +2,139 @@
 using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 
-namespace SharpOperationsProg.Operations.Index
+namespace SharpOperationsProg.Operations.Index;
+
+internal class IndexOperations : IIndexWrk
 {
-    internal class IndexOperations : IIndexWrk
+    private char slash = '/';
+    public int GetLocaLast(string loca)
     {
-        private char slash = '/';
-        public int GetLocaLast(string loca)
+        var tmp = loca.Split("/");
+        var lastString = tmp.Last();
+        var last = StringToIndex(lastString);
+        return last;
+    }
+
+    public string GetAddressString((string, string) adrTuple)
+    {
+        if (string.IsNullOrEmpty(adrTuple.Item2))
         {
-            var tmp = loca.Split("/");
-            var lastString = tmp.Last();
-            var last = StringToIndex(lastString);
-            return last;
+            return adrTuple.Item1;
         }
 
-        public string GetAddressString((string, string) adrTuple)
-        {
-            if (string.IsNullOrEmpty(adrTuple.Item2))
-            {
-                return adrTuple.Item1;
-            }
+        var address = adrTuple.Item1 + "/" + adrTuple.Item2;
+        return address;
+    }
 
-            var address = adrTuple.Item1 + "/" + adrTuple.Item2;
-            return address;
+    public (string, string) SelectAddress(
+        (string Repo, string Loca) address,
+        int index)
+    {
+        // AddIndexToAddress
+        var newLoca = address.Loca + slash + IndexToString(index);
+        return (address.Repo, newLoca);
+    }
+
+    public (string, string) JoinIndexWithLoca(
+        (string Repo, string Loca) adrTuple, int? index)
+    {
+        if (index == null)
+        {
+            return adrTuple;
         }
 
-        public (string, string) SelectAddress(
-            (string Repo, string Loca) address,
-            int index)
+        var idxString = IndexToString(index);
+
+        var newLoca = JoinLoca(adrTuple.Loca, idxString);
+        var newAdrTuple = (adrTuple.Repo, newLoca);
+        return newAdrTuple;
+    }
+
+    public (string, string) AdrTupleJoinLoca(
+        (string Repo, string Loca) adrTuple, string loca)
+    {
+        if (loca == string.Empty)
         {
-            // AddIndexToAddress
-            var newLoca = address.Loca + slash + IndexToString(index);
-            return (address.Repo, newLoca);
+            return adrTuple;
         }
 
-        public (string, string) JoinIndexWithLoca(
-            (string Repo, string Loca) adrTuple, int? index)
+        var newLoca = JoinLoca(adrTuple.Loca, loca);
+        var newAdrTuple = (adrTuple.Repo, newLoca);
+        return newAdrTuple;
+    }
+
+    public string JoinLoca(string loca01, string loca02)
+    {
+        if (loca01 == string.Empty)
         {
-            if (index == null)
-            {
-                return adrTuple;
-            }
-
-            var idxString = IndexToString(index);
-
-            var newLoca = JoinLoca(adrTuple.Loca, idxString);
-            var newAdrTuple = (adrTuple.Repo, newLoca);
-            return newAdrTuple;
+            return loca02;
         }
 
-        public (string, string) AdrTupleJoinLoca(
-            (string Repo, string Loca) adrTuple, string loca)
-        {
-            if (loca == string.Empty)
-            {
-                return adrTuple;
-            }
+        var newLoca = loca01 + "/" + loca02;
+        return newLoca;
+    }
 
-            var newLoca = JoinLoca(adrTuple.Loca, loca);
-            var newAdrTuple = (adrTuple.Repo, newLoca);
-            return newAdrTuple;
+
+    public string IndexToString(int? index)
+    {
+        if (index < 10)
+        {
+            return "0" + index;
+        }
+        if (index < 100)
+        {
+            return index.ToString();
+        }
+        if (index < 1000)
+        {
+            return index.ToString();
         }
 
-        public string JoinLoca(string loca01, string loca02)
+        throw new Exception();
+    }
+
+    public int StringToIndex(string input)
+    {
+        if (input.Length > 3)
         {
-            if (loca01 == string.Empty)
-            {
-                return loca02;
-            }
-
-            var newLoca = loca01 + "/" + loca02;
-            return newLoca;
-        }
-
-
-        public string IndexToString(int? index)
-        {
-            if (index < 10)
-            {
-                return "0" + index;
-            }
-            if (index < 100)
-            {
-                return index.ToString();
-            }
-            if (index < 1000)
-            {
-                return index.ToString();
-            }
-
             throw new Exception();
         }
 
-        public int StringToIndex(string input)
-        {
-            if (input.Length > 3)
-            {
-                throw new Exception();
-            }
+        var index = int.Parse(input);
+        return index;
+    }
 
-            var index = int.Parse(input);
-            return index;
+    public bool TryStringToIndex(string input, out int index)
+    {
+        if (input.Length > 3)
+        {
+            index = -1;
+            return false;
         }
 
-        public bool TryStringToIndex(string input, out int index)
-        {
-            if (input.Length > 3)
-            {
-                index = -1;
-                return false;
-            }
+        var s1 = int.TryParse(input, out index);
+        return s1;
+    }
 
-            var s1 = int.TryParse(input, out index);
-            return s1;
-        }
+    public string LastTwoChar(string input)
+    {
+        var lastTwo = input.Substring(input.Length - 2, 2);
+        return lastTwo;
+    }
 
-        public string LastTwoChar(string input)
-        {
-            var lastTwo = input.Substring(input.Length - 2, 2);
-            return lastTwo;
-        }
+    public bool IsCorrectIndex(string input)
+    {
+        var lastTwo = LastTwoChar(input);
+        var success = TryStringToIndex(lastTwo, out var index);
 
-        public bool IsCorrectIndex(string input)
-        {
-            var lastTwo = LastTwoChar(input);
-            var success = TryStringToIndex(lastTwo, out var index);
+        return success;
+    }
 
-            return success;
-        }
+    public bool IsCorrectIndex(string input, out int index)
+    {
+        var lastTwo = LastTwoChar(input);
+        var success = TryStringToIndex(lastTwo, out index);
 
-        public bool IsCorrectIndex(string input, out int index)
-        {
-            var lastTwo = LastTwoChar(input);
-            var success = TryStringToIndex(lastTwo, out index);
-
-            return success;
-        }
+        return success;
     }
 }

@@ -2,26 +2,25 @@
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 
-namespace SharpFileServiceProg.Yaml.Custom.TypeConverter
+namespace SharpFileServiceProg.Yaml.Custom.TypeConverter;
+
+public class QuotedValueConverter : IYamlTypeConverter
 {
-    public class QuotedValueConverter : IYamlTypeConverter
+    public bool Accepts(Type type)
     {
-        public bool Accepts(Type type)
-        {
-            return true;
-        }
+        return true;
+    }
 
-        public object ReadYaml(IParser parser, Type type)
-        {
-            return null;
-        }
+    public object ReadYaml(IParser parser, Type type)
+    {
+        return null;
+    }
 
-        public void WriteYaml(IEmitter emitter, object value, Type type)
+    public void WriteYaml(IEmitter emitter, object value, Type type)
+    {
+        if (value != null)
         {
-            if (value != null)
-            {
-                emitter.Emit(new Scalar(null, null, value.ToString(), ScalarStyle.DoubleQuoted, true, false));
-            }
+            emitter.Emit(new Scalar(null, null, value.ToString(), ScalarStyle.DoubleQuoted, true, false));
         }
     }
 }

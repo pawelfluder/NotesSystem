@@ -1,67 +1,66 @@
 ﻿using System;
 using System.IO;
 
-namespace SharpRepoServiceProg.Infos
+namespace SharpRepoServiceProg.Infos;
+
+public class ServerInfo
 {
-    public class ServerInfo
+    public ServerInfo()
     {
-        public ServerInfo()
-        {
-            HostName = "serwer2272804.home.pl";
-            Port = 22222;
-            UserName = "notki@notki.com.pl";
-            Password = "Grzybek666/";
+        HostName = "serwer2272804.home.pl";
+        Port = 22222;
+        UserName = "notki@notki.com.pl";
+        Password = "Grzybek666/";
 
-            PathLocalOfRoot = "D:/01_Synchronized/01_Programming_Files";
-            SShRootAddress = GetSShRootAddress();
-            SShPublicHtmlPath = "home/notki/public_html";
-        }
+        PathLocalOfRoot = "D:/01_Synchronized/01_Programming_Files";
+        SShRootAddress = GetSShRootAddress();
+        SShPublicHtmlPath = "home/notki/public_html";
+    }
 
-        private string GetSShRootAddress()
-        {
-            var sshRootAddress = @"ssh://" + UserName + "@" + HostName + ":" + Port;
-            return sshRootAddress;
-        }
+    private string GetSShRootAddress()
+    {
+        var sshRootAddress = @"ssh://" + UserName + "@" + HostName + ":" + Port;
+        return sshRootAddress;
+    }
 
-        public string PathLocalOfRoot { get; }
-        public string PathRemoteOfRoot { get; }
-        public string SShRootAddress { get; }
+    public string PathLocalOfRoot { get; }
+    public string PathRemoteOfRoot { get; }
+    public string SShRootAddress { get; }
 
-        public string SShPublicHtmlPath { get; }
+    public string SShPublicHtmlPath { get; }
         
-        public string AliasesPath { get; }
+    public string AliasesPath { get; }
 
-        private string Slash => "/";
+    private string Slash => "/";
 
-        public string UserName { get; }
-        public string Password { get; }
-        public int Port { get; }
-        public string HostName { get; }
+    public string UserName { get; }
+    public string Password { get; }
+    public int Port { get; }
+    public string HostName { get; }
         
 
-        public string GetPath(string groupName, string repoName)
+    public string GetPath(string groupName, string repoName)
+    {
+        var path = PathLocalOfRoot + Slash + groupName + Slash + repoName;
+        return path;
+    }
+
+    public string GetSShConnectionString()
+    {
+        var result = $"ssh://{HostName}:{Port}";
+        return result;
+    }
+
+    public (string group, string repo) PathToGroupAndName(string path)
+    {
+        var repo = Path.GetFileName(path);
+        var group = Path.GetFileName(Directory.GetParent(path).FullName);
+
+        if (Guid.TryParse(group, out var _))
         {
-            var path = PathLocalOfRoot + Slash + groupName + Slash + repoName;
-            return path;
+            return (group, repo);
         }
 
-        public string GetSShConnectionString()
-        {
-           var result = $"ssh://{HostName}:{Port}";
-           return result;
-        }
-
-        public (string group, string repo) PathToGroupAndName(string path)
-        {
-            var repo = Path.GetFileName(path);
-            var group = Path.GetFileName(Directory.GetParent(path).FullName);
-
-            if (Guid.TryParse(group, out var _))
-            {
-                return (group, repo);
-            }
-
-            return (default, default);
-        }
+        return (default, default);
     }
 }

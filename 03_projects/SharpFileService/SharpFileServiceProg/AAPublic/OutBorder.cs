@@ -1,12 +1,11 @@
 ﻿using SharpFileServiceProg.Service;
 
-namespace SharpFileServiceProg.AAPublic
+namespace SharpFileServiceProg.AAPublic;
+
+public class OutBorder
 {
-    public class OutBorder
+    public static IFileService FileService()
     {
-        public static IFileService FileService()
-        {
-            return new FileService();
-        }
+        return new FileService();
     }
 }

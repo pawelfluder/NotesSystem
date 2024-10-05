@@ -11,39 +11,38 @@ using SharpOperationsProg.Operations.Reflection;
 using SharpOperationsProg.Operations.UniAddress;
 using SharpOperationsProg.Operations.UniItem;
 
-namespace SharpOperationsProg.Service
-{
-    internal class OperationService : IOperationsService
-    {
-        private readonly IFileService _fileService;
-        public IFileWrk File { get; private set; }
-        public IIndexWrk Index { get; private set; }
-        // public IYamlWrk Yaml { get; private set; }
-        public IPathsOperations Path { get; private set; }
-        public HeadersOperations Header { get; private set; }
-        public IUniAddressOperations UniAddress { get; private set; }
-        public IUnitItemOperations UniItem { get; }
-        public IGoogleCredentialWorker Credentials { get; private set; }
-        public IReflectionOperations Reflection { get; private set; }
-        public IJsonOperations Json { get; private set; }
-        public IFileService GetFileService()
-        {
-            return _fileService;
-        }
+namespace SharpOperationsProg.Service;
 
-        public OperationService(
-            IFileService fileService)
-        {
-            File = new FileWrk(fileService);
-            Index = new IndexOperations();
-            // Yaml = new YamlWorker();
-            Path = new PathsOperations();
-            Header = new HeadersOperations();
-            UniAddress = new UniAddressOperations(Index);
-            Credentials = new GoogleCredentialWorker();
-            Reflection = new ReflectionOperations();
-            Json = new JsonOperations();
-            _fileService = fileService;
-        }
+internal class OperationService : IOperationsService
+{
+    private readonly IFileService _fileService;
+    public IFileWrk File { get; private set; }
+    public IIndexWrk Index { get; private set; }
+    // public IYamlWrk Yaml { get; private set; }
+    public IPathsOperations Path { get; private set; }
+    public HeadersOperations Header { get; private set; }
+    public IUniAddressOperations UniAddress { get; private set; }
+    public IUnitItemOperations UniItem { get; }
+    public IGoogleCredentialWorker Credentials { get; private set; }
+    public IReflectionOperations Reflection { get; private set; }
+    public IJsonOperations Json { get; private set; }
+    public IFileService GetFileService()
+    {
+        return _fileService;
+    }
+
+    public OperationService(
+        IFileService fileService)
+    {
+        File = new FileWrk(fileService);
+        Index = new IndexOperations();
+        // Yaml = new YamlWorker();
+        Path = new PathsOperations();
+        Header = new HeadersOperations();
+        UniAddress = new UniAddressOperations(Index);
+        Credentials = new GoogleCredentialWorker();
+        Reflection = new ReflectionOperations();
+        Json = new JsonOperations();
+        _fileService = fileService;
     }
 }

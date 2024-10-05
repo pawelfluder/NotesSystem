@@ -1,14 +1,13 @@
 ﻿using SharpFileServiceProg.AAPublic;
 using SharpFileServiceProg.Recursively;
 
-namespace SharpFileServiceProg.Workers
-{
-    internal class FileWrk : IFileWrk
-    {
-        public IFileVisit GetNewRecursivelyVisitDirectory()
-            => new VisitDirectoriesRecursively();
+namespace SharpFileServiceProg.Workers;
 
-        public IParentVisit GetNewVisitDirectoriesRecursivelyWithParentMemory()
-            => new VisitDirectoriesRecursivelyWithParentMemory();
-    }
+internal class FileWrk : IFileWrk
+{
+    public IFileVisit GetNewRecursivelyVisitDirectory()
+        => new VisitDirectoriesRecursively();
+
+    public IParentVisit GetNewVisitDirectoriesRecursivelyWithParentMemory()
+        => new VisitDirectoriesRecursivelyWithParentMemory();
 }

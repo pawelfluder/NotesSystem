@@ -1,7 +1,6 @@
-﻿namespace SharpVideoServiceProg.AAPublic
+﻿namespace SharpVideoServiceProg.AAPublic;
+
+public interface IVideoService
 {
-    public interface IVideoService
-    {
-        Task<bool> PosterWithAudio(string imageFilePath, string audioFilePath, string outputFilePath);
-    }
+    Task<bool> PosterWithAudio(string imageFilePath, string audioFilePath, string outputFilePath);
 }

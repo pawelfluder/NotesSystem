@@ -1,11 +1,10 @@
-﻿namespace SharpRepoServiceProg.Names
+﻿namespace SharpRepoServiceProg.Names;
+
+public static class ItemTypes
 {
-    public static class ItemTypes
-    {
-        public static string Text = "Text";
+    public static string Text = "Text";
 
-        public static string RefText = "RefText";
+    public static string RefText = "RefText";
 
-        public static string Folder = "Folder";
-    }
+    public static string Folder = "Folder";
 }

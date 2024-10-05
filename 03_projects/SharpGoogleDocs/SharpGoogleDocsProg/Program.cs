@@ -1,12 +1,11 @@
 ﻿using SharpGoogleDocsProg.Service;
 
-namespace GoogleDocsServiceProj
+namespace GoogleDocsServiceProj;
+
+internal class Program
 {
-    internal class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            var service = new GoogleDocsService(null);
-        }
+        var service = new GoogleDocsService(null);
     }
 }

@@ -2,113 +2,112 @@
 using SharpFileServiceProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 
-namespace SharpConfigProg.OverrideConfig
+namespace SharpConfigProg.OverrideConfig;
+
+internal class BeforeAfter
 {
-    internal class BeforeAfter
+    private string configFolderName;
+    private string overrideFileName;
+    private string beforeFileName;
+    private string afterFileName;
+
+    private readonly IOperationsService operationsService;
+    private readonly IConfigService configService;
+
+    private string configFolderPath;
+    private readonly IFileService _fileService;
+
+    public BeforeAfter(
+        IOperationsService operationsService,
+        IConfigService configService)
     {
-        private string configFolderName;
-        private string overrideFileName;
-        private string beforeFileName;
-        private string afterFileName;
+        configFolderName = "config";
+        overrideFileName = "override.cfg";
+        beforeFileName = "before.cfg";
+        afterFileName = "after.cfg";
 
-        private readonly IOperationsService operationsService;
-        private readonly IConfigService configService;
+        this.operationsService = operationsService;
+        this.configService = configService;
+        _fileService = operationsService.GetFileService();
+    }
 
-        private string configFolderPath;
-        private readonly IFileService _fileService;
+    public void Run()
+    {
+        configFolderPath = TryGetSettingsFolder();
 
-        public BeforeAfter(
-            IOperationsService operationsService,
-            IConfigService configService)
+        if (configFolderPath == default)
         {
-            configFolderName = "config";
-            overrideFileName = "override.cfg";
-            beforeFileName = "before.cfg";
-            afterFileName = "after.cfg";
-
-            this.operationsService = operationsService;
-            this.configService = configService;
-            _fileService = operationsService.GetFileService();
+            return;
         }
 
-        public void Run()
+        var anythingToOverride = AnythingToOverride();
+
+        if (!anythingToOverride)
         {
-            configFolderPath = TryGetSettingsFolder();
-
-            if (configFolderPath == default)
-            {
-                return;
-            }
-
-            var anythingToOverride = AnythingToOverride();
-
-            if (!anythingToOverride)
-            {
-                SaveAfter();
-                return;
-            }
-
-            SaveBefore();
-            OverrideSettings();
             SaveAfter();
+            return;
         }
 
-        private void SaveBefore()
+        SaveBefore();
+        OverrideSettings();
+        SaveAfter();
+    }
+
+    private void SaveBefore()
+    {
+        var path = configFolderPath + "/" + beforeFileName;
+        _fileService.Yaml.Custom03
+            .SerializeToFile(path, configService.SettingsDict);
+    }
+
+    private void SaveAfter()
+    {
+        var path = configFolderPath + "/" + afterFileName;
+        _fileService.Yaml.Custom03
+            .SerializeToFile(path, configService.SettingsDict);
+    }
+
+    private bool AnythingToOverride()
+    {
+        if (File.Exists(configFolderPath + "/" + overrideFileName))
         {
-            var path = configFolderPath + "/" + beforeFileName;
-            _fileService.Yaml.Custom03
-                .SerializeToFile(path, configService.SettingsDict);
+            return true;
         }
 
-        private void SaveAfter()
-        {
-            var path = configFolderPath + "/" + afterFileName;
-            _fileService.Yaml.Custom03
-                .SerializeToFile(path, configService.SettingsDict);
-        }
+        return false;
+    }
 
-        private bool AnythingToOverride()
+    private void OverrideSettings()
+    {
+        try
         {
-            if (File.Exists(configFolderPath + "/" + overrideFileName))
+            var path = configFolderPath + "/" + overrideFileName;
+            var dict = _fileService.Yaml.Custom03
+                .DeserializeFile<Dictionary<string, object>>(path);
+
+            foreach (var kvp in dict)
             {
-                return true;
-            }
+                var success = configService.SettingsDict.TryGetValue(kvp.Key, out var value);
 
-            return false;
-        }
-
-        private void OverrideSettings()
-        {
-            try
-            {
-                var path = configFolderPath + "/" + overrideFileName;
-                var dict = _fileService.Yaml.Custom03
-                    .DeserializeFile<Dictionary<string, object>>(path);
-
-                foreach (var kvp in dict)
+                if (success)
                 {
-                    var success = configService.SettingsDict.TryGetValue(kvp.Key, out var value);
-
-                    if (success)
-                    {
-                        configService.SettingsDict[kvp.Key] = kvp.Value;
-                    }
-
-                    configService.SettingsDict.Add(kvp.Key, kvp.Value);
+                    configService.SettingsDict[kvp.Key] = kvp.Value;
                 }
-            }
-            catch { }
-        }
 
-        private string TryGetSettingsFolder()
+                configService.SettingsDict.Add(kvp.Key, kvp.Value);
+            }
+        }
+        catch { }
+    }
+
+    private string TryGetSettingsFolder()
+    {
+        if (!Directory.Exists(configFolderName))
         {
-            if (!Directory.Exists(configFolderName))
-            {
-                return default;
-            }
-
-            var path = Path.GetFullPath(configFolderName);
-            return path;
+            return default;
         }
+
+        var path = Path.GetFullPath(configFolderName);
+        return path;
     }
 }

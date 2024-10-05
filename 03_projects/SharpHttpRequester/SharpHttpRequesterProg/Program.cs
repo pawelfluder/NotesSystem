@@ -1,40 +1,38 @@
 ﻿using Newtonsoft.Json;
 
-namespace SharpTinderApiDataImport
+namespace SharpTinderApiDataImport;
+
+public static class Program
 {
-    public static class Program
+    public static void Main()
     {
-        public static void Main()
-        {
-            //var organizationUri1 = "https://dev.azure.com/MvpProjects";
-            //var projectNameOrId = "FirstMvp";
-            //var pat = "";
-            //var urlRequestPart01b = "/_apis/build/builds?definitions=8&queryOrder=queueTimeDescending&api-version=6.0";
+        //var organizationUri1 = "https://dev.azure.com/MvpProjects";
+        //var projectNameOrId = "FirstMvp";
+        //var pat = "";
+        //var urlRequestPart01b = "/_apis/build/builds?definitions=8&queryOrder=queueTimeDescending&api-version=6.0";
 
-            //var urlRequestPart02 = "/_apis/build/builds/220?api-version=7.0";
-            //var urlRequestPart03 = "/_apis/projects";
+        //var urlRequestPart02 = "/_apis/build/builds/220?api-version=7.0";
+        //var urlRequestPart03 = "/_apis/projects";
 
-            //var jsonBodyObj01b = test.GetProjects(organizationUri1, projectNameOrId, pat, urlRequestPart01);
-            //var gg1 = jsonBodyObj01.First;
+        //var jsonBodyObj01b = test.GetProjects(organizationUri1, projectNameOrId, pat, urlRequestPart01);
+        //var gg1 = jsonBodyObj01.First;
 
-            //var value = jsonBodyObj01["value"].ToList();
-            //var tmp1 = value[0].ToString();
+        //var value = jsonBodyObj01["value"].ToList();
+        //var tmp1 = value[0].ToString();
 
-            //var r = JsonConvert.DeserializeObject<Build>(tmp1);
+        //var r = JsonConvert.DeserializeObject<Build>(tmp1);
 
 
-            ////test.GetProjects(organizationUri1, null, pat, urlRequestPart03);
+        ////test.GetProjects(organizationUri1, null, pat, urlRequestPart03);
 
-            ////test.GetProjects(organizationUri1, null, pat, urlRequestPart03);
+        ////test.GetProjects(organizationUri1, null, pat, urlRequestPart03);
 
-            //var jsonBodyObj02 = test.GetProjects(organizationUri1, projectNameOrId, pat, urlRequestPart02);
+        //var jsonBodyObj02 = test.GetProjects(organizationUri1, projectNameOrId, pat, urlRequestPart02);
 
-            //var buildNumber = jsonBodyObj02["buildNumber"].ToString();
-            //var buildId = jsonBodyObj02["id"].ToString();
-        }
+        //var buildNumber = jsonBodyObj02["buildNumber"].ToString();
+        //var buildId = jsonBodyObj02["id"].ToString();
     }
 }
-
 
 
 //         private static void Write(this RootObject rootObject)

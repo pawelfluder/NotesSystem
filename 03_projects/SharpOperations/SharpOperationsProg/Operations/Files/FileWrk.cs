@@ -2,35 +2,34 @@
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoServiceProg.Operations.Files;
 
-namespace SharpOperationsProg.Operations.Files
+namespace SharpOperationsProg.Operations.Files;
+
+internal class FileWrk : IFileWrk
 {
-    internal class FileWrk : IFileWrk
+    private readonly IFileService operationsService;
+
+    public FileWrk(IFileService operationsService)
     {
-        private readonly IFileService operationsService;
+        this.operationsService = operationsService;
+    }
 
-        public FileWrk(IFileService operationsService)
-        {
-            this.operationsService = operationsService;
-        }
+    // public IFileVisit GetNewRecursivelyVisitDirectory()
+    //     => new VisitDirectoriesRecursively();
+    //
+    // public IParentVisit GetNewVisitDirectoriesRecursivelyWithParentMemory()
+    //     => new VisitDirectoriesRecursivelyWithParentMemory();
+    public IFileVisit GetNewRecursivelyVisitDirectory()
+    {
+        throw new NotImplementedException();
+    }
 
-        // public IFileVisit GetNewRecursivelyVisitDirectory()
-        //     => new VisitDirectoriesRecursively();
-        //
-        // public IParentVisit GetNewVisitDirectoriesRecursivelyWithParentMemory()
-        //     => new VisitDirectoriesRecursivelyWithParentMemory();
-        public IFileVisit GetNewRecursivelyVisitDirectory()
-        {
-            throw new NotImplementedException();
-        }
+    public IParentVisit GetNewVisitDirectoriesRecursivelyWithParentMemory()
+    {
+        throw new NotImplementedException();
+    }
 
-        public IParentVisit GetNewVisitDirectoriesRecursivelyWithParentMemory()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IRepoAddressesObtainer NewRepoAddressesObtainer()
-        {
-            throw new NotImplementedException();
-        }
+    public IRepoAddressesObtainer NewRepoAddressesObtainer()
+    {
+        throw new NotImplementedException();
     }
 }

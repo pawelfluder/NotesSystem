@@ -1,53 +1,52 @@
 ﻿using System.Linq;
 using SharpOperationsProg.AAPublic.Operations;
 
-namespace WpfNotesSystem.Creator
+namespace WpfNotesSystem.Creator;
+
+public class ContentManager
 {
-    public class ContentManager
+    private readonly IOperationsService operationsService;
+
+    public ContentManager(IOperationsService operationsService)
     {
-        private readonly IOperationsService operationsService;
+        this.operationsService = operationsService;
+    }
 
-        public ContentManager(IOperationsService operationsService)
+    public void Run(IContentCreator creator, string[] lines)
+    {
+        var tuplesList = operationsService.Header.Select2.GetElements(lines);
+
+        if (tuplesList.Any())
         {
-            this.operationsService = operationsService;
-        }
+            var imax = tuplesList.Select(x => x.Item2).Max();
+            var jmax = tuplesList.Count();
 
-        public void Run(IContentCreator creator, string[] lines)
-        {
-            var tuplesList = operationsService.Header.Select2.GetElements(lines);
+            creator.CreateRowsAndColls(jmax, imax);
 
-            if (tuplesList.Any())
+            for (int j = 0; j < jmax; j++)
             {
-                var imax = tuplesList.Select(x => x.Item2).Max();
-                var jmax = tuplesList.Count();
-
-                creator.CreateRowsAndColls(jmax, imax);
-
-                for (int j = 0; j < jmax; j++)
+                var lineObj = tuplesList[j];
+                for (int i = 0; i < imax; i++)
                 {
-                    var lineObj = tuplesList[j];
-                    for (int i = 0; i < imax; i++)
+                    if (lineObj.Type == "Header" &&
+                        i == lineObj.Level - 2)
                     {
-                        if (lineObj.Type == "Header" &&
-                            i == lineObj.Level - 2)
-                        {
-                            creator.CreateHeader((j, i),
-                                lineObj.Text.ToString(),
-                                imax - lineObj.Level + 2);
-                            continue;
-                        }
-
-                        if (lineObj.Type == "Line" &&
-                            i == lineObj.Level - 1)
-                        {
-                            creator.CreateLines((j, i),
-                                lineObj.Text,
-                                imax - lineObj.Level + 1);
-                            continue;
-                        }
-
-                        creator.CreateEmpty((j, i));
+                        creator.CreateHeader((j, i),
+                            lineObj.Text.ToString(),
+                            imax - lineObj.Level + 2);
+                        continue;
                     }
+
+                    if (lineObj.Type == "Line" &&
+                        i == lineObj.Level - 1)
+                    {
+                        creator.CreateLines((j, i),
+                            lineObj.Text,
+                            imax - lineObj.Level + 1);
+                        continue;
+                    }
+
+                    creator.CreateEmpty((j, i));
                 }
             }
         }

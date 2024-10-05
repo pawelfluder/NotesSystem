@@ -4,119 +4,118 @@ using SharpOperationsProg.Operations.Yaml.Custom.TypeConverter;
 using YamlDotNet.Serialization;
 using IFileService = SharpFileServiceProg.AAPublic.IFileService;
 
-namespace SharpOperationsProg.Operations.Yaml
+namespace SharpOperationsProg.Operations.Yaml;
+
+internal class Custom02YamlOperations : IYamlOperations
 {
-    internal class Custom02YamlOperations : IYamlOperations
+    private readonly IDeserializer custom01Deserializer;
+    private readonly ISerializer custom01Serializer;
+
+    public Custom02YamlOperations()
     {
-        private readonly IDeserializer custom01Deserializer;
-        private readonly ISerializer custom01Serializer;
+        var builder = new DeserializerBuilder();
+        custom01Deserializer = builder.Build();
 
-        public Custom02YamlOperations()
+        var builder2 = new SerializerBuilder()
+            .WithTypeConverter(new QuotedValueConverter());
+        //.WithEventEmitter(next => new QuotedScalarEventEmitter(next));
+        custom01Serializer = builder2.Build();
+    }
+
+    public string Serialize(object input)
+    {
+        try
         {
-            var builder = new DeserializerBuilder();
-            custom01Deserializer = builder.Build();
-
-            var builder2 = new SerializerBuilder()
-                .WithTypeConverter(new QuotedValueConverter());
-                //.WithEventEmitter(next => new QuotedScalarEventEmitter(next));
-            custom01Serializer = builder2.Build();
+            var result = custom01Serializer.Serialize(input);
+            return result;
         }
-
-        public string Serialize(object input)
+        catch (Exception ex)
         {
-            try
-            {
-                var result = custom01Serializer.Serialize(input);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
+            HandleError(ex);
+            return default;
         }
+    }
 
-        public string SerializeToFile(string filePath, object input)
+    public string SerializeToFile(string filePath, object input)
+    {
+        try
         {
-            try
-            {
-                var result = custom01Serializer.Serialize(input);
-                File.WriteAllText(result, filePath);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
+            var result = custom01Serializer.Serialize(input);
+            File.WriteAllText(result, filePath);
+            return result;
         }
+        catch (Exception ex)
+        {
+            HandleError(ex);
+            return default;
+        }
+    }
 
-        public object Deserialize(string yamlText)
+    public object Deserialize(string yamlText)
+    {
+        try
         {
-            try
-            {
-                var result = custom01Deserializer.Deserialize<object>(yamlText);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
+            var result = custom01Deserializer.Deserialize<object>(yamlText);
+            return result;
         }
+        catch (Exception ex)
+        {
+            HandleError(ex);
+            return default;
+        }
+    }
 
-        public object DeserializeFile(string path)
+    public object DeserializeFile(string path)
+    {
+        try
         {
-            try
-            {
-                var yamlText = File.ReadAllText(path);
-                var result = custom01Deserializer.Deserialize<object>(yamlText);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
+            var yamlText = File.ReadAllText(path);
+            var result = custom01Deserializer.Deserialize<object>(yamlText);
+            return result;
         }
+        catch (Exception ex)
+        {
+            HandleError(ex);
+            return default;
+        }
+    }
 
-        public T Deserialize<T>(string yamlText)
+    public T Deserialize<T>(string yamlText)
+    {
+        try
         {
-            try
-            {
-                var result = custom01Deserializer.Deserialize<T>(yamlText);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
+            var result = custom01Deserializer.Deserialize<T>(yamlText);
+            return result;
         }
+        catch (Exception ex)
+        {
+            HandleError(ex);
+            return default;
+        }
+    }
 
-        public T DeserializeFile<T>(string path)
+    public T DeserializeFile<T>(string path)
+    {
+        try
         {
-            try
-            {
-                var yamlText = File.ReadAllText(path);
-                var result = custom01Deserializer.Deserialize<T>(yamlText);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex);
-                return default;
-            }
+            var yamlText = File.ReadAllText(path);
+            var result = custom01Deserializer.Deserialize<T>(yamlText);
+            return result;
         }
+        catch (Exception ex)
+        {
+            HandleError(ex);
+            return default;
+        }
+    }
 
-        private void HandleError(Exception ex)
-        {
-            throw ex;
-        }
+    private void HandleError(Exception ex)
+    {
+        throw ex;
+    }
 
-        public bool TryDeserialize<T>(string yamlText, out T result)
-        {
-            throw new NotImplementedException();
-        }
+    public bool TryDeserialize<T>(string yamlText, out T result)
+    {
+        throw new NotImplementedException();
     }
 }

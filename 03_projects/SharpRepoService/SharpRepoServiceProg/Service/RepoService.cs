@@ -5,66 +5,64 @@ using SharpRepoServiceProg.AAPublic;
 using SharpRepoServiceProg.Infos;
 using SharpRepoServiceProg.Workers;
 
-namespace SharpRepoServiceProg.Service
+namespace SharpRepoServiceProg.Service;
+
+internal class RepoService : IRepoService
 {
-    internal class RepoService : IRepoService
+    private readonly ServerInfo serverInfo;
+    private readonly IFileService fileService;
+    private readonly LocalInfo localInfo;
+    private bool repoWorkerInit;
+    private bool itemWorkerInit;
+
+    private MethodWorker methods;
+    private JsonWorker item;
+
+    private bool isRepoInit;
+
+    internal RepoService(
+        IFileService fileService)
     {
-        private readonly ServerInfo serverInfo;
-        private readonly IFileService fileService;
-        private readonly LocalInfo localInfo;
-        private bool repoWorkerInit;
-        private bool itemWorkerInit;
+        localInfo = new LocalInfo(null);
+        serverInfo = null;
+        this.fileService = fileService;
+    }
 
-        private MethodWorker methods;
-        private JsonWorker item;
-
-        private bool isRepoInit;
-
-        internal RepoService(
-            IFileService fileService)
+    public MethodWorker Methods
+    {
+        get
         {
-            localInfo = new LocalInfo(null);
-            serverInfo = null;
-            this.fileService = fileService;
-        }
-
-        public MethodWorker Methods
-        {
-            get
+            if (!isRepoInit)
             {
-                if (!isRepoInit)
-                {
-                    methods = new MethodWorker(fileService, serverInfo, localInfo);
-                    isRepoInit = true;
-                }
-
-                return methods;
+                methods = new MethodWorker(fileService, serverInfo, localInfo);
+                isRepoInit = true;
             }
+
+            return methods;
         }
+    }
 
-        public JsonWorker Item
+    public JsonWorker Item
+    {
+        get
         {
-            get
+            if (!itemWorkerInit)
             {
-                if (!itemWorkerInit)
-                {
-                    var methods = Methods;
-                    item = new JsonWorker();
-                    itemWorkerInit = true;
-                }
-
-                return item;
+                item = new JsonWorker();
+                itemWorkerInit = true;
             }
+
+            return item;
         }
+    }
 
-        public void PutPaths(List<string> searchPaths)
+    public void PutPaths(List<string> searchPaths)
+    {
+        Methods.PutPaths(searchPaths);
+
+        if (!(methods.GetReposCount() > 0))
         {
-            Methods.PutPaths(searchPaths);
-
-            if (!(methods.GetReposCount() > 0))
-            {
-                throw new Exception();
-            }
+            throw new Exception();
         }
     }
 }

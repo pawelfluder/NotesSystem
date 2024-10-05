@@ -1,118 +1,117 @@
 ﻿using System.Reflection;
 
-namespace SharpOperationsProg.Operations.Path
+namespace SharpOperationsProg.Operations.Path;
+
+internal class PathsOperations : IPathsOperations
 {
-    internal class PathsOperations : IPathsOperations
+    private FolderFinder folderFinder;
+
+    public PathsOperations()
     {
-        private FolderFinder folderFinder;
+        this.folderFinder = new FolderFinder();
+    }
 
-        public PathsOperations()
+    public string FindFolder(string searchFolderName, string inputFolderPath, string expression)
+        => folderFinder.FindFolder(searchFolderName, inputFolderPath, expression);
+
+    public string MoveDirectoriesUp(string path, int level)
+    {
+        for (int i = 0; i < level; i++)
         {
-            this.folderFinder = new FolderFinder();
+            path = Directory.GetParent(path).FullName;
         }
 
-        public string FindFolder(string searchFolderName, string inputFolderPath, string expression)
-            => folderFinder.FindFolder(searchFolderName, inputFolderPath, expression);
+        return path;
+    }
 
-        public string MoveDirectoriesUp(string path, int level)
+    public List<(string, string)> GetFolderQFileList(string path)
+    {
+        var files = Directory.GetFiles(path);
+        var folderQfileList = files
+            .Select(x => (System.IO.Path.GetDirectoryName(x), System.IO.Path.GetFileName(x)))
+            .ToList();
+        return folderQfileList;
+    }
+
+    public string TryGetBinPath(out bool success)
+    {
+        try
         {
-            for (int i = 0; i < level; i++)
-            {
-                path = Directory.GetParent(path).FullName;
-            }
-
-            return path;
-        }
-
-        public List<(string, string)> GetFolderQFileList(string path)
-        {
-            var files = Directory.GetFiles(path);
-            var folderQfileList = files
-                .Select(x => (System.IO.Path.GetDirectoryName(x), System.IO.Path.GetFileName(x)))
-                .ToList();
-            return folderQfileList;
-        }
-
-        public string TryGetBinPath(out bool success)
-        {
-            try
-            {
-                var binPath = GetBinPath();
-                success = true;
-                return binPath;
-            }
-            catch (Exception ex)
-            {
-                success = false;
-                return default;
-            }
-        }
-
-        public string GetBinPath()
-        {
-            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            UriBuilder uri = new UriBuilder(codeBase);
-            string path = Uri.UnescapeDataString(uri.Path);
-            var tmp = System.IO.Path.GetDirectoryName(path);
-
-            var parent = new DirectoryInfo(tmp);
-            while (parent?.Name != "bin")
-            {
-                parent = Directory.GetParent(parent.FullName);
-            }
-
-            var binPath = parent.FullName;
+            var binPath = GetBinPath();
+            success = true;
             return binPath;
         }
-
-        public void CreateMissingDirectories(string path)
+        catch (Exception ex)
         {
-            var parentsPaths = new List<string>();
+            success = false;
+            return default;
+        }
+    }
 
-            for (int i = 0; i < 3; i++)
-            {
-                path = Directory.GetParent(path).FullName;
-                parentsPaths.Insert(0, path);
-            }
+    public string GetBinPath()
+    {
+        string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+        UriBuilder uri = new UriBuilder(codeBase);
+        string path = Uri.UnescapeDataString(uri.Path);
+        var tmp = System.IO.Path.GetDirectoryName(path);
 
-            foreach (var parentPath in parentsPaths)
-            {
-                if (!Directory.Exists(parentPath))
-                {
-                    Directory.CreateDirectory(parentPath);
-                }
-            }
+        var parent = new DirectoryInfo(tmp);
+        while (parent?.Name != "bin")
+        {
+            parent = Directory.GetParent(parent.FullName);
         }
 
-        public string GetProjectFolderPath(string projectName)
+        var binPath = parent.FullName;
+        return binPath;
+    }
+
+    public void CreateMissingDirectories(string path)
+    {
+        var parentsPaths = new List<string>();
+
+        for (int i = 0; i < 3; i++)
         {
-            string startupProjectFolder = default;
-            var max = 7;
-            var currentFolder = Directory.GetCurrentDirectory();
-            var directories = Directory.GetDirectories(currentFolder);
+            path = Directory.GetParent(path).FullName;
+            parentsPaths.Insert(0, path);
+        }
 
-            for (var i = 0; i < max; i++)
+        foreach (var parentPath in parentsPaths)
+        {
+            if (!Directory.Exists(parentPath))
             {
-                directories = Directory.GetDirectories(currentFolder);
-                startupProjectFolder = directories.SingleOrDefault(
-                    x => System.IO.Path.GetFileName(x) == projectName);
+                Directory.CreateDirectory(parentPath);
+            }
+        }
+    }
 
-                if (startupProjectFolder != default)
-                {
-                    return startupProjectFolder;
-                }
+    public string GetProjectFolderPath(string projectName)
+    {
+        string startupProjectFolder = default;
+        var max = 7;
+        var currentFolder = Directory.GetCurrentDirectory();
+        var directories = Directory.GetDirectories(currentFolder);
 
-                currentFolder = MoveDirectoriesUp(currentFolder, 1);
+        for (var i = 0; i < max; i++)
+        {
+            directories = Directory.GetDirectories(currentFolder);
+            startupProjectFolder = directories.SingleOrDefault(
+                x => System.IO.Path.GetFileName(x) == projectName);
+
+            if (startupProjectFolder != default)
+            {
+                return startupProjectFolder;
             }
 
-            throw new InvalidOperationException();
+            currentFolder = MoveDirectoriesUp(currentFolder, 1);
         }
 
-        public string GetStartupProjectFolderPath()
-        {
-            string projectName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
-            string projectPath = GetProjectFolderPath(projectName);
-            return projectPath;
-        }
+        throw new InvalidOperationException();
+    }
+
+    public string GetStartupProjectFolderPath()
+    {
+        string projectName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
+        string projectPath = GetProjectFolderPath(projectName);
+        return projectPath;
     }
 }

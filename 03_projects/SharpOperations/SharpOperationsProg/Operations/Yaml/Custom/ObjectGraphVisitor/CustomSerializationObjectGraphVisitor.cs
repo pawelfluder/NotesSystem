@@ -2,64 +2,63 @@
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.ObjectGraphVisitors;
 
-namespace SharpOperationsProg.Operations.Yaml.Custom.ObjectGraphVisitor
+namespace SharpOperationsProg.Operations.Yaml.Custom.ObjectGraphVisitor;
+
+public sealed class CustomSerializationObjectGraphVisitor : ChainedObjectGraphVisitor
 {
-    public sealed class CustomSerializationObjectGraphVisitor : ChainedObjectGraphVisitor
+    #region Fields
+
+    private readonly ObjectSerializer nestedObjectSerializer;
+    private readonly IEnumerable<IYamlTypeConverter> typeConverters;
+
+    #endregion Fields
+
+    #region Constructors
+
+    public CustomSerializationObjectGraphVisitor(
+        IObjectGraphVisitor<IEmitter> nextVisitor,
+        IEnumerable<IYamlTypeConverter> typeConverters,
+        ObjectSerializer nestedObjectSerializer)
+        : base(nextVisitor)
     {
-        #region Fields
+        this.typeConverters = typeConverters != null
+            ? typeConverters.ToList()
+            : Enumerable.Empty<IYamlTypeConverter>();
 
-        private readonly ObjectSerializer nestedObjectSerializer;
-        private readonly IEnumerable<IYamlTypeConverter> typeConverters;
+        this.nestedObjectSerializer = nestedObjectSerializer;
+    }
 
-        #endregion Fields
+    #endregion Constructors
 
-        #region Constructors
+    #region Methods
 
-        public CustomSerializationObjectGraphVisitor(
-            IObjectGraphVisitor<IEmitter> nextVisitor,
-            IEnumerable<IYamlTypeConverter> typeConverters,
-            ObjectSerializer nestedObjectSerializer)
-            : base(nextVisitor)
+    public override bool Enter(IObjectDescriptor value, IEmitter context)
+    {
+        var typeConverter = typeConverters.FirstOrDefault(t => t.Accepts(value.Type));
+        if (typeConverter != null)
         {
-            this.typeConverters = typeConverters != null
-                ? typeConverters.ToList()
-                : Enumerable.Empty<IYamlTypeConverter>();
-
-            this.nestedObjectSerializer = nestedObjectSerializer;
+            typeConverter.WriteYaml(context, value.Value, value.Type);
+            return false;
         }
 
-        #endregion Constructors
-
-        #region Methods
-
-        public override bool Enter(IObjectDescriptor value, IEmitter context)
+        var convertible = value.Value as IYamlConvertible;
+        if (convertible != null)
         {
-            var typeConverter = typeConverters.FirstOrDefault(t => t.Accepts(value.Type));
-            if (typeConverter != null)
-            {
-                typeConverter.WriteYaml(context, value.Value, value.Type);
-                return false;
-            }
-
-            var convertible = value.Value as IYamlConvertible;
-            if (convertible != null)
-            {
-                convertible.Write(context, nestedObjectSerializer);
-                return false;
-            }
+            convertible.Write(context, nestedObjectSerializer);
+            return false;
+        }
 
 #pragma warning disable 0618 // IYamlSerializable is obsolete
-            var serializable = value.Value as IYamlSerializable;
-            if (serializable != null)
-            {
-                serializable.WriteYaml(context);
-                return false;
-            }
+        var serializable = value.Value as IYamlSerializable;
+        if (serializable != null)
+        {
+            serializable.WriteYaml(context);
+            return false;
+        }
 #pragma warning restore
 
-            return base.Enter(value, context);
-        }
-
-        #endregion Methods
+        return base.Enter(value, context);
     }
+
+    #endregion Methods
 }

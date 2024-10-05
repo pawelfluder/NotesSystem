@@ -1,7 +1,6 @@
-﻿namespace SharpRepoServiceProg
-{
-   internal class RepoInfo
-   {
+﻿namespace SharpRepoServiceProg;
 
-   }
+internal class RepoInfo
+{
+
 }

@@ -1,13 +1,12 @@
 ﻿using SharpGoogleSheetProg.Service;
 
-namespace GoogleApiV4CoreApp
+namespace GoogleApiV4CoreApp;
+
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            var jsonPath = "credentials3.json";
-            var googleSheetApiV4Service = new GoogleSheetService();
-        }
+        var jsonPath = "credentials3.json";
+        var googleSheetApiV4Service = new GoogleSheetService();
     }
 }

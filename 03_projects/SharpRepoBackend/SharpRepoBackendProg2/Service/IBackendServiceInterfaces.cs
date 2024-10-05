@@ -1,51 +1,50 @@
-﻿namespace SharpRepoBackendProg2.Service
+﻿namespace SharpRepoBackendProg2.Service;
+
+public partial interface IBackendService
 {
-    public partial interface IBackendService
+    public enum ApiMethods
     {
-        public enum ApiMethods
-        {
-            // item
-            GetItem,
-            CreateItem,
+        // item
+        GetItem,
+        CreateItem,
 
-            // name
-            GetName,
+        // name
+        GetName,
 
-            // body
-            GetBody,
+        // body
+        GetBody,
 
-            // config
-            GetConfig,
-            OpenConfig,
-            CreateFolder,
+        // config
+        GetConfig,
+        OpenConfig,
+        CreateFolder,
 
-            // content
-            GetContent,
+        // content
+        GetContent,
 
-            OpenContent,
-            CreateContent,
-            AddContent,
+        OpenContent,
+        CreateContent,
+        AddContent,
 
-            // folder
-            OpenFolder,
+        // folder
+        OpenFolder,
 
-            // terminal
-            OpenTerminal,
+        // terminal
+        OpenTerminal,
 
-            // pdf
-            OpenPdf,
-            CreatePdf,
+        // pdf
+        OpenPdf,
+        CreatePdf,
 
-            // google doc
-            OpenGoogleDoc,
-            RecreateGoogleDoc,
-            CreateGoogleDoc,
+        // google doc
+        OpenGoogleDoc,
+        RecreateGoogleDoc,
+        CreateGoogleDoc,
 
-            // printer
-            RunPrinter,
+        // printer
+        RunPrinter,
 
-            // ??
-            GetAllRepoName,
-        }
+        // ??
+        GetAllRepoName,
     }
 }

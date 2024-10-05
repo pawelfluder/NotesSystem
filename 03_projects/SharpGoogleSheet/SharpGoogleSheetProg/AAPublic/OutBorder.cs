@@ -1,14 +1,13 @@
 ﻿using SharpGoogleSheetProg.Service;
 
-namespace SharpGoogleSheetProg.AAPublic
+namespace SharpGoogleSheetProg.AAPublic;
+
+public class OutBorder
 {
-    public class OutBorder
+    public static IGoogleSheetService GoogleSheetService(
+        Dictionary<string, object> settingsDict)
     {
-        public static IGoogleSheetService GoogleSheetService(
-            Dictionary<string, object> settingsDict)
-        {
-            var googleDocsService = new GoogleSheetService(settingsDict);
-            return googleDocsService;
-        }
+        var googleDocsService = new GoogleSheetService(settingsDict);
+        return googleDocsService;
     }
 }
