@@ -1,9 +1,10 @@
-using SharpButtonActionsProj.Service;
+using SharpButtonActionsProg.Service;
 using SharpConfigProg.Service;
+using SharpFileServiceProg.AAPublic;
 using SharpFileServiceProg.Service;
 using SharpRepoServiceProg.Service;
-using OutBorder1 = SharpFileServiceProg.Repetition.OutBorder;
-using OutBorder2 = SharpConfigProg.Repetition.OutBorder;
+using OutBorder1 = SharpFileServiceProg.AAPublic.OutBorder;
+using OutBorder2 = SharpConfigProg.AAPublic.OutBorder;
 
 namespace SharpButtonActionsTests
 {
@@ -28,9 +29,9 @@ namespace SharpButtonActionsTests
         [TestMethod]
         public void TestMethod1()
         {
-            var buttonActionService = new ButtonActionsService();
-            var configService = OutBorder2.ConfigService(fileService);
-            configService.Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
+            // var buttonActionService = new SystemActionsService();
+            // var configService = OutBorder2.ConfigService(operationsService);
+            // configService.Prepare(typeof(IConfigService.ILocalProgramDataPreparer));
             //var repoService = new RepoService(fileService, configService.GetRepoSearchPaths());
             //var repo = "Notki";
             //var loca = "01/02";

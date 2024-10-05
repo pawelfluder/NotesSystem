@@ -12,16 +12,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SharpContainer\SharpContainerProg\SharpContainerProg.csproj" />
-    <ProjectReference Include="..\..\SharpOperations\SharpOperationsProg\SharpOperationsProg.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="EmbeddedResources\Template01.docx" />
     <EmbeddedResource Include="EmbeddedResources\Template02.docx" />
     <EmbeddedResource Include="EmbeddedResources\Template03.docx" />
     <EmbeddedResource Include="EmbeddedResources\Template04.docx" />
     <EmbeddedResource Include="EmbeddedResources\Template05.docx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SharpContainer\SharpContainerProg\SharpContainerProg.csproj" />
+    <ProjectReference Include="..\..\SharpOperations\SharpOperationsProg\SharpOperationsProg.csproj" />
   </ItemGroup>
 
 </Project>

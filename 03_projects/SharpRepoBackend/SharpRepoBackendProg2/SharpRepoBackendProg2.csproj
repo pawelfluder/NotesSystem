@@ -20,7 +20,6 @@
     <ProjectReference Include="..\..\SharpContainer\SharpContainerProg\SharpContainerProg.csproj" />
     <ProjectReference Include="..\..\SharpGoogleDocs\SharpGoogleDocsProg\SharpGoogleDocsProg.csproj" />
     <ProjectReference Include="..\..\SharpGoogleDrive\SharpGoogleDriveProg\SharpGoogleDriveProg.csproj" />
-    <ProjectReference Include="..\..\SharpOperations\SharpOperationsProg\SharpOperationsProg.csproj" />
     <ProjectReference Include="..\..\SharpPdfService\SharpPdfServiceProg\SharpPdfServiceProg.csproj" />
     <ProjectReference Include="..\..\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj" />
     <ProjectReference Include="..\..\SharpNotesExporter\SharpNotesExporterProg\SharpNotesExporterProg.csproj" />

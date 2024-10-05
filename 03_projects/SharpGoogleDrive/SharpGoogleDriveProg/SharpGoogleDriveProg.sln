@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleDriveCoreApp", "GoogleDriveCoreApp.csproj", "{EC8A543D-B81C-4F4A-A937-2791B531EE16}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpContainerProg", "..\..\SharpContainer\SharpContainerProg\SharpContainerProg.csproj", "{DE72CAEC-BCA8-4B56-BDCC-7F1669B54EA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGoogleDriveProg", "SharpGoogleDriveProg.csproj", "{4C7B74C2-2F06-46B1-9D8C-66AF37F83EF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpOperationsProg", "..\..\SharpOperations\SharpOperationsProg\SharpOperationsProg.csproj", "{6FF25CB9-451D-4377-A4B1-387396C9A78C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EC8A543D-B81C-4F4A-A937-2791B531EE16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC8A543D-B81C-4F4A-A937-2791B531EE16}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC8A543D-B81C-4F4A-A937-2791B531EE16}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC8A543D-B81C-4F4A-A937-2791B531EE16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE72CAEC-BCA8-4B56-BDCC-7F1669B54EA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE72CAEC-BCA8-4B56-BDCC-7F1669B54EA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE72CAEC-BCA8-4B56-BDCC-7F1669B54EA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE72CAEC-BCA8-4B56-BDCC-7F1669B54EA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C7B74C2-2F06-46B1-9D8C-66AF37F83EF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C7B74C2-2F06-46B1-9D8C-66AF37F83EF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C7B74C2-2F06-46B1-9D8C-66AF37F83EF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C7B74C2-2F06-46B1-9D8C-66AF37F83EF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FF25CB9-451D-4377-A4B1-387396C9A78C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FF25CB9-451D-4377-A4B1-387396C9A78C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FF25CB9-451D-4377-A4B1-387396C9A78C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FF25CB9-451D-4377-A4B1-387396C9A78C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
