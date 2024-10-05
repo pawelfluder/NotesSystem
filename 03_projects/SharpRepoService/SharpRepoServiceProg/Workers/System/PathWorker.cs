@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace SharpRepoServiceProg.WorkersSystem;
+namespace SharpRepoServiceProg.Workers.System;
 
 internal class PathWorker
 {

@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -7,24 +6,26 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
+using Newtonsoft.Json;
 using SharpFileServiceProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
-using Unity;
 using WpfNotesSystem.Creator;
 using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.Models;
 
-namespace WpfNotesSystemProg.Converter;
+namespace WpfCoreProg.Converter;
 
 [ValueConversion(typeof(RepoItem), typeof(StackPanel))]
 public class HeadersDictConverter : MarkupExtension, IValueConverter
 {
     private object converter;
     private readonly IOperationsService operationsService;
+    private readonly IFileService _fileService;
 
     public HeadersDictConverter()
     {
         operationsService = MyBorder.Container.Resolve<IOperationsService>();
+        _fileService = operationsService.GetFileService();
     }
 
     public override object ProvideValue(IServiceProvider serviceProvider)
@@ -133,7 +134,7 @@ public class HeadersDictConverter : MarkupExtension, IValueConverter
 
         var indexQnameDict = JsonConvert
             .DeserializeObject<Dictionary<string, string>>(itemModel.Body.ToString());
-        var creator = new FolderBodyCreator(grid, fileService);
+        var creator = new FolderBodyCreator(grid, operationsService);
         creator.Run(indexQnameDict);
             
         //var indexQnameList = tmp.ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value);
@@ -147,7 +148,7 @@ public class HeadersDictConverter : MarkupExtension, IValueConverter
         var grid = new Grid();
 
         var creator = new ContentCreator(grid);
-        var contentManager = new ContentManager(fileService);
+        var contentManager = new ContentManager(operationsService);
 
         if (dict.Body == null)
         {

@@ -1,18 +1,15 @@
-﻿using Newtonsoft.Json;
-using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Names;
-using SharpRepoServiceProg.Registration;
-using SharpRepoServiceProg.Service;
-using SharpRepoServiceProg.WorkersSystem;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using SharpFileServiceProg.AAPublic;
+using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Operations;
-using SharpRepoServiceProg.WorkersCrud;
+using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Workers.Crud;
+using SharpRepoServiceProg.Workers.System;
 
-namespace SharpRepoServiceProg.Workers;
+namespace SharpRepoServiceProg.Workers.Public;
 
 public class JsonWorker
 {

@@ -1,8 +1,9 @@
 ﻿using SharpContainerProg.AAPublic;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Workers;
-using SharpRepoServiceProg.WorkersCrud;
-using SharpRepoServiceProg.WorkersSystem;
+using SharpRepoServiceProg.Workers.Crud;
+using SharpRepoServiceProg.Workers.Public;
+using SharpRepoServiceProg.Workers.System;
 
 namespace SharpRepoServiceProg.Registration;
 

@@ -1,14 +1,14 @@
-﻿using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Names;
-using SharpRepoServiceProg.Registration;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SharpFileServiceProg.AAPublic;
+using SharpRepoServiceProg.Models;
+using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
+using SharpRepoServiceProg.Registration;
 
-namespace SharpRepoServiceProg.WorkersSystem;
+namespace SharpRepoServiceProg.Workers.System;
 
 internal class ConfigWorker
 {

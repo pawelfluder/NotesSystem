@@ -1,5 +1,7 @@
 ﻿@using Newtonsoft.Json
 @using BlazorInterAutoProj.Repet.Models
+@using SharpOperationsProg.AAPublic.Operations
+@using SharpOperationsProg.Operations.UniAddress
 @using SharpRepoBackendProg2.Service
 @inject IOperationsService operationsService
 @inject BackendService backendService
@@ -112,21 +114,21 @@
 
     private void ContentClicked()
     {
-        var adrTuple = operationsService.RepoAddress
+        var adrTuple = IUniAddressOperations
               .CreateAddressFromString(Item.Address);
         var itemJson = backendService.CommandApi("OpenContent", adrTuple.Item1, adrTuple.Item2);
     }
 
     private void ConfigClicked()
     {
-        var adrTuple = operationsService.RepoAddress
+        var adrTuple = IUniAddressOperations
               .CreateAddressFromString(Item.Address);
         var itemJson = backendService.CommandApi("OpenConfig", adrTuple.Item1, adrTuple.Item2);
     }
     
     private void GoogleDocClicked()
     {
-        var adrTuple = operationsService.RepoAddress
+        var adrTuple = IUniAddressOperations
               .CreateAddressFromString(Item.Address);
         if (formGoogleDocType == "Open")
         {
@@ -141,7 +143,7 @@
     private void OnBtnClicked(string idxString)
     {
         var index = operationsService.Index.StringToIndex(idxString);
-        var adrTuple = operationsService.RepoAddress
+        var adrTuple = IUniAddressOperations
              .CreateAddressFromString(Item.Address);
         var newAddress = operationsService.Index.JoinIndexWithLoca(adrTuple, index);
         var itemJString = GetItem(newAddress);
@@ -165,7 +167,7 @@
             return;
         }
 
-        var adrTuple = operationsService.RepoAddress
+        var adrTuple = IUniAddressOperations
              .CreateAddressFromString(Item.Address);
         // todo
         // var itemJson = backendService
@@ -174,7 +176,7 @@
 
     private void OnFolderClicked()
     {
-        var adrTuple = operationsService.RepoAddress
+        var adrTuple = IUniAddressOperations
              .CreateAddressFromString(Item.Address);
         var itemJson = backendService
             .CommandApi("OpenFolder", adrTuple.Item1, adrTuple.Item2);

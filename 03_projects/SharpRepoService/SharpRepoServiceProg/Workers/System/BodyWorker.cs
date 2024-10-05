@@ -1,8 +1,9 @@
-﻿using SharpRepoServiceProg.Registration;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-namespace SharpRepoServiceProg.WorkersSystem;
+using SharpRepoServiceProg.Registration;
+
+namespace SharpRepoServiceProg.Workers.System;
 
 internal class BodyWorker
 {

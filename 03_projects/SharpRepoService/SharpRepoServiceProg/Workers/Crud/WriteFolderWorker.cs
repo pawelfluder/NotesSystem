@@ -5,9 +5,9 @@ using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
-using SharpRepoServiceProg.WorkersSystem;
+using SharpRepoServiceProg.Workers.System;
 
-namespace SharpRepoServiceProg.WorkersCrud;
+namespace SharpRepoServiceProg.Workers.Crud;
 
 public class WriteFolderWorker
 {

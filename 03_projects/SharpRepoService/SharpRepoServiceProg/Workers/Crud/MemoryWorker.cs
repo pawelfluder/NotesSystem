@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SharpRepoServiceProg.Registration;
-using SharpRepoServiceProg.WorkersSystem;
+using SharpRepoServiceProg.Workers.System;
 
-namespace SharpRepoServiceProg.WorkersCrud;
+namespace SharpRepoServiceProg.Workers.Crud;
 
 internal class MemoryWorker
 {
@@ -13,21 +13,22 @@ internal class MemoryWorker
     public object ErrorValue { get; internal set; }
     private string slash = "/";
 
-    private string contentFileName;
-    private string configFileName;
+    // private string contentFileName;
+    // private string configFileName;
     private readonly PathWorker pw;
 
     public MemoryWorker()
     {
         //this.fileService = MyBorder.Container.Resolve<IFileService>();
-        SetNames();
+        // SetNames();
         this.pw = MyBorder.Container.Resolve<PathWorker>();
     }
 
-    private void SetNames()
-    {
-        configFileName = "nazwa.txt";
-    }
+    // private void SetNames()
+    // {
+    //     configFileName = "nazwa.txt";
+    //     contentFileName = "content.txt";
+    // }
 
     // memory
     public void PutPaths(List<string> searchPaths)
@@ -95,20 +96,20 @@ internal class MemoryWorker
         throw new NotImplementedException();
     }
 
-    public string GetConfigPath(
-        (string Repo, string Location) address)
-    {
-        var tmp = GetLocalPath(address);
-        var path = tmp + slash + configFileName;
-        return path;
-    }
+    // public string GetConfigPath(
+    //     (string Repo, string Location) address)
+    // {
+    //     var tmp = GetLocalPath(address);
+    //     var path = tmp + slash + configFileName;
+    //     return path;
+    // }
 
-    public string GetBodyPath((string Name, string Location) address)
-    {
-        var tmp = GetLocalPath(address);
-        var path = tmp + slash + contentFileName;
-        return path;
-    }
+    // public string GetBodyPath((string Name, string Location) address)
+    // {
+    //     var tmp = GetLocalPath(address);
+    //     var path = tmp + slash + contentFileName;
+    //     return path;
+    // }
 
     public string GetLocalPath((string repo, string loca) address)
     {
@@ -121,10 +122,10 @@ internal class MemoryWorker
         return elemPath;
     }
 
-    private string GetAddress(string elemPath)
-    {
-        var path = elemPath + "/" + configFileName;
-        var name = File.ReadAllLines(path).First();
-        return name;
-    }
+    // private string GetAddress(string elemPath)
+    // {
+    //     var path = elemPath + "/" + configFileName;
+    //     var name = File.ReadAllLines(path).First();
+    //     return name;
+    // }
 }

@@ -1,7 +1,7 @@
-﻿using SharpRepoServiceProg.Registration;
-using System.IO;
+﻿using System.IO;
+using SharpRepoServiceProg.Registration;
 
-namespace SharpRepoServiceProg.WorkersSystem;
+namespace SharpRepoServiceProg.Workers.System;
 
 internal class SystemWorker
 {

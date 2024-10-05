@@ -4,6 +4,8 @@
 @using BlazorNotesSystem.Components.Editor
 @using Newtonsoft.Json
 @using System.Diagnostics
+@using SharpOperationsProg.AAPublic.Operations
+@using SharpOperationsProg.Operations.UniAddress
 @using SharpRepoBackendProg2.Service
 
 @inject BackendService backendService
@@ -56,7 +58,7 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        var adrTuple = operationsService.RepoAddress
+        var adrTuple = IUniAddressOperations
              .CreateAddressFromString(item.Address);
         ReloadItem(adrTuple);
     }
@@ -73,7 +75,7 @@
     protected void ReloadItem(ItemModel itemObj)
     {
         item = itemObj;
-        var adrTuple = operationsService.RepoAddress
+        var adrTuple = IUniAddressOperations
             .CreateAddressFromString(item.Address);
         formRepoName = adrTuple.Item1;
         formLocaName = adrTuple.Item2;
@@ -92,7 +94,7 @@
     protected void ReloadItem(ItemModel item, bool reloadState)
     {
         this.item = item;
-        var adrTuple = operationsService.RepoAddress
+        var adrTuple = IUniAddressOperations
              .CreateAddressFromString(item.Address);
         formRepoName = adrTuple.Item1;
         formLocaName = adrTuple.Item2;
@@ -125,9 +127,9 @@
 
     private async Task OnBackArrowBtnClicked(MouseEventArgs e)
     {
-        var newAddress = operationsService.RepoAddress
+        var newAddress = IUniAddressOperations
              .MoveOneLocaBack(item.Address);
-        var newAdrTuple = operationsService.RepoAddress
+        var newAdrTuple = IUniAddressOperations
              .CreateAddressFromString(newAddress);
         ReloadItem(newAdrTuple);
     }

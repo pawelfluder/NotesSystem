@@ -1,5 +1,6 @@
 ﻿using SharpRepoServiceProg.Workers;
 using System.Collections.Generic;
+using SharpRepoServiceProg.Workers.Public;
 
 namespace SharpRepoServiceProg.AAPublic;
 
@@ -8,6 +9,8 @@ public partial interface IRepoService
     //ItemWorker Items { get; }
 
     JsonWorker Item { get; }
+    
+    MethodWorker Methods { get; }
 
     //TextWriteWorker Text { get; }
 

@@ -1,6 +1,8 @@
 using BlazorInterAutoProj.Registrations;
 using BlazorNotesSystem.Client.Pages;
 using BlazorNotesSystem.Components;
+using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoBackendProg2.Service;
 using OutBorder01 = SharpSetup21ProgPrivate.AAPublic.OutBorder;
 
@@ -16,6 +18,8 @@ var backend = new BackendService();
 var fileService = MyBorder.Container.Resolve<IFileService>();
 builder.Services.AddSingleton<BackendService>(backend);
 builder.Services.AddSingleton<IFileService>(fileService);
+var operationsService = MyBorder.Container.Resolve<IOperationsService>();
+builder.Services.AddSingleton<IOperationsService>(operationsService);
 
 var app = builder.Build();
 

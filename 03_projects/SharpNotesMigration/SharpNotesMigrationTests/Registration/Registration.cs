@@ -1,4 +1,5 @@
 ﻿using SharpContainerProg.AAPublic;
+using SharpFileServiceProg.AAPublic;
 using SharpNotesMigrationProg.Service;
 using SharpRepoServiceProg.AAPublic;
 //using OutBorder1 = SharpFileServiceProg.AAPublic.OutBorder;
@@ -12,12 +13,5 @@ internal class Registration : RegistrationBase
 {
     public override void Registrations()
     {
-        var fileService = container.Resolve<IFileService>();
-        var repoService = container.Resolve<IRepoService>();
-
-        RegisterByFunc
-        (OutBorder4.MigrationService,
-            fileService,
-            repoService);
     }
 }

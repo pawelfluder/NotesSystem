@@ -7,8 +7,23 @@ public interface IUniAddressOperations
     //(string, string) CreateAddressFromString(string addressString);
     Uri CreateUriFromAddress((string Repo, string Loca) address, int index);
     string CreateUrlFromAddress((string Repo, string Loca) address);
-    string MoveOneLocaBack(string adrString);
     int GetLastLocaIndex(string addressString);
+    
+    static string MoveOneLocaBack(string adrString)
+    {
+        var slashCount = adrString.Count(x => x == '/');
+        if (slashCount == 0)
+        {
+            return adrString;
+        }
+            
+        var splited = adrString.Split("/").ToList();
+        var lastItemIndex = splited.Count - 1;
+        splited.RemoveAt(lastItemIndex);
+        var newAddress = String.Join('/', splited);
+
+        return newAddress;
+    }
     static (string, string) CreateAddressFromString(string addressString)
     {
         addressString = addressString.Trim('/').Replace("https://", "");

@@ -59,7 +59,7 @@ public static class UnitItemExtensions
         return bodyQsettings;
     }
     
-    public static string OverrideTextItem(
+    public static (string, string) OverrideTextItem(
         this IRepoService repoService,
         (string, string) adrTuple,
         string name,
@@ -67,10 +67,9 @@ public static class UnitItemExtensions
     {
         // todo
         // repoService.Item.DeleteItem(adrTuple);
-        var json = repoService
-            .CreateText(adrTuple, name, textLines);
-        var item = JsonConvert.DeserializeObject<UniItem>(json);
-        return item.Body.ToString();
+        var adrTuple02 = repoService.Methods
+            .PutText(adrTuple, name, string.Join('\n', textLines));
+        return adrTuple02;
     }
     
     public static (string, string) CreateText(
