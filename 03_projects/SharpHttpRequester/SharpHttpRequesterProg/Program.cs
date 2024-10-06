@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace SharpTinderApiDataImport;
+﻿namespace SharpTinderApiDataImport;
 
 public static class Program
 {

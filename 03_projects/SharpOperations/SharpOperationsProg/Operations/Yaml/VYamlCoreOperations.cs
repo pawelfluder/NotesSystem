@@ -1,6 +1,5 @@
 ﻿using SharpFileServiceProg.AAPublic;
 using VYaml.Serialization;
-using IFileService = SharpFileServiceProg.AAPublic.IFileService;
 
 namespace SharpOperationsProg.Operations.Yaml;
 

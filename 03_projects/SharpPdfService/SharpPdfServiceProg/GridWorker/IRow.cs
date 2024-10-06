@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace PdfService.GridWorker;
 
 public interface IRow

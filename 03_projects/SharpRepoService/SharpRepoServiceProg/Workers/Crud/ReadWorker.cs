@@ -288,11 +288,27 @@ internal class ReadWorker
         var items = new List<ItemModel>();
         foreach (var adr in adrTupleList)
         {
+            if (IsSpecialFolder(adr))
+            {
+                continue;
+            }
             var item = GetItemConfig(adr);
             items.Add(item);
         }
 
         return items;
+    }
+
+    private bool IsSpecialFolder((string, string) adr)
+    {
+        var special = new List<string> { ".git" };
+        if (special.Any(x => x == adr.Item1) ||
+            special.Any(x => x == adr.Item2))
+        {
+            return true;
+        }
+        
+        return false;
     }
 
     // read; config, 

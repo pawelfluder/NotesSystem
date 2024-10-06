@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PdfService.GridWorker;
+﻿namespace PdfService.GridWorker;
 
 public class Row : IRow
 {

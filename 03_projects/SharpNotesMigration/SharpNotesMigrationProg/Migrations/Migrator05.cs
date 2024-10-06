@@ -1,4 +1,7 @@
-﻿using SharpFileServiceProg.AAPublic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using SharpFileServiceProg.AAPublic;
 using SharpNotesMigrationProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoServiceProg.AAPublic;
@@ -69,7 +72,8 @@ internal class Migrator05 : IMigrator, IMigrator05
     private string RemoveTopEmptyLines((string Repo, string Loca) adrTuple)
     {
         var lines = _repoService.Methods.GetTextLines(adrTuple);
-        for (var i = 0; i < 4; i++)
+        var max = Math.Min(lines.Count, 4);
+        for (var i = 0; i < max; i++)
         {
             var line = lines[0];
             if (line == string.Empty)

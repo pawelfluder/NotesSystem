@@ -1,10 +1,13 @@
-﻿using SharpNotesMigrationProg.Service;
+﻿using System;
+using System.Collections.Generic;
+using SharpNotesMigrationProg.AAPublic;
+using SharpNotesMigrationProg.Service;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoServiceProg.AAPublic;
 
 namespace SharpNotesMigrationProg.Migrations;
 
-internal class Migrator01 : IMigrator, IMigrationService.IMigrator01
+internal class Migrator01 : IMigrator, IMigrator01
 {
     private readonly IOperationsService operationsService;
     private readonly IRepoService repoService;

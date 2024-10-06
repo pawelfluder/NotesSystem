@@ -1,20 +1,23 @@
-﻿using SharpConfigProg.Service;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using SharpConfigProg.Service;
 using SharpNotesMigrationProg.Migrations;
 using SharpRepoServiceProg.AAPublic;
-using System.Reflection;
 using SharpFileServiceProg.AAPublic;
+using SharpNotesMigrationProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpNotesMigrationProg.Service;
 
 public class MigrationService : IMigrationService
 {
-    private readonly IOperationsService _operationsService;
-    private readonly IConfigService configService;
-    private readonly IRepoService _repoService;
-
-    private List<IMigrator> migratorsList;
     private readonly IFileService _fileService;
+    private readonly IRepoService _repoService;
+    private readonly IConfigService configService;
+    private readonly IOperationsService _operationsService;
+
+    private readonly List<IMigrator> migratorsList;
 
     public MigrationService(
         IOperationsService operationsService,

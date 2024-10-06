@@ -1,6 +1,4 @@
-﻿using SharpTtsServiceProg.Service;
-
-namespace SharpTtsServiceProg;
+﻿namespace SharpTtsServiceProg;
 
 class Program
 {

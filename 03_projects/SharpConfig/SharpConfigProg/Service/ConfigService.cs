@@ -38,7 +38,7 @@ internal partial class ConfigService : IConfigService
         _fileService = operationsService.GetFileService();
         SettingsDict = new Dictionary<string, object>();
         this._operationsService = operationsService;
-        yamlOperations = _fileService.Yaml.Default;
+        yamlOperations = _fileService.Yaml.Custom03;
     }
 
     public List<string> GetRepoSearchPaths()

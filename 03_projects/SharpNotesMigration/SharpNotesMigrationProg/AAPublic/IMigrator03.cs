@@ -1,4 +1,6 @@
-﻿namespace SharpNotesMigrationProg.AAPublic;
+using System.Collections.Generic;
+
+namespace SharpNotesMigrationProg.AAPublic;
 
 public interface IMigrator03
 {
@@ -7,11 +9,3 @@ public interface IMigrator03
     void MigrateOneRepo((string Repo, string Loca) address);
     void SetAgree(bool agree);
 };
-
-public interface IMigrator04
-{
-}
-
-public interface IMigrator05
-{
-}

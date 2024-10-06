@@ -1,9 +1,4 @@
-﻿using WpfNotesSystem.ViewModels;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using Unity;
-using WpfNotesSystem.Repetition;
+﻿using System.Windows;
 
 namespace WpfNotesSystem;
 

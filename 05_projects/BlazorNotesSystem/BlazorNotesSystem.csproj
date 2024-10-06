@@ -15,7 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BlazorNotesSystem.Client\BlazorNotesSystem.Client.csproj" />
     <ProjectReference Include="..\..\03_projects\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj" />
-    <ProjectReference Include="..\..\03_projects\SharpRepoBackend\SharpRepoBackendProg2\SharpRepoBackendProg2.csproj" />
+    <ProjectReference Include="..\..\03_projects\SharpRepoBackend\SharpRepoBackendProg\SharpRepoBackendProg.csproj" />
     <ProjectReference Include="..\..\03_projects\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj" />
     <ProjectReference Include="..\..\22_projects\SharpSetup21ProgPrivate\SharpSetup21ProgPrivate.csproj" />
   </ItemGroup>

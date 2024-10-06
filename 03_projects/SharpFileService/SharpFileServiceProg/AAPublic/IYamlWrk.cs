@@ -8,5 +8,5 @@ public interface IYamlWrk
     IYamlOperations Custom01 { get; }
     IYamlOperations Custom02 { get; }
     IYamlOperations Custom03 { get; }
-    IYamlDefaultOperations Default { get; }
+    //IYamlDefaultOperations Default { get; }
 }

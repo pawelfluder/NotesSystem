@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace WpfNotesSystem;
+﻿namespace WpfNotesSystem;
 
 public interface IContentCreator
 {

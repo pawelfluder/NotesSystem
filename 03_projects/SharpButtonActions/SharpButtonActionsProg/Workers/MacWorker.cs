@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpButtonActionsProg.Workers;

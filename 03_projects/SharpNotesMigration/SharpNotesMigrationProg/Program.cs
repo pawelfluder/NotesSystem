@@ -1,11 +1,4 @@
-﻿using SharpConfigProg.Service;
-using SharpFileServiceProg.AAPublic;
-using SharpNotesMigrationProg.Repetition;
-using SharpNotesMigrationProg.Service;
-using SharpRepoServiceProg.AAPublic;
-using Unity;
-
-namespace SharpNotesMigrationProg;
+﻿namespace SharpNotesMigrationProg;
 
 internal class Program
 {

@@ -49,7 +49,7 @@ public class MethodWorker
     {
         this.serverInfo = serverInfo;
         this.localInfo = localInfo;
-        yamlOperations = fileService.Yaml.Default;
+        yamlOperations = fileService.Yaml.Custom03;
         _operationsService = MyBorder.Container.Resolve<OperationsService>();
 
         _rw = MyBorder.Container.Resolve<ReadWorker>();

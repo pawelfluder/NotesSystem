@@ -11,7 +11,6 @@ using SharpNotesExporter;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoBackendProg2.Repetition;
 using SharpRepoServiceProg.AAPublic;
-using SharpRepoServiceProg.Workers;
 using SharpRepoServiceProg.Workers.Public;
 using TextHeaderAnalyzerCoreProj.Service;
 

@@ -1,9 +1,7 @@
 ﻿using WpfNotesSystem.ViewModels;
 using System.Windows.Controls;
 using SharpRepoBackendProg2.Service;
-using Unity;
 using WpfNotesSystem.Repetition;
-using OutBorder1 = SharpRepoBackendProg2.Repetition.OutBorder;
 
 namespace WpfNotesSystem.Views;
 

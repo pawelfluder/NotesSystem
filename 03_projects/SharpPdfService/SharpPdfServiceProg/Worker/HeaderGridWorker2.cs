@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PdfService.GridWorker;
 using PdfService.Offer;
 using PdfService2CoreProj.Info;
 using PdfSharpCore.Drawing;

@@ -3,7 +3,6 @@ using SharpNotesMigrationProg.AAPublic;
 using SharpNotesMigrationProg.Service;
 using SharpNotesMigrationTests.Registration;
 using SharpRepoServiceProg.AAPublic;
-using Unity;
 using OutBorder01 = SharpSetup21ProgPrivate.AAPublic.OutBorder;
 
 namespace SharpNotesMigrationTests;

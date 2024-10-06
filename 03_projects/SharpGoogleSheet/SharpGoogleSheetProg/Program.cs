@@ -1,6 +1,4 @@
-﻿using SharpGoogleSheetProg.Service;
-
-namespace GoogleApiV4CoreApp;
+﻿namespace GoogleApiV4CoreApp;
 
 class Program
 {

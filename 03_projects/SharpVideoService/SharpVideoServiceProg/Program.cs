@@ -1,7 +1,4 @@
-﻿using FFMpegCore;
-using SharpVideoServiceProg.Service;
-
-namespace SharpVideoServiceProg;
+﻿namespace SharpVideoServiceProg;
 
 internal class Program
 {

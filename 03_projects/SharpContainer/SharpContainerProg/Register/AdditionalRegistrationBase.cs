@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace SharpContainerProg.Register;
+﻿namespace SharpContainerProg.Register;
 
 internal partial class AdditionalRegistrationBase
 {

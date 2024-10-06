@@ -1,4 +1,7 @@
-﻿using SharpNotesMigrationProg.AAPublic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using SharpNotesMigrationProg.AAPublic;
 using SharpRepoServiceProg.AAPublic;
 using System.Text.RegularExpressions;
 using SharpFileServiceProg.AAPublic;

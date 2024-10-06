@@ -1,5 +1,4 @@
 ﻿using SharpFileServiceProg.AAPublic;
-using IFileService = SharpFileServiceProg.AAPublic.IFileService;
 
 namespace SharpOperationsProg.Operations.FilesRecursively;
 

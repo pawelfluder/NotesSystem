@@ -23,7 +23,7 @@ internal class ConfigWorker
     {
         fileService = MyBorder.Container.Resolve<IFileService>();
         _operationsService = MyBorder.Container.Resolve<OperationsService>();
-        yamlOperations = fileService.Yaml.Default;
+        yamlOperations = fileService.Yaml.Custom03;
         pw = MyBorder.Container.Resolve<PathWorker>();
         sw = MyBorder.Container.Resolve<SystemWorker>();
     }

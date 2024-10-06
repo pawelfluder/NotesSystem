@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Names;
-using SharpRepoServiceProg.Operations;
+﻿using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.Workers.System;
 
