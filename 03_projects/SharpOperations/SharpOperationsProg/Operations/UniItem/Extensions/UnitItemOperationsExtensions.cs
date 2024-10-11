@@ -29,6 +29,18 @@ public static class UnitItemExtensions
         UniItem? uniItem = JsonConvert.DeserializeObject<UniItem>(json);
         return uniItem.AdrTuple;
     }
+    
+    public static (string, string) CreateItem(
+        this IRepoService repoService,
+        (string, string) parentAdrTuple,
+        string type,
+        string name,
+        string body)
+    {
+        string? json = repoService.Item.PutItem(parentAdrTuple, type, name, body);
+        UniItem? uniItem = JsonConvert.DeserializeObject<UniItem>(json);
+        return uniItem.AdrTuple;
+    }
 
     public static (string, string) CreateFolder(
         this IRepoService repoService,
@@ -47,6 +59,34 @@ public static class UnitItemExtensions
         var item = JsonConvert.DeserializeObject<UniItem>(json);
         var setting = item.Settings;
         return setting;
+    }
+    
+    public static string PutObjListAsText<T>(
+        this IRepoService repoService,
+        (string Repo, string Loca) adrTuple,
+        IEnumerable<T> objList)
+    {
+        var name = typeof(T).Name;
+        var body = IYamlDefaultOperations.Serialize(objList);
+        var outAdrTuple = repoService.Item.PutItem(adrTuple, "Text", name, body);
+        return body;
+    }
+    
+    public static IEnumerable<T> GetObjListFromText<T>(
+        this IRepoService repoService,
+        (string, string) typeAdrTuple)
+    {
+        var objectsList = repoService.GetItemList<T>(typeAdrTuple);
+        return objectsList;
+    }
+    
+    public static string GetBody(
+        this IRepoService repoService,
+        (string, string) adrTuple)
+    {
+        var json = repoService.Item.GetItem(adrTuple);
+        var item = JsonConvert.DeserializeObject<UniItem>(json);
+        return item.Body.ToString();
     }
     
     public static (string, Dictionary<string, object>) GetBodyQSettings(

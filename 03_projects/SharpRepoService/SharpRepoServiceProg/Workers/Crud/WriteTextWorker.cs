@@ -26,7 +26,7 @@ public class WriteTextWorker
         _operationsService = MyBorder.Container.Resolve<OperationsService>();
     }
 
-    public void Put(
+    public ItemModel Put(
         string name,
         (string Repo, string Loca) adrTuple,
         string content)
@@ -47,6 +47,7 @@ public class WriteTextWorker
         item.Body = content;
 
         Put(item);
+        return item;
     }
 
     internal ItemModel Put(ItemModel item)

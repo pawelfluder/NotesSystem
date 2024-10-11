@@ -1,10 +1,13 @@
 ﻿@using BlazorInterAutoProj.Repet.Models
+@using Microsoft.Extensions.DependencyInjection
+@using SharpArgsManagerProj.AAPublic
 @using SharpOperationsProg.AAPublic.Operations
 @using SharpOperationsProg.Operations.UniAddress
-@using SharpRepoBackendProg2.Service
-@inject IOperationsService operationsService
-@inject BackendService backendService
+@using SharpRepoBackendProg.Service
+@inject IServiceProvider serviceProvider
 @rendermode InteractiveServer
+
+<iframe width="560" height="315" src="https://google.com" frameborder="0" allowfullscreen></iframe>
 
 @if (Item?.Type == myType)
 {
@@ -12,6 +15,7 @@
         <input type="button" value="Folder" @onclick="OnFolderClicked" />
         <input type="button" value="Config" @onclick="ConfigClicked" />
         <input type="button" value="Terminal" @onclick="TerminalClicked" />
+        <input type="button" value="Script" @onclick="ScriptClicked" />
     </div>
 
     <div>
@@ -55,9 +59,19 @@
 
     private Dictionary<string, string> indexQnameDict;
     private string myType = "Folder";
+    
+    // services
+
+    private IOperationsService? _operationsService;
+    private IBackendService? _backendService;
+    private IArgsManagerService? _argsManager;
 
     protected override async Task OnInitializedAsync()
     {
+        _operationsService ??= serviceProvider.GetServices<IOperationsService>().Single();
+        _argsManager ??= serviceProvider.GetServices<IArgsManagerService>().First();
+        _backendService ??= serviceProvider.GetServices<IBackendService>().First();
+
         myType = "Folder";
         formSelectedType = "Text";
         ReloadComponent();
@@ -82,7 +96,7 @@
     {
         if (Item.Type == myType)
         {
-            var tmp = operationsService.Json.TryDeserializeObject<Dictionary<string, string>>(Item?.Body.ToString());
+            var tmp = _operationsService.Json.TryDeserializeObject<Dictionary<string, string>>(Item?.Body.ToString());
             if (tmp is Dictionary<string, string> dict)
             {
                 return dict;
@@ -102,7 +116,7 @@
 
         var adrTuple = IUniAddressOperations
              .CreateAddressFromString(Item.Address);
-        var itemJson = backendService
+        var itemJson = _backendService
             .CommandApi("CreateItem", adrTuple.Item1, adrTuple.Item2, formSelectedType, formAddValue);
     }
 
@@ -110,7 +124,7 @@
     {
         var adrTuple = IUniAddressOperations
              .CreateAddressFromString(Item.Address);
-        var itemJson = backendService
+        var itemJson = _backendService
             .CommandApi("OpenFolder", adrTuple.Item1, adrTuple.Item2);
     }
 
@@ -118,24 +132,24 @@
     {
         var adrTuple = IUniAddressOperations
               .CreateAddressFromString(Item.Address);
-        var itemJson = backendService.CommandApi("OpenConfig", adrTuple.Item1, adrTuple.Item2);
+        var itemJson = _backendService.CommandApi("OpenConfig", adrTuple.Item1, adrTuple.Item2);
     }
     
     private void TerminalClicked()
     {
         var adrTuple = IUniAddressOperations
               .CreateAddressFromString(Item.Address);
-        var itemJson = backendService.CommandApi("OpenTerminal", adrTuple.Item1, adrTuple.Item2);
+        var itemJson = _backendService.CommandApi("OpenTerminal", adrTuple.Item1, adrTuple.Item2);
     }
 
     private void OnBtnClicked(string idxString)
     {
-        var index = operationsService.Index.StringToIndex(idxString);
+        var index = _operationsService.Index.StringToIndex(idxString);
         var adrTuple = IUniAddressOperations
              .CreateAddressFromString(Item.Address);
-        var newAddress = operationsService.Index.JoinIndexWithLoca(adrTuple, index);
+        var newAddress = _operationsService.Index.JoinIndexWithLoca(adrTuple, index);
         var itemJString = GetItem(newAddress);
-        var itemObj = operationsService.Json.TryDeserializeObject<ItemModel>(itemJString);
+        var itemObj = _operationsService.Json.TryDeserializeObject<ItemModel>(itemJString);
 
         if (itemObj?.Type != myType)
         {
@@ -150,7 +164,18 @@
 
     public string GetItem((string Repo, string Loca) address)
     {
-        var itemJson = backendService.CommandApi("GetItem", address.Repo, address.Loca);
+        var itemJson = _backendService.CommandApi("GetItem", address.Repo, address.Loca);
         return itemJson;
+    }
+
+    private void ScriptClicked()
+    {
+        string[] args =
+        [
+            nameof(IScriptForGameActive),
+            nameof(IScriptForGameActive.GameSynchService),
+            "2024"
+        ];
+        _argsManager.Resolve(args);
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace SharpRepoBackendProg2.Repetition;
+﻿namespace SharpRepoBackendProg.Repetition;
 
 internal partial class ConfigServiceRegistration : AdditionalRegistrationBase
 {

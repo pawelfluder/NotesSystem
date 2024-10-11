@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using SharpOperationsProg.AAPublic.Operations;
-using SharpRepoBackendProg2.Service;
+using SharpRepoBackendProg.Service;
 using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.Models;
 using WpfNotesSystemProg3.ViewModelBase;

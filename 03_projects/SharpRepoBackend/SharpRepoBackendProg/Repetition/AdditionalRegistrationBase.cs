@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace SharpRepoBackendProg2.Repetition;
+namespace SharpRepoBackendProg.Repetition;
 
 internal partial class AdditionalRegistrationBase
 {

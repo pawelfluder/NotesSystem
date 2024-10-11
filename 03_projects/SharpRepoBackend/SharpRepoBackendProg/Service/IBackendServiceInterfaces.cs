@@ -1,4 +1,4 @@
-﻿namespace SharpRepoBackendProg2.Service;
+﻿namespace SharpRepoBackendProg.Service;
 
 public partial interface IBackendService
 {

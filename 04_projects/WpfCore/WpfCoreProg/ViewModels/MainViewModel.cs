@@ -10,7 +10,7 @@ using System.Linq;
 using System.Windows.Controls;
 using WpfCoreProg.Debug;
 using System.ComponentModel;
-using SharpRepoBackendProg2.Service;
+using SharpRepoBackendProg.Service;
 using SharpRepoServiceProg.AAPublic;
 
 namespace WpfNotesSystem.ViewModels;

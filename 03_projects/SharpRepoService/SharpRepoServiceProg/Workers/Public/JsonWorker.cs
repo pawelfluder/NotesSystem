@@ -132,10 +132,27 @@ public class JsonWorker
         var result = JsonConvert.SerializeObject(item, Formatting.Indented);
         return result;
     }
+    
+    public string PutItem(
+        (string repo, string loca) address,
+        string type,
+        string name,
+        string body = "")
+    {
+        ItemModel item = null;
+        if (type == "Text")
+        {
+            item = tww.Put(name, address, body);
+        }
+        if (type == "Folder")
+        {
+            item = fww.Put(name, address);
+        }
 
-
-
-
+        var result = JsonConvert.SerializeObject(item, Formatting.Indented);
+        return result;
+    }
+    
     //public string CreateItem(
     //    (string repo, string loca) adrTuple,
     //    string name,

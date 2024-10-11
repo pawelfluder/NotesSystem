@@ -1,9 +1,14 @@
 using BlazorInterAutoProj.Registrations;
 using BlazorNotesSystem.Client.Pages;
 using BlazorNotesSystem.Components;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using SharpArgsManagerProj.AAPublic;
 using SharpFileServiceProg.AAPublic;
+using SharpGameSynchProg.Service;
 using SharpOperationsProg.AAPublic.Operations;
-using SharpRepoBackendProg2.Service;
+using SharpRepoBackendProg.Service;
 using OutBorder01 = SharpSetup21ProgPrivate.AAPublic.OutBorder;
 
 OutBorder01.GetPreparer("PrivateNotesPreparer").Prepare();
@@ -14,12 +19,30 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
-var backend = new BackendService();
+IBackendService backend = MyBorder.Container.Resolve<IBackendService>();
+builder.Services.AddSingleton<IBackendService>(backend);
+
 var fileService = MyBorder.Container.Resolve<IFileService>();
-builder.Services.AddSingleton<BackendService>(backend);
 builder.Services.AddSingleton<IFileService>(fileService);
+
 var operationsService = MyBorder.Container.Resolve<IOperationsService>();
 builder.Services.AddSingleton<IOperationsService>(operationsService);
+
+var argsManager = MyBorder.Container.Resolve<IArgsManagerService>();
+builder.Services.AddSingleton<IArgsManagerService>(argsManager);
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.WithOrigins(
+                    "http://google.com","https://google.com")
+                .AllowAnyHeader()
+                .AllowAnyOrigin()
+                .AllowAnyMethod();
+        });
+});
 
 var app = builder.Build();
 
@@ -44,5 +67,7 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(Counter).Assembly);
+
+
 
 app.Run();

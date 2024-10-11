@@ -8,7 +8,17 @@ public interface IUniAddressOperations
     Uri CreateUriFromAddress((string Repo, string Loca) address, int index);
     string CreateUrlFromAddress((string Repo, string Loca) address);
     int GetLastLocaIndex(string addressString);
-    
+    static string GetAddressString((string, string) adrTuple)
+    {
+        if (string.IsNullOrEmpty(adrTuple.Item2))
+        {
+            return adrTuple.Item1;
+        }
+
+        var address = adrTuple.Item1 + "/" + adrTuple.Item2;
+        return address;
+    }
+
     static string MoveOneLocaBack(string adrString)
     {
         var slashCount = adrString.Count(x => x == '/');
@@ -16,7 +26,7 @@ public interface IUniAddressOperations
         {
             return adrString;
         }
-            
+
         var splited = adrString.Split("/").ToList();
         var lastItemIndex = splited.Count - 1;
         splited.RemoveAt(lastItemIndex);

@@ -1,9 +1,9 @@
 ﻿using PdfService.PdfService;
 using SharpContainerProg.AAPublic;
-using SharpRepoBackendProg2.Service;
+using SharpRepoBackendProg.Service;
 using OutBorder1 = SharpPdfServiceProg.Repetition.OutBorder;
 
-namespace SharpRepoBackendProg2.Repetition;
+namespace SharpRepoBackendProg.Repetition;
 
 internal class Registration : RegistrationBase
 {

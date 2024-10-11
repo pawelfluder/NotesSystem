@@ -1,11 +1,11 @@
 ﻿using SharpRepoBackendProg.Service;
 
-namespace SharpRepoBackendProg.Repetition;
+namespace SharpRepoBackendProg.AAPublic;
 
 public class OutBorder
 {
     public static IBackendService BackendService()
     {
-        return MyBorder.Container.Resolve<IBackendService>();
+        return new BackendService();
     }
 }

@@ -1,6 +1,6 @@
-using SharpRepoBackendProg2.Service;
+using SharpRepoBackendProg.Service;
 
-namespace SharpRepoBackendProg2;
+namespace SharpRepoBackendProg;
 
 class Program
 {

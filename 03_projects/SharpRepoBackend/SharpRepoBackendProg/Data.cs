@@ -1,4 +1,4 @@
-﻿namespace SharpRepoBackendProg2;
+﻿namespace SharpRepoBackendProg;
 
 public class Data
 {

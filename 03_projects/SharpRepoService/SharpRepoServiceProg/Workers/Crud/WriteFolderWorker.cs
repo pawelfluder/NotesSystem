@@ -32,22 +32,33 @@ public class WriteFolderWorker
         sw = MyBorder.Container.Resolve<SystemWorker>();
     }
 
-    public void Put(
+    public ItemModel Put(
         string name,
         (string Repo, string Loca) adrTuple)
     {
-        // directory
-        var itemPath = pw.GetItemPath(adrTuple);
-        sw.CreateDirectoryIfNotExists(itemPath);
+        var item = new ItemModel();
 
         // config
-        var dict = new Dictionary<string, object>()
+        item.Settings = new Dictionary<string, object>()
         {
-            { "id", Guid.NewGuid().ToString() },
-            { "type", ItemTypeNames.Folder },
-            { "name", name }
+            { FieldsForUniItem.Id, Guid.NewGuid().ToString() },
+            { FieldsForUniItem.Type, ItemTypeNames.Folder },
+            { FieldsForUniItem.Folder, name }
         };
-        cw.CreateConfig(adrTuple, dict);
+        
+        Put(item);
+        return item;
+    }
+    
+    internal ItemModel Put(ItemModel item)
+    {
+        // directory
+        sw.CreateDirectoryIfNotExists(item.AdrTuple);
+
+        // config
+        cw.CreateConfig(item.AdrTuple, item.Settings);
+
+        return item;
     }
 
     public (string Repo, string Loca) Post(
@@ -110,14 +121,5 @@ public class WriteFolderWorker
         return item;
     }
 
-    internal ItemModel Put(ItemModel item)
-    {
-        // directory
-        sw.CreateDirectoryIfNotExists(item.AdrTuple);
-
-        // config
-        cw.CreateConfig(item.AdrTuple, item.Settings);
-
-        return item;
-    }
+    
 }

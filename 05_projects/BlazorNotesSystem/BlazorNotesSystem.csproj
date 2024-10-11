@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\24_projects\SharpArgsManager\SharpArgsManagerProj\SharpArgsManagerProj\SharpArgsManagerProj.csproj" />
+    <ProjectReference Include="..\..\24_projects\SharpGameSynch\SharpGameSynchProg\SharpGameSynchProg.csproj" />
     <ProjectReference Include="..\BlazorNotesSystem.Client\BlazorNotesSystem.Client.csproj" />
     <ProjectReference Include="..\..\03_projects\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj" />
     <ProjectReference Include="..\..\03_projects\SharpRepoBackend\SharpRepoBackendProg\SharpRepoBackendProg.csproj" />

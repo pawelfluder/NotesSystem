@@ -9,12 +9,12 @@ using SharpGoogleDocsProg.AAPublic;
 using SharpGoogleDriveProg.AAPublic;
 using SharpNotesExporter;
 using SharpOperationsProg.AAPublic.Operations;
-using SharpRepoBackendProg2.Repetition;
+using SharpRepoBackendProg.Repetition;
 using SharpRepoServiceProg.AAPublic;
 using SharpRepoServiceProg.Workers.Public;
 using TextHeaderAnalyzerCoreProj.Service;
 
-namespace SharpRepoBackendProg2.Service;
+namespace SharpRepoBackendProg.Service;
 
 public class BackendService : IBackendService
 {

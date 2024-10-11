@@ -1,6 +1,6 @@
 ﻿using WpfNotesSystem.ViewModels;
 using System.Windows.Controls;
-using SharpRepoBackendProg2.Service;
+using SharpRepoBackendProg.Service;
 using WpfNotesSystem.Repetition;
 
 namespace WpfNotesSystem.Views;
