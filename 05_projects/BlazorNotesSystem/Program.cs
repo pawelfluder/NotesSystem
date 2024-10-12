@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SharpArgsManagerProj.AAPublic;
 using SharpFileServiceProg.AAPublic;
-using SharpGameSynchProg.Service;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoBackendProg.Service;
 using OutBorder01 = SharpSetup21ProgPrivate.AAPublic.OutBorder;
@@ -22,25 +21,32 @@ builder.Services.AddRazorComponents()
 IBackendService backend = MyBorder.Container.Resolve<IBackendService>();
 builder.Services.AddSingleton<IBackendService>(backend);
 
-var fileService = MyBorder.Container.Resolve<IFileService>();
+IFileService fileService = MyBorder.Container.Resolve<IFileService>();
 builder.Services.AddSingleton<IFileService>(fileService);
 
-var operationsService = MyBorder.Container.Resolve<IOperationsService>();
+IOperationsService operationsService = MyBorder.Container.Resolve<IOperationsService>();
 builder.Services.AddSingleton<IOperationsService>(operationsService);
 
-var argsManager = MyBorder.Container.Resolve<IArgsManagerService>();
+IArgsManagerService argsManager = MyBorder.Container.Resolve<IArgsManagerService>();
 builder.Services.AddSingleton<IArgsManagerService>(argsManager);
 
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
-        builder =>
+        corsBuilder =>
         {
-            builder.WithOrigins(
-                    "http://google.com","https://google.com")
+            corsBuilder 
+                .SetIsOriginAllowedToAllowWildcardSubdomains()
+                .WithOrigins(
+                    "https://blazor.net", "http://blazor.net",
+                    "https://www.facebook.com",
+                    "https://www.instagram.com")
                 .AllowAnyHeader()
                 .AllowAnyOrigin()
-                .AllowAnyMethod();
+                .AllowAnyMethod()
+                .AllowCredentials()
+                .AllowAnyHeader()
+                .Build();
         });
 });
 

@@ -7,6 +7,15 @@ namespace SharpOperationsProg.Operations.UniItem.Extensions;
 
 public static class UnitItemExtensions
 {
+    public static (string Repo, string Loca) GetAdrTupleByNamesList(
+        this IRepoService repoService,
+        (string Repo, string Loca) mainAdrTuple,
+        List<string> names)
+    {
+        var adrTuple = repoService.Methods.GetAdrTupleByNameList(mainAdrTuple, names);
+        return adrTuple;
+    }
+    
     public static (string Repo, string Loca) GetAdrTuple<T>(
         this IRepoService repoService,
         (string Repo, string Loca) mainAdrTuple)

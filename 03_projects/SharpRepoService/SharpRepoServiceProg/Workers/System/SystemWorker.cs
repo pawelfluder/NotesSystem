@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using SharpRepoServiceProg.Registration;
 
 namespace SharpRepoServiceProg.Workers.System;
@@ -42,8 +44,13 @@ internal class SystemWorker
     public string[] GetDirectories(
         (string Repo, string Loca) adrTuple)
     {
-        var path = pw.GetItemPath(adrTuple);
-        var result = Directory.GetDirectories(path);
-        return result;
+        string path = pw.GetItemPath(adrTuple);
+        string[] result = Directory.GetDirectories(path);
+        string[] withoutSpecial = result
+            .Where(x => !SpecialFolders.Contains(Path.GetFileName(x)))
+            .ToArray();
+        return withoutSpecial;
     }
+
+    public string[] SpecialFolders = [".git"];
 }

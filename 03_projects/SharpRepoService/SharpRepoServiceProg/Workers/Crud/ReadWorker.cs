@@ -443,6 +443,11 @@ internal class ReadWorker
         (string Repo, string Loca) address)
     {
         var directories = _sw.GetDirectories(address);
+        if (directories.Length == 0)
+        {
+            return 0;
+        }
+        
         var numbers = directories
             .Select(x => _operationsService.Index.StringToIndex(Path.GetFileName(x)))
             .ToList();
