@@ -22,7 +22,7 @@ public static class UnitItemExtensions
     {
         string name = typeof(T).Name;
         string? json = repoService.Item
-            .CreateItem(mainAdrTuple, "Folder", name);
+            .PostItem(mainAdrTuple, "Folder", name);
         UniItem? uniItem = JsonConvert.DeserializeObject<UniItem>(json);
         if (uniItem == null) { return default; }
         (string Repo, string Loca) adrTuple = uniItem.AdrTuple;
@@ -34,7 +34,7 @@ public static class UnitItemExtensions
         string type,
         string name)
     {
-        string? json = repoService.Item.CreateItem(parentAdrTuple, type, name);
+        string? json = repoService.Item.PostItem(parentAdrTuple, type, name);
         UniItem? uniItem = JsonConvert.DeserializeObject<UniItem>(json);
         return uniItem.AdrTuple;
     }
@@ -143,21 +143,30 @@ public static class UnitItemExtensions
         if (typeAdrTuple == default)
         {
             repoService.Item
-                .CreateItem(parentAdrTuple, "Text", name);
+                .PostItem(parentAdrTuple, "Text", name);
         }
 
         var objectsList = repoService.GetItemList<T>(typeAdrTuple);
         return objectsList;
     }
     
+    public static IEnumerable<T> GetUniItemList<T>(
+        this IRepoService repoService,
+        (string Repo, string Loca) adrTuple)
+    {
+        string? json = repoService.Item.GetItemList(adrTuple);
+        List<T> itemList = IYamlDefaultOperations.Deserialize<List<T>>(json);
+        return itemList;
+    }
+    
     public static IEnumerable<T> GetItemList<T>(
         this IRepoService repoService,
         (string Repo, string Loca) adrTuple)
     {
-        var jsonString = repoService.Methods.GetItem(adrTuple);
-        var item = JsonConvert.DeserializeObject<UniItem>(jsonString);
-        var body = item.Body.ToString();
-        var itemList = IYamlDefaultOperations.Deserialize<List<T>>(body);
+        string? jsonString = repoService.Methods.GetItem(adrTuple);
+        UniItem? item = JsonConvert.DeserializeObject<UniItem>(jsonString);
+        string? body = item.Body.ToString();
+        List<T> itemList = IYamlDefaultOperations.Deserialize<List<T>>(body);
         return itemList;
     }
 }

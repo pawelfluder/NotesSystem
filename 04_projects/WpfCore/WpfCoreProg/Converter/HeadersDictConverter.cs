@@ -9,6 +9,7 @@ using System.Windows.Markup;
 using Newtonsoft.Json;
 using SharpFileServiceProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
+using SharpRepoServiceProg.Names;
 using WpfNotesSystem.Creator;
 using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.Models;
@@ -50,11 +51,11 @@ public class HeadersDictConverter : MarkupExtension, IValueConverter
         try
         {
             var type = itemModel.Type;
-            if (type == "Text")
+            if (type == ItemTypes.Text)
             {
                 myGrid = ConvertTextItem(itemModel);
             }
-            if (type == "Folder")
+            if (type == ItemTypes.Folder)
             {
                 myGrid = ConvertFolderItem(itemModel);
             }

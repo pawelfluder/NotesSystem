@@ -43,7 +43,7 @@ public class WriteFolderWorker
         {
             { FieldsForUniItem.Id, Guid.NewGuid().ToString() },
             { FieldsForUniItem.Type, ItemTypeNames.Folder },
-            { FieldsForUniItem.Folder, name }
+            { FieldsForUniItem.Name, name }
         };
         
         Put(item);

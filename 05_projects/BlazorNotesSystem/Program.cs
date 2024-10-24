@@ -12,7 +12,7 @@ using OutBorder01 = SharpSetup21ProgPrivate.AAPublic.OutBorder;
 
 OutBorder01.GetPreparer("PrivateNotesPreparer").Prepare();
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
@@ -39,8 +39,7 @@ builder.Services.AddCors(options =>
                 .SetIsOriginAllowedToAllowWildcardSubdomains()
                 .WithOrigins(
                     "https://blazor.net", "http://blazor.net",
-                    "https://www.facebook.com",
-                    "https://www.instagram.com")
+                    "https://www.facebook.com")
                 .AllowAnyHeader()
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
@@ -50,7 +49,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -73,7 +72,5 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(Counter).Assembly);
-
-
 
 app.Run();

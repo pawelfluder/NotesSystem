@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.Models;
+using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.Workers.Crud;
@@ -114,13 +115,13 @@ public class JsonWorker
     //    }
     //}
 
-    public string CreateItem(
+    public string PostItem(
         (string repo, string loca) address,
         string type,
         string name)
     {
         ItemModel item = null;
-        if (type == "Text")
+        if (type == ItemTypes.Text)
         {
             item = tww.InternalPost(name, address, "");
         }
@@ -140,7 +141,7 @@ public class JsonWorker
         string body = "")
     {
         ItemModel item = null;
-        if (type == "Text")
+        if (type == ItemTypes.Text)
         {
             item = tww.Put(name, address, body);
         }

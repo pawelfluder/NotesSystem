@@ -12,6 +12,7 @@ using WpfCoreProg.Debug;
 using System.ComponentModel;
 using SharpRepoBackendProg.Service;
 using SharpRepoServiceProg.AAPublic;
+using SharpRepoServiceProg.Names;
 
 namespace WpfNotesSystem.ViewModels;
 
@@ -72,7 +73,7 @@ public class MainViewModel : BaseViewModel
     public IItemViewModel CreateViewModel(string type, (string, string) adrTuple)
     {
         IItemViewModel viewModel = null;
-        if (type == "Text")
+        if (type == ItemTypes.Text)
         {
             viewModel = MyBorder.Container.Resolve<TextViewModel>();
         }

@@ -1,4 +1,8 @@
-﻿using Google.Apis.Sheets.v4;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using static Google.Apis.Sheets.v4.SpreadsheetsResource;
 
@@ -108,38 +112,12 @@ public class SheetWorker
         return next.ToString();
     }
 
-    //public void PasteDataAndFunctionsToSheet(
-    //   string spreadsheetId,
-    //   string sheetId,
-    //   IList<IList<object>> data,
-    //   List<string> propertyNames,
-    //   List<(string, string)> formulas)
-    //{
-    //    var afterPropertiesColumnNumber = propertyNames.Count() + 1;
-    //    var formulaNames = formulas.Select(x => x.Item1).ToList();
-    //    var sId = int.Parse(sheetId);
-
-    //    var dataRowList = data.Select(x => logicWorker.CreateDataRow(x)).ToList();
-    //    var request1 = PasteDataToSheet(sId, spreadsheetId, dataRowList, 1, propertyNames);
-    //    queryWoker.GetAllUpdateRequests(request1, spreadsheetId);
-
-    //    if (formulas.Any())
-    //    {
-    //        var formulaList = GetFormulaDataList(data.Count(), formulas);
-    //        var formulaRowList = formulaList.Select(x => logicWorker.CreateFormulaRow(x)).ToList();
-    //        var request2 = PasteDataToSheet(sId, spreadsheetId, formulaRowList, afterPropertiesColumnNumber, formulaNames);
-    //        queryWoker.GetAllUpdateRequests(request2, spreadsheetId);
-
-    //    }
-
-    //}
-
     public void PasteDataToSheet(
         string spreadsheetId,
         string sheetName,
         IList<IList<object>> data,
         List<string> columnsList,
-        Dictionary<char, string>? formulas = null)
+        Dictionary<string, Func<string>> formulas = null)
     {
         if (data.Count() == 0)
         {
@@ -265,9 +243,7 @@ public class SheetWorker
                 Fields = "*",
             }
         };
-
-        var formulasColumnsList = new List<string>() { "FileName", "Who1", "Who2" };
-
+        
         var cellList = columnsList
             .Select(x => CreateDataCell(x, false)).ToList();
 
@@ -317,17 +293,17 @@ public class SheetWorker
         return request;
     }
 
-    public Dictionary<char, string> GetFormulas()
-    {
-        var f = new Dictionary<char, string>();
-        f.Add('D', "=C4-B4");
-        return f;
-    }
+    // public Dictionary<char, string> GetFormulas()
+    // {
+    //     var f = new Dictionary<char, string>();
+    //     f.Add('D', "=C4-B4");
+    //     return f;
+    // }
 
     private Request CopyPasteFormulas(
         int sheetId,
         int dataHeight,
-        Dictionary<char, string>? formulas)
+        Dictionary<string, Func<string>> formulas)
     {
         if (formulas == null)
         {
@@ -335,7 +311,8 @@ public class SheetWorker
         }
 
         var f = formulas.First();
-        (int, int) cor = LetterToSc(f);
+        //(int, int) cor = LetterToSc(f);
+        var cor = (0, 0);
 
         var request = new Request
         {
@@ -368,16 +345,19 @@ public class SheetWorker
     private Request CreateUpdateFormulas(
         int sheetId,
         int dataHeight,
-        Dictionary<char, string>? formulas)
+        Dictionary<string, Func<string>> formulas)
     {
         if (formulas == null)
         {
             return null;
         }
 
-        var f = formulas.First();
-
-        (int, int) cor = LetterToSc(f);
+        KeyValuePair<string, Func<string>> f = formulas.First();
+        var gg = f.Value.Invoke();
+        //var s2 = new KeyValuePair<string, string>(f.Key, f.Value.Invoke());
+        
+        //(int, int) cor = LetterToSc(f);
+        var cor = (0,0);
         var gridCoordinates = GetCoordinate(cor, sheetId);
 
         var request = new Request
@@ -398,10 +378,11 @@ public class SheetWorker
         return request;
     }
 
-    private (int, int) LetterToSc(KeyValuePair<char, string> f)
+    private (int, int) LetterToSc(KeyValuePair<string, string> f)
     {
-        int index = char.ToUpper(f.Key) - 65;
-        return (3, index);
+        //int index = char.ToUpper(f.Key) - 65;
+        return (0, 0);
+        //return (3, index);
     }
 
     //private Request CreateUpdateFormulas(int sheetId, (int, int) sc, int dataCount)

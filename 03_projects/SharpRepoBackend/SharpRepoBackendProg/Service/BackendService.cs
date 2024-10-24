@@ -131,7 +131,7 @@ public class BackendService : IBackendService
                 var type = args[2];
                 var name = args[3];
 
-                var item = repoService.Item.CreateItem(address, type, name);
+                var item = repoService.Item.PostItem(address, type, name);
                 return item;
             }
 
@@ -286,7 +286,7 @@ public class BackendService : IBackendService
     //                     .CreateChildFolder(address, name);
     //                 return JsonConvert.SerializeObject("completed!");
     //             }
-    //             if (type == "Text")
+    //             if (type == ItemTypes.Text)
     //             {
     //                 var outputItem = repoService.Methods
     //                     .CreateChildText(address, name);
