@@ -66,25 +66,21 @@ public class WriteTextWorker
 
     public (string Repo, string Loca) Post(
         string name,
-        (string Repo, string Loca) adrTuple,
-        string content)
+        (string Repo, string Loca) adrTuple)
     {
-        var item = InternalPost(name, adrTuple, content);
+        var item = InternalPost(name, adrTuple);
         return item.AdrTuple;
     }
 
     internal ItemModel InternalPost(
         string name,
-        (string Repo, string Loca) adrTuple,
-        string content)
+        (string Repo, string Loca) adrTuple)
     {
         ItemModel item = null;
         var foundAdrTuple = _rw.GetAdrTupleByName(adrTuple, name);
         if (foundAdrTuple != default)
         {
             item = _rw.GetItemConfig(foundAdrTuple);
-            item.Body = content;
-            Put(name, foundAdrTuple, content);
             return item;
         }
 
@@ -93,7 +89,7 @@ public class WriteTextWorker
         var newIndexString = _operationsService.Index.IndexToString(newIndex);
 
         var newAdrTuple = _operationsService.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
-        item = PrepareItem(name, newAdrTuple, content);
+        item = PrepareItem(name, newAdrTuple, "");
         Put(item);
         return item;
     }

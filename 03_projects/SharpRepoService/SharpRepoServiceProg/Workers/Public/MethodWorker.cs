@@ -385,7 +385,7 @@ public class MethodWorker
     {
         foreach (var nQc in nQcList)
         {
-            PostText(address, nQc.Name, nQc.Content);
+            PutText(address, nQc.Name, nQc.Content);
         }
     }
 
@@ -428,9 +428,8 @@ public class MethodWorker
 
     public (string, string) PostText(
         (string Repo, string Loca) adrTuple,
-        string name,
-        string content)
-        => _tww.Post(name, adrTuple, content);
+        string name)
+        => _tww.Post(name, adrTuple);
 
 
     //public (string Repo, string Loca) CreateFolder(

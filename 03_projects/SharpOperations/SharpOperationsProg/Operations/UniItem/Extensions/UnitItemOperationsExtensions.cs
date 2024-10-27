@@ -28,7 +28,7 @@ public static class UnitItemExtensions
         (string Repo, string Loca) adrTuple = uniItem.AdrTuple;
         return adrTuple;
     }
-    public static (string, string) CreateItem(
+    public static (string, string) PostItem(
         this IRepoService repoService,
         (string, string) parentAdrTuple,
         string type,
@@ -39,7 +39,17 @@ public static class UnitItemExtensions
         return uniItem.AdrTuple;
     }
     
-    public static (string, string) CreateItem(
+    public static (string, string) PostText(
+        this IRepoService repoService,
+        (string, string) parentAdrTuple,
+        string name)
+    {
+        string? json = repoService.Item.PostItem(parentAdrTuple, "Text", name);
+        UniItem? uniItem = JsonConvert.DeserializeObject<UniItem>(json);
+        return uniItem.AdrTuple;
+    }
+    
+    public static (string, string) PostItem(
         this IRepoService repoService,
         (string, string) parentAdrTuple,
         string type,
@@ -51,12 +61,12 @@ public static class UnitItemExtensions
         return uniItem.AdrTuple;
     }
 
-    public static (string, string) CreateFolder(
+    public static (string, string) PostFolder(
         this IRepoService repoService,
         (string, string) parentAdrTuple,
         string name)
     {
-        var adrTuple = CreateItem(repoService, parentAdrTuple, "Folder", name);
+        var adrTuple = PostItem(repoService, parentAdrTuple, "Folder", name);
         return adrTuple;
     }
     
@@ -126,7 +136,7 @@ public static class UnitItemExtensions
         (string, string) parentAdrTuple,
         string name)
     {
-        var adrTuple = CreateItem(repoService, parentAdrTuple, "Text", name);
+        var adrTuple = PostItem(repoService, parentAdrTuple, "Text", name);
         return adrTuple;
     }
 

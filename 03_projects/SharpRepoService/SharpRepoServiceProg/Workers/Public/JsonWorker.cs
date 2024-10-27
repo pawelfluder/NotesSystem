@@ -123,7 +123,7 @@ public class JsonWorker
         ItemModel item = null;
         if (type == ItemTypes.Text)
         {
-            item = tww.InternalPost(name, address, "");
+            item = tww.InternalPost(name, address);
         }
         if (type == "Folder")
         {
