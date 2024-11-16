@@ -135,11 +135,14 @@
         var itemJson = _backendService.CommandApi("OpenConfig", adrTuple.Item1, adrTuple.Item2);
     }
     
-    private void TerminalClicked()
+    private async Task TerminalClicked()
     {
-        var adrTuple = IUniAddressOperations
-              .CreateAddressFromString(Item.Address);
-        var itemJson = _backendService.CommandApi("OpenTerminal", adrTuple.Item1, adrTuple.Item2);
+        var speechSynthesisService = serviceProvider.GetRequiredService<ISpeechSynthesisService>();
+        var voicesArray = await speechSynthesisService.GetVoicesAsync();
+        
+    //     var adrTuple = IUniAddressOperations
+    //           .CreateAddressFromString(Item.Address);
+    //     var itemJson = _backendService.CommandApi("OpenTerminal", adrTuple.Item1, adrTuple.Item2);
     }
 
     private void OnBtnClicked(string idxString)

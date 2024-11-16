@@ -1,4 +1,5 @@
-﻿@page "/"
+﻿@page "/{UrlUniAddress}"
+@page "/"
 
 @using BlazorInterAutoProj.Repet.Models
 @using BlazorNotesSystem.Components.Editor
@@ -43,6 +44,10 @@
     private TextView textView;
     private RefTextView refTextView;
     private FolderView folderView;
+    
+    [Parameter]
+    public string? UrlUniAddress { get; set; }
+    
     public Home()
     {
         if (item == null)
@@ -56,8 +61,15 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        var adrTuple = IUniAddressOperations
-             .CreateAddressFromString(item.Address);
+        (string, string) adrTuple = IUniAddressOperations
+            .CreateAddressFromString(item.Address);
+        
+        if (UrlUniAddress != null)
+        {
+            adrTuple = IUniAddressOperations
+                .CreateAddressFromUrlParameter(UrlUniAddress);
+        }
+        
         ReloadItem(adrTuple);
     }
     protected void ReloadItem((string Repo, string Loca) address)

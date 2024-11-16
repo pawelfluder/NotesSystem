@@ -29,13 +29,13 @@ public class RepoTtsWorker : MethodRunner
 
     public override async Task RunMethodAsync(string methodName, params object[] args)
     {
-        if (methodName == "Resume")
+        if (methodName == nameof(Resume))
         {
             await Resume();
             return;
         }
 
-        if (methodName == "Pause")
+        if (methodName == nameof(Pause))
         {
             await Pause();
             return;

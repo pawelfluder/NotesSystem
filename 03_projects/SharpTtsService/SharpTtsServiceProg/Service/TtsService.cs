@@ -2,40 +2,45 @@
 using SharpRepoServiceProg.AAPublic;
 using SharpTtsServiceProg.AAPublic;
 using SharpTtsServiceProg.Worker;
+using SharpTtsServiceProg.Workers.Jobs;
 using SharpVideoServiceProg.AAPublic;
+using Xamarin.Essentials;
 
 namespace SharpTtsServiceProg.Service;
 
-internal class TtsService : ITtsService
+internal class TtsService //: ITtsService
 {
     private IOperationsService operationsService;
     private IRepoService repoService;
     private IVideoService videoService;
 
-    private RepoTtsWorker repoTts;
-    public RepoTtsWorker RepoTts
-    {
-        get
-        {
-            if (!isTtsWorkerInit)
-            {
-                TtsWorkerInit();
-                isTtsWorkerInit = true;
-            }
+    
+    
 
-            return repoTts;
-        }
-    }
-
-    public TtsBuilderWorker Tts { get; private set;}
-
-    private bool isTtsWorkerInit;
-
-    private void TtsWorkerInit()
-    {
-        Tts = new TtsBuilderWorker();
-        repoTts = new RepoTtsWorker(operationsService, repoService, videoService);
-    }
+    // private RepoTtsWorker repoTts;
+    // public RepoTtsWorker RepoTts
+    // {
+    //     get
+    //     {
+    //         if (!isTtsWorkerInit)
+    //         {
+    //             TtsWorkerInit();
+    //             isTtsWorkerInit = true;
+    //         }
+    //
+    //         return repoTts;
+    //     }
+    // }
+    //
+    // public TtsBuilderWorker Tts { get; private set;}
+    //
+    // private bool isTtsWorkerInit;
+    //
+    // private void TtsWorkerInit()
+    // {
+    //     Tts = new TtsBuilderWorker();
+    //     repoTts = new RepoTtsWorker(operationsService, repoService, videoService);
+    // }
 
     public TtsService(
         IOperationsService operationsService,

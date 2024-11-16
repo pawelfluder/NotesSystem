@@ -53,4 +53,28 @@ public interface IUniAddressOperations
 
         return (repo, loca);
     }
+    
+    static (string, string) CreateAddressFromUrlParameter(
+        string addressString)
+    {
+        var spliter = '-';
+        if (!addressString.Contains(spliter))
+        {
+            return (addressString, "");
+        }
+        
+        addressString = addressString.Trim(spliter);
+        int index = addressString.IndexOf(spliter);
+
+        string repo = addressString.Substring(0, index);
+        string loca = addressString.Substring(index + 1, addressString.Length - index - 1);
+
+        if (!loca.Contains(spliter))
+        {
+            return (repo, loca);
+        }
+        
+        var newLoca = loca.Replace(spliter, '/');
+        return (repo, newLoca);
+    }
 }

@@ -12,4 +12,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="bin\Debug\net8.0\BlazorNotesSystem.Client.staticwebassets.runtime.json" />
+    <_ContentIncludedByDefault Remove="bin\Debug\net8.0\wwwroot\_framework\blazor.boot.json" />
+  </ItemGroup>
+
 </Project>

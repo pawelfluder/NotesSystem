@@ -4,7 +4,7 @@ namespace SharpOperationsProg.AAPublic;
 
 public class StrategyBase<T>
 {
-    protected List<Type> _possibleStrategies;
+    protected readonly List<Type> _possibleStrategies;
     protected T _strategy;
     
     private AssemblyName GetAssemblyName(object obj)
@@ -14,19 +14,13 @@ public class StrategyBase<T>
         return assebmlyName;
     }
     
-    public StrategyBase(object parent)
+    public StrategyBase()
     {
         Type interfaceType = typeof(T);
-        AssemblyName assemblyName = GetAssemblyName(parent);
-        Assembly assembly = Assembly.Load(assemblyName);
+        Assembly assembly = interfaceType.Assembly;
         _possibleStrategies = assembly.GetTypes()
             .Where(mytype => mytype.GetInterfaces().Contains(interfaceType))
             .ToList();
-        
-        // wrong
-        // var types = assembly.GetTypes()
-        //     .Where(p => p.IsAssignableFrom(interfaceType))
-        //     .ToList();
     }
     
     public T GetNewStrategy(string name)
@@ -36,15 +30,15 @@ public class StrategyBase<T>
             throw new Exception();
         }
 
-        var match = _possibleStrategies.Where(x => x.Name == name);
+        IEnumerable<Type> match = _possibleStrategies.Where(x => x.Name == name);
         if (match.Count() != 1)
         {
             throw new Exception();
         }
         
         Type type = _possibleStrategies.Single(x => x.Name == name);
-        var obj = Activator.CreateInstance(type);
-        var newStrategy = (T)obj;
+        object? obj = Activator.CreateInstance(type);
+        T? newStrategy = (T)obj;
         return newStrategy;
     }
 

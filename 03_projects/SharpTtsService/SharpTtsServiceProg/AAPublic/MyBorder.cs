@@ -7,11 +7,11 @@ namespace SharpTtsServiceProg.AAPublic;
 
 public static class OutBorder
 {
-    public static ITtsService TtsService(
-        IOperationsService operationsService,
-        IRepoService repoService,
-        IVideoService videoService)
-    {
-        return new TtsService(operationsService, repoService, videoService);
-    }
+    // public static ITtsService TtsService(
+    //     IOperationsService operationsService,
+    //     IRepoService repoService,
+    //     IVideoService videoService)
+    // {
+    //     return new TtsService(operationsService, repoService, videoService);
+    // }
 }

@@ -8,11 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Speech" Version="8.0.0" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.8.1" />
+    <PackageReference Include="Xam.Plugins.TextToSpeech" Version="4.0.0.7" />
+    <PackageReference Include="Toolbelt.Blazor.SpeechSynthesis" Version="6.0.0" />
+    <PackageReference Include="Tewr.BlazorWorker.Extensions.JSRuntime" Version="4.1.3" />
+    <PackageReference Include="Microsoft.JSInterop" Version="8.0.0" />
+    <PackageReference Include="Blazor.SpeechSynthesis" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SharpOperations\SharpOperationsProg\SharpOperationsProg.csproj" />
     <ProjectReference Include="..\..\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj" />
+<!--    <ProjectReference Include="..\..\SharpVideoService\SharpVideoServiceProg\SharpVideoServiceProg.csproj" />-->
+    <PackageReference Include="Microsoft.JSInterop" Version="8.0.10" />
     <ProjectReference Include="..\..\SharpVideoService\SharpVideoServiceProg\SharpVideoServiceProg.csproj" />
   </ItemGroup>
 

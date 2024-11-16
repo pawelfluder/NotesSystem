@@ -1,0 +1,4 @@
+<key>NSSpeechRecognitionUsageDescription</key>
+<string>SpeechToText requires speech recognition usage</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>SpeechToText requires microphone usage</string>

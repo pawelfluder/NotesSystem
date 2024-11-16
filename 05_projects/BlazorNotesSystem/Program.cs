@@ -30,6 +30,9 @@ builder.Services.AddSingleton<IOperationsService>(operationsService);
 IArgsManagerService argsManager = MyBorder.Container.Resolve<IArgsManagerService>();
 builder.Services.AddSingleton<IArgsManagerService>(argsManager);
 
+builder.Services.AddSpeechSynthesisServices();
+
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
