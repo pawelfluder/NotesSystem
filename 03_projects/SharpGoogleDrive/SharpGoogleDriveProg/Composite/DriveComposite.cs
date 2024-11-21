@@ -1,4 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Google.Apis.Drive.v3;
 using Google.Apis.Drive.v3.Data;
 using SharpGoogleDriveProg.Service;
@@ -38,7 +42,7 @@ public class DriveComposite
 
     public string CreateDocFile(string title)
     {
-        var templateName = "EmbeddedResources.template04.docx";
+        var templateName = "EmbeddedResources.Template04.docx";
         var assemblyName = credentials.GetAssemblyName(this);
         var stream = credentials.GetEmbeddedResourceStream(assemblyName, templateName);
         (var docId, var outTitle) = UploadFileDocx(title, stream);
