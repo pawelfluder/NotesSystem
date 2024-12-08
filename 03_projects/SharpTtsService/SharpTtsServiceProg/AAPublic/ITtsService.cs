@@ -7,5 +7,5 @@ public interface ITtsService
 {
     TtsBuilderWorker Tts { get; }
 
-    // RepoTtsWorker RepoTts { get; }
+    RepoTtsWorker RepoTts { get; }
 }

@@ -3,7 +3,7 @@ using SharpNotesMigrationProg.Service;
 using SharpNotesMigrationTests.Registration;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoServiceProg.AAPublic;
-using OutBorder01 = SharpSetup21ProgPrivate.AAPublic.OutBorder;
+using OutBorder01 = SharpSetup01Prog.AAPublic.OutBorder;
 using OutBorder02 = SharpNotesMigrationProg.AAPublic.OutBorder;
 
 namespace SharpNotesMigrationTests;
@@ -14,17 +14,17 @@ public class Migrator04Tests
     public Migrator04Tests()
     {
         OutBorder01.GetPreparer("PrivateNotesPreparer").Prepare();
-        var operationService = MyBorder.Container.Resolve<IOperationsService>();
-        var repoService = MyBorder.Container.Resolve<IRepoService>();
+        var operationService = MyBorder.OutContainer.Resolve<IOperationsService>();
+        var repoService = MyBorder.OutContainer.Resolve<IRepoService>();
         var migrationService = OutBorder02.MigrationService(operationService, repoService);
-        MyBorder.Registration.RegisterByFunc(() => migrationService);
+        MyBorder.OutContainer.RegisterByFunc(() => migrationService);
     }
 
     [TestMethod]
     public void MigrateOneAddress()
     {
         // arrange
-        var migrationService = MyBorder.Container.Resolve<IMigrationService>();
+        var migrationService = MyBorder.OutContainer.Resolve<IMigrationService>();
         var adrTuple = ("Winder2", "01/03/01/110");
         var agree = true;
 
@@ -36,7 +36,7 @@ public class Migrator04Tests
     public void MigrateOneFolder()
     {
         // arrange
-        var migrationService = MyBorder.Container.Resolve<IMigrationService>();
+        var migrationService = MyBorder.OutContainer.Resolve<IMigrationService>();
         var adrTuple = ("Persistency", "");
         var agree = true;
 

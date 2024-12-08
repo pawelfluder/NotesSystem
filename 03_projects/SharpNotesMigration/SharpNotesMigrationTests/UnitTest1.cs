@@ -1,9 +1,10 @@
+using SharpConfigProg.AAPublic;
 using SharpConfigProg.Service;
 using SharpNotesMigrationProg.AAPublic;
 using SharpNotesMigrationProg.Service;
 using SharpNotesMigrationTests.Registration;
 using SharpRepoServiceProg.AAPublic;
-using OutBorder01 = SharpSetup21ProgPrivate.AAPublic.OutBorder;
+using OutBorder01 = SharpSetup01Prog.AAPublic.OutBorder;
 
 namespace SharpNotesMigrationTests;
 
@@ -13,9 +14,9 @@ public class UnitTest1
     public UnitTest1()
     {
         OutBorder01.GetPreparer("PrivateNotesPreparer").Prepare();
-        var configService = MyBorder.Container.Resolve<IConfigService>();
+        var configService = MyBorder.OutContainer.Resolve<IConfigService>();
         configService.Prepare();
-        var repoService = MyBorder.Container.Resolve<IRepoService>();
+        var repoService = MyBorder.OutContainer.Resolve<IRepoService>();
         repoService.PutPaths(configService.GetRepoSearchPaths());
     }
 
@@ -23,7 +24,7 @@ public class UnitTest1
     public void TestMethod3()
     {
         // arrange
-        var migrationService = MyBorder.Container.Resolve<IMigrationService>();
+        var migrationService = MyBorder.OutContainer.Resolve<IMigrationService>();
         var adrTuple = ("Notki", "");
         var agree = true;
 
@@ -36,7 +37,7 @@ public class UnitTest1
     public void TestMethod1()
     {
         // arrange
-        var migrationService = MyBorder.Container.Resolve<IMigrationService>();
+        var migrationService = MyBorder.OutContainer.Resolve<IMigrationService>();
         var agree = true;
 
         // act
@@ -47,7 +48,7 @@ public class UnitTest1
     public void TestMethod2()
     {
         // arrange
-        var migrator03 = MyBorder.Container.Resolve<IMigrator03>();
+        var migrator03 = MyBorder.OutContainer.Resolve<IMigrator03>();
         var repo = "Notki";
         var loca = "";
 
@@ -67,9 +68,9 @@ public class UnitTest1
         var agree = true;
 
         // arrange 2
-        var migrator03 = MyBorder.Container.Resolve<IMigrator03>();
+        var migrator03 = MyBorder.OutContainer.Resolve<IMigrator03>();
         migrator03.SetAgree(agree);
-        var repoServer = MyBorder.Container.Resolve<IRepoService>();
+        var repoServer = MyBorder.OutContainer.Resolve<IRepoService>();
 
         var address = (repoName, loca);
 
@@ -95,9 +96,9 @@ public class UnitTest1
     public void MigrateOneRepo()
     {
         // arrange
-        var migrator03 = MyBorder.Container.Resolve<IMigrator03>();
+        var migrator03 = MyBorder.OutContainer.Resolve<IMigrator03>();
         migrator03.SetAgree(true);
-        var repoServer = MyBorder.Container.Resolve<IRepoService>();
+        var repoServer = MyBorder.OutContainer.Resolve<IRepoService>();
         var repoName = "Notki";
         var address = (repoName, "");
         //var repoName = "02_appData";

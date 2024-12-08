@@ -1,0 +1,64 @@
+1) int HeightCrop
+HeightByWidthRatio * ImageWidth
+
+2) int HeightMiddle
+(1 - (2/100 * OverlapPercentage)) * HeightCrop
+
+3) int Strap 
+(1/100 * OverlapPercentage) * HeightCrop
+
+4) int FirstHeightMiddle
+HeightCrop - Strap - TopOffset(??)
+
+5) int FirstStrapBottom
+if (FirstHeightMiddle <= HeightCrop - Strap )
+FirstStrapBottom = Strap
+else
+FirstStrapBottom = HeightCrop - FirstHeightMiddle
+
+6) decimal ImagesCovering = 
+(ImageHeight + TopOffset(??)
+- FirstHeightMiddle - FirstStrapBottom)
+/ (HeightMiddle + Strap) + 1
+
+7) int ImagesCount = 
+cell (ImagesCovering)
+= 4
+
+8) int _lastSumStrapPlusHeightMiddle
+= LastHeightMiddle + LastStrapBottom
+= ImageHeight - FirstHeightMiddle - FirstStrapBottom
+    - (ImagesCount - 2) * (HeightMiddle + Strip)
+
+9) int LastStrapBottom
+if (_lastSumStrapPlusHeightMiddle > HeightMiddle)
+    LastStrapBottom = LastSumStrapAndMiddle - HeightMiddle
+else
+    LastStrapBottom = 0
+endif
+
+10) int LastHeightMiddle
+LastSumStrapAndMiddleHeight - LastStrapBottom
+
+11) Verificatin of sum
+ImageHeight(Sum) = FirstHeightMiddle + FirstStrapBottom
++ (ImagesCount - 2) * (HeightMiddle + Strap)
++ LastHeightMiddle + LastStrapBottom
+
+12) Verification of ImagesCount
+ImageHeight = FirstHeightMiddle + (ImagesCount - 2 ) * HeightMiddle
++ (ImagesCount - 1 ) * Strap + LastHeightMiddle + LastStrap
+ImagesCount = (ImageHeight - FirstHeightMiddle + 2 * HeightMiddle
++ Strap + LastHeightMiddle - LastStrap)
+
+HInfo [ Y_SHC=?, Y_SHM=?, Y_EHM=?, Y_EHC=?, ST=?, SB=?, HM=?, HC=?]
+   ^  _________ <= Y_SHC
+   |  |  ST   |
+   |  _________ <= Y_SHM
+   |  |       |
+HC |  |  HM   |
+   |  |       |
+   |  _________ <= Y_EHM
+   |  |  SB   |
+   V  _________ <= Y_EHC
+  

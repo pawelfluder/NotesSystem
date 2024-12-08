@@ -1,0 +1,184 @@
+﻿@using BlazorNotesSystem.Repet.Models
+@using Microsoft.Extensions.DependencyInjection
+@* @using SharpArgsManagerProj.AAPublic *@
+@using SharpOperationsProg.AAPublic.Operations
+@using SharpOperationsProg.Operations.UniAddress
+@using SharpRepoBackendProg.Service
+@inject IServiceProvider serviceProvider
+@rendermode InteractiveServer
+
+@* <iframe width="560" height="315" src="" frameborder="0" allowfullscreen></iframe> *@
+
+@if (Item?.Type == myType)
+{
+    <div>
+        <input type="button" value="Folder" @onclick="OnFolderClicked" />
+        <input type="button" value="Config" @onclick="ConfigClicked" />
+        <input type="button" value="Terminal" @onclick="TerminalClicked" />
+        <input type="button" value="Script" @onclick="ScriptClicked" />
+    </div>
+
+    <div>
+        <input type="button" value="Add" @onclick="OnAddClicked" />
+        <select @bind="@formSelectedType">
+            <option value="Text">Text</option>
+            <option value="Folder">Folder</option>
+            <option value="RefText">RefText</option>
+        </select>
+        <input type="text" @bind=@formAddValue>
+    </div>
+
+   @foreach (var indexQname in GetIndexQnameDict())
+   {
+       <div>
+           @indexQname.Key
+           <input type="button" value="@indexQname.Value" @onclick="() => OnBtnClicked(indexQname.Key)" />
+       </div>
+   }
+}
+
+@*
+@foreach (var indexQname in GetIndexQnameDict())
+{
+    <tr>
+        <td>@indexQname.Key</td>
+        <!-- <td><a @onclick=@OnUrlClicked() href="#"></a></td> -->
+        <input type="button" value="@indexQname.Value" @onclick="() => OnBtnClicked(indexQname.Key)" />
+    </tr>
+}
+*@
+@code {
+    [Parameter]
+    public ItemModel Item { get; set; }
+
+    [Parameter]
+    public Action<ItemModel, bool> ReloadItem { get; set; }
+
+    private string formAddValue;
+    private string formSelectedType;
+
+    private Dictionary<string, string> indexQnameDict;
+    private string myType = "Folder";
+    
+    // services
+
+    private IOperationsService? _operationsService;
+    private IBackendService? _backendService;
+    // private IArgsManagerService? _argsManager;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _operationsService ??= serviceProvider.GetServices<IOperationsService>().Single();
+        // _argsManager ??= serviceProvider.GetServices<IArgsManagerService>().First();
+        _backendService ??= serviceProvider.GetServices<IBackendService>().First();
+
+        myType = "Folder";
+        formSelectedType = "Text";
+        ReloadComponent();
+    }
+
+    //private EventCallback<ItemModel2> itemChanged;
+
+    [Parameter]
+    public EventCallback<ItemModel> ItemChanged { get; set; }
+
+    void ItemChangeHandler(ItemModel item)
+    {
+
+    }
+
+    private void ReloadComponent()
+    {
+        indexQnameDict = GetIndexQnameDict();
+    }
+
+    private Dictionary<string, string> GetIndexQnameDict()
+    {
+        if (Item.Type == myType)
+        {
+            var tmp = _operationsService.Json.TryDeserializeObject<Dictionary<string, string>>(Item?.Body.ToString());
+            if (tmp is Dictionary<string, string> dict)
+            {
+                return dict;
+            }
+        }
+
+        return default;
+    }
+
+    
+    private void OnAddClicked()
+    {
+        if (string.IsNullOrEmpty(formAddValue))
+        {
+            return;
+        }
+
+        var adrTuple = IUniAddressOperations
+             .CreateAddressFromString(Item.Address);
+        var itemJson = _backendService
+            .CommandApi("CreateItem", adrTuple.Item1, adrTuple.Item2, formSelectedType, formAddValue);
+    }
+
+    private void OnFolderClicked()
+    {
+        var adrTuple = IUniAddressOperations
+             .CreateAddressFromString(Item.Address);
+        var itemJson = _backendService
+            .CommandApi("OpenFolder", adrTuple.Item1, adrTuple.Item2);
+    }
+
+    private void ConfigClicked()
+    {
+        var adrTuple = IUniAddressOperations
+              .CreateAddressFromString(Item.Address);
+        var itemJson = _backendService.CommandApi("OpenConfig", adrTuple.Item1, adrTuple.Item2);
+    }
+    
+    private async Task TerminalClicked()
+    {
+        //var speechSynthesisService = serviceProvider.GetRequiredService<ISpeechSynthesisService>();
+        //var voicesArray = await speechSynthesisService.GetVoicesAsync();
+        
+        var adrTuple = IUniAddressOperations
+            .CreateAddressFromString(Item.Address);
+        var itemJson = _backendService.CommandApi("OpenTerminal", adrTuple.Item1, adrTuple.Item2);
+    }
+
+    private void OnBtnClicked(string idxString)
+    {
+        var index = _operationsService.Index.StringToIndex(idxString);
+        var adrTuple = IUniAddressOperations
+             .CreateAddressFromString(Item.Address);
+        var newAddress = _operationsService.Index.JoinIndexWithLoca(adrTuple, index);
+        var itemJString = GetItem(newAddress);
+        var itemObj = _operationsService.Json.TryDeserializeObject<ItemModel>(itemJString);
+
+        if (itemObj?.Type != myType)
+        {
+            ReloadItem(itemObj, true);
+            return;
+        }
+
+        ReloadItem(itemObj, false);
+        Item = itemObj;
+        ReloadComponent();
+    }
+
+    public string GetItem((string Repo, string Loca) address)
+    {
+        var itemJson = _backendService.CommandApi("GetItem", address.Repo, address.Loca);
+        return itemJson;
+    }
+
+    private void ScriptClicked()
+    {
+        // string[] args =
+        // [
+        //     nameof(IScriptForGameActive),
+        //     nameof(IScriptForGameActive.GameSynchService),
+        //     "2024"
+        // ];
+        // _argsManager.Resolve(args);
+    }
+}

@@ -1,4 +1,4 @@
-﻿namespace SharpPrepareConfigProg;
+﻿namespace SharpConfigProg;
 
 class Program
 {

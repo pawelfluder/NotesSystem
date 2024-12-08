@@ -1,4 +1,5 @@
-﻿using SharpContainerProg.AAPublic;
+﻿using System.Reflection;
+using SharpContainerProg.AAPublic;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Workers.Crud;
 using SharpRepoServiceProg.Workers.Public;
@@ -10,28 +11,28 @@ internal class Registration : RegistrationBase
 {
     public override void Registrations()
     {
+        var operationsService = new CustomOperationsService();
+        MyBorder.MyContainer.RegisterByFunc(() => operationsService);
+        
         var pathWorker = new PathWorker();
-        RegisterByFunc(() => pathWorker);
+        MyBorder.MyContainer.RegisterByFunc(() => pathWorker);
 
         var systemWorker = new SystemWorker();
-        RegisterByFunc(() => systemWorker);
+        MyBorder.MyContainer.RegisterByFunc(() => systemWorker);
 
         var bodyWorker = new BodyWorker();
-        RegisterByFunc(() => bodyWorker);
+        MyBorder.MyContainer.RegisterByFunc(() => bodyWorker);
 
         var configWorker = new ConfigWorker();
-        RegisterByFunc(() => configWorker);
+        MyBorder.MyContainer.RegisterByFunc(() => configWorker);
 
         var memoWorker = new MemoryWorker();
-        RegisterByFunc(() => memoWorker);
+        MyBorder.MyContainer.RegisterByFunc(() => memoWorker);
 
         var itemWorker = new ReadWorker();
-        RegisterByFunc(() => itemWorker);
+        MyBorder.MyContainer.RegisterByFunc(() => itemWorker);
 
         var jsonWorker = new JsonWorker();
-        RegisterByFunc(() => jsonWorker);
-
-        var operationsService = new OperationsService();
-        RegisterByFunc(() => operationsService);
+        MyBorder.MyContainer.RegisterByFunc(() => jsonWorker);
     }
 }

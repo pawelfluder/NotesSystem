@@ -35,7 +35,7 @@ public class MethodWorker
     private string errorValue;
     private string refGuidStr;
     private string refLocaStr;
-    private readonly OperationsService _operationsService;
+    private readonly CustomOperationsService _customOperationsService;
 
     public MethodWorker(IFileService fileService)
     {
@@ -50,15 +50,15 @@ public class MethodWorker
         this.serverInfo = serverInfo;
         this.localInfo = localInfo;
         yamlOperations = fileService.Yaml.Custom03;
-        _operationsService = MyBorder.Container.Resolve<OperationsService>();
+        _customOperationsService = MyBorder.MyContainer.Resolve<CustomOperationsService>();
 
-        _rw = MyBorder.Container.Resolve<ReadWorker>();
-        _mw = MyBorder.Container.Resolve<MemoryWorker>();
-        _jw = MyBorder.Container.Resolve<JsonWorker>();
+        _rw = MyBorder.MyContainer.Resolve<ReadWorker>();
+        _mw = MyBorder.MyContainer.Resolve<MemoryWorker>();
+        _jw = MyBorder.MyContainer.Resolve<JsonWorker>();
         _fww = new WriteFolderWorker(fileService);
         _tww = new WriteTextWorker();
-        _pw = MyBorder.Container.Resolve<PathWorker>();
-        _cw = MyBorder.Container.Resolve<ConfigWorker>();
+        _pw = MyBorder.MyContainer.Resolve<PathWorker>();
+        _cw = MyBorder.MyContainer.Resolve<ConfigWorker>();
     }
 
     public void CreateTextGenerate(
@@ -572,7 +572,7 @@ public class MethodWorker
         }
 
         var lastNumber = GetFolderLastNumber(address);
-        var newAddress = _operationsService.Index.SelectAddress(address, lastNumber + 1);
+        var newAddress = _customOperationsService.Index.SelectAddress(address, lastNumber + 1);
         _tww.Put(name, newAddress, content);
         return newAddress;
     }

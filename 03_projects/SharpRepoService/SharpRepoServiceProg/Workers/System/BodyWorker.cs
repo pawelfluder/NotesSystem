@@ -13,7 +13,7 @@ internal class BodyWorker
     public BodyWorker()
     {
         //this.fileService = MyBorder.Container.Resolve<IFileService>();
-        pw = MyBorder.Container.Resolve<PathWorker>();
+        pw = MyBorder.MyContainer.Resolve<PathWorker>();
     }
 
     public void CreateBody(

@@ -7,7 +7,7 @@ namespace SharpRepoServiceProg.Operations.Files;
 
 internal class GetRepoAddresses : IRepoAddressesObtainer
 {
-    private readonly OperationsService _operationsService;
+    private readonly CustomOperationsService _customOperationsService;
     private readonly IFileService _fileService;
     private List<string> locaList;
     private IParentVisit vdr;
@@ -15,10 +15,10 @@ internal class GetRepoAddresses : IRepoAddressesObtainer
 
     public GetRepoAddresses(
         IFileService fileService,
-        OperationsService operationsService)
+        CustomOperationsService customOperationsService)
     {
         _fileService = fileService;
-        _operationsService = operationsService;
+        _customOperationsService = customOperationsService;
         ReInitialize();
     }
 
@@ -45,7 +45,7 @@ internal class GetRepoAddresses : IRepoAddressesObtainer
 
     private void FolderAction(DirectoryInfo directoryInfo)
     {
-        if (_operationsService.Index
+        if (_customOperationsService.Index
             .IsCorrectIndex(directoryInfo.FullName, out var index))
         {
             var parents = vdr.Parents;

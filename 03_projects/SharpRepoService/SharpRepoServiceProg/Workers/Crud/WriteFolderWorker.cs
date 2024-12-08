@@ -17,19 +17,19 @@ public class WriteFolderWorker
     private readonly ConfigWorker cw;
     private readonly BodyWorker bw;
     private readonly SystemWorker sw;
-    private OperationsService _operationsService;
+    private CustomOperationsService _customOperationsService;
 
     public WriteFolderWorker(
         IFileService fileService)
     {
         this.fileService = fileService;
-        _operationsService = MyBorder.Container.Resolve<OperationsService>();
+        _customOperationsService = MyBorder.MyContainer.Resolve<CustomOperationsService>();
 
-        rw = MyBorder.Container.Resolve<ReadWorker>();
-        pw = MyBorder.Container.Resolve<PathWorker>();
-        cw = MyBorder.Container.Resolve<ConfigWorker>();
-        bw = MyBorder.Container.Resolve<BodyWorker>();
-        sw = MyBorder.Container.Resolve<SystemWorker>();
+        rw = MyBorder.OutContainer.Resolve<ReadWorker>();
+        pw = MyBorder.OutContainer.Resolve<PathWorker>();
+        cw = MyBorder.OutContainer.Resolve<ConfigWorker>();
+        bw = MyBorder.OutContainer.Resolve<BodyWorker>();
+        sw = MyBorder.OutContainer.Resolve<SystemWorker>();
     }
 
     public ItemModel Put(
@@ -74,9 +74,9 @@ public class WriteFolderWorker
 
         var lastIndex = rw.GetFolderLastNumber(adrTuple);
         var newIndex = lastIndex + 1;
-        var newIndexString = _operationsService.Index.IndexToString(newIndex);
+        var newIndexString = _customOperationsService.Index.IndexToString(newIndex);
 
-        var newAdrTuple = _operationsService.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
+        var newAdrTuple = _customOperationsService.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
         Put(name, newAdrTuple);
         return newAdrTuple;
     }
@@ -96,9 +96,9 @@ public class WriteFolderWorker
 
         var lastIndex = rw.GetFolderLastNumber(adrTuple);
         var newIndex = lastIndex + 1;
-        var newIndexString = _operationsService.Index.IndexToString(newIndex);
+        var newIndexString = _customOperationsService.Index.IndexToString(newIndex);
 
-        var newAdrTuple = _operationsService.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
+        var newAdrTuple = _customOperationsService.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
         item = PrepareItem(name, newAdrTuple);
         Put(item);
         return item;

@@ -23,7 +23,7 @@ public class ItemModel
         set
         {
             address = value;
-            var operationsService = MyBorder.Container.Resolve<OperationsService>();
+            var operationsService = MyBorder.MyContainer.Resolve<CustomOperationsService>();
             var adrTuple = operationsService.UniAddress.CreateAddressFromString(address);
             AdrTuple = adrTuple;
         }

@@ -1,7 +1,6 @@
-﻿using SharpConfigProg.AAPublic;
-using SharpOperationsProg.AAPublic.Operations;
+﻿using SharpOperationsProg.AAPublic.Operations;
 
-namespace SharpConfigProg.Service;
+namespace SharpConfigProg.AAPublic;
 
 public partial interface IConfigService
 {

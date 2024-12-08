@@ -1,21 +1,29 @@
 ####################
-# moje-01
-*.DS_Store
-**/*.DS_Store
+# personal; 01
 AAPrivate
 Binaries
 **/paths.cfg
+02_settings
 22_projects
 23_projects
 24_projects
+25_projects
 publish_new
-
-
 **/*.png
 */*.png
 /*.png
+####################
+
 
 ####################
+# common
+*.DS_Store
+**/*.DS_Store
+.vs
+bin
+obj
+####################
+
 
 # Most important
 .vs

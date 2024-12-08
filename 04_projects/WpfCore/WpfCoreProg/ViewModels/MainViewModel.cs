@@ -13,6 +13,7 @@ using System.ComponentModel;
 using SharpRepoBackendProg.Service;
 using SharpRepoServiceProg.AAPublic;
 using SharpRepoServiceProg.Names;
+using WpfCoreProg.ViewModels;
 
 namespace WpfNotesSystem.ViewModels;
 
@@ -35,8 +36,8 @@ public class MainViewModel : BaseViewModel
     public MainViewModel()
     {
         UpdateViewCommand = new UpdateViewCommand(this);
-        backendService = MyBorder.Container.Resolve<IBackendService>();
-        repoService = MyBorder.Container.Resolve<IRepoService>();
+        backendService = MyBorder.OutContainer.Resolve<IBackendService>();
+        repoService = MyBorder.OutContainer.Resolve<IRepoService>();
         addressHistory = new History<(string, string)>();
         var jString = backendService.CommandApi(
             IBackendService.ApiMethods.GetAllRepoName.ToString());
@@ -75,11 +76,11 @@ public class MainViewModel : BaseViewModel
         IItemViewModel viewModel = null;
         if (type == ItemTypes.Text)
         {
-            viewModel = MyBorder.Container.Resolve<TextViewModel>();
+            viewModel = MyBorder.OutContainer.Resolve<TextViewModel>();
         }
         if (type == "Folder")
         {
-            viewModel = MyBorder.Container.Resolve<FolderViewModel>();
+            viewModel = MyBorder.OutContainer.Resolve<FolderViewModel>();
         }
         viewModel.Address = CreateAddress(adrTuple);
         return viewModel;

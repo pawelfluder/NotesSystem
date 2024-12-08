@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>BlazorNotesSystem</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlazorUniSystemClient\BlazorUniSystemClient.csproj" />
+    <ProjectReference Include="..\..\03_projects\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj" />
+    <ProjectReference Include="..\..\03_projects\SharpRepoBackend\SharpRepoBackendProg\SharpRepoBackendProg.csproj" />
+    <ProjectReference Include="..\..\03_projects\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj" />
+  </ItemGroup>
+
+</Project>

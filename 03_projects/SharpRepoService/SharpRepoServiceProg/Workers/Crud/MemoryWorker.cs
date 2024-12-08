@@ -21,7 +21,7 @@ internal class MemoryWorker
     {
         //this.fileService = MyBorder.Container.Resolve<IFileService>();
         // SetNames();
-        this.pw = MyBorder.Container.Resolve<PathWorker>();
+        this.pw = MyBorder.MyContainer.Resolve<PathWorker>();
     }
 
     // private void SetNames()

@@ -1,4 +1,4 @@
-﻿using SharpConfigProg.Register;
+﻿using SharpConfigProg.Registrations;
 using SharpConfigProg.Service;
 using SharpOperationsProg.AAPublic.Operations;
 
@@ -9,7 +9,7 @@ public static partial class OutBorder
     public static IConfigService ConfigService(
         IOperationsService operationsService)
     {
-        if (!MyBorder.Container.IsRegistered<IPreparer>())
+        if (!MyBorder.OutContainer.IsRegistered<IPreparer>())
         {
             new Reg_Preparer().Register(operationsService);
         }

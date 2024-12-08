@@ -1,6 +1,6 @@
 ﻿using SharpSetup01Prog.AAPublic;
 
-namespace SharpSetup03Prog
+namespace SharpSetup01Prog
 {
     class Program
     {

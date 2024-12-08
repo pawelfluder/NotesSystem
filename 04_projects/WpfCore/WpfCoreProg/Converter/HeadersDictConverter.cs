@@ -25,7 +25,7 @@ public class HeadersDictConverter : MarkupExtension, IValueConverter
 
     public HeadersDictConverter()
     {
-        operationsService = MyBorder.Container.Resolve<IOperationsService>();
+        operationsService = MyBorder.OutContainer.Resolve<IOperationsService>();
         _fileService = operationsService.GetFileService();
     }
 

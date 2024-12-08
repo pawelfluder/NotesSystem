@@ -21,20 +21,21 @@ internal class ReadWorker
     private readonly MemoryWorker _mw;
 
     private readonly IYamlOperations _yamlOperations;
-    private readonly OperationsService _operationsService;
+    private readonly CustomOperationsService _customOperationsService;
 
     public object ErrorValue { get; internal set; }
 
     public ReadWorker()
     {
-        _fileService = MyBorder.Container.Resolve<IFileService>();
-        _operationsService = MyBorder.Container.Resolve<OperationsService>();
+        _fileService = MyBorder.OutContainer.Resolve<IFileService>();
+        _customOperationsService = MyBorder.MyContainer.Resolve<CustomOperationsService>();
+  
         _yamlOperations = _fileService.Yaml.Custom03;
-        _pw = MyBorder.Container.Resolve<PathWorker>();
-        _bw = MyBorder.Container.Resolve<BodyWorker>();
-        _cw = MyBorder.Container.Resolve<ConfigWorker>();
-        _sw = MyBorder.Container.Resolve<SystemWorker>();
-        _mw = MyBorder.Container.Resolve<MemoryWorker>();
+        _pw = MyBorder.MyContainer.Resolve<PathWorker>();
+        _bw = MyBorder.MyContainer.Resolve<BodyWorker>();
+        _cw = MyBorder.MyContainer.Resolve<ConfigWorker>();
+        _sw = MyBorder.MyContainer.Resolve<SystemWorker>();
+        _mw = MyBorder.MyContainer.Resolve<MemoryWorker>();
     }
 
     // read; body
@@ -42,7 +43,7 @@ internal class ReadWorker
         (string Repo, string Loca) adrTuple)
     {
         var item = new ItemModel();
-        var address = _operationsService.UniAddress
+        var address = _customOperationsService.UniAddress
             .CreateUrlFromAddress(adrTuple);
         //item.AdrTuple = adrTuple;
         item.Body = _bw.GetText2(adrTuple);
@@ -176,7 +177,7 @@ internal class ReadWorker
         {
             if (item.Type == ItemTypes.Text)
             {
-                var index = _operationsService.UniAddress
+                var index = _customOperationsService.UniAddress
                     .GetLastLocaIndex(item.Address);
                 contentsList.Add((index, item.Body.ToString()));
             }
@@ -248,7 +249,7 @@ internal class ReadWorker
     {
         var items = GetItemConfigList(adrTuple);
         var result = items
-            .Select(x => (_operationsService.UniAddress.GetLastLocaIndex(x.Address), x.Name))
+            .Select(x => (_customOperationsService.UniAddress.GetLastLocaIndex(x.Address), x.Name))
             .ToList();
         return result;
     }
@@ -256,8 +257,8 @@ internal class ReadWorker
     public Dictionary<string, string> GetIndexesQNames2(
         (string Repo, string Loca) adrTuple)
     {
-        var w1 = _operationsService.UniAddress;
-        var w2 = _operationsService.Index;
+        var w1 = _customOperationsService.UniAddress;
+        var w2 = _customOperationsService.Index;
 
         var items = GetItemConfigList(adrTuple);
         var kv = items
@@ -326,9 +327,9 @@ internal class ReadWorker
             return default;
         }
 
-        var index = _operationsService.UniAddress
+        var index = _customOperationsService.UniAddress
             .GetLastLocaIndex(found.Address);
-        var indexString = _operationsService.Index.IndexToString(index);
+        var indexString = _customOperationsService.Index.IndexToString(index);
         var result = (indexString, found.Name);
         return result;
     }
@@ -356,7 +357,7 @@ internal class ReadWorker
             return default;
         }
 
-        var foundAdrTuple = _operationsService.UniAddress
+        var foundAdrTuple = _customOperationsService.UniAddress
             .CreateAddressFromString(found.Address);
         return foundAdrTuple;
     }
@@ -449,7 +450,7 @@ internal class ReadWorker
         }
         
         var numbers = directories
-            .Select(x => _operationsService.Index.StringToIndex(Path.GetFileName(x)))
+            .Select(x => _customOperationsService.Index.StringToIndex(Path.GetFileName(x)))
             .ToList();
         if (numbers.Count != 0)
         {
@@ -475,9 +476,9 @@ internal class ReadWorker
     {
         var adrTuple = (repoName, "");
         var path = _pw.GetItemPath(adrTuple);
-        var tmp = _operationsService.File.NewRepoAddressesObtainer().Visit(path);
+        var tmp = _customOperationsService.File.NewRepoAddressesObtainer().Visit(path);
         var result = tmp
-            .Select(x => (adrTuple.Item1, _operationsService.UniAddress.JoinLoca(adrTuple.Item2, x)))
+            .Select(x => (adrTuple.Item1, _customOperationsService.UniAddress.JoinLoca(adrTuple.Item2, x)))
             .ToList();
         return result;
     }

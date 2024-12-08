@@ -1,12 +1,17 @@
-﻿using SharpContainerProg.AAPublic;
-using SharpSetup21ProgPrivate.Registrations;
+﻿using System.Reflection;
+using SharpContainerProg.AAPublic;
 
-namespace SharpRepoServiceProg.Registration
+namespace SharpSetup01Prog.Registrations;
+
+internal static class MyBorder
 {
-    internal static class MyBorder
-    {
-        public static bool IsRegistered;
-        public static DefaultRegistration Registration = new DefaultRegistration();
-        public static IContainer Container => Registration.Start(ref IsRegistered);
-    }
+    private static string AssemblyName => Assembly
+        .GetExecutingAssembly().FullName;
+    
+    public static IContainer4 MyContainer =
+        ContainerService.MyContainer(
+            AssemblyName);
+    public static DefaultRegistration Registration = new DefaultRegistration();
+    public static bool IsRegistered = Registration.Start(IsRegistered);
+    public static IContainer4 OutContainer => Registration.OutContainer;
 }

@@ -35,8 +35,8 @@ public class FolderViewModel : BaseViewModel, IItemViewModel
 
     public FolderViewModel()
     {
-        backendService = MyBorder.Container.Resolve<IBackendService>();
-        operationsService = MyBorder.Container.Resolve<IOperationsService>();
+        backendService = MyBorder.OutContainer.Resolve<IBackendService>();
+        operationsService = MyBorder.OutContainer.Resolve<IOperationsService>();
         ItemTypes = new List<string>{ "Text", "Folder" };
         ValueToAdd = string.Empty;
     }

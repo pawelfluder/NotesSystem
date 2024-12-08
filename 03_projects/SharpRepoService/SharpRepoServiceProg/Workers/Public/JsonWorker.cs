@@ -14,7 +14,7 @@ namespace SharpRepoServiceProg.Workers.Public;
 
 public class JsonWorker
 {
-    private readonly OperationsService _operationsService;
+    private readonly CustomOperationsService _customOperationsService;
     private readonly ReadWorker rw;
     private readonly BodyWorker bw;
     private readonly PathWorker pw;
@@ -26,16 +26,16 @@ public class JsonWorker
 
     public JsonWorker()
     {
-        _fileService = MyBorder.Container.Resolve<IFileService>();
-        _operationsService = MyBorder.Container.Resolve<OperationsService>();
-        rw = MyBorder.Container.Resolve<ReadWorker>();
-        bw = MyBorder.Container.Resolve<BodyWorker>();
-        pw = MyBorder.Container.Resolve<PathWorker>();
-        cw = MyBorder.Container.Resolve<ConfigWorker>();
-        sw = MyBorder.Container.Resolve<SystemWorker>();
+        _fileService = MyBorder.OutContainer.Resolve<IFileService>();
+        _customOperationsService = MyBorder.MyContainer.Resolve<CustomOperationsService>();
+        rw = MyBorder.MyContainer.Resolve<ReadWorker>();
+        bw = MyBorder.MyContainer.Resolve<BodyWorker>();
+        pw = MyBorder.MyContainer.Resolve<PathWorker>();
+        cw = MyBorder.MyContainer.Resolve<ConfigWorker>();
+        sw = MyBorder.MyContainer.Resolve<SystemWorker>();
 
-        tww = MyBorder.Container.Resolve<WriteTextWorker>();
-        fww = MyBorder.Container.Resolve<WriteFolderWorker>();
+        tww = MyBorder.MyContainer.Resolve<WriteTextWorker>();
+        fww = MyBorder.MyContainer.Resolve<WriteFolderWorker>();
     }
 
     public List<string> GetManyItemByName(
@@ -52,8 +52,8 @@ public class JsonWorker
 
         foreach (var tmp2 in tmp)
         {
-            var index = _operationsService.Index.StringToIndex(tmp2);
-            var newAddress = _operationsService.Index.SelectAddress(address, index);
+            var index = _customOperationsService.Index.StringToIndex(tmp2);
+            var newAddress = _customOperationsService.Index.SelectAddress(address, index);
             var content = bw.GetText2(newAddress);
             contentsList.Add(content);
         }

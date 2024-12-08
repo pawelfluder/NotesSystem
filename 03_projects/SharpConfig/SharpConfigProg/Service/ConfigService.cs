@@ -1,6 +1,6 @@
 ﻿using SharpConfigProg.AAPublic;
 using SharpConfigProg.OverrideConfig;
-using SharpConfigProg.Register;
+using SharpConfigProg.Registrations;
 using SharpFileServiceProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 
@@ -57,7 +57,7 @@ internal partial class ConfigService : IConfigService
 
     public void Prepare()
     {
-        var preparer = MyBorder.Container.Resolve<IPreparer>();
+        var preparer = MyBorder.OutContainer.Resolve<IPreparer>();
         preparer.SetConfigService(this);
         var settings = preparer.Prepare();
         SettingsDict = settings;
@@ -79,7 +79,7 @@ internal partial class ConfigService : IConfigService
 
     public void Prepare(Type preparerClassType)
     {
-        var tmp = MyBorder.Container.Resolve(preparerClassType);
+        var tmp = MyBorder.OutContainer.Resolve(preparerClassType);
         var preparer = (tmp as IPreparer);
         preparer.SetConfigService(this);
         SettingsDict = preparer.Prepare(); ;

@@ -25,7 +25,7 @@ public class FolderBodyCreator
     {
         this.operationsService = operationsService;
         table = grid;
-        mainViewModel = MyBorder.Container.Resolve<MainViewModel>();
+        mainViewModel = MyBorder.OutContainer.Resolve<MainViewModel>();
     }
 
     public void Run(Dictionary<string, string> indexQnameDict)

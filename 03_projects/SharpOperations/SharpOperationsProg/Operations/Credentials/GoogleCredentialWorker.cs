@@ -10,23 +10,30 @@ internal class GoogleCredentialWorker : IGoogleCredentialWorker
         AssemblyName assemblyName,
         string embeddedResourceFile)
     {
-        var result = GetEmbeddedResource(assemblyName, embeddedResourceFile);
+        string jsonFileContent = GetEmbeddedResource(assemblyName, embeddedResourceFile);
+        (string clientId, string clientSecret) clientQSecret = GetCredentials(jsonFileContent);
+        return clientQSecret;
+    }
 
-        JObject googleSearch = JObject.Parse(result);
-        var clientId = googleSearch["installed"]["client_id"].ToString();
-        var clientSecret = googleSearch["installed"]["client_secret"].ToString();
-
+    public (string clientId, string clientSecret) GetCredentials(
+        string jsonFileContent)
+    {
+        JObject googleSearch = JObject.Parse(jsonFileContent);
+        string clientId = googleSearch["installed"]["client_id"].ToString();
+        string clientSecret = googleSearch["installed"]["client_secret"].ToString();
         return (clientId, clientSecret);
     }
 
     public AssemblyName GetAssemblyName(object obj)
     {
-        var assembly = Assembly.GetAssembly(obj.GetType());
-        var assebmlyName = assembly.GetName();
+        Assembly? assembly = Assembly.GetAssembly(obj.GetType());
+        AssemblyName assebmlyName = assembly.GetName();
         return assebmlyName;
     }
 
-    public string GetEmbeddedResource(AssemblyName assemblyName, string filename)
+    public string GetEmbeddedResource(
+        AssemblyName assemblyName,
+        string filename)
     {
         string? namespacename = assemblyName.Name;
         string resourceName = namespacename + "." + filename;
@@ -55,15 +62,13 @@ internal class GoogleCredentialWorker : IGoogleCredentialWorker
         string resourceName = namespacename + "." + filename;
         Assembly assembly = Assembly.Load(assemblyName);
 
-        // correct example - SharpGoogleDriveProg.EmbeddedResources.Template05.docx
         Stream? stream = assembly.GetManifestResourceStream(resourceName);
 
         if (stream == null)
         {
             throw new Exception("CredentialWorker - Please check assembly file path, bacause file stream was null!");
         }
-
-        StreamReader reader = new(stream);
+        
         return stream;
     }
 }

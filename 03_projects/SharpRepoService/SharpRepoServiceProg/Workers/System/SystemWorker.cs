@@ -13,7 +13,7 @@ internal class SystemWorker
 
     public SystemWorker()
     {
-        pw = MyBorder.Container.Resolve<PathWorker>();
+        pw = MyBorder.OutContainer.Resolve<PathWorker>();
     }
 
     public void CreateDirectoryIfNotExists(

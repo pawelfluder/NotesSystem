@@ -21,9 +21,9 @@ public class NotesExporterService
 
     public NotesExporterService(IRepoService repoService)
     {
-        _fileService = MyBorder.Container.Resolve<IFileService>();
-        _operationsService = MyBorder.Container.Resolve<IOperationsService>();
-        docsService = MyBorder.Container.Resolve<IGoogleDocsService>();
+        _fileService = MyBorder.OutContainer.Resolve<IFileService>();
+        _operationsService = MyBorder.OutContainer.Resolve<IOperationsService>();
+        docsService = MyBorder.OutContainer.Resolve<IGoogleDocsService>();
         headerNotesService = new HeaderNotesService();
         this.repoService = repoService;
         headersOp = _operationsService.Header;

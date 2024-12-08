@@ -11,15 +11,15 @@ public class DeleteWorker
     private readonly ConfigWorker _cw;
     private readonly BodyWorker _bw;
     private readonly ReadWorker _rw;
-    private readonly OperationsService _operationsService;
+    private readonly CustomOperationsService _customOperationsService;
 
     public DeleteWorker()
     {
-        _rw = MyBorder.Container.Resolve<ReadWorker>();
-        _bw = MyBorder.Container.Resolve<BodyWorker>();
-        _cw = MyBorder.Container.Resolve<ConfigWorker>();
-        _sw = MyBorder.Container.Resolve<SystemWorker>();
-        _operationsService = MyBorder.Container.Resolve<OperationsService>();
+        _rw = MyBorder.OutContainer.Resolve<ReadWorker>();
+        _bw = MyBorder.OutContainer.Resolve<BodyWorker>();
+        _cw = MyBorder.OutContainer.Resolve<ConfigWorker>();
+        _sw = MyBorder.OutContainer.Resolve<SystemWorker>();
+        _customOperationsService = MyBorder.MyContainer.Resolve<CustomOperationsService>();
     }
 
     public void Delete(

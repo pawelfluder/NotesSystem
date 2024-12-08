@@ -1,0 +1,73 @@
+//chat gpt
+@question
+znajdz mi tylko jedno przykladowe rozwiazania rownania:
+5 = R*W - 2* R*W*L
+gdzie L jest z przedzialu domknietego 0.01 do 0.25
+gdzie W jest z przedzialu domknietego od 2 do 10
+gdzie R jest z przedzialu od 1.5 do 3.0
+oraz R,W,L beda liczbami bez przyblizen czyli decimal 
+oraz R,W beda decimal do pierwszego miejsca po przecinku
+przykladowe rozwiazanie jest przyblizone wiec nie prawidlowe
+5.0008 = 1.9*2.8*(1-0.06), dla
+R=1.9
+W=2.8
+L=0.03
+
+@answer
+
+
+//Example_3_1
+double heightByWidthRatio = 2.0
+double overlapPercentage = 2.5
+int imageWidth = 10
+int imageHeight = 
+int topOffset = 0
+
+0) h/w = 2 = 2/1
+1) int HeightCrop = 20
+heightByWidthRatio * imageWidth
+2) int HeightMiddle = 10
+(2/100 * overlapPercentage) * HeightCrop
+int ImagesCount = 
+ 
+      _________ <= 0
+   ^  |       |
+10 |  |  7,5  |
+   |  |       |
+   |  _________ <= 7,5
+   |  |  2,5  |
+   V  _________ <= 10
+   
+   
+   ^  _________ <= 7,5
+   |  |  2,5  |
+   |  _________ <= 10
+   |  |       |
+10 |  |  5    |
+   |  |       |
+   |  _________ <= 15
+   |  |  2,5  |
+   V  _________ <= 17,5
+   
+   
+   ^  _________ <= 15
+   |  |  2,5  |
+   |  _________ <= 17,5
+   |  |       |
+10 |  |  5    |
+   |  |       |
+   |  _________ <= 22,5
+   |  |  2,5  |
+   V  _________ <= 25
+   
+    
+   ^  _________ <= 22,5
+   |  |  2,5  |
+   |  _________ <= 25
+   |  |       |
+10 |  |  5    |
+   |  |       |
+   |  _________ <= 30
+   |  |  2,5  |
+   V  _________ <= 32,5
+    

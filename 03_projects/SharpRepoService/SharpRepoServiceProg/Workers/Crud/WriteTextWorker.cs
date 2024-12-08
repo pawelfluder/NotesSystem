@@ -15,15 +15,15 @@ public class WriteTextWorker
     private readonly ConfigWorker _cw;
     private readonly BodyWorker _bw;
     private readonly ReadWorker _rw;
-    private readonly OperationsService _operationsService;
+    private readonly CustomOperationsService _customOperationsService;
 
     public WriteTextWorker()
     {
-        _rw = MyBorder.Container.Resolve<ReadWorker>();
-        _bw = MyBorder.Container.Resolve<BodyWorker>();
-        _cw = MyBorder.Container.Resolve<ConfigWorker>();
-        _sw = MyBorder.Container.Resolve<SystemWorker>();
-        _operationsService = MyBorder.Container.Resolve<OperationsService>();
+        _rw = MyBorder.OutContainer.Resolve<ReadWorker>();
+        _bw = MyBorder.OutContainer.Resolve<BodyWorker>();
+        _cw = MyBorder.OutContainer.Resolve<ConfigWorker>();
+        _sw = MyBorder.OutContainer.Resolve<SystemWorker>();
+        _customOperationsService = MyBorder.MyContainer.Resolve<CustomOperationsService>();
     }
 
     public ItemModel Put(
@@ -34,7 +34,7 @@ public class WriteTextWorker
         var item = new ItemModel();
 
         // config
-        var address = _operationsService.UniAddress.CreateUrlFromAddress(adrTuple);
+        var address = _customOperationsService.UniAddress.CreateUrlFromAddress(adrTuple);
         item.Settings = new Dictionary<string, object>()
         {
             { FieldsForUniItem.Id, Guid.NewGuid().ToString() },
@@ -86,9 +86,9 @@ public class WriteTextWorker
 
         var lastIndex = _rw.GetFolderLastNumber(adrTuple);
         var newIndex = lastIndex + 1;
-        var newIndexString = _operationsService.Index.IndexToString(newIndex);
+        var newIndexString = _customOperationsService.Index.IndexToString(newIndex);
 
-        var newAdrTuple = _operationsService.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
+        var newAdrTuple = _customOperationsService.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
         item = PrepareItem(name, newAdrTuple, "");
         Put(item);
         return item;
@@ -121,7 +121,7 @@ public class WriteTextWorker
         }
 
         var lastNumber = _rw.GetFolderLastNumber(address);
-        var newAddress = _operationsService.Index.SelectAddress(address, lastNumber + 1);
+        var newAddress = _customOperationsService.Index.SelectAddress(address, lastNumber + 1);
         Put(name, newAddress, content);
         return newAddress;
     }

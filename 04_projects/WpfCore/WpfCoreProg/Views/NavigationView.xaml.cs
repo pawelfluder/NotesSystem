@@ -14,7 +14,7 @@ public partial class NavigationView : UserControl
     {
         InitializeComponent();
 
-        DataContext = MyBorder.Container.Resolve<MainViewModel>();
+        DataContext = MyBorder.OutContainer.Resolve<MainViewModel>();
     }
 
     private void GoButtonClick(object sender, RoutedEventArgs e)

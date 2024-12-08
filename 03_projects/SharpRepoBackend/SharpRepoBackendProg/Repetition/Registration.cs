@@ -9,7 +9,7 @@ internal class Registration : RegistrationBase
 {
     public override void Registrations()
     {
-        RegisterByFunc<IPdfService2>(OutBorder1.PdfService);
-        RegisterByFunc<IBackendService>(() => new BackendService());
+        OutContainer.RegisterByFunc<IPdfService2>(OutBorder1.PdfService);
+        OutContainer.RegisterByFunc<IBackendService>(() => new BackendService());
     }
 }

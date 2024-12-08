@@ -7,9 +7,9 @@ internal class FileOperations
 {
     public IRepoAddressesObtainer NewRepoAddressesObtainer()
     {
-        IFileService fileService = MyBorder.Container.Resolve<IFileService>();
-        OperationsService operationsService = MyBorder.Container.Resolve<OperationsService>();
-        GetRepoAddresses obtainer =  new (fileService, operationsService);
+        IFileService fileService = MyBorder.OutContainer.Resolve<IFileService>();
+        CustomOperationsService customOperationsService = MyBorder.MyContainer.Resolve<CustomOperationsService>();
+        GetRepoAddresses obtainer =  new (fileService, customOperationsService);
         return obtainer;
     }
 }

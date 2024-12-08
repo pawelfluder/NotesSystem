@@ -1,7 +1,7 @@
 using SharpNotesMigrationProg.AAPublic;
 using SharpNotesMigrationProg.Service;
 using SharpNotesMigrationTests.Registration;
-using OutBorder01 = SharpSetup21ProgPrivate.AAPublic.OutBorder;
+using OutBorder01 = SharpSetup01Prog.AAPublic.OutBorder;
 
 namespace SharpNotesMigrationTests;
 
@@ -17,7 +17,7 @@ public class Migrator05Tests
     public void MigrateOneAddress()
     {
         // arrange
-        var migrationService = MyBorder.Container.Resolve<IMigrationService>();
+        var migrationService = MyBorder.OutContainer.Resolve<IMigrationService>();
         var adrTuple = ("Winder2", "01/03/01/110");
         var agree = true;
 
@@ -29,7 +29,7 @@ public class Migrator05Tests
     public void TestMethod3()
     {
         // arrange
-        var migrationService = MyBorder.Container.Resolve<IMigrationService>();
+        var migrationService = MyBorder.OutContainer.Resolve<IMigrationService>();
         var adrTuple = ("Winder2", "01/03/01");
         var agree = true;
 

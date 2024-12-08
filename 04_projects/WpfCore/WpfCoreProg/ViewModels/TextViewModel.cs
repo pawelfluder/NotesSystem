@@ -1,16 +1,17 @@
-﻿using Newtonsoft.Json;
-using SharpTtsServiceProg.AAPublic;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Newtonsoft.Json;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoBackendProg.Service;
+using SharpTtsServiceProg.AAPublic;
+using WpfNotesSystem;
 using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.Models;
 using WpfNotesSystemProg3.ViewModelBase;
 
-namespace WpfNotesSystem.ViewModels;
+namespace WpfCoreProg.ViewModels;
 
 public class TextViewModel : BaseViewModel, IItemViewModel
 {
@@ -32,13 +33,13 @@ public class TextViewModel : BaseViewModel, IItemViewModel
     public TextViewModel()
     {
         //this.mainViewModel = mainViewModel;
-        this.backendService = MyBorder.Container.Resolve<IBackendService>();
-        operationsService = MyBorder.Container.Resolve<IOperationsService>();
+        this.backendService = MyBorder.OutContainer.Resolve<IBackendService>();
+        operationsService = MyBorder.OutContainer.Resolve<IOperationsService>();
 
-        ttsService = MyBorder.Container.Resolve<ITtsService>();
+        ttsService = MyBorder.OutContainer.Resolve<ITtsService>();
         ValueToAdd = string.Empty;
         // Todo get interface method names
-        var ttsOptions = ttsService.RepoTts.GetMethodNames();
+        var ttsOptions = ttsService.RepoTts.MethodNames;
         TtsOptions = ttsOptions;
         OptionsGoogleDoc = new List<string> { "Open", "Recreate", };
         TtsSelected = TtsOptions.First();
@@ -101,7 +102,10 @@ public class TextViewModel : BaseViewModel, IItemViewModel
 
     private async void OnTtsClicked()
     {
-        await ttsService.RepoTts.RunMethodAsync(TtsSelected, AdrTuple.repo, AdrTuple.loca);
+        await ttsService.RepoTts.RunMethodAsync(
+            TtsSelected,
+            AdrTuple.repo,
+            AdrTuple.loca);
 
         //if (TtsSelected == "StartNew")
         //{

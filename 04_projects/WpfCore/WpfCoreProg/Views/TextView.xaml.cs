@@ -12,7 +12,7 @@ public partial class TextView : UserControl
     public TextView()
     {
         InitializeComponent();
-        var tmp = MyBorder.Container.Resolve<MainViewModel>();
+        var tmp = MyBorder.OutContainer.Resolve<MainViewModel>();
         //tmp.SelectedViewModel.View = this;
         tmp.BodyView = this;
         //DataContext = tmp.SelectedViewModel;

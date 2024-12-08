@@ -2,6 +2,7 @@
 using OutBorder3 = SharpRepoBackendProg.Repetition.OutBorder;
 using SharpContainerProg.AAPublic;
 using SharpRepoBackendProg.Service;
+using WpfCoreProg.ViewModels;
 
 namespace WpfNotesSystem.Repetition;
 
@@ -9,15 +10,14 @@ internal class Registration : RegistrationBase
 {
     public override void Registrations()
     {
-        RegisterByFunc<IBackendService>(
+        OutContainer.RegisterByFunc<IBackendService>(
             OutBorder3.BackendService);
-        container.Resolve<IBackendService>();
 
-        RegisterByFunc<MainViewModel>(
+        OutContainer.RegisterByFunc<MainViewModel>(
             () => new MainViewModel());
-        RegisterByFunc<TextViewModel>(
+        OutContainer.RegisterByFunc<TextViewModel>(
             () => new TextViewModel(), 1);
-        RegisterByFunc<FolderViewModel>(
+        OutContainer.RegisterByFunc<FolderViewModel>(
             () => new FolderViewModel(), 1);
     }
 }

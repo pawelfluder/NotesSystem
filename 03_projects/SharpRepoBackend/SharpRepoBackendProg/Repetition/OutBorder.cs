@@ -6,6 +6,6 @@ public class OutBorder
 {
     public static IBackendService BackendService()
     {
-        return MyBorder.Container.Resolve<IBackendService>();
+        return MyBorder.OutContainer.Resolve<IBackendService>();
     }
 }

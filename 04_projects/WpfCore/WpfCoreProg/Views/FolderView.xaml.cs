@@ -12,7 +12,7 @@ public partial class FolderView : UserControl
     public FolderView()
     {
         InitializeComponent();
-        var tmp = MyBorder.Container.Resolve<MainViewModel>();
+        var tmp = MyBorder.OutContainer.Resolve<MainViewModel>();
             
         tmp.BodyView = this;
         //DataContext = tmp.SelectedViewModel;

@@ -19,7 +19,7 @@ public partial class MainView : UserControl
         //var gg3 = gg2.Children[5] as TabControl;
         //gg3.ContentTemplateSelector = new RepoItemTemplateSelector();
 
-        var mainViewModel = MyBorder.Container.Resolve<MainViewModel>();
+        var mainViewModel = MyBorder.OutContainer.Resolve<MainViewModel>();
         DataContext = mainViewModel;
         mainViewModel.MainView = this;
     }

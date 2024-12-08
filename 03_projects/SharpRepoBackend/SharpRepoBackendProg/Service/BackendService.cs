@@ -3,6 +3,7 @@ using System.Text.Json.Nodes;
 using Newtonsoft.Json;
 using PdfService.PdfService;
 using SharpButtonActionsProg.Service;
+using SharpConfigProg.AAPublic;
 using SharpConfigProg.Service;
 using SharpFileServiceProg.AAPublic;
 using SharpGoogleDocsProg.AAPublic;
@@ -33,13 +34,13 @@ public class BackendService : IBackendService
 
     public BackendService()
     {
-        _operationsService = MyBorder.Container.Resolve<IOperationsService>();
+        _operationsService = MyBorder.OutContainer.Resolve<IOperationsService>();
         _fileService = _operationsService.GetFileService();
-        pdfService = MyBorder.Container.Resolve<IPdfService2>();
-        configService = MyBorder.Container.Resolve<IConfigService>();
-        driveService = MyBorder.Container.Resolve<IGoogleDriveService>();
-        docsService = MyBorder.Container.Resolve<IGoogleDocsService>();
-        repoService = MyBorder.Container.Resolve<IRepoService>();
+        pdfService = MyBorder.OutContainer.Resolve<IPdfService2>();
+        configService = MyBorder.OutContainer.Resolve<IConfigService>();
+        driveService = MyBorder.OutContainer.Resolve<IGoogleDriveService>();
+        docsService = MyBorder.OutContainer.Resolve<IGoogleDocsService>();
+        repoService = MyBorder.OutContainer.Resolve<IRepoService>();
         headerNotesService = new HeaderNotesService();
         buttonActionService = new SystemActionsService(_operationsService);
         notesExporterService = new NotesExporterService(repoService);
@@ -377,7 +378,7 @@ public class BackendService : IBackendService
     private string CreatePdf((string Repo, string Loca) address)
     {
         var itemPath = repoService.Methods.GetElemPath(address);
-        var pdfService = MyBorder.Container.Resolve<IPdfService2>();
+        var pdfService = MyBorder.OutContainer.Resolve<IPdfService2>();
         var textLines = repoService.Methods.GetTextLines((address.Repo, address.Loca));
         var elementsList = headerNotesService.GetElements2(textLines.ToArray());
         var pdfFilePath = itemPath + "/" + "lista.pdf";
