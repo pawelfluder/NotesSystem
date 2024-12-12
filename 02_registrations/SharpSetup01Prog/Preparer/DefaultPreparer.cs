@@ -9,9 +9,9 @@ namespace SharpSetup01Prog.Preparer;
 internal class DefaultPreparer : IPreparer
 {
     private readonly IGoogleCredentialWorker credentials;
-    private IConfigService configService;
-    private Dictionary<string, object> settingsDict;
+    private readonly Dictionary<string, object> settingsDict = new Dictionary<string, object>();
     private readonly IOperationsService _operationsService;
+    private IConfigService configService;
 
     public DefaultPreparer(
         IOperationsService operationsService)
@@ -22,18 +22,16 @@ internal class DefaultPreparer : IPreparer
 
     public Dictionary<string, object> Prepare()
     {
+        PrepareSettings();
         DefaultRegistration reg = new();
-        PrepareConfig();
-        reg.SetTempDict(settingsDict);
+        reg.SetSettingsDict(settingsDict);
         reg.Registrations();
 
         return settingsDict;
     }
 
-    private void PrepareConfig()
+    private void PrepareSettings()
     {
-        settingsDict = new Dictionary<string, object>();
-        
         string googleUserName = "notki.info@gmail.com";
         string googleApplicationName = "GameStatistics";
         string jsonFilePath = "public_google-cloud-secrets.json";
@@ -43,7 +41,7 @@ internal class DefaultPreparer : IPreparer
                 "01_settings",
                 Directory.GetCurrentDirectory(),
                 "3(2,2)");
-        var repoRootPaths = GetRepoSearchPaths(settingsFolderPath);
+        List<object> repoRootPaths = GetRepoSearchPaths(settingsFolderPath);
         string googleCloudCredentialsPath =
             settingsFolderPath
             + "/"
@@ -66,33 +64,16 @@ internal class DefaultPreparer : IPreparer
     public List<object> GetRepoSearchPaths(
         string settingsFolderPath)
     {
-        string result = settingsFolderPath + "/" + 
-        return repoSearchPaths;
-    }
-
-    public void TryGetMacPath(ref string path)
-    {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-        {
-            path = "/Users/pawelfluder/Dropbox";
-        }
-    }
-
-    public void TryGetWindowsPath(ref string path)
-    {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            //path = "D:/03_synch/05_backup/23-10-08_NotesSystem";
-            path = "C:/03_synch/Dropbox";
-        }
+        string result = settingsFolderPath + "/" + "18296f12-0706-43e1-9bd4-1b40154ec22e";
+        return new List<object> {result};
     }
 
     public bool GetGoogleCredentials(
         out string clientId,
         out string clientSecret)
     {
-        var s1 = configService.TryGetSettingAsString("googleClientId", out clientId);
-        var s2 = configService.TryGetSettingAsString("googleClientSecret", out clientSecret);
+        bool s1 = configService.TryGetSettingAsString("googleClientId", out clientId);
+        bool s2 = configService.TryGetSettingAsString("googleClientSecret", out clientSecret);
         return s1 && s2;
     }
 

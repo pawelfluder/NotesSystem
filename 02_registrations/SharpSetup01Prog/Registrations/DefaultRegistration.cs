@@ -25,7 +25,7 @@ public class DefaultRegistration : RegistrationBase
 {
     private Dictionary<string, object> _tempDict;
 
-    public void SetTempDict(Dictionary<string, object> inputDict)
+    public void SetSettingsDict(Dictionary<string, object> inputDict)
     {
         _tempDict = inputDict;
     }
