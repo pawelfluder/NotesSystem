@@ -4,7 +4,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Newtonsoft.Json;
 using SharpOperationsProg.AAPublic.Operations;
-using SharpRepoBackendProg.Service;
+using SharpRepoBackendProg.AAPublic;
+using SharpRepoBackendProg.Services;
 using SharpTtsServiceProg.AAPublic;
 using WpfNotesSystem;
 using WpfNotesSystem.Repetition;
@@ -133,14 +134,14 @@ public class TextViewModel : BaseViewModel, IItemViewModel
         if (SelectedGoogleDoc == "Open")
         {
             backendService.CommandApi(
-                IBackendService.ApiMethods.OpenGoogleDoc.ToString(),
+                ApiMethods.OpenGoogleDoc.ToString(),
                 AdrTuple.repo, AdrTuple.loca);
         }
 
         if (SelectedGoogleDoc == "Recreate")
         {
             backendService.CommandApi(
-                IBackendService.ApiMethods.RecreateGoogleDoc.ToString(),
+                ApiMethods.RecreateGoogleDoc.ToString(),
                 AdrTuple.repo, AdrTuple.loca);
         }
     }
@@ -211,35 +212,35 @@ public class TextViewModel : BaseViewModel, IItemViewModel
     public void FolderAction()
     {
         backendService.CommandApi(
-            IBackendService.ApiMethods.OpenFolder.ToString(),
+            ApiMethods.OpenFolder.ToString(),
             AdrTuple.repo, AdrTuple.loca);
     }
 
     public void ContentAction()
     {
         backendService.CommandApi(
-            IBackendService.ApiMethods.OpenContent.ToString(),
+            ApiMethods.OpenContent.ToString(),
             AdrTuple.repo, AdrTuple.loca);
     }
 
     public void ConfigAction()
     {
         backendService.CommandApi(
-            IBackendService.ApiMethods.OpenConfig.ToString(),
+            ApiMethods.OpenConfig.ToString(),
             AdrTuple.repo, AdrTuple.loca);
     }
 
     public void PdfAction()
     {
         backendService.CommandApi(
-            IBackendService.ApiMethods.OpenPdf.ToString(),
+            ApiMethods.OpenPdf.ToString(),
             AdrTuple.repo, AdrTuple.loca);
     }
 
     public void RunPrinterAction()
     {
         backendService.CommandApi(
-            IBackendService.ApiMethods.RunPrinter.ToString(),
+            ApiMethods.RunPrinter.ToString(),
             AdrTuple.repo, AdrTuple.loca);
     }
 
@@ -258,7 +259,7 @@ public class TextViewModel : BaseViewModel, IItemViewModel
         if (ValueToAdd != string.Empty)
         {
             backendService.CommandApi(
-                IBackendService.ApiMethods.AddContent.ToString(),
+                ApiMethods.AddContent.ToString(),
                 AdrTuple.repo,
                 AdrTuple.loca,
                 ValueToAdd);

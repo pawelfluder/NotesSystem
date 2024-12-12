@@ -1,26 +1,22 @@
-using SharpConfigProg.Service;
+using SharpConfigProg.AAPublic;
 using SharpRepoServiceProg.AAPublic;
 using SharpTtsServiceProg.AAPublic;
 using SharpTtsServiceTests.Registration;
-using OutBorder01 = SharpSetup21ProgPrivate.AAPublic.OutBorder;
-using OutBorder02 = SharpTtsServiceProg.AAPublic.OutBorder;
+using OutBorder01 = SharpSetup01Prog.AAPublic.OutBorder;
 
 namespace SharpTtsServiceTests;
 
 public class Tests
 {
     private readonly ITtsService _ttsService;
+    private readonly IRepoService _repoService;
 
     public Tests()
     {
-        IConfigService configService = MyBorder.Container.Resolve<IConfigService>();
-        IRepoService repoService = MyBorder.Container.Resolve<IRepoService>();
-        
-        OutBorder01.GetPreparer("PrivateNotesPreparer").Prepare();
-        configService.Prepare();
-        repoService.PutPaths(configService.GetRepoSearchPaths());
-
-        //_ttsService = MyBorder.Container.Resolve<ITtsService>();
+        OutBorder01.GetPreparer("DefaultPreparer").Prepare();
+        IConfigService configService = MyBorder.OutContainer.Resolve<IConfigService>();
+        _repoService = MyBorder.OutContainer.Resolve<IRepoService>();
+        _ttsService = MyBorder.OutContainer.Resolve<ITtsService>();
     }
     
     [SetUp]
@@ -33,6 +29,8 @@ public class Tests
     public void Test1()
     {
         //_ttsService.Tts.SaveAudioFile()
-        var gg = 0;
+        (string Repo, string Loca) adrTuple = ("Notki", "");
+        string? gg2 = _repoService.Item.GetItem(adrTuple);
+        _ttsService.RepoTts.PlStartNew(adrTuple.Repo, adrTuple.Loca);
     }
 }

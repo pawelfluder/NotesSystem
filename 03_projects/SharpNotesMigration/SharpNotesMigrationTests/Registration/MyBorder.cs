@@ -11,7 +11,7 @@ internal static class MyBorder
     public static IContainer4 MyContainer =
         ContainerService.MyContainer(
             AssemblyName);
-    public static Registration Registration = new Registration();
+    public static Registration Registration = new();
     public static bool IsRegistered = Registration.Start(IsRegistered);
     public static IContainer4 OutContainer => Registration.OutContainer;
 }

@@ -1,7 +1,4 @@
-﻿using SharpConfigProg.Service;
-using SharpContainerProg.AAPublic;
-using SharpRepoServiceProg.AAPublic;
-using OutBorder01 = SharpSetup21ProgPrivate.AAPublic.OutBorder;
+﻿using SharpContainerProg.AAPublic;
 
 namespace SharpTtsServiceTests.Registration;
 

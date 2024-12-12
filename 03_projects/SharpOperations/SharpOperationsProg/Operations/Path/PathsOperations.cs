@@ -11,8 +11,14 @@ internal class PathsOperations : IPathsOperations
         this.folderFinder = new FolderFinder();
     }
 
-    public string FindFolder(string searchFolderName, string inputFolderPath, string expression)
-        => folderFinder.FindFolder(searchFolderName, inputFolderPath, expression);
+    public string FindFolder(
+        string searchFolderName,
+        string inputFolderPath,
+        string expression)
+        => folderFinder.FindFolder(
+            searchFolderName,
+            inputFolderPath,
+            expression);
 
     public string MoveDirectoriesUp(string path, int level)
     {

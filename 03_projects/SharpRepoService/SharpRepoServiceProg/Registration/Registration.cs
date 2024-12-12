@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using SharpContainerProg.AAPublic;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Workers.Crud;
@@ -34,5 +35,11 @@ internal class Registration : RegistrationBase
 
         var jsonWorker = new JsonWorker();
         MyBorder.MyContainer.RegisterByFunc(() => jsonWorker);
+
+        Func<WriteFolderWorker> writeFolderFunc = () => { return new(); };
+        MyBorder.MyContainer.RegisterByFunc(writeFolderFunc);
+        
+        Func<WriteTextWorker> writeTextFunc = () => { return new(); };
+        MyBorder.MyContainer.RegisterByFunc(writeTextFunc);
     }
 }

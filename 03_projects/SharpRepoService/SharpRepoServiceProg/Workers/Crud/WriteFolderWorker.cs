@@ -11,7 +11,7 @@ namespace SharpRepoServiceProg.Workers.Crud;
 
 public class WriteFolderWorker
 {
-    private readonly IFileService fileService;
+    private readonly IFileService _fileService;
     private readonly ReadWorker rw;
     private readonly PathWorker pw;
     private readonly ConfigWorker cw;
@@ -19,17 +19,16 @@ public class WriteFolderWorker
     private readonly SystemWorker sw;
     private CustomOperationsService _customOperationsService;
 
-    public WriteFolderWorker(
-        IFileService fileService)
+    public WriteFolderWorker()
     {
-        this.fileService = fileService;
+        _fileService = MyBorder.OutContainer.Resolve<IFileService>();
         _customOperationsService = MyBorder.MyContainer.Resolve<CustomOperationsService>();
 
-        rw = MyBorder.OutContainer.Resolve<ReadWorker>();
-        pw = MyBorder.OutContainer.Resolve<PathWorker>();
-        cw = MyBorder.OutContainer.Resolve<ConfigWorker>();
-        bw = MyBorder.OutContainer.Resolve<BodyWorker>();
-        sw = MyBorder.OutContainer.Resolve<SystemWorker>();
+        rw = MyBorder.MyContainer.Resolve<ReadWorker>();
+        pw = MyBorder.MyContainer.Resolve<PathWorker>();
+        cw = MyBorder.MyContainer.Resolve<ConfigWorker>();
+        bw = MyBorder.MyContainer.Resolve<BodyWorker>();
+        sw = MyBorder.MyContainer.Resolve<SystemWorker>();
     }
 
     public ItemModel Put(

@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using SharpFileServiceProg.AAPublic;
+using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
@@ -121,16 +122,16 @@ public class JsonWorker
         string name)
     {
         ItemModel item = null;
-        if (type == ItemTypes.Text)
+        if (type == UniItemTypes.Text)
         {
             item = tww.InternalPost(name, address);
         }
-        if (type == "Folder")
+        if (type == UniItemTypes.Folder)
         {
             item = fww.InternalPost(name, address);
         }
 
-        var result = JsonConvert.SerializeObject(item, Formatting.Indented);
+        string result = JsonConvert.SerializeObject(item, Formatting.Indented);
         return result;
     }
     
@@ -141,7 +142,7 @@ public class JsonWorker
         string body = "")
     {
         ItemModel item = null;
-        if (type == ItemTypes.Text)
+        if (type == UniItemTypes.Text)
         {
             item = tww.Put(name, address, body);
         }

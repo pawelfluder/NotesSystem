@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SharpFileServiceProg.AAPublic;
+using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
@@ -94,10 +95,10 @@ internal class ConfigWorker
         var contentFilePath = _pw.GetBodyPath(adrTuple);
         if (File.Exists(contentFilePath))
         {
-            return ItemTypes.Text;
+            return UniItemTypes.Text;
         }
 
-        return ItemTypes.Folder;
+        return UniItemTypes.Folder;
     }
 
     public void CreateConfig(

@@ -1,6 +1,6 @@
 using Plugin.TextToSpeech;
 
-namespace SharpTtsServiceProg.Workers.Jobs;
+namespace SharpTtsServiceProg.Workers.FailedJobs;
 
 public class PluginTextToSpeechJob
 {

@@ -1,5 +1,7 @@
 using Xamarin.Essentials;
 
+namespace SharpTtsServiceProg.Workers.Jobs;
+
 public class XamarinEssentialsJob : ITextToSpeechService
 {
     public async Task SpeakAsync(string text)

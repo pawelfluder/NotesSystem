@@ -1,10 +1,11 @@
-﻿using SharpContainerProg.AAPublic;
+﻿using System.ComponentModel;
+using SharpContainerProg.AAPublic;
 
 namespace SharpTtsServiceTests.Registration;
 
 internal static class MyBorder
 {
-    public static bool IsRegistered;
-    public static Registration Registration = new Registration();
-    public static IContainer Container => Registration.Start(ref IsRegistered);
+    public static Registration Registration = new();
+    public static bool IsRegistered = Registration.Start(IsRegistered);
+    public static IContainer4 OutContainer => Registration.OutContainer;
 }

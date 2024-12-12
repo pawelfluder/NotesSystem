@@ -9,6 +9,7 @@ public class FolderFinder
         string inputFolderPath,
         string expression)
     {
+        // expression="3(2,2) - all positive numbers"
         var success = FindRange(expression, out int move,
             out (int left, int right) range);
 

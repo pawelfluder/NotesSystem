@@ -1,10 +1,13 @@
-﻿@using BlazorNotesSystem.Repet.Models
+﻿@using BlazorNotesSystem.Registrations
+@using BlazorNotesSystem.Repet.Models
 @using SharpOperationsProg.AAPublic.Operations
 @using SharpOperationsProg.Operations.UniAddress
-@using SharpRepoBackendProg.Service
+@using SharpRepoBackendProg.Services
+@using Toolbelt.Blazor.SpeechSynthesis
 @inject IOperationsService operationsService
 @inject IBackendService backendService
-@rendermode InteractiveServer
+@* @rendermode InteractiveServer *@
+@rendermode @(new InteractiveServerRenderMode(prerender: true))
 
 @if (Item?.Type == myType)
 {
@@ -13,12 +16,15 @@
         <input type="button" value="Content" @onclick="ContentClicked" />
         <input type="button" value="Config" @onclick="ConfigClicked" />
         <input type="button" value="Terminal" @onclick="TerminalClicked" />
-        <div style="vertical-align: middle;">
+        <div style="max-width: 100px;">
             <select @bind="@formGoogleDocType">
-            <option value="Open">Open</option>
-            <option value="Recreate">Recreate</option>
+                <option value="Open">Open</option>
+                <option value="Recreate">Recreate</option>
             </select>
             <input type="button" value="GoogleDoc" @onclick="GoogleDocClicked" />
+        </div>
+        <div style="max-width: 100px;">
+            <input type="button" value="Tts" @onclick="TtsClicked" />
         </div>
     </div>
 
@@ -30,6 +36,7 @@
         </select>
         <input type="text" @bind=@formAddValue>
     </div>
+
 
     <div>
         <textarea readonly style="resize:none; width:800px; height: 1200px;">@item.Body</textarea>
@@ -129,6 +136,27 @@
         var adrTuple = IUniAddressOperations
               .CreateAddressFromString(Item.Address);
         var itemJson = backendService.CommandApi("OpenTerminal", adrTuple.Item1, adrTuple.Item2);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // var _synth = MyBorder.OutContainer.Resolve<ISpeechSynthesisService>();
+        //
+        // var voicesArray = await _synth.GetVoicesAsync();
+        //
+        //
+        // var adrTuple = IUniAddressOperations
+        //     .CreateAddressFromString(Item.Address);
+        // var itemJson = backendService.CommandApi("Tts", adrTuple.Item1, adrTuple.Item2);
+
+    }
+
+    private void TtsClicked()
+    {
+        //SpeechSynthesis.Speak("hello");
+        var adrTuple = IUniAddressOperations
+            .CreateAddressFromString(Item.Address);
+        var itemJson = backendService.CommandApi("Tts", adrTuple.Item1, adrTuple.Item2);
     }
     
     private void GoogleDocClicked()

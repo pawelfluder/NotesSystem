@@ -9,14 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Repetition\RegistrationBase.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Unity.Container" Version="5.11.11" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\SharpConfig\SharpConfigProg\SharpConfigProg.csproj" />
     <ProjectReference Include="..\..\SharpContainer\SharpContainerProg\SharpContainerProg.csproj" />
     <ProjectReference Include="..\..\SharpGoogleDocs\SharpGoogleDocsProg\SharpGoogleDocsProg.csproj" />
@@ -26,6 +18,7 @@
     <ProjectReference Include="..\..\SharpNotesExporter\SharpNotesExporterProg\SharpNotesExporterProg.csproj" />
     <ProjectReference Include="..\..\SharpTextHeaderAnalyzer\SharpTextHeaderAnalyzerProg\SharpTextHeaderAnalyzerProg.csproj" />
     <ProjectReference Include="..\..\SharpButtonActions\SharpButtonActionsProg\SharpButtonActionsProg.csproj" />
+    <ProjectReference Include="..\..\SharpTtsService\SharpTtsServiceProg\SharpTtsServiceProg.csproj" />
   </ItemGroup>
 
 </Project>

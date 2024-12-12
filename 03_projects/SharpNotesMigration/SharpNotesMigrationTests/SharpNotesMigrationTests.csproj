@@ -18,7 +18,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\SharpContainer\SharpContainerProg\SharpContainerProg.csproj" />
     <ProjectReference Include="..\..\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj" />
-    <ProjectReference Include="..\..\SharpSetup01Prog\SharpSetup01Prog.csproj" />
     <ProjectReference Include="..\..\SharpTextHeaderAnalyzer\SharpTextHeaderAnalyzerProg\SharpTextHeaderAnalyzerProg.csproj" />
     <ProjectReference Include="..\SharpNotesMigrationProg\SharpNotesMigrationProg.csproj" />
     <ProjectReference Include="..\..\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj" />

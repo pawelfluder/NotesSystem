@@ -1,4 +1,4 @@
-using SharpRepoBackendProg.Service;
+using SharpRepoBackendProg.Services;
 
 namespace SharpRepoBackendProg;
 

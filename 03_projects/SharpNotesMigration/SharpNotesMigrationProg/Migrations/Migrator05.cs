@@ -5,6 +5,7 @@ using SharpFileServiceProg.AAPublic;
 using SharpNotesMigrationProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoServiceProg.AAPublic;
+using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Names;
 
 namespace SharpNotesMigrationProg.Migrations;
@@ -63,7 +64,7 @@ internal class Migrator05 : IMigrator, IMigrator05
     {
         var type = _repoService.Methods.GetType(adrTuple);
 
-        if (type == ItemTypes.Text)
+        if (type == UniItemTypes.Text)
         {
             var newText = RemoveTopEmptyLines(adrTuple);
             _repoService.Methods.PatchText(newText, adrTuple);

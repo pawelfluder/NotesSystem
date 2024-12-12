@@ -13,7 +13,7 @@ public class RunMethodsBase
     {
         _obj = obj;
         _obj ??= this;
-        _objType = obj.GetType();
+        _objType = _obj.GetType();
         SetMethodNames();
     }
 

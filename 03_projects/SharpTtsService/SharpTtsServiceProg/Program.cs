@@ -1,4 +1,5 @@
-﻿using SharpTtsServiceProg.Workers.Jobs;
+﻿using SharpTtsServiceProg.Workers.FailedJobs;
+using SharpTtsServiceProg.Workers.Jobs;
 
 namespace SharpTtsServiceProg;
 

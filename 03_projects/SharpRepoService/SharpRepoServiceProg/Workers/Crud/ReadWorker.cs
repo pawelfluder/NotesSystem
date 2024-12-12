@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SharpFileServiceProg.AAPublic;
+using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
@@ -63,13 +64,13 @@ internal class ReadWorker
         _cw.AddSettingsToModel(item, adrTuple, settings);
 
         // body
-        if (item.Type == ItemTypes.Text)
+        if (item.Type == UniItemTypes.Text)
         {
             var body = _bw.GetText2(adrTuple);
             item.Body = body;
         }
 
-        if (item.Type == ItemTypes.Folder &&
+        if (item.Type == UniItemTypes.Folder &&
             IncludeSubFolder)
         {
             item.Body = GetIndexesQNames2(adrTuple);
@@ -157,7 +158,7 @@ internal class ReadWorker
 
         foreach (var item in items)
         {
-            if (item.Type == ItemTypes.Text)
+            if (item.Type == UniItemTypes.Text)
             {
                 contentsList.Add(item.Body.ToString());
             }
@@ -175,7 +176,7 @@ internal class ReadWorker
 
         foreach (var item in items)
         {
-            if (item.Type == ItemTypes.Text)
+            if (item.Type == UniItemTypes.Text)
             {
                 var index = _customOperationsService.UniAddress
                     .GetLastLocaIndex(item.Address);

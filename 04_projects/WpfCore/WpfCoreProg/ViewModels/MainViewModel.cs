@@ -10,8 +10,10 @@ using System.Linq;
 using System.Windows.Controls;
 using WpfCoreProg.Debug;
 using System.ComponentModel;
-using SharpRepoBackendProg.Service;
+using SharpRepoBackendProg.AAPublic;
+using SharpRepoBackendProg.Services;
 using SharpRepoServiceProg.AAPublic;
+using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Names;
 using WpfCoreProg.ViewModels;
 
@@ -40,7 +42,7 @@ public class MainViewModel : BaseViewModel
         repoService = MyBorder.OutContainer.Resolve<IRepoService>();
         addressHistory = new History<(string, string)>();
         var jString = backendService.CommandApi(
-            IBackendService.ApiMethods.GetAllRepoName.ToString());
+            ApiMethods.GetAllRepoName.ToString());
         _allRepoList = JsonConvert.DeserializeObject<List<string>>(jString);
 
         Titles2 = new ObservableCollection<TabItem>();
@@ -74,7 +76,7 @@ public class MainViewModel : BaseViewModel
     public IItemViewModel CreateViewModel(string type, (string, string) adrTuple)
     {
         IItemViewModel viewModel = null;
-        if (type == ItemTypes.Text)
+        if (type == UniItemTypes.Text)
         {
             viewModel = MyBorder.OutContainer.Resolve<TextViewModel>();
         }

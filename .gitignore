@@ -25,6 +25,14 @@ obj
 ####################
 
 
+####################
+# settings
+01_settings/21-09-30_google-cloud-secrets.json
+01_settings/EverythingPrivate.sln
+# settings
+####################
+
+
 # Most important
 .vs
 bin

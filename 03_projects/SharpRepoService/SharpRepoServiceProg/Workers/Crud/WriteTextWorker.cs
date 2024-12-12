@@ -19,10 +19,10 @@ public class WriteTextWorker
 
     public WriteTextWorker()
     {
-        _rw = MyBorder.OutContainer.Resolve<ReadWorker>();
-        _bw = MyBorder.OutContainer.Resolve<BodyWorker>();
-        _cw = MyBorder.OutContainer.Resolve<ConfigWorker>();
-        _sw = MyBorder.OutContainer.Resolve<SystemWorker>();
+        _rw = MyBorder.MyContainer.Resolve<ReadWorker>();
+        _bw = MyBorder.MyContainer.Resolve<BodyWorker>();
+        _cw = MyBorder.MyContainer.Resolve<ConfigWorker>();
+        _sw = MyBorder.MyContainer.Resolve<SystemWorker>();
         _customOperationsService = MyBorder.MyContainer.Resolve<CustomOperationsService>();
     }
 

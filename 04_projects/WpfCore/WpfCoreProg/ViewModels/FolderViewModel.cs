@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Input;
 using SharpOperationsProg.AAPublic.Operations;
-using SharpRepoBackendProg.Service;
+using SharpRepoBackendProg.AAPublic;
+using SharpRepoBackendProg.Services;
 using WpfNotesSystem.Repetition;
 using WpfNotesSystemProg3.Models;
 using WpfNotesSystemProg3.ViewModelBase;
@@ -125,14 +126,14 @@ public class FolderViewModel : BaseViewModel, IItemViewModel
     public void FolderAction()
     {
         backendService.CommandApi(
-            IBackendService.ApiMethods.OpenFolder.ToString(),
+            ApiMethods.OpenFolder.ToString(),
             AdrTuple.repo, AdrTuple.loca);
     }
 
     public void ConfigAction()
     {
         backendService.CommandApi(
-            IBackendService.ApiMethods.OpenConfig.ToString(),
+            ApiMethods.OpenConfig.ToString(),
             AdrTuple.repo, AdrTuple.loca);
     }
 
@@ -141,7 +142,7 @@ public class FolderViewModel : BaseViewModel, IItemViewModel
         if (ValueToAdd != string.Empty)
         {
             backendService.CommandApi(
-                IBackendService.ApiMethods.CreateItem.ToString(),
+                ApiMethods.CreateItem.ToString(),
                 AdrTuple.repo,
                 AdrTuple.loca,
                 ItemTypes[SelectedIndex],

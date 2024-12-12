@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using SharpFileServiceProg.AAPublic;
+using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Infos;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
@@ -55,7 +56,7 @@ public class MethodWorker
         _rw = MyBorder.MyContainer.Resolve<ReadWorker>();
         _mw = MyBorder.MyContainer.Resolve<MemoryWorker>();
         _jw = MyBorder.MyContainer.Resolve<JsonWorker>();
-        _fww = new WriteFolderWorker(fileService);
+        _fww = new WriteFolderWorker();
         _tww = new WriteTextWorker();
         _pw = MyBorder.MyContainer.Resolve<PathWorker>();
         _cw = MyBorder.MyContainer.Resolve<ConfigWorker>();
@@ -185,9 +186,9 @@ public class MethodWorker
         var settingsFile = _pw.GetBodyPath(adrTuple);
         if (File.Exists(settingsFile))
         {
-            return ItemTypes.Text;
+            return UniItemTypes.Text;
         }
-        return ItemTypes.Folder;
+        return UniItemTypes.Folder;
     }
 
     public string GetName(
@@ -372,6 +373,10 @@ public class MethodWorker
     public string GetElemPath(
         (string Repo, string Loca) adrTuple)
         => _pw.GetItemPath(adrTuple);
+    
+    public string GetBodyPath(
+        (string Repo, string Loca) adrTuple)
+        => _pw.GetBodyPath(adrTuple);
 
     public void CreateConfigKey(
         (string Repo, string Loca) address,

@@ -40,7 +40,10 @@ internal class DefaultPreparer : IPreparer
         string jsonFilePath = "21-09-30_google-cloud-secrets.json";
         
         string settingsFolderPath = _operationsService
-            .Path.GetProjectFolderPath("02_settings");
+            .Path.FindFolder(
+                "02_settings",
+                Directory.GetCurrentDirectory(),
+                "-3(2,2)");
         string googleCloudCredentialsPath =
             settingsFolderPath
             + "/"

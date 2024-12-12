@@ -1,11 +1,11 @@
-﻿using SharpTtsServiceProg.Worker;
+﻿using SharpTtsServiceProg.Workers.Fasades;
 using SharpTtsServiceProg.Workers.Jobs;
 
 namespace SharpTtsServiceProg.AAPublic;
 
 public interface ITtsService
 {
-    TtsBuilderWorker Tts { get; }
+    ITtsJob Tts { get; }
 
     RepoTtsWorker RepoTts { get; }
 }
