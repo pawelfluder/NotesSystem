@@ -33,7 +33,6 @@ internal class DefaultPreparer : IPreparer
     private void PrepareConfig()
     {
         settingsDict = new Dictionary<string, object>();
-        var repoRootPaths = GetRepoSearchPaths();
         
         string googleUserName = "notki.info@gmail.com";
         string googleApplicationName = "GameStatistics";
@@ -44,6 +43,7 @@ internal class DefaultPreparer : IPreparer
                 "01_settings",
                 Directory.GetCurrentDirectory(),
                 "3(2,2)");
+        var repoRootPaths = GetRepoSearchPaths(settingsFolderPath);
         string googleCloudCredentialsPath =
             settingsFolderPath
             + "/"
@@ -63,16 +63,10 @@ internal class DefaultPreparer : IPreparer
         settingsDict.Add(nameof(googleApplicationName), googleApplicationName);
     }
 
-    public List<object> GetRepoSearchPaths()
+    public List<object> GetRepoSearchPaths(
+        string settingsFolderPath)
     {
-        string synchFolderPath = "";
-        TryGetMacPath(ref synchFolderPath);
-        TryGetWindowsPath(ref synchFolderPath);
-
-        var s1 = Directory.Exists(synchFolderPath);
-        var tmp = Directory.GetDirectories(synchFolderPath);
-        var tmp3 = tmp.Where(x => Guid.TryParse(Path.GetFileName(x), out var tmp2));
-        var repoSearchPaths = tmp3.Select(x => (object)x).ToList();
+        string result = settingsFolderPath + "/" + 
         return repoSearchPaths;
     }
 

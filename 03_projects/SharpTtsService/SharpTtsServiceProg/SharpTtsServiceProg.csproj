@@ -21,7 +21,6 @@
     <ProjectReference Include="..\..\SharpOperations\SharpOperationsProg\SharpOperationsProg.csproj" />
     <ProjectReference Include="..\..\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj" />
 <!--    <ProjectReference Include="..\..\SharpVideoService\SharpVideoServiceProg\SharpVideoServiceProg.csproj" />-->
-    <PackageReference Include="Microsoft.JSInterop" Version="8.0.10" />
     <ProjectReference Include="..\..\SharpVideoService\SharpVideoServiceProg\SharpVideoServiceProg.csproj" />
   </ItemGroup>
 
