@@ -12,6 +12,8 @@ publish_new
 **/*.png
 */*.png
 /*.png
+**/.git
+**/.gitmodules
 ####################
 
 
