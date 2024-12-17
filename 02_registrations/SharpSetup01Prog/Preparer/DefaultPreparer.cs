@@ -41,7 +41,10 @@ internal class DefaultPreparer : IPreparer
                 "01_settings",
                 Directory.GetCurrentDirectory(),
                 "3(2,2)");
-        List<object> repoRootPaths = GetRepoSearchPaths(settingsFolderPath);
+        List<object> repoRootPaths = new()
+        {
+            settingsFolderPath
+        };
         string googleCloudCredentialsPath =
             settingsFolderPath
             + "/"
@@ -64,8 +67,7 @@ internal class DefaultPreparer : IPreparer
     public List<object> GetRepoSearchPaths(
         string settingsFolderPath)
     {
-        string result = settingsFolderPath + "/" + "18296f12-0706-43e1-9bd4-1b40154ec22e";
-        return new List<object> {result};
+        return new List<object> { settingsFolderPath };
     }
 
     public bool GetGoogleCredentials(

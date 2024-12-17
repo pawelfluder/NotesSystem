@@ -72,8 +72,11 @@ public class MethodWorker
         (string Repo, string Loca) adrTuple)
         => _rw.GetAllRepoAddresses(adrTuple.Repo);
 
-    public void PutPaths(List<string> searchPaths)
-        => _mw.PutPaths(searchPaths);
+    public void InitGroupsFromSearchPaths(List<string> searchPaths)
+        => _mw.InitGroupsFromSearchPaths(searchPaths);
+    
+    public (string Repos, string Loca) GetFirstRepo()
+        => _pw.GetFirstRepo();
 
     public int GetReposCount()
         => _pw.GetRepoCount();

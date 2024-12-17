@@ -31,8 +31,8 @@ internal class MemoryWorker
     // }
 
     // memory
-    public void PutPaths(List<string> searchPaths)
-        => pw.PutPaths(searchPaths);
+    public void InitGroupsFromSearchPaths(List<string> searchPaths)
+        => pw.GetGroupsFromSearchPaths(searchPaths);
 
     // memory
     public void GetAllReposPaths()

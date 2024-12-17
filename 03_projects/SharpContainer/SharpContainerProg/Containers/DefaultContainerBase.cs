@@ -9,28 +9,80 @@ public class DefaultContainerBase : IContainer4
     public IServiceCollection ServiceRegister { get; protected set; }
     public IServiceProvider ServiceProvider { get; protected set; }
 
-    public void RegisterSingleton<RegT>(
-        RegT obj)
-            where RegT : class
-    {
-        ServiceRegister.AddSingleton<RegT>(sp => 
-            obj);
-    }
+    // public void RegisterSingleton<RegT>(
+    //     RegT obj)
+    //         where RegT : class
+    // {
+    //     ServiceRegister.AddSingleton<RegT>(sp => 
+    //         obj);
+    // }
     
-    public void RegisterByFunc<T>(
-        Func<T> func,
-        int type = 0)
-            where T : class
+    // public void RegisterSingleton<P1, RegT>(
+    //     Func<P1, RegT> regT,
+    //     P1 p1)
+    //     where RegT : class
+    // {
+    //     ServiceRegister.AddSingleton(regT.Invoke(p1));
+    // }
+    
+    public void RegisterByFunc<RegT>(
+        Func<RegT> func,
+        int type = 0,
+        Action endAction = null)
+            where RegT : class
     {
         if (type == 0)
         {
-            ServiceRegister.AddSingleton<T>(sp => 
+            ServiceRegister.AddSingleton<RegT>(sp => 
                 func.Invoke());
         }
         if (type == 1)
         {
-            ServiceRegister.AddTransient<T>(sp => 
+            ServiceRegister.AddTransient<RegT>(sp => 
                 func.Invoke());
+        }
+        if (type == 2)
+        {
+            ServiceRegister.AddScoped<RegT>(sp => 
+                func.Invoke());
+        }
+        
+        if (endAction != null)
+        {
+            endAction.Invoke();
+        }
+    }
+    
+    public void RegisterByFunc<P1, RegT>(
+        Func<P1, RegT> regTfunc,
+        Func<P1> p1Tfunc,
+        int type = 0,
+        Action endAction = null)
+        where RegT : class
+        where P1 : class
+    {
+        if (type == 0)
+        {
+            ServiceRegister.AddSingleton<RegT>(
+                sp => regTfunc.Invoke(
+                    p1Tfunc.Invoke()));
+        }
+        if (type == 1)
+        {
+            ServiceRegister.AddTransient<RegT>(
+                sp => regTfunc.Invoke(
+                    p1Tfunc.Invoke()));
+        }
+        if (type == 2)
+        {
+            ServiceRegister.AddScoped<RegT>(
+                sp => regTfunc.Invoke(
+                    p1Tfunc.Invoke()));
+        }
+        
+        if (endAction != null)
+        {
+            endAction.Invoke();
         }
     }
 

@@ -1,13 +1,16 @@
 ﻿@page "/{UrlUniAddress}"
 @page "/"
 @using BlazorNotesSystem.Components.Editor
+@using BlazorNotesSystem.Registrations
 @using BlazorNotesSystem.Repet.Models
 @using SharpOperationsProg.AAPublic.Operations
 @using SharpOperationsProg.Operations.UniAddress
 @using SharpRepoBackendProg.Services
+@using SharpRepoServiceProg.AAPublic
 
 @inject IBackendService backendService
 @inject IOperationsService operationsService
+@inject IRepoService repoService
 
 @rendermode InteractiveServer
 
@@ -51,7 +54,9 @@
     {
         if (item == null)
         {
-            item = new ItemModel() { Address = "Notki" };
+            var repoService2 = MyBorder.OutContainer.Resolve<IRepoService>();
+            var firstRepoAdrTuple = repoService2.GetFirstRepo();
+            item = new ItemModel() { Address = firstRepoAdrTuple.Repo };
         }
     }
     private bool IsMyType()

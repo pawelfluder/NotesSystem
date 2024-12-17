@@ -1,1 +1,4 @@
 "name": "notes"
+"address": "Notes"
+"id": "e4fc80ba-32f0-4c29-9fcc-9f6bf42cbec2"
+"type": "Folder"

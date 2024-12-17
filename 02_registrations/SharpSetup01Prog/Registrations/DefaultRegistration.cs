@@ -1,10 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SharpConfigProg.AAPublic;
 using SharpContainerProg.AAPublic;
 using SharpContainerProg.Containers;
 using SharpFileServiceProg.AAPublic;
+using SharpGoogleDocsProg.AAPublic;
+using SharpGoogleDriveProg.AAPublic;
+using SharpGoogleSheetProg.AAPublic;
 using SharpImageSplitterProg.Service;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoBackendProg.Services;
+using SharpRepoServiceProg.AAPublic;
 using SharpVideoServiceProg.AAPublic;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 using OutBorder1 = SharpFileServiceProg.AAPublic.OutBorder;
@@ -23,54 +28,64 @@ namespace SharpSetup01Prog.Registrations;
 
 public class DefaultRegistration : RegistrationBase
 {
-    private Dictionary<string, object> _tempDict;
+    private Dictionary<string, object> _settingsDict;
 
-    public void SetSettingsDict(Dictionary<string, object> inputDict)
+    public void SetSettingsDict(
+        Dictionary<string, object> inputDict)
     {
-        _tempDict = inputDict;
+        _settingsDict = inputDict;
     }
 
     public override void Registrations()
     {
-        IFileService fileService = OutBorder1.FileService();
-        OutContainer.RegisterByFunc(() => fileService);
-            
-        var operationsService = OutBorder9.OperationsService(fileService);
-        OutContainer.RegisterByFunc<IOperationsService>(
-            () => operationsService);
+        OutContainer.RegisterByFunc<IFileService>(() => 
+            OutBorder1.FileService());
+        
+        OutContainer.RegisterByFunc<IFileService, IOperationsService>(
+            x => OutBorder9.OperationsService(x),
+            () => OutContainer.Resolve<IFileService>());
+        
+        OutContainer.RegisterByFunc<IOperationsService, IConfigService>(
+            x => OutBorder2.ConfigService(x),
+            () => OutContainer.Resolve<IOperationsService>());
+        
+        OutContainer.RegisterByFunc<IFileService, IRepoService>(
+            x => OutBorder3.RepoService(x),
+            () => OutContainer.Resolve<IFileService>(),
+            0,
+            InitGroupsFromSearchPaths);
 
-        var configService = OutBorder2.ConfigService(operationsService);
-        OutContainer.RegisterByFunc(() => configService);
+        IGoogleDriveService googleDrive = OutBorder4.GoogleDriveService(
+            _settingsDict,
+            OutContainer.Resolve<IOperationsService>());
+        OutContainer.RegisterByFunc<IGoogleDriveService>(
+            () => googleDrive);
 
-        var repoService = OutBorder3.RepoService(fileService);
-        OutContainer.RegisterByFunc(() => repoService);
+        IGoogleDocsService googleDocs = OutBorder5.GoogleDocsService(
+            _settingsDict);
+        OutContainer.RegisterByFunc<IGoogleDocsService>(
+            () => googleDocs);
 
-        configService.Prepare(_tempDict);
-        var searchPaths = configService.GetRepoSearchPaths();
-        repoService.PutPaths(searchPaths);
-
-        var driveService = OutBorder4.GoogleDriveService(
-            configService.SettingsDict,
-            operationsService);
-        OutContainer.RegisterByFunc(() => driveService);
-
-        var docsService = OutBorder5.GoogleDocsService(
-            configService.SettingsDict);
-        OutContainer.RegisterByFunc(() => docsService);
-
-        var sheetService = OutBorder6.GoogleSheetService(
-            configService.SettingsDict);
+        IGoogleSheetService sheetService = OutBorder6.GoogleSheetService(
+            _settingsDict);
         OutContainer.RegisterByFunc(() => sheetService);
         
         // var argsManager = OutBorder11.ArgsManagerService();
         // OutContainer.RegisterByFunc<IArgsManagerService>(
         //     () => argsManager);
-
-        IVideoService videoService = OutBorder8
-            .VideoService(operationsService);
-        OutContainer.RegisterByFunc(() => sheetService);
         
-        var ttsService = OutBorder7.TtsService(operationsService, repoService, videoService);
+        OutContainer.RegisterByFunc(
+            (x) => OutBorder8.VideoService(x),
+            () => OutContainer.Resolve<IOperationsService>());
+        
+        // OutContainer.RegisterByFunc(
+        //     (x) => OutBorder7.TtsService(),
+        //     () => OutContainer.Resolve<IOperationsService>());
+        
+        var ttsService = OutBorder7.TtsService(
+            OutContainer.Resolve<IOperationsService>(),
+            OutContainer.Resolve<IRepoService>(),
+            OutContainer.Resolve<IVideoService>());
         OutContainer.RegisterByFunc(() => ttsService);
         OutContainer.ServiceRegister.AddSpeechSynthesis();
 
@@ -82,5 +97,14 @@ public class DefaultRegistration : RegistrationBase
         
         // OutContainer.ServiceRegister.AddSpeechSynthesisServices();
         OutContainer.ServiceRegister.AddSpeechSynthesis();
+    }
+
+    private void InitGroupsFromSearchPaths()
+    {
+        IConfigService configService = OutContainer.Resolve<IConfigService>();
+        IRepoService repoService = OutContainer.Resolve<IRepoService>();
+        configService.Prepare(_settingsDict);
+        List<string> searchPaths = configService.GetRepoSearchPaths();
+        repoService.InitGroupsFromSearchPaths(searchPaths);
     }
 }

@@ -15,5 +15,7 @@ public partial interface IRepoService
 
     //FolderWriteWorker Folder { get; }
 
-    void PutPaths(List<string> searchPaths);
+    void InitGroupsFromSearchPaths(List<string> searchPaths);
+
+    (string Repo, string Loca) GetFirstRepo();
 }

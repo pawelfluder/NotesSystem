@@ -34,6 +34,7 @@ public class SystemActionsService : ISystemActionsService
     public void OpenTerminal(string path)
     {
         mac.TryOpenTerminal(path);
+        windows.TryOpenTerminal(path);
     }
 
     public void Run(string[] args)

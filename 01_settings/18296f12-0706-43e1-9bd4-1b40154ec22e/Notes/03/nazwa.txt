@@ -1,3 +1,0 @@
-"name": "text file 01"
-"type": "Text"
-"id": ""

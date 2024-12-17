@@ -1,3 +1,0 @@
-"name": "folder01"
-"type": "Folder"
-"id": ""

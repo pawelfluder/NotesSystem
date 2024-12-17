@@ -56,13 +56,19 @@ internal class RepoService : IRepoService
         }
     }
 
-    public void PutPaths(List<string> searchPaths)
+    public void InitGroupsFromSearchPaths(List<string> searchPaths)
     {
-        Methods.PutPaths(searchPaths);
+        Methods.InitGroupsFromSearchPaths(searchPaths);
 
         if (!(methods.GetReposCount() > 0))
         {
             throw new Exception();
         }
+    }
+    
+    public (string Repo, string Loca) GetFirstRepo()
+    {
+        (string Repos, string Loca) adrTuple = Methods.GetFirstRepo();
+        return adrTuple;
     }
 }

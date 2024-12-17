@@ -1,0 +1,3 @@
+"name": "test03 - error - lack of lista.txt"
+"type": "Text"
+"id": ""
