@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\02_registrations\SharpSetup01Prog\SharpSetup01Prog.csproj" />
+      <ProjectReference Include="..\..\04_registrations\SharpSetup01Prog\SharpSetup01Prog.csproj" />
       <ProjectReference Include="..\..\05_projects\BlazorUniSystemCore\BlazorUniSystemCore.csproj" />
     </ItemGroup>
 
