@@ -1,0 +1,25 @@
+﻿@* @using Microsoft.Fast.Components.FluentUI *@
+@* *@
+@* <FluentCombobox AriaLabel="Pre-selected option" Items="@Hits" @bind-Value="@hit" Height="200px" /> *@
+@* *@
+@* $1$ <FluentCombobox #1# *@
+@* $1$     Placeholder="Make a selection..." #1# *@
+@* $1$     Label="Best song" Autofocus="true" #1# *@
+@* $1$     Items="@Hits" #1# *@
+@* $1$     @bind-Value="@hit" #1# *@
+@* $1$     Height="200px" #1# *@
+@* $1$     Immediate #1# *@
+@* $1$     ImmediateDelay="100" /> #1# *@
+@* *@
+@* @code { *@
+@* string? hit = ""; *@
+@* string? name = "Nur Sari"; *@
+@* string? size = ""; *@
+@* *@
+@* List<string> Hits { get; set; } *@
+@*     = new() *@
+@*     { *@
+@*         "First", "Second" *@
+@*     }; *@
+@* *@
+@* } *@

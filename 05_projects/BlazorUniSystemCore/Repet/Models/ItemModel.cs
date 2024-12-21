@@ -1,18 +1,33 @@
-﻿namespace BlazorNotesSystem.Repet.Models;
+﻿using SharpOperationsProg.Operations.UniAddress;
+using SharpRepoServiceProg.Names;
+namespace BlazorNotesSystem.Repet.Models;
 
 public class ItemModel
 {
-    public object Body { get; set; }
-
-    public string Id { get; set; }
-
-    public string Type { get; set; }
-
-    public string Name { get; set; }
-
-    public string Address { get; set; }
+    private string address;
 
     private Dictionary<string, object> settings;
+
+    internal string Name { get; set; }
+
+    internal string Type { get; set; }
+
+    internal string Id { get; set; }
+
+    internal string Address
+    {
+        get => address;
+        set
+        {
+            address = value;
+            (string, string) adrTuple = IUniAddressOperations.CreateAddressFromString(address);
+            AdrTuple = adrTuple;
+        }
+    }
+
+    public (string Repo, string Loca) AdrTuple { get; set; }
+
+    public object Body { get; set; }
 
     public Dictionary<string, object> Settings
     {
@@ -27,9 +42,9 @@ public class ItemModel
     private void SetIndentificators(
         Dictionary<string, object> dict)
     {
-        Name = dict["name"].ToString();
-        Type = dict["type"].ToString();
-        Id = dict["id"].ToString();
-        Address = dict["address"].ToString();
+        Name = dict[FieldsForUniItem.Name].ToString();
+        Id = dict[FieldsForUniItem.Id].ToString();
+        Type = dict[FieldsForUniItem.Type].ToString();
+        Address = dict[FieldsForUniItem.Address].ToString();
     }
 }

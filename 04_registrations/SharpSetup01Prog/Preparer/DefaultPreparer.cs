@@ -38,12 +38,17 @@ internal class DefaultPreparer : IPreparer
         
         string settingsFolderPath = _operationsService
             .Path.FindFolder(
-                "01_settings",
+                "02_settings",
                 Directory.GetCurrentDirectory(),
                 "3(2,2)");
+        string databaseFolderPath = _operationsService
+            .Path.FindFolder(
+                "01_database",
+                settingsFolderPath,
+                "1(0,0)");
         List<object> repoRootPaths = new()
         {
-            settingsFolderPath
+            databaseFolderPath
         };
         string googleCloudCredentialsPath =
             settingsFolderPath

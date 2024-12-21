@@ -486,8 +486,9 @@ internal class ReadWorker
 
     public List<string> GetAllReposNames()
     {
-        var repos = _pw.GetAllReposPaths()
-            .Select(x => Path.GetFileName(x)).ToList();
+        List<string> repos = _pw.GetAllReposPaths()
+            .Select(x => Path.GetFileName(x))
+            .ToList();
         return repos;
     }
 

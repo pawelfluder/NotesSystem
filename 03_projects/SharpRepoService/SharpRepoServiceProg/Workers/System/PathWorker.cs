@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using SharpRepoServiceProg.Helpers;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
 
@@ -80,61 +81,18 @@ internal class PathWorker
         return path;
     }
 
-    public void GetGroupsFromSearchPaths(List<string> searchPaths)
+    public void GetGroupsFromSearchPaths(
+        List<string> searchPaths)
     {
         reposPathsList = new List<string>();
-        Dictionary<string, List<string>> dict = GetGuidGroupsForSearchFolders(searchPaths);
-        AddRepoFolders(dict);
+        GuidGroupsHelper helper = new();
+        List<string> specialFolders = helper.GetSpecialWithGuidFolders(searchPaths);
+        searchPaths.AddRange(specialFolders);
+        Dictionary<string, List<string>> dict = helper.
+            GetGuidGroupsForSearchFolders(searchPaths);
+        helper.AddRepoFolders(dict);
         reposPathsList = dict.SelectMany(x => x.Value).ToList();
-    }
-
-    private Dictionary<string, List<string>> GetGuidGroupsForSearchFolders(
-        List<string> searchFolders)
-    {
-        Dictionary<string, List<string>> dict = new();
-        foreach (var searchFolder in searchFolders)
-        {
-            List<string> possibleGuidFolders = Directory.GetDirectories(searchFolder)
-                .Select(x => CorrectPath(x))
-                .ToList();
-            foreach (var possibleGuidFolder in possibleGuidFolders)
-            {
-                if (IsUniRepoGroupFolder(possibleGuidFolder))
-                {
-                    if (!dict.ContainsKey(possibleGuidFolder))
-                    {
-                        dict.Add(possibleGuidFolder, new List<string>());
-                    }
-                }
-            }
-        }
-
-        return dict;
-    }
-
-    private void AddRepoFolders(
-        Dictionary<string, List<string>> dict)
-    {
-        foreach (var keyValue in dict)
-        {
-            string guidFolder = keyValue.Key;
-            List<string> repoFolders = Directory.GetDirectories(guidFolder)
-                .Select(x => CorrectPath(x))
-                .ToList();
-            dict[guidFolder].AddRange(repoFolders);
-        }
-    }
-
-    private bool IsUniRepoGroupFolder(string folder)
-    {
-        string name = Path.GetFileName(folder);
-        bool isGuid = Guid.TryParse(name, out Guid guid);
-        return isGuid;
-    }
-
-    public string CorrectPath(string path)
-    {
-        return path.Replace("\\", "/");
+        reposPathsList.Sort(new RepoPathComparer());
     }
 
     private string HandleError()

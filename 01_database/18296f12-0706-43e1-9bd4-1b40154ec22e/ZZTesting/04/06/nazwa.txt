@@ -1,4 +1,4 @@
 "id": "73fc2678-7fc4-4c24-8cd8-2661d3beac11"
 "type": "Folder"
-"name": "test04 - error - folder contain text with name.txt"
+"name": "test04 - error - folder containing text item without name.txt"
 "address": "Notes/04/06"

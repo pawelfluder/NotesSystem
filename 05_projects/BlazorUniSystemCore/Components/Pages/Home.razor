@@ -1,5 +1,6 @@
 ﻿@page "/{UrlUniAddress}"
 @page "/"
+@using System.Text.RegularExpressions
 @using BlazorNotesSystem.Components.Editor
 @using BlazorNotesSystem.Registrations
 @using BlazorNotesSystem.Repet.Models
@@ -7,6 +8,7 @@
 @using SharpOperationsProg.Operations.UniAddress
 @using SharpRepoBackendProg.Services
 @using SharpRepoServiceProg.AAPublic
+@using BlazorUniComponents
 
 @inject IBackendService backendService
 @inject IOperationsService operationsService
@@ -15,60 +17,65 @@
 @rendermode InteractiveServer
 
 <div>
-    <input type="button" value="<" @onclick="OnBackArrowBtnClicked" />
-    <input type="button" value="Go" @onclick="OnGoBtnClicked" />
-    Repo<input type="text" @bind=@formRepoName />
-    Loca<input type="text" @bind=@formLocaName />
+    <input type="button" value="<" @onclick=@OnBackArrowBtnClicked />
+    <input type="button" value="Go" @onclick=@OnGoBtnClicked />
+    Repo::
+    <ComboBox02
+        Items="AllRepoNames"
+        @bind-SelectedItem=@ComboBoxRepoName/>
+        @* OnValueChanged=@HandleValueChanged *@
+    Loca::
+    <input type="text" @bind=@inputLocaName />
 </div>
 
-<div>
-    Address: @item.Address
-</div>
+<div>Address: @_item.Address</div>
+<div>Type: @_item.Type</div>
+<div>Name: @_item.Name</div>
 
 <div>
-    Type: @item.Type
-</div>
-
-<div>
-    Name: @item.Name
-</div>
-
-<div>
-    <TextView @bind-Item=@item ReloadItem=@ReloadItem @ref="textView"></TextView>
-    <RefTextView @bind-Item=@item ReloadItem=@ReloadItem @ref="refTextView"></RefTextView>
-    <FolderView @bind-Item=@item ReloadItem=@ReloadItem @ref="folderView"></FolderView>
+    <TextView @bind-Item=@_item ReloadItem=@ReloadItem @ref="textView"></TextView>
+    <RefTextView @bind-Item=@_item ReloadItem=@ReloadItem @ref="refTextView"></RefTextView>
+    <FolderView @bind-Item=@_item ReloadItem=@ReloadItem @ref="folderView"></FolderView>
 </div>
 
 @code {
-    private ItemModel item;
-    private string formRepoName;
-    private string formLocaName;
+    private ItemModel _item;
+    private string inputLocaName = string.Empty;
+    
     private TextView textView;
-    private RefTextView refTextView;
     private FolderView folderView;
+    private RefTextView refTextView;
     
     [Parameter]
     public string? UrlUniAddress { get; set; }
     
     public Home()
     {
-        if (item == null)
+        IRepoService repoService2 = MyBorder.OutContainer.Resolve<IRepoService>();
+        AllRepoNames = repoService2.Methods.GetAllReposNames();
+        if (_item == null)
         {
-            var repoService2 = MyBorder.OutContainer.Resolve<IRepoService>();
-            var firstRepoAdrTuple = repoService2.GetFirstRepo();
-            item = new ItemModel() { Address = firstRepoAdrTuple.Repo };
+            string firstRepo = AllRepoNames.First();
+            _item = new ItemModel { Address = firstRepo };
         }
     }
-    private bool IsMyType()
+    
+    public List<string> AllRepoNames { get; set; }
+
+    public string ComboBoxRepoName
     {
-        return true;
+        get; 
+        set;
     }
+
     protected override async Task OnInitializedAsync()
     {
+        AllRepoNames = repoService.Methods.GetAllReposNames();
         (string, string) adrTuple = IUniAddressOperations
-            .CreateAddressFromString(item.Address);
+            .CreateAddressFromString(_item.Address);
         
-        if (UrlUniAddress != null)
+        if (UrlUniAddress != null
+            && IsAdressCorrect(UrlUniAddress))
         {
             adrTuple = IUniAddressOperations
                 .CreateAddressFromUrlParameter(UrlUniAddress);
@@ -76,10 +83,22 @@
         
         ReloadItem(adrTuple);
     }
+
+    private bool IsAdressCorrect(
+        string urlUniAddress)
+    {
+        string pattern = "^[A-Za-z0-9]{1,13}(\\/(0[0-9]{1,2}|[1-9][0-9]{1,2}))*$\n";
+        Regex regex = new Regex(pattern);
+        Match match = regex.Match(urlUniAddress);
+        bool correct = match.Groups.Count > 0;
+        return correct;
+    }
+
     protected void ReloadItem((string Repo, string Loca) address)
     {
-        var itemJString = GetItem(address);
-        var itemObj = operationsService.Json.TryDeserializeObject<ItemModel>(itemJString);
+        string itemJString = GetItem(address);
+        ItemModel? itemObj = operationsService.Json
+            .TryDeserializeObject<ItemModel>(itemJString);
         if (itemObj != null)
         {
             ReloadItem(itemObj);
@@ -88,30 +107,28 @@
 
     protected void ReloadItem(ItemModel itemObj)
     {
-        item = itemObj;
-        var adrTuple = IUniAddressOperations
-            .CreateAddressFromString(item.Address);
-        formRepoName = adrTuple.Item1;
-        formLocaName = adrTuple.Item2;
+        _item = itemObj;
+        (string, string) adrTuple = IUniAddressOperations
+            .CreateAddressFromString(_item.Address);
+        inputLocaName = adrTuple.Item2;
 
         if (folderView != null)
         {
-            folderView.Item = item;
+            folderView.Item = _item;
         }
 
         if (textView != null)
         {
-            textView.Item = item;
+            textView.Item = _item;
         }
     }
 
     protected void ReloadItem(ItemModel item, bool reloadState)
     {
-        this.item = item;
-        var adrTuple = IUniAddressOperations
+        _item = item;
+        (string, string) adrTuple = IUniAddressOperations
              .CreateAddressFromString(item.Address);
-        formRepoName = adrTuple.Item1;
-        formLocaName = adrTuple.Item2;
+        inputLocaName = adrTuple.Item2;
         
 
         if (folderView != null)
@@ -129,21 +146,25 @@
 
     public void OnGoBtnClicked(MouseEventArgs e)
     {
-        var address = (formRepoName, formLocaName);
+        (string, string) address = (ComboBoxRepoName, inputLocaName);
         ReloadItem(address);
     }
 
     public string GetItem((string Repo, string Loca) address)
     {
-        var itemJson = backendService.CommandApi("GetItem", address.Repo, address.Loca);
+        string itemJson = backendService
+            .CommandApi(
+                "GetItem", 
+                address.Repo,
+                address.Loca);
         return itemJson;
     }
 
     private async Task OnBackArrowBtnClicked(MouseEventArgs e)
     {
-        var newAddress = IUniAddressOperations
-             .MoveOneLocaBack(item.Address);
-        var newAdrTuple = IUniAddressOperations
+        string newAddress = IUniAddressOperations
+             .MoveOneLocaBack(_item.Address);
+        (string, string) newAdrTuple = IUniAddressOperations
              .CreateAddressFromString(newAddress);
         ReloadItem(newAdrTuple);
     }

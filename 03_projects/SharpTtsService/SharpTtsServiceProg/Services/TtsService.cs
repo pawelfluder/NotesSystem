@@ -26,7 +26,7 @@ internal class TtsService : ITtsService
         _repoService = repoService;
         _videoService = videoService;
         _tts = new Lazy<ITtsJob>(
-            () => new BlazorSpeechSynthesis());
+            () => new TtsFirstWindowsJob());
         _repoTts = new Lazy<RepoTtsWorker>(
             () => new RepoTtsWorker(repoService, videoService, _tts.Value));
     }

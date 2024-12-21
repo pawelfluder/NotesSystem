@@ -1,0 +1,15 @@
+﻿.my-component {
+    .dropdown-down {
+        position: relative;
+        overflow-y: auto;
+        max-height: 150px; /* Opcjonalne: maksymalna wysokość listy */
+    }
+
+    .dropdown-down option {
+        position: relative;
+    }
+
+    select {
+        margin-bottom: 200px; /* Dodaje miejsce poniżej, aby lista miała przestrzeń na rozwinięcie */
+    }
+}
