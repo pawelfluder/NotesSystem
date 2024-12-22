@@ -33,7 +33,7 @@ public class DefaultContainerBase : IContainer4
     {
         if (type == 0)
         {
-            ServiceRegister.AddSingleton<RegT>(sp => 
+            ServiceRegister.AddSingleton<RegT>(
                 func.Invoke());
         }
         if (type == 1)

@@ -1,39 +1,48 @@
-﻿using System.Runtime.InteropServices;
-using SharpConfigProg.AAPublic;
-using SharpConfigProg.Service;
+﻿using SharpConfigProg.AAPublic;
+using SharpFileServiceProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpSetup01Prog.Registrations;
+using OutBorder01 = SharpFileServiceProg.AAPublic.OutBorder;
+using OutBorder02 = SharpOperationsProg.AAPublic.OutBorder;
 
 namespace SharpSetup01Prog.Preparer;
 
 internal class DefaultPreparer : IPreparer
 {
-    private readonly IGoogleCredentialWorker credentials;
-    private readonly Dictionary<string, object> settingsDict = new Dictionary<string, object>();
-    private readonly IOperationsService _operationsService;
-    private IConfigService configService;
-
-    public DefaultPreparer(
-        IOperationsService operationsService)
-    {
-        _operationsService = operationsService;
-        credentials = operationsService.Credentials;
-    }
+    private IGoogleCredentialWorker _credentials;
+    private Dictionary<string, object> _settingsDict;
+    private IOperationsService _operationsService;
+    private IConfigService _configService;
+    private bool _isPreparationDone;
+    private IFileService _fileService;
 
     public Dictionary<string, object> Prepare()
     {
+        _fileService = OutBorder01.FileService();
+        _operationsService = OutBorder02.OperationsService(_fileService);
+        _credentials = _operationsService.Credentials;
+        
+        if (_isPreparationDone)
+        {
+            return _settingsDict;
+        }
+        
         PrepareSettings();
         DefaultRegistration reg = new();
-        reg.SetSettingsDict(settingsDict);
+        reg.SettingsDict = _settingsDict;
+        reg.FileService = _fileService;
+        reg.OperationsService = _operationsService;
         reg.Registrations();
 
-        return settingsDict;
+        _isPreparationDone = true;
+        return _settingsDict;
     }
 
     private void PrepareSettings()
     {
-        string googleUserName = "notki.info@gmail.com";
-        string googleApplicationName = "GameStatistics";
+        _settingsDict= new();
+        string googleUserName = "abcdefgh@gmail.com";
+        string googleApplicationName = "ApplicationName";
         string jsonFilePath = "public_google-cloud-secrets.json";
         
         string settingsFolderPath = _operationsService
@@ -59,14 +68,16 @@ internal class DefaultPreparer : IPreparer
 
         string jsonFileContent = File.ReadAllText(googleCloudCredentialsPath);
         
-        (string googleClientId, string googleClientSecret) = credentials
+        (string googleClientId, string googleClientSecret) = _credentials
             .GetCredentials(jsonFileContent);
 
-        settingsDict.Add(nameof(repoRootPaths), repoRootPaths);
-        settingsDict.Add(nameof(googleClientId), googleClientId);
-        settingsDict.Add(nameof(googleClientSecret), googleClientSecret);
-        settingsDict.Add(nameof(googleUserName), googleUserName);
-        settingsDict.Add(nameof(googleApplicationName), googleApplicationName);
+        _settingsDict.Add(nameof(settingsFolderPath), settingsFolderPath);
+        _settingsDict.Add(nameof(databaseFolderPath), databaseFolderPath);
+        _settingsDict.Add(nameof(repoRootPaths), repoRootPaths);
+        _settingsDict.Add(nameof(googleClientId), googleClientId);
+        _settingsDict.Add(nameof(googleClientSecret), googleClientSecret);
+        _settingsDict.Add(nameof(googleUserName), googleUserName);
+        _settingsDict.Add(nameof(googleApplicationName), googleApplicationName);
     }
 
     public List<object> GetRepoSearchPaths(
@@ -75,17 +86,9 @@ internal class DefaultPreparer : IPreparer
         return new List<object> { settingsFolderPath };
     }
 
-    public bool GetGoogleCredentials(
-        out string clientId,
-        out string clientSecret)
+    public void SetConfigService(
+        IConfigService configService)
     {
-        bool s1 = configService.TryGetSettingAsString("googleClientId", out clientId);
-        bool s2 = configService.TryGetSettingAsString("googleClientSecret", out clientSecret);
-        return s1 && s2;
-    }
-
-    public void SetConfigService(IConfigService configService)
-    {
-        this.configService = configService;
+        _configService = configService;
     }
 }

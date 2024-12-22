@@ -56,7 +56,7 @@ public class NotesExporterService
         {
             docsService.Stack.StackDeleteAllContentRequest();
         }
-        var s9 = docsService.Stack.ExecuteStack();
+        //var s9 = docsService.Stack.ExecuteStack();
 
         docsService.Stack.StackInsertTextRequest(1, name);
         var s1 = docsService.Stack.ExecuteStack();

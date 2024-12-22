@@ -6,7 +6,7 @@ using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpConfigProg.Service;
 
-internal partial class ConfigService : IConfigService
+internal class ConfigService : IConfigService
 {
     private readonly IYamlOperations yamlOperations;
 
@@ -37,13 +37,13 @@ internal partial class ConfigService : IConfigService
     {
         _fileService = operationsService.GetFileService();
         SettingsDict = new Dictionary<string, object>();
-        this._operationsService = operationsService;
+        _operationsService = operationsService;
         yamlOperations = _fileService.Yaml.Custom03;
     }
 
     public List<string> GetRepoSearchPaths()
     {
-        var repoRootPaths = (SettingsDict["repoRootPaths"] as List<object>)
+        List<string?> repoRootPaths = (SettingsDict["repoRootPaths"] as List<object>)
             .Select(x => x.ToString()).ToList();
         return repoRootPaths;
     }
@@ -57,24 +57,30 @@ internal partial class ConfigService : IConfigService
 
     public void Prepare()
     {
-        var preparer = MyBorder.OutContainer.Resolve<IPreparer>();
+        IPreparer preparer = MyBorder.OutContainer.Resolve<IPreparer>();
         preparer.SetConfigService(this);
-        var settings = preparer.Prepare();
+        Dictionary<string, object> settings = preparer.Prepare();
         SettingsDict = settings;
-        new BeforeAfter(_operationsService, this).Run();
+        Dictionary<string, object> newDict = new BeforeAfter(_operationsService)
+            .Run(settings);
+        SettingsDict = newDict;
     }
 
     public void Prepare(IPreparer preparer)
     {
         preparer.SetConfigService(this);
         SettingsDict = preparer.Prepare(); ;
-        new BeforeAfter(_operationsService, this).Run();
+        Dictionary<string, object> newDict = new BeforeAfter(_operationsService)
+            .Run(SettingsDict);
+        SettingsDict = newDict;
     }
 
-    public void Prepare(Dictionary<string, object> dict)
+    public void Prepare(
+        Dictionary<string, object> dict)
     {
-        SettingsDict = new Dictionary<string, object>(dict);
-        new BeforeAfter(_operationsService, this).Run();
+        Dictionary<string, object> newDict = new BeforeAfter(_operationsService)
+            .Run(dict);
+        SettingsDict = newDict;
     }
 
     public void Prepare(Type preparerClassType)
@@ -83,7 +89,9 @@ internal partial class ConfigService : IConfigService
         var preparer = (tmp as IPreparer);
         preparer.SetConfigService(this);
         SettingsDict = preparer.Prepare(); ;
-        new BeforeAfter(_operationsService, this).Run();
+        Dictionary<string, object> newDict = new BeforeAfter(_operationsService)
+            .Run(SettingsDict);
+        SettingsDict = newDict;
     }
 
     public void AddSetting(string key, object value)

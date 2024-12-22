@@ -56,8 +56,10 @@ public class AppFasade
         
 #if DEBUG
     Builder.Environment.EnvironmentName = "Development";
+    Builder.WebHost.UseUrls("http://127.0.0.1:5501");
 #else
     builder.Environment.EnvironmentName = "Production";
+    Builder.WebHost.UseUrls("http://127.0.0.1:5500");
 #endif
         
         Container = new UniSystemCoreContainer(
@@ -66,7 +68,7 @@ public class AppFasade
             .AddInteractiveServerComponents()
             .AddInteractiveWebAssemblyComponents();
         
-        Builder.WebHost.UseUrls("http://127.0.0.1:5000");
+        
         // Builder.Services.AddSyncfusionBlazor();
         // Builder.Services.AddRazorPages();
         // Builder.Services.AddServerSideBlazor();

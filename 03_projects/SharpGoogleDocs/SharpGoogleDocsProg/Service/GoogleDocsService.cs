@@ -27,7 +27,7 @@ internal class GoogleDocsService : IGoogleDocsService
 
     // settings
     private Dictionary<string, object> _settings;
-    private List<string> scopes;
+    private List<string> _scopes;
     private string clientId;
     private string clientSecret;
     private string applicationName;
@@ -78,8 +78,8 @@ internal class GoogleDocsService : IGoogleDocsService
     {
         if (!_isSettingsInit || rewrite)
         {
-            this.scopes ??= new List<string>();
-            this.scopes.Add(DocsService.ScopeConstants.Documents);
+            this._scopes ??= new List<string>();
+            this._scopes.Add(DocsService.ScopeConstants.Documents);
             this.clientId = _settings[VarNames.GoogleClientId].ToString();
             this.clientSecret = _settings[VarNames.GoogleClientSecret].ToString();
             this.applicationName = _settings[VarNames.GoogleApplicationName].ToString();
@@ -88,15 +88,19 @@ internal class GoogleDocsService : IGoogleDocsService
         }
     }
     // http client initializer
-    public BaseClientService.Initializer GetInitilizer(string clientId, string clientSecret)
+    public BaseClientService.Initializer GetInitilizer(
+        string clientId,
+        string clientSecret)
     {
-        var secrets = new ClientSecrets();
-        secrets.ClientId = clientId;
-        secrets.ClientSecret = clientSecret;
+        ClientSecrets secrets = new()
+        {
+            ClientId = clientId,
+            ClientSecret = clientSecret
+        };
 
-        var task = GoogleWebAuthorizationBroker.AuthorizeAsync(
+        Task<UserCredential>? task = GoogleWebAuthorizationBroker.AuthorizeAsync(
             secrets,
-            this.scopes,
+            _scopes,
             user,
             CancellationToken.None);
 
