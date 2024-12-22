@@ -17,7 +17,7 @@ public class UnitTest1
         var configService = MyBorder.OutContainer.Resolve<IConfigService>();
         configService.Prepare();
         var repoService = MyBorder.OutContainer.Resolve<IRepoService>();
-        repoService.PutPaths(configService.GetRepoSearchPaths());
+        repoService.InitGroupsFromSearchPaths(configService.GetRepoSearchPaths());
     }
 
     [TestMethod]

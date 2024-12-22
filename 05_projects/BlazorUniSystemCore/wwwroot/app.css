@@ -49,3 +49,7 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+.menu-item {
+    border: solid lightgray; border-width: 0px 4px 4px 4px;; max-width: 810px; padding: 3px;
+}

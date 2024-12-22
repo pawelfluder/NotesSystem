@@ -16,7 +16,7 @@
 
 @rendermode InteractiveServer
 
-<div>
+<div class="menu-item">
     <input type="button" value="<" @onclick=@OnBackArrowBtnClicked />
     <input type="button" value="Go" @onclick=@OnGoBtnClicked />
     Repo::
@@ -28,11 +28,13 @@
     <input type="text" @bind=@inputLocaName />
 </div>
 
-<div>Address: @_item.Address</div>
-<div>Type: @_item.Type</div>
-<div>Name: @_item.Name</div>
+<div class="menu-item">
+    <div>Address: @_item.Address</div>
+    <div>Type: @_item.Type</div>
+    <div>Name: @_item.Name</div>
+</div>
 
-<div>
+<div class="menu-item">
     <TextView @bind-Item=@_item ReloadItem=@ReloadItem @ref="textView"></TextView>
     <RefTextView @bind-Item=@_item ReloadItem=@ReloadItem @ref="refTextView"></RefTextView>
     <FolderView @bind-Item=@_item ReloadItem=@ReloadItem @ref="folderView"></FolderView>

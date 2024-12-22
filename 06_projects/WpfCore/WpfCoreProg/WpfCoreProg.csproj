@@ -13,12 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\03_projects\SharpConfig\SharpConfigProg\SharpConfigProg.csproj" />
-    <ProjectReference Include="..\..\..\03_projects\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj" />
-    <ProjectReference Include="..\..\..\03_projects\SharpGoogleDocs\SharpGoogleDocsProg\SharpGoogleDocsProg.csproj" />
-    <ProjectReference Include="..\..\..\03_projects\SharpGoogleDrive\SharpGoogleDriveProg\SharpGoogleDriveProg.csproj" />
-    <ProjectReference Include="..\..\..\03_projects\SharpRepoBackend\SharpRepoBackendProg\SharpRepoBackendProg.csproj" />
-    <ProjectReference Include="..\..\..\03_projects\SharpTtsService\SharpTtsServiceProg\SharpTtsServiceProg.csproj" />
+    <ProjectReference Include="..\..\..\..\03_projects\SharpConfig\SharpConfigProg\SharpConfigProg.csproj" />
+    <ProjectReference Include="..\..\..\..\03_projects\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj" />
+    <ProjectReference Include="..\..\..\..\03_projects\SharpGoogleDocs\SharpGoogleDocsProg\SharpGoogleDocsProg.csproj" />
+    <ProjectReference Include="..\..\..\..\03_projects\SharpGoogleDrive\SharpGoogleDriveProg\SharpGoogleDriveProg.csproj" />
+    <ProjectReference Include="..\..\..\..\03_projects\SharpRepoBackend\SharpRepoBackendProg\SharpRepoBackendProg.csproj" />
+    <ProjectReference Include="..\..\..\..\03_projects\SharpTtsService\SharpTtsServiceProg\SharpTtsServiceProg.csproj" />
   </ItemGroup>
 
   <ItemGroup>

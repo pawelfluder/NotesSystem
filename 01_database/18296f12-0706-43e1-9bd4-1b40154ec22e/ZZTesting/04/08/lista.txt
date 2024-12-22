@@ -1,0 +1,33 @@
+//header h1
+	line h1e1
+	line h1e2
+	
+//header h2
+	line h2e1
+	line h2e2
+
+<table border="2">
+	<tr>
+		<td colspan="2">header h1</td>
+	</tr>
+	<tr>
+		<td width="5"></td>
+		<td>line h1e1</td>
+	</tr>
+	<tr>
+		<td width="5"></td>
+		<td>line h1e2</td>
+	</tr>
+	
+	<tr>
+		<td colspan="2">header h2</td>
+	</tr>
+	<tr>
+		<td width="5"></td>
+		<td>line h2e1</td>
+	</tr>
+	<tr>
+		<td width="5"></td>
+		<td>line h2e2</td>
+	</tr>
+</table>

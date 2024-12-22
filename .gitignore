@@ -3,10 +3,7 @@
 AAPrivate
 Binaries
 **/paths.cfg
-22_projects
-23_projects
-24_projects
-25_projects
+20_private/*
 publish_new
 **/*.png
 */*.png
