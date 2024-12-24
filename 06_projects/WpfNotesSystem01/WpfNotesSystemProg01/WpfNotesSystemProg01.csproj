@@ -5,11 +5,12 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <StartupObject>WpfNotesSystemProg6.Program</StartupObject>
+    <StartupObject>WpfNotesSystemProg01.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\03_projects\SharpContainer\SharpContainerProg\SharpContainerProg.csproj" />
+    <ProjectReference Include="..\..\..\04_registrations\SharpSetup01Prog\SharpSetup01Prog.csproj" />
     <ProjectReference Include="..\..\WpfCore\WpfCoreProg\WpfCoreProg.csproj" />
   </ItemGroup>
 
@@ -18,6 +19,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Registrations\" />
   </ItemGroup>
 
 </Project>

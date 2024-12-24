@@ -63,7 +63,7 @@
             Style="{StaticResource FolderView_ScrollViewer}"
             Grid.Row="1" Grid.Column="0">
          <ContentControl
-            Content="{Binding UniItem, Converter={converter:HeadersDictConverter}}"
+            Content="{Binding RepoItem, Converter={converter:HeadersDictConverter}}"
             Style="{StaticResource FolderView_ContentControl}"/>
       </ScrollViewer>
    </Grid>

@@ -1,9 +1,5 @@
 ﻿using BlazorNotesSystem;
-using BlazorUniSystem.Registrations;
-using Microsoft.Extensions.DependencyInjection;
 using SharpContainerProg.AAPublic;
-using SharpFileServiceProg.AAPublic;
-using SharpOperationsProg.AAPublic.Operations;
 using OutBorder01 = SharpSetup01Prog.AAPublic.OutBorder;
 
 namespace BlazorUniSystem;

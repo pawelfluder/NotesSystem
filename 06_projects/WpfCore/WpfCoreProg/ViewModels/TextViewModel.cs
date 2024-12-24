@@ -108,25 +108,25 @@ public class TextViewModel : BaseViewModel, IItemViewModel
             AdrTuple.repo,
             AdrTuple.loca);
 
-        //if (TtsSelected == "StartNew")
-        //{
-        //    await ttsService.RepoTts.StartNewPl(AdrTuple);
-        //}
+        if (TtsSelected == "PlStartNew")
+        {
+            await ttsService.RepoTts.PlStartNew(AdrTuple.repo, AdrTuple.loca);
+        }
 
-        //if (TtsSelected == "Pause")
-        //{
-        //    await ttsService.RepoTts.Pause();
-        //}
+        if (TtsSelected == "Pause")
+        {
+            await ttsService.RepoTts.Pause();
+        }
 
-        //if (TtsSelected == "Resume")
-        //{
-        //    await ttsService.RepoTts.Resume();
-        //}
+        if (TtsSelected == "Resume")
+        {
+            await ttsService.RepoTts.Resume();
+        }
 
-        //if (TtsSelected == "SaveFile")
-        //{
-        //    await ttsService.RepoTts.SaveFile(AdrTuple);
-        //}
+        if (TtsSelected == "SaveFile")
+        {
+            await ttsService.RepoTts.EnSaveAudio(AdrTuple.repo, AdrTuple.loca);
+        }
     }
 
     public void GoogledocAction()

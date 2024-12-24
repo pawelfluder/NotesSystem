@@ -74,7 +74,7 @@
          Style="{StaticResource TextView_ScrollViewer}"
          Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6">
          <ContentControl
-            Content="{Binding UniItem, Converter={converter:HeadersDictConverter}}"
+            Content="{Binding RepoItem, Converter={converter:HeadersDictConverter}}"
             Style="{StaticResource TextView_ContentControl}"/>
       </ScrollViewer>
    </Grid>

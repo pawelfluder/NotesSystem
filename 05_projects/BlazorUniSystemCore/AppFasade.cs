@@ -7,7 +7,7 @@ namespace BlazorNotesSystem;
 
 public class AppFasade
 {
-    private string _gg;
+    private string _rootPath;
     public WebApplication App { get; private set; }
     public WebApplicationBuilder Builder { get; private set; }
     public UniSystemCoreContainer Container { get; private set; }
@@ -36,7 +36,7 @@ public class AppFasade
         }
 
         App.UseHttpsRedirection();
-        App.UseStaticFiles(_gg);
+        App.UseStaticFiles();
         App.UseAntiforgery();
         App.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode()
@@ -46,12 +46,10 @@ public class AppFasade
 
     private void InitBuilder()
     {
-        _gg = "/Users/pawelfluder/03_synch/01_files_programming/03_github/NotesSystem/05_projects/BlazorUniSystemCore/wwwroot";
-
         Builder = WebApplication.CreateBuilder(new WebApplicationOptions
         {
-            ContentRootPath = _gg,
-            WebRootPath = _gg
+            //ContentRootPath = _rootPath,
+            //WebRootPath = _rootPath
         });
         
 #if DEBUG

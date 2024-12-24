@@ -1,8 +1,7 @@
 ﻿using System;
-using WpfNotesSystem;
-using WpfNotesSystemProg01.Register;
+using OutBorder01 = SharpSetup01Prog.AAPublic.OutBorder;
 
-namespace WpfNotesSystemProg6;
+namespace WpfNotesSystemProg01;
 
 public static class Program
 {
@@ -16,9 +15,13 @@ public static class Program
 
         try
         {
-            var registration = new Registration();
-            registration.Start();
-            var application = new App();
+            // AppFasade app = new AppFasade();
+            // ContainerService.SetOutContainer(app.Container);
+            // OutBorder01.GetPreparer("DefaultPreparer").Prepare();
+            // app.Start();
+            
+            OutBorder01.GetPreparer("DefaultPreparer").Prepare();
+            WpfNotesSystem.App application = new();
             application.InitializeComponent();
             application.Run();
         }
