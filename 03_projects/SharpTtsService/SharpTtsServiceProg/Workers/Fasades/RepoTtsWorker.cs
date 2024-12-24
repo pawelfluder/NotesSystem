@@ -29,13 +29,9 @@ public class RepoTtsWorker : RunMethodsBase
     }
 
     public async Task PlStartNew(
-        string repo,
-        string loca)
+        object builder)
     {
-        (string Repo, string Loca) adrTuple = (repo, loca);
-        string? textFilePath = _repoService.Methods
-            .GetBodyPath(adrTuple);
-        await _ttsJob.PlStartNew(textFilePath);
+        await _ttsJob.PlStartNew(builder);
     }
     
     public async Task EnStartNew(

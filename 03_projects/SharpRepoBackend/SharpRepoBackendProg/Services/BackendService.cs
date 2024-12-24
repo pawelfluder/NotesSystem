@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.Text.Json.Nodes;
 using Newtonsoft.Json;
 using PdfService.PdfService;
@@ -129,7 +130,9 @@ public class BackendService : IBackendService
             var address = (repo, loca);
             if (cmdName == ApiMethods.Tts.ToString())
             {
-                _ttsService.RepoTts.PlStartNew(repo, loca);
+                object builder = _ttsService.Tts
+                    .GetBuilder(address, new CultureInfo("pl-PL"));
+                _ttsService.RepoTts.PlStartNew(builder);
                 var json = GetOKJson();
                 return json;
             }

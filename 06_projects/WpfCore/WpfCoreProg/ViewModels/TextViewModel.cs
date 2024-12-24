@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -110,7 +111,13 @@ public class TextViewModel : BaseViewModel, IItemViewModel
 
         if (TtsSelected == "PlStartNew")
         {
-            await ttsService.RepoTts.PlStartNew(AdrTuple.repo, AdrTuple.loca);
+            object builder = ttsService.Tts.GetBuilder(AdrTuple, new CultureInfo("pl-PL"));
+            await ttsService.RepoTts.PlStartNew(builder);
+        }
+        
+        if (TtsSelected == "Stop")
+        {
+            await ttsService.RepoTts.Stop();
         }
 
         if (TtsSelected == "Pause")
