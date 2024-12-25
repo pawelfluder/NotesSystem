@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic;
-using SharpRepoServiceProg.Infos;
 using SharpRepoServiceProg.Workers.AAPublic;
 using SharpRepoServiceProg.Workers.Public;
 
@@ -10,9 +9,7 @@ namespace SharpRepoServiceProg.Service;
 
 internal class RepoService : IRepoService
 {
-    private readonly ServerInfo serverInfo;
     private readonly IFileService fileService;
-    private readonly LocalInfo localInfo;
     private bool repoWorkerInit;
     private bool itemWorkerInit;
 
@@ -24,8 +21,6 @@ internal class RepoService : IRepoService
     internal RepoService(
         IFileService fileService)
     {
-        localInfo = new LocalInfo(null);
-        serverInfo = null;
         this.fileService = fileService;
     }
 
@@ -35,7 +30,7 @@ internal class RepoService : IRepoService
         {
             if (!isRepoInit)
             {
-                methods = new MethodWorker(fileService, serverInfo, localInfo);
+                methods = new MethodWorker(fileService);
                 isRepoInit = true;
             }
 

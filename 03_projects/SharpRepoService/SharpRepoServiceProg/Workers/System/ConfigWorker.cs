@@ -149,15 +149,4 @@ internal class ConfigWorker
             catch { };
         }
     }
-
-
-
-    //public void CreateConfig(
-    //    string itemPath,
-    //    Dictionary<string, object> dict)
-    //{
-    //    var nameFilePath = itemPath + slash + configFileName;
-    //    var content = yamlOperations.Serialize(dict);
-    //    File.WriteAllText(nameFilePath, content);
-    //}
 }

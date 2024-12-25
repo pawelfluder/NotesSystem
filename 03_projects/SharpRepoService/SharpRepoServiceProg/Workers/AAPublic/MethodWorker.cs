@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
-using SharpRepoServiceProg.Infos;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
@@ -31,26 +30,17 @@ public class MethodWorker
     private char slash = '/';
     private char newLine = '\n';
 
-    private readonly ServerInfo serverInfo;
-    private readonly LocalInfo localInfo;
+    // private readonly ServerInfo serverInfo;
+    // private readonly LocalInfo localInfo;
 
     private string errorValue;
     private string refGuidStr;
     private string refLocaStr;
     private readonly CustomOperationsService _customOperationsService;
 
-    public MethodWorker(IFileService fileService)
-    {
-        this.fileService = fileService;
-    }
-
     public MethodWorker(
-        IFileService fileService,
-        ServerInfo serverInfo,
-        LocalInfo localInfo)
+        IFileService fileService)
     {
-        this.serverInfo = serverInfo;
-        this.localInfo = localInfo;
         yamlOperations = fileService.Yaml.Custom03;
         _customOperationsService = MyBorder.MyContainer.Resolve<CustomOperationsService>();
 
