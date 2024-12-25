@@ -1,14 +1,14 @@
-﻿using TextHeaderAnalyzerCoreProj.Service;
-using System.Text;
+﻿using System.Text;
 using SharpFileServiceProg.AAPublic;
-using ElementType = TextHeaderAnalyzerCoreProj.ElementType;
 using SharpGoogleDocsProg.AAPublic;
 using SharpNotesExporterProg.Register;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpOperationsProg.Operations.Headers;
 using SharpRepoServiceProg.AAPublic;
+using TextHeaderAnalyzerCoreProj.Service;
+using ElementType = TextHeaderAnalyzerCoreProj.ElementType;
 
-namespace SharpNotesExporter;
+namespace SharpNotesExporterProg;
 
 public class NotesExporterService
 {
@@ -40,8 +40,8 @@ public class NotesExporterService
         string docId,
         bool createTwoColumns = false)
     {
-        var textLines = repoService.Methods.GetTextLines((repo, loca));
-        var name = repoService.Methods.GetLocalName((repo, loca));
+        List<string>? textLines = repoService.Methods.GetTextLines((repo, loca));
+        string? name = repoService.Methods.GetLocalName((repo, loca));
         //var elementsList = headerNotesService.GetElements2(textLines.Skip(4).ToArray());
         var elementsList = headerNotesService.GetElements2(textLines.ToArray());
 

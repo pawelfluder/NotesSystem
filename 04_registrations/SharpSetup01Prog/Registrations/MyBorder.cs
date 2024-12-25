@@ -6,7 +6,7 @@ namespace SharpSetup01Prog.Registrations;
 internal static class MyBorder
 {
     private static string AssemblyName => Assembly
-        .GetExecutingAssembly().FullName;
+        .GetExecutingAssembly().FullName ?? string.Empty;
     
     public static IContainer4 MyContainer =
         ContainerService.MyContainer(

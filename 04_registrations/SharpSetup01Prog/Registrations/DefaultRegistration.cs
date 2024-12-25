@@ -8,9 +8,9 @@ using SharpImageSplitterProg.Service;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoBackendProg.Services;
 using SharpRepoServiceProg.AAPublic;
+using SharpTtsServiceProg.AAPublic;
 using SharpVideoServiceProg.AAPublic;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
-using OutBorder1 = SharpFileServiceProg.AAPublic.OutBorder;
 using OutBorder2 = SharpConfigProg.AAPublic.OutBorder;
 using OutBorder3 = SharpRepoServiceProg.AAPublic.OutBorder;
 using OutBorder4 = SharpGoogleDriveProg.AAPublic.OutBorder;
@@ -18,7 +18,6 @@ using OutBorder5 = SharpGoogleDocsProg.AAPublic.OutBorder;
 using OutBorder6 = SharpGoogleSheetProg.AAPublic.OutBorder;
 using OutBorder7 = SharpTtsServiceProg.AAPublic.OutBorder;
 using OutBorder8 = SharpVideoServiceProg.AAPublic.OutBorder;
-using OutBorder9 = SharpOperationsProg.AAPublic.OutBorder;
 using OutBorder12 = SharpRepoBackendProg.AAPublic.OutBorder;
 using OutBorder13 = SharpImageSplitterProg.AAPublic.OutBorder;
 
@@ -29,6 +28,8 @@ public class DefaultRegistration : RegistrationBase
     public Dictionary<string, object> SettingsDict { get; set; }
     public IFileService FileService { get; set; }
     public IOperationsService OperationsService { get; set; }
+    
+    private IConfigService ConfigService { get; set; }
 
     public override void Registrations()
     {
@@ -38,28 +39,27 @@ public class DefaultRegistration : RegistrationBase
         OutContainer.RegisterByFunc<IOperationsService>(
             () => OperationsService);
 
-        IConfigService configService = OutBorder2.ConfigService(OperationsService);
+        ConfigService = OutBorder2.ConfigService(OperationsService);
         OutContainer.RegisterByFunc<IConfigService>(
-            () => configService);
+            () => ConfigService);
         
         OutContainer.RegisterByFunc<IFileService, IRepoService>(
             x => OutBorder3.RepoService(x),
             () => OutContainer.Resolve<IFileService>(),
             0,
             InitGroupsFromSearchPaths);
-
-        IGoogleDriveService googleDrive = OutBorder4.GoogleDriveService(
-            SettingsDict,
-            OutContainer.Resolve<IOperationsService>());
+        
         OutContainer.RegisterByFunc<IGoogleDriveService>(
-            () => googleDrive);
+            () => OutBorder4.GoogleDriveService(
+                ConfigService.SettingsDict,
+                OutContainer.Resolve<IOperationsService>()));
         
         OutContainer.RegisterByFunc<IGoogleDocsService>(
             () => OutBorder5.GoogleDocsService(
-                configService.SettingsDict));
+                ConfigService.SettingsDict));
 
         IGoogleSheetService sheetService = OutBorder6
-            .GoogleSheetService(configService.SettingsDict);
+            .GoogleSheetService(ConfigService.SettingsDict);
         OutContainer.RegisterByFunc(() => sheetService);
         
         // var argsManager = OutBorder11.ArgsManagerService();
@@ -74,7 +74,7 @@ public class DefaultRegistration : RegistrationBase
         //     (x) => OutBorder7.TtsService(),
         //     () => OutContainer.Resolve<IOperationsService>());
         
-        var ttsService = OutBorder7.TtsService(
+        ITtsService ttsService = OutBorder7.TtsService(
             OutContainer.Resolve<IOperationsService>(),
             OutContainer.Resolve<IRepoService>(),
             OutContainer.Resolve<IVideoService>());
@@ -93,10 +93,9 @@ public class DefaultRegistration : RegistrationBase
 
     private void InitGroupsFromSearchPaths()
     {
-        IConfigService configService = OutContainer.Resolve<IConfigService>();
         IRepoService repoService = OutContainer.Resolve<IRepoService>();
-        configService.Prepare(SettingsDict);
-        List<string> searchPaths = configService.GetRepoSearchPaths();
+        ConfigService.Prepare(SettingsDict);
+        List<string> searchPaths = ConfigService.GetRepoSearchPaths();
         repoService.InitGroupsFromSearchPaths(searchPaths);
     }
 }

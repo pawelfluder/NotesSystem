@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
@@ -16,6 +17,7 @@ public class WriteTextWorker
     private readonly BodyWorker _bw;
     private readonly ReadWorker _rw;
     private readonly CustomOperationsService _customOperationsService;
+    private UniItemTypesEnum _myType = UniItemTypesEnum.Text;
 
     public WriteTextWorker()
     {
@@ -31,10 +33,11 @@ public class WriteTextWorker
         (string Repo, string Loca) adrTuple,
         string content)
     {
-        var item = new ItemModel();
+        ItemModel item = new();
 
         // config
-        var address = _customOperationsService.UniAddress.CreateUrlFromAddress(adrTuple);
+        string address = _customOperationsService.UniAddress
+            .CreateUrlFromAddress(adrTuple);
         item.Settings = new Dictionary<string, object>()
         {
             { FieldsForUniItem.Id, Guid.NewGuid().ToString() },
@@ -68,27 +71,36 @@ public class WriteTextWorker
         string name,
         (string Repo, string Loca) adrTuple)
     {
-        var item = InternalPost(name, adrTuple);
+        ItemModel item = TryInternalPost(null, name, adrTuple, _myType);
         return item.AdrTuple;
     }
 
-    internal ItemModel InternalPost(
+    internal ItemModel TryInternalPost(
+        ItemModel item,
         string name,
-        (string Repo, string Loca) adrTuple)
+        (string Repo, string Loca) adrTuple,
+        UniItemTypesEnum enumType)
     {
-        ItemModel item = null;
-        var foundAdrTuple = _rw.GetAdrTupleByName(adrTuple, name);
+        if (enumType != _myType)
+        {
+            return item;
+        }
+        
+        (string, string) foundAdrTuple = _rw
+            .GetAdrTupleByName(adrTuple, name);
         if (foundAdrTuple != default)
         {
             item = _rw.GetItemConfig(foundAdrTuple);
             return item;
         }
 
-        var lastIndex = _rw.GetFolderLastNumber(adrTuple);
-        var newIndex = lastIndex + 1;
-        var newIndexString = _customOperationsService.Index.IndexToString(newIndex);
+        int lastIndex = _rw.GetFolderLastNumber(adrTuple);
+        int newIndex = lastIndex + 1;
+        string newIndexString = _customOperationsService.Index
+            .IndexToString(newIndex);
 
-        var newAdrTuple = _customOperationsService.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
+        (string, string) newAdrTuple = _customOperationsService.Index
+            .AdrTupleJoinLoca(adrTuple, newIndexString);
         item = PrepareItem(name, newAdrTuple, "");
         Put(item);
         return item;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -10,6 +11,7 @@ using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.Workers.Crud;
 using SharpRepoServiceProg.Workers.System;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SharpRepoServiceProg.Workers.Public;
 
@@ -21,8 +23,8 @@ public class JsonWorker
     private readonly PathWorker pw;
     private readonly ConfigWorker cw;
     private readonly SystemWorker sw;
-    private readonly WriteTextWorker tww;
-    private readonly WriteFolderWorker fww;
+    private readonly WriteTextWorker writeText;
+    private readonly WriteFolderWorker writeFolder;
     private readonly IFileService _fileService;
 
     public JsonWorker()
@@ -35,8 +37,8 @@ public class JsonWorker
         cw = MyBorder.MyContainer.Resolve<ConfigWorker>();
         sw = MyBorder.MyContainer.Resolve<SystemWorker>();
 
-        tww = MyBorder.MyContainer.Resolve<WriteTextWorker>();
-        fww = MyBorder.MyContainer.Resolve<WriteFolderWorker>();
+        writeText = MyBorder.MyContainer.Resolve<WriteTextWorker>();
+        writeFolder = MyBorder.MyContainer.Resolve<WriteFolderWorker>();
     }
 
     public List<string> GetManyItemByName(
@@ -65,7 +67,7 @@ public class JsonWorker
     public string GetItemList(
         (string repo, string loca) adrTuple)
     {
-        var items = rw.GetItemList(adrTuple);
+        var items = rw.GetListOfItems(adrTuple);
         var itemList = JsonConvert.SerializeObject(items);
         return itemList;
     }
@@ -79,57 +81,17 @@ public class JsonWorker
         return jsonString;
     }
 
-    //public Dictionary<string, object> GetItemDict(
-    //    (string repo, string loca) adrTuple)
-    //{
-    //    var dict = new Dictionary<string, object>();
-
-    //    try
-    //    {
-    //        var item = rw.GetItem(adrTuple, true);
-
-    //        dict.Add("Type", item.Type);
-    //        dict.Add("Name", item.Name);
-    //        dict.Add("Config", item.Settings);
-    //        dict.Add("Address", item.Address);
-
-    //        object body = null;
-    //        if (item.Type == ItemTypeNames.Text)
-    //        {
-    //            body = item.Body;
-    //        }
-    //        if (item.Type == ItemTypeNames.Folder)
-    //        {
-    //            body = rw.GetIndexesQNames2(adrTuple);
-    //        }
-    //        if (item.Type == ItemTypeNames.RefText)
-    //        {
-    //            // todo
-    //        }
-    //        dict.Add("Body", body);
-
-    //        return dict;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        return dict;
-    //    }
-    //}
-
     public string PostItem(
         (string repo, string loca) address,
         string type,
         string name)
     {
+        bool isKnownType = Enum.TryParse<UniItemTypesEnum>(type, out var enumType);
+        if (!isKnownType) { return string.Empty; }
+        
         ItemModel item = null;
-        if (type == UniItemTypes.Text)
-        {
-            item = tww.InternalPost(name, address);
-        }
-        if (type == UniItemTypes.Folder)
-        {
-            item = fww.InternalPost(name, address);
-        }
+        item = writeText.TryInternalPost(item, name, address, enumType);
+        item = writeFolder.TryInternalPost(item, name, address, enumType);
 
         string result = JsonConvert.SerializeObject(item, Formatting.Indented);
         return result;
@@ -144,11 +106,11 @@ public class JsonWorker
         ItemModel item = null;
         if (type == UniItemTypes.Text)
         {
-            item = tww.Put(name, address, body);
+            item = writeText.Put(name, address, body);
         }
         if (type == "Folder")
         {
-            item = fww.Put(name, address);
+            item = writeFolder.Put(name, address);
         }
 
         var result = JsonConvert.SerializeObject(item, Formatting.Indented);

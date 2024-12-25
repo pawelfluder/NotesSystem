@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SharpFileServiceProg.AAPublic;
+using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
@@ -18,6 +19,7 @@ public class WriteFolderWorker
     private readonly BodyWorker bw;
     private readonly SystemWorker sw;
     private CustomOperationsService _customOperationsService;
+    private UniItemTypesEnum _myType = UniItemTypesEnum.Folder;
 
     public WriteFolderWorker()
     {
@@ -35,7 +37,7 @@ public class WriteFolderWorker
         string name,
         (string Repo, string Loca) adrTuple)
     {
-        var item = new ItemModel();
+        ItemModel item = new();
 
         // config
         item.Settings = new Dictionary<string, object>()
@@ -80,11 +82,17 @@ public class WriteFolderWorker
         return newAdrTuple;
     }
 
-    internal ItemModel InternalPost(
+    internal ItemModel TryInternalPost(
+        ItemModel item,
         string name,
-        (string Repo, string Loca) adrTuple)
+        (string Repo, string Loca) adrTuple,
+        UniItemTypesEnum enumType)
     {
-        ItemModel item = null;
+        if (enumType != _myType)
+        {
+            return item;
+        }
+        
         var foundAdrTuple = rw.GetAdrTupleByName(adrTuple, name);
         if (foundAdrTuple != default)
         {

@@ -12,7 +12,7 @@ using SharpRepoServiceProg.Workers.System;
 
 namespace SharpRepoServiceProg.Workers.Crud;
 
-internal class ReadWorker
+internal class ReadWorker : IReadWorker
 {
     private IFileService _fileService;
     private readonly PathWorker _pw;
@@ -80,7 +80,7 @@ internal class ReadWorker
     }
 
     // read; config, body
-    public List<ItemModel> GetItemList(
+    public List<ItemModel> GetListOfItems(
         (string Repo, string Loca) adrTuple)
     {
         var adrTupleList = GetSubAddresses(adrTuple);
@@ -153,7 +153,7 @@ internal class ReadWorker
     public List<string> GetManyText(
         (string Repo, string Loca) adrTuple)
     {
-        var items = GetItemList(adrTuple);
+        var items = GetListOfItems(adrTuple);
         var contentsList = new List<string>();
 
         foreach (var item in items)
@@ -171,7 +171,7 @@ internal class ReadWorker
     public List<(int, string)> GetManyIdxQText(
         (string Repo, string Loca) adrTuple)
     {
-        var items = GetItemList(adrTuple);
+        var items = GetListOfItems(adrTuple);
         var contentsList = new List<(int, string)>();
 
         foreach (var item in items)
@@ -301,7 +301,7 @@ internal class ReadWorker
         return items;
     }
 
-    private bool IsSpecialFolder((string, string) adr)
+    public bool IsSpecialFolder((string, string) adr)
     {
         var special = new List<string> { ".git" };
         if (special.Any(x => x == adr.Item1) ||

@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Reflection;
+﻿using System.Reflection;
+using Newtonsoft.Json.Linq;
 
-namespace TinderImport.Repetition;
+namespace SharpNotesExporterProg.Repetition;
 
 internal class CredentialWorker
 {

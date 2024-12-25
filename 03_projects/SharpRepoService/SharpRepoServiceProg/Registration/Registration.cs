@@ -12,28 +12,28 @@ internal class Registration : RegistrationBase
 {
     public override void Registrations()
     {
-        var operationsService = new CustomOperationsService();
-        MyBorder.MyContainer.RegisterByFunc(() => operationsService);
-        
-        var pathWorker = new PathWorker();
-        MyBorder.MyContainer.RegisterByFunc(() => pathWorker);
+        MyBorder.MyContainer.RegisterByFunc(
+            () => new CustomOperationsService());
+        ;
+        MyBorder.MyContainer.RegisterByFunc(
+            () => new PathWorker());
 
-        var systemWorker = new SystemWorker();
+        SystemWorker systemWorker = new();
         MyBorder.MyContainer.RegisterByFunc(() => systemWorker);
 
-        var bodyWorker = new BodyWorker();
+        BodyWorker bodyWorker = new();
         MyBorder.MyContainer.RegisterByFunc(() => bodyWorker);
 
-        var configWorker = new ConfigWorker();
+        ConfigWorker configWorker = new();
         MyBorder.MyContainer.RegisterByFunc(() => configWorker);
 
-        var memoWorker = new MemoryWorker();
+        MemoryWorker memoWorker = new();
         MyBorder.MyContainer.RegisterByFunc(() => memoWorker);
 
-        var itemWorker = new ReadWorker();
+        ReadWorker itemWorker = new();
         MyBorder.MyContainer.RegisterByFunc(() => itemWorker);
 
-        var jsonWorker = new JsonWorker();
+        JsonWorker jsonWorker = new JsonWorker();
         MyBorder.MyContainer.RegisterByFunc(() => jsonWorker);
 
         Func<WriteFolderWorker> writeFolderFunc = () => { return new(); };

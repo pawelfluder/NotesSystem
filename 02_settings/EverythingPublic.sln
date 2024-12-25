@@ -73,6 +73,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorUniComponents", "..\0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpNotesMigrationProg", "..\03_projects\SharpNotesMigration\SharpNotesMigrationProg\SharpNotesMigrationProg.csproj", "{24F99E52-80F5-4A74-8A94-E90C9A624B00}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpRepoServiceTests", "..\03_projects\SharpRepoService\SharpRepoServiceTests\SharpRepoServiceTests.csproj", "{2041DC33-1BAE-45FF-BC89-5E3A765DB57E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -419,6 +421,18 @@ Global
 		{24F99E52-80F5-4A74-8A94-E90C9A624B00}.Release|x64.Build.0 = Release|Any CPU
 		{24F99E52-80F5-4A74-8A94-E90C9A624B00}.Release|x86.ActiveCfg = Release|Any CPU
 		{24F99E52-80F5-4A74-8A94-E90C9A624B00}.Release|x86.Build.0 = Release|Any CPU
+		{2041DC33-1BAE-45FF-BC89-5E3A765DB57E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2041DC33-1BAE-45FF-BC89-5E3A765DB57E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2041DC33-1BAE-45FF-BC89-5E3A765DB57E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2041DC33-1BAE-45FF-BC89-5E3A765DB57E}.Debug|x64.Build.0 = Debug|Any CPU
+		{2041DC33-1BAE-45FF-BC89-5E3A765DB57E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2041DC33-1BAE-45FF-BC89-5E3A765DB57E}.Debug|x86.Build.0 = Debug|Any CPU
+		{2041DC33-1BAE-45FF-BC89-5E3A765DB57E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2041DC33-1BAE-45FF-BC89-5E3A765DB57E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2041DC33-1BAE-45FF-BC89-5E3A765DB57E}.Release|x64.ActiveCfg = Release|Any CPU
+		{2041DC33-1BAE-45FF-BC89-5E3A765DB57E}.Release|x64.Build.0 = Release|Any CPU
+		{2041DC33-1BAE-45FF-BC89-5E3A765DB57E}.Release|x86.ActiveCfg = Release|Any CPU
+		{2041DC33-1BAE-45FF-BC89-5E3A765DB57E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -460,5 +474,6 @@ Global
 		{C5AAF190-AD1F-462B-978D-2836BC0261C0} = {4F8DE020-6357-47A3-8F7D-8190899CEEC9}
 		{3D2B95FD-91E0-4D37-A79D-B7B9912089D5} = {DA94FE2E-E594-4673-A854-56FB88A3DEF8}
 		{24F99E52-80F5-4A74-8A94-E90C9A624B00} = {6B35EB4A-F473-4F74-9CA1-937E48F494D1}
+		{2041DC33-1BAE-45FF-BC89-5E3A765DB57E} = {6B35EB4A-F473-4F74-9CA1-937E48F494D1}
 	EndGlobalSection
 EndGlobal

@@ -8,9 +8,10 @@ using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.Workers.Crud;
+using SharpRepoServiceProg.Workers.Public;
 using SharpRepoServiceProg.Workers.System;
 
-namespace SharpRepoServiceProg.Workers.Public;
+namespace SharpRepoServiceProg.Workers.AAPublic;
 
 public class MethodWorker
 {

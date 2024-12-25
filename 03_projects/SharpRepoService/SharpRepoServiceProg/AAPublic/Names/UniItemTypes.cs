@@ -8,3 +8,10 @@ public static class UniItemTypes
 
     public static string Folder = "Folder";
 }
+
+public enum UniItemTypesEnum
+{
+    Text,
+    RefText,
+    Folder
+}

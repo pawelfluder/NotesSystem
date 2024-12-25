@@ -1,11 +1,19 @@
 ﻿using SharpContainerProg.AAPublic;
 
-namespace SharpRepoServiceTests.Registration
+using System.Reflection;
+
+namespace SharpRepoServiceTests.Registration;
+
+internal static class MyBorder
 {
-    internal static class MyBorder
-    {
-        public static bool IsRegistered;
-        public static Registration Registration = new Registration();
-        public static IContainer Container => Registration.Start(ref IsRegistered);
-    }
+    private static string AssemblyName => Assembly
+        .GetExecutingAssembly().FullName ?? string.Empty;
+    
+    public static IContainer4 MyContainer =
+        ContainerService.MyContainer(
+            AssemblyName);
+    
+    public static Registration Registration = new Registration();
+    public static bool IsRegistered = Registration.Start(IsRegistered);
+    public static IContainer4 OutContainer => Registration.OutContainer;
 }
