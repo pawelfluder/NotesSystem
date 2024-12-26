@@ -6,32 +6,14 @@ using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Workers.CrudReads;
 using SharpRepoServiceProg.Workers.System;
 
-namespace SharpRepoServiceProg.Workers.Crud;
+namespace SharpRepoServiceProg.Workers.CrudWrites;
 
-public class WriteFolderWorker
+public class WriteFolderWorker : WriteWorkerBase
 {
-    private readonly IFileService _fileService;
-    private readonly ReadWorker rw;
-    private readonly PathWorker pw;
-    private readonly ConfigWorker cw;
-    private readonly BodyWorker bw;
-    private readonly SystemWorker sw;
-    private CustomOperationsService _customOperationsService;
-    private UniItemTypesEnum _myType = UniItemTypesEnum.Folder;
-
-    public WriteFolderWorker()
-    {
-        _fileService = MyBorder.OutContainer.Resolve<IFileService>();
-        _customOperationsService = MyBorder.MyContainer.Resolve<CustomOperationsService>();
-
-        rw = MyBorder.MyContainer.Resolve<ReadWorker>();
-        pw = MyBorder.MyContainer.Resolve<PathWorker>();
-        cw = MyBorder.MyContainer.Resolve<ConfigWorker>();
-        bw = MyBorder.MyContainer.Resolve<BodyWorker>();
-        sw = MyBorder.MyContainer.Resolve<SystemWorker>();
-    }
+    private UniType _myUniType = UniType.Folder;
 
     public ItemModel Put(
         string name,
@@ -54,10 +36,10 @@ public class WriteFolderWorker
     internal ItemModel Put(ItemModel item)
     {
         // directory
-        sw.CreateDirectoryIfNotExists(item.AdrTuple);
+        _system.CreateDirectoryIfNotExists(item.AdrTuple);
 
         // config
-        cw.CreateConfig(item.AdrTuple, item.Settings);
+        _config.PutConfig(item.AdrTuple, item.Settings);
 
         return item;
     }
@@ -66,18 +48,18 @@ public class WriteFolderWorker
         string name,
         (string Repo, string Loca) adrTuple)
     {
-        var foundAdrTuple = rw.GetAdrTupleByName(adrTuple, name);
+        var foundAdrTuple = _address.GetAdrTupleByName(adrTuple, name);
         if (foundAdrTuple != default)
         {
             Put(name, foundAdrTuple);
             return foundAdrTuple;
         }
 
-        var lastIndex = rw.GetFolderLastNumber(adrTuple);
+        var lastIndex = _readFolder.GetFolderLastNumber(adrTuple);
         var newIndex = lastIndex + 1;
-        var newIndexString = _customOperationsService.Index.IndexToString(newIndex);
+        var newIndexString = _customOperations.Index.IndexToString(newIndex);
 
-        var newAdrTuple = _customOperationsService.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
+        var newAdrTuple = _customOperations.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
         Put(name, newAdrTuple);
         return newAdrTuple;
     }
@@ -86,26 +68,23 @@ public class WriteFolderWorker
         ItemModel item,
         string name,
         (string Repo, string Loca) adrTuple,
-        UniItemTypesEnum enumType)
+        UniType uniType)
     {
-        if (enumType != _myType)
-        {
-            return item;
-        }
+        if (uniType != _myUniType) { return item; }
         
-        var foundAdrTuple = rw.GetAdrTupleByName(adrTuple, name);
+        var foundAdrTuple = _address.GetAdrTupleByName(adrTuple, name);
         if (foundAdrTuple != default)
         {
-            item = rw.GetItemConfig(adrTuple);
+            item = _migrate.GetItemWithConfig(adrTuple);
             Put(name, foundAdrTuple);
             return item;
         }
 
-        var lastIndex = rw.GetFolderLastNumber(adrTuple);
+        var lastIndex = _readFolder.GetFolderLastNumber(adrTuple);
         var newIndex = lastIndex + 1;
-        var newIndexString = _customOperationsService.Index.IndexToString(newIndex);
+        var newIndexString = _customOperations.Index.IndexToString(newIndex);
 
-        var newAdrTuple = _customOperationsService.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
+        var newAdrTuple = _customOperations.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
         item = PrepareItem(name, newAdrTuple);
         Put(item);
         return item;
@@ -124,9 +103,7 @@ public class WriteFolderWorker
             { FieldsForUniItem.Type, ItemTypeNames.Folder },
             { FieldsForUniItem.Name, name },
         };
-        cw.AddSettingsToModel(item, adrTuple, settings);
+        item.Settings = _migrate.GetConfigBeforeWrite(settings, adrTuple);
         return item;
     }
-
-    
 }

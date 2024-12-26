@@ -3,11 +3,12 @@ using System.IO;
 using System.Linq;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
+using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
-using SharpRepoServiceProg.Workers.Crud;
-using SharpRepoServiceProg.Workers.Public;
+using SharpRepoServiceProg.Workers.CrudReads;
+using SharpRepoServiceProg.Workers.CrudWrites;
 using SharpRepoServiceProg.Workers.System;
 
 namespace SharpRepoServiceProg.Workers.AAPublic;
@@ -18,7 +19,7 @@ public class MethodWorker
     private readonly IFileService fileService;
     private readonly IYamlOperations yamlOperations;
 
-    private readonly ReadWorker _rw;
+    private readonly ReadFolderWorker _readFolder;
     private readonly MemoryWorker _mw;
     private readonly JsonWorker _jw;
     private readonly WriteFolderWorker _fww;
@@ -37,6 +38,9 @@ public class MethodWorker
     private string refGuidStr;
     private string refLocaStr;
     private readonly CustomOperationsService _customOperationsService;
+    private ReadAddressWorker _address;
+    private ReadManyWorker _readMany;
+    private MigrationWorker _migrate;
 
     public MethodWorker(
         IFileService fileService)
@@ -44,13 +48,16 @@ public class MethodWorker
         yamlOperations = fileService.Yaml.Custom03;
         _customOperationsService = MyBorder.MyContainer.Resolve<CustomOperationsService>();
 
-        _rw = MyBorder.MyContainer.Resolve<ReadWorker>();
+        _readFolder = MyBorder.MyContainer.Resolve<ReadFolderWorker>();
+        _address = MyBorder.MyContainer.Resolve<ReadAddressWorker>();
+        _readMany = MyBorder.MyContainer.Resolve<ReadManyWorker>();
         _mw = MyBorder.MyContainer.Resolve<MemoryWorker>();
         _jw = MyBorder.MyContainer.Resolve<JsonWorker>();
         _fww = new WriteFolderWorker();
         _tww = new WriteTextWorker();
         _pw = MyBorder.MyContainer.Resolve<PathWorker>();
         _cw = MyBorder.MyContainer.Resolve<ConfigWorker>();
+        _migrate = MyBorder.MyContainer.Resolve<MigrationWorker>();
     }
 
     public void CreateTextGenerate(
@@ -61,7 +68,7 @@ public class MethodWorker
 
     public List<(string Repo, string Loca)> GetAllRepoAddresses(
         (string Repo, string Loca) adrTuple)
-        => _rw.GetAllRepoAddresses(adrTuple.Repo);
+        => _readFolder.GetAllRepoAddresses(adrTuple.Repo);
 
     public void InitGroupsFromSearchPaths(List<string> searchPaths)
         => _mw.InitGroupsFromSearchPaths(searchPaths);
@@ -79,53 +86,53 @@ public class MethodWorker
 
     public string GetText2(
         (string Repo, string Loca) adrTuple)
-        => _rw.GetText2(adrTuple);
+        => _readFolder.GetText2(adrTuple);
 
     public void CreateConfig(
         (string Repo, string Loca) adrTuple,
         Dictionary<string, object> dict)
-        => _cw.CreateConfig(adrTuple, dict);
+        => _cw.PutConfig(adrTuple, dict);
 
     public (string, string) GetAdrTupleByName(
         (string Repo, string Loca) adrTuple,
         string name)
-        => _rw.GetAdrTupleByName(adrTuple, name);
+        => _address.GetAdrTupleByName(adrTuple, name);
 
     public (string, string) GetAdrTupleByNameList(
         (string Repo, string Loca) adrTuple,
         params string[] names)
-        => _rw.GetAdrTupleByNames(adrTuple, names);
+        => _address.GetAdrTupleBySequenceOfNames(adrTuple, names);
 
     public (string, string) GetAdrTupleByNameList(
         (string Repo, string Loca) adrTuple,
         List<string> names)
-        => _rw.GetAdrTupleByNames(adrTuple, names.ToArray());
+        => _address.GetAdrTupleBySequenceOfNames(adrTuple, names.ToArray());
 
     public List<string> GetManyItemByName(
         (string Repo, string Loca) adrTuple,
         List<string> names)
-        => _rw.GetManyTextByNames(adrTuple, names.ToArray());
+        => _readMany.GetManyTextByNames(adrTuple, names.ToArray());
 
     public List<(int, string)> GetManyItemByName2(
         (string Repo, string Loca) adrTuple,
         List<string> names)
-        => _rw.GetManyIdxQTextByNames(adrTuple, names.ToArray());
+        => _readMany.GetManyIdxQTextByNames(adrTuple, names.ToArray());
 
     public object GetConfigKey(
         (string Repo, string Loca) address,
         string key)
     {
-        var result = _rw.GetConfigKey(address, key);
+        var result = _readFolder.GetConfigKey(address, key);
         return result;
     }
 
     public Dictionary<string, object> GetConfigKeyDict(
         (string Repo, string Loca) address,
         params string[] keyArray)
-        => _rw.GetConfigDict(address, keyArray);
+        => _readFolder.GetConfigDict(address, keyArray);
 
     public List<string> GetManyText((string Repo, string Loca) adrTuple)
-        => _rw.GetManyText(adrTuple);
+        => _readMany.GetManyText(adrTuple);
 
     //public string GetElemPath(
     //    (string Repo, string Loca) adrTuple)
@@ -142,15 +149,14 @@ public class MethodWorker
     public string GetLocalName(
         (string repo, string loca) adrTuple)
     {
-        var item = _rw.GetItemConfig(adrTuple);
-        var name = item.Name;
-        return name;
+        ItemModel item = _migrate.GetItemWithConfig(adrTuple);
+        return item.Name;
     }
 
     public string GetItemType(
         (string repo, string loca) adrTuple)
     {
-        var item = _rw.GetItemConfig(adrTuple);
+        ItemModel item = _migrate.GetItemWithConfig(adrTuple);
         return item.Type;
     }
 
@@ -159,14 +165,14 @@ public class MethodWorker
         string loca)
     {
         var adrTuple = (repo, loca);
-        var item = _rw.GetItemConfig(adrTuple);
+        ItemModel item = _migrate.GetItemWithConfig(adrTuple);
         return item.Type;
     }
 
     public string GetType(
         (string repo, string loca) adrTuple)
     {
-        var type = _rw.GetConfigKey(adrTuple, FieldsForUniItem.Type);
+        var type = _readFolder.GetConfigKey(adrTuple, FieldsForUniItem.Type);
         if(type == null)
         {
             var type2 = GuesTypeByFiles(adrTuple);
@@ -188,19 +194,13 @@ public class MethodWorker
     public string GetName(
         (string repo, string loca) adrTuple)
     {
-        var item = _rw.GetItemConfig(adrTuple);
-        return item.Name;
+        ItemModel item = _migrate.GetItemWithConfig(adrTuple);
+        return item.Type;
     }
-
-
-
-
-
-
-
+    
     public List<string> GetTextLines(
         (string repo, string loca) adrTuple)
-        => _rw.GetTextLines(adrTuple);
+        => _readFolder.GetTextLines(adrTuple);
 
 
 
@@ -208,7 +208,7 @@ public class MethodWorker
     public object TryGetConfigValue(
         (string repo, string loca) adrTuple,
         string keyName)
-        => _rw.TryGetConfigValue(adrTuple, keyName);
+        => _readFolder.TryGetConfigValue(adrTuple, keyName);
 
         
 
@@ -251,7 +251,7 @@ public class MethodWorker
 
     public (string repo, string newLoca) GetRefAdrTuple(
         (string repo, string loca) adrTuple)
-        => _rw.GetRefAdrTuple(adrTuple);
+        => _readFolder.GetRefAdrTuple(adrTuple);
 
     public List<string> GetAllFoldersNames(
         (string repo, string loca) address)
@@ -272,22 +272,22 @@ public class MethodWorker
         string section,
         string name)
     {
-        var result = _rw.GetFolderByName(repo, section, name);
+        var result = _readFolder.GetFolderByName(repo, section, name);
         return result;
     }
 
     public List<(string, string)> GetSubAddresses(
         (string repo, string loca) address)
     {
-        var result = _rw.GetSubAddresses(address);
+        var result = _address.GetSubAddresses(address);
         return result;
     }
 
     public List<string> GetAllReposNames()
-        => _rw.GetAllReposNames();
+        => _readFolder.GetAllReposNames();
 
     public List<string> GetAllReposPaths()
-        => _rw.GetAllRepoAddresses();
+        => _readFolder.GetAllRepoAddresses();
 
     //public int GetReposCount()
     //{
@@ -296,7 +296,7 @@ public class MethodWorker
 
     public List<(string Repo, string Loca)> GetFolderAdrTupleList(
         (string Repo, string Loca) adrTuple)
-        => _rw.GetSubAddresses(adrTuple);
+        => _address.GetSubAddresses(adrTuple);
 
         
 
@@ -329,7 +329,7 @@ public class MethodWorker
 
     public int GetFolderLastNumber(
         (string Repo, string Loca) address)
-        => _rw.GetFolderLastNumber(address);
+        => _readFolder.GetFolderLastNumber(address);
 
 
     //public int GetFolderLastNumber(string elemPath)
@@ -354,7 +354,7 @@ public class MethodWorker
     public bool TryGetConfigLines(
         (string Repo, string Loca) address,
         out List<string> lines)
-        => _rw.TryGetConfigLines(address, out lines);
+        => _readFolder.TryGetConfigLines(address, out lines);
 
     // TRY GET
     //-------------------------
@@ -409,7 +409,7 @@ public class MethodWorker
 
     public List<string> GetConfigLines(
         (string Repo, string Loca) adrtuple)
-        => _rw.GetConfigLines(adrtuple);
+        => _readFolder.GetConfigLines(adrtuple);
 
     public void PatchText(
         string content,

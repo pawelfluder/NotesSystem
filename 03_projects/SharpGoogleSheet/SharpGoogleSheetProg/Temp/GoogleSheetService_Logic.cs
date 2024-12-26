@@ -1,10 +1,6 @@
 ﻿using Google.Apis.Sheets.v4.Data;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
-namespace GoogleApiV4CoreApp;
+namespace SharpGoogleSheetProg.Temp;
 
 internal class GoogleSheetService_Logic
 {

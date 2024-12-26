@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Duplications\" />
+  </ItemGroup>
+
 </Project>

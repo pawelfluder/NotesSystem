@@ -24,15 +24,16 @@ internal class UniAddressOperations
         return newLoca;
     }
     
-    public string CreateUrlFromAddress((string Repo, string Loca) address)
+    public string CreateAddresFromAdrTuple(
+        (string Repo, string Loca) adrTuple)
     {
-        if (address.Loca == string.Empty)
+        if (adrTuple.Loca == string.Empty)
         {
-            return address.Repo;
+            return adrTuple.Repo;
         }
 
-        var url = address.Repo + "/" + address.Loca;
-        return url;
+        string address = adrTuple.Repo + "/" + adrTuple.Loca;
+        return address;
     }
     
     public int GetLastLocaIndex(string addressString)

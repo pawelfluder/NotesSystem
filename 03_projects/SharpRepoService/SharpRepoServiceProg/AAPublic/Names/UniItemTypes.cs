@@ -9,9 +9,9 @@ public static class UniItemTypes
     public static string Folder = "Folder";
 }
 
-public enum UniItemTypesEnum
+public enum UniType
 {
     Text,
-    RefText,
+    Ref,
     Folder
 }

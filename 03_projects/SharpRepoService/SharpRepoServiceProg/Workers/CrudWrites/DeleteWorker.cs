@@ -1,8 +1,9 @@
 ﻿using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Workers.CrudReads;
 using SharpRepoServiceProg.Workers.System;
 
-namespace SharpRepoServiceProg.Workers.Crud;
+namespace SharpRepoServiceProg.Workers.CrudWrites;
 
 public class DeleteWorker
 {
@@ -10,12 +11,12 @@ public class DeleteWorker
     private readonly SystemWorker _sw;
     private readonly ConfigWorker _cw;
     private readonly BodyWorker _bw;
-    private readonly ReadWorker _rw;
+    private readonly ReadFolderWorker _rw;
     private readonly CustomOperationsService _customOperationsService;
 
     public DeleteWorker()
     {
-        _rw = MyBorder.OutContainer.Resolve<ReadWorker>();
+        _rw = MyBorder.OutContainer.Resolve<ReadFolderWorker>();
         _bw = MyBorder.OutContainer.Resolve<BodyWorker>();
         _cw = MyBorder.OutContainer.Resolve<ConfigWorker>();
         _sw = MyBorder.OutContainer.Resolve<SystemWorker>();

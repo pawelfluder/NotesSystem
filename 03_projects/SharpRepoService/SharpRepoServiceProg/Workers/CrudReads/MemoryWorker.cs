@@ -5,7 +5,7 @@ using System.Linq;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.Workers.System;
 
-namespace SharpRepoServiceProg.Workers.Crud;
+namespace SharpRepoServiceProg.Workers.CrudReads;
 
 internal class MemoryWorker
 {

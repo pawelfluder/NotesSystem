@@ -2,25 +2,35 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
-using SharpRepoServiceProg.Registration;
-using SharpRepoServiceProg.Workers.System;
 
 namespace SharpRepoServiceProg.Workers.CrudReads;
 
-internal class ReadTextWorker : ReadWorkerBase
+internal class ReadFolderWorker : ReadWorkerBase
 {
-    private readonly UniType _myType = UniType.Text;
-    
-    // 01; TryGetItem; read; config, body
+    private readonly UniType _myType = UniType.Folder;
+
+    // read; body
+    public ItemModel GetItemBody(
+        (string Repo, string Loca) adrTuple)
+    {
+        var item = new ItemModel();
+        var address = _customOperations.UniAddress
+            .CreateAddresFromAdrTuple(adrTuple);
+        item.Address = address;
+        item.Body = _body.GetBody(adrTuple);
+        return item;
+    }
+
+    // read; config, body
     public ItemModel TryGetItem(
         ItemModel item,
         (string Repo, string Loca) adrTuple,
-        UniType type = UniType.Text)
+        UniType type = UniType.Folder,
+        bool addBody = true)
     {
         if (_myType != type) { return item; }
         
@@ -29,33 +39,32 @@ internal class ReadTextWorker : ReadWorkerBase
             .GetConfigBeforeRead(adrTuple);
 
         // body
-        item.Body = _body.GetBody(adrTuple);
+        item.Body = ListOfIndexesQNames(adrTuple);
 
         return item;
     }
-
-    // 02; GetItemBody; read; body
-    public ItemModel GetItemBody(
-        (string Repo, string Loca) adrTuple)
+    
+    public object TryGetConfigValue(
+        (string Repo, string Loca) adrTuple,
+        string key)
     {
-        ItemModel item = CreateNewWithAddress(adrTuple);
-        item.Body = _body.GetBody(adrTuple);
-        return item;
+        Dictionary<string, object> dict = _config.GetConfigDictionary(adrTuple);
+        bool exists = dict.TryGetValue(key, out var value);
+        if (exists)
+        {
+            return value;
+        }
+
+        return null;
     }
 
-    // public object TryGetConfigValue(
-    //     (string Repo, string Loca) adrTuple,
-    //     string key)
-    // {
-    //     Dictionary<string, object> dict = _config.GetConfigDictionary(adrTuple);
-    //     bool exists = dict.TryGetValue(key, out var value);
-    //     if (exists)
-    //     {
-    //         return value;
-    //     }
-    //
-    //     return null;
-    // }
+    public List<string> GetTextLines(
+        (string repo, string loca) adrTuple)
+    {
+        var item = GetItemBody(adrTuple);
+        var configLines = item.Body.ToString().Split(_system.NewLine).ToList();
+        return configLines;
+    }
 
     // read; config, body
     public (string repo, string newLoca) GetRefAdrTuple(
@@ -77,36 +86,6 @@ internal class ReadTextWorker : ReadWorkerBase
         (string, string) id2 = default; // FindIdAdrTuple();
 
         return id2;
-    }
-
-    // read; config, body
-    public List<string> GetManyText(
-        (string Repo, string Loca) adrTuple)
-    {
-        List<ItemModel> items = _readMany.GetListOfItems(adrTuple);
-        List<string> contentsList = new();
-
-        foreach (var item in items)
-        {
-            if (item.Type == UniItemTypes.Text)
-            {
-                contentsList.Add(item.Body.ToString());
-            }
-        }
-
-        return contentsList;
-    }
-
-    // read; config
-    public List<string> GetManyTextByNames(
-        (string Repo, string Loca) adrTuple,
-        params string[] names)
-    {
-        (string, string) newAdrTuple = _address
-            .GetAdrTupleBySequenceOfNames(adrTuple, names);
-        List<string> contentsList = GetManyText(newAdrTuple);
-
-        return contentsList;
     }
 
     // read; config
@@ -149,60 +128,49 @@ internal class ReadTextWorker : ReadWorkerBase
     public List<(int, string)> GetIndexesQNames(
         (string Repo, string Loca) adrTuple)
     {
-        var items = GetItemConfigList(adrTuple);
+        var items = _readMany
+            .ListOfItemsWithConfig(adrTuple);
         var result = items
             .Select(x => (_customOperations.UniAddress.GetLastLocaIndex(x.Address), x.Name))
             .ToList();
         return result;
     }
 
-    public Dictionary<string, string> GetIndexesQNames2(
+    public Dictionary<string, string> ListOfIndexesQNames(
         (string Repo, string Loca) adrTuple)
     {
-        var w1 = _customOperations.UniAddress;
-        var w2 = _customOperations.Index;
-
-        var items = GetItemConfigList(adrTuple);
-        var kv = items
-            .Select(x => new KeyValuePair<string, string>(w2.IndexToString(w1.GetLastLocaIndex(x.Address)), x.Name));
-            
-        var dict = kv
+        List<ItemModel> items = _readMany
+            .ListOfItemsWithConfig(adrTuple);
+        var kv = items.Select(x => SelectIndexQName(x))
+            .ToList();
+        
+        Dictionary<string, string> dict = kv
             .OrderBy(x => x.Key)
             .ToDictionary(x => x.Key, x => x.Value);
         return dict;
     }
 
-    // read; config
-    public List<ItemModel> GetItemConfigList(
-        (string Repo, string Loca) adrTuple)
+    private KeyValuePair<string, string> SelectIndexQName(
+        ItemModel x)
     {
-        var adrTupleList = GetSubAddresses(adrTuple);
-        var items = new List<ItemModel>();
-        foreach (var adradrTuple in adrTupleList)
-        {
-            if (IsSpecialFolder(adradrTuple))
-            {
-                continue;
-            }
-            var item = _migrate
-                .GetItemWithConfig(adradrTuple);
-            items.Add(item);
-        }
-
-        return items;
+        int index = _customOperations.UniAddress
+            .GetLastLocaIndex(x.Address);
+        string indexString = _customOperations.Index
+            .IndexToString(index);
+        KeyValuePair<string, string> indexQName = new(indexString, x.Name);
+        return indexQName;
     }
 
-    public bool IsSpecialFolder((string, string) adr)
-    {
-        var special = new List<string> { ".git" };
-        if (special.Any(x => x == adr.Item1) ||
-            special.Any(x => x == adr.Item2))
-        {
-            return true;
-        }
-        
-        return false;
-    }
+    // read; directory
+    //public Dictionary<string, string> GetSubAddresses2(
+    //    (string Repo, string Loca) adrTuple)
+    //{
+    //    var itemPath = pw.GetItemPath(adrTuple);
+    //    var dirs = sw.GetDirectories(itemPath);
+    //    var kv = dirs.Select(x => new KeyValuePair<string, string>(adrTuple.Repo, mw.SelectDirToSection(adrTuple.Loca, x))).ToList();
+    //    var dict = kv.ToDictionary(x => x.Key, x => x.Value);
+    //    return dict;
+    //}
 
     // read; config, 
     public (string, string) GetFolderByName(
@@ -211,7 +179,8 @@ internal class ReadTextWorker : ReadWorkerBase
         string name)
     {
         var adrTuple = (repo, loca);
-        var items = GetItemConfigList(adrTuple)
+        var items = _readMany
+            .ListOfItemsWithConfig(adrTuple)
             .Where(x => x.Type == ItemTypeNames.Folder);
         var found = items.SingleOrDefault(x => x.Name == name);
         if (found == default)
@@ -236,6 +205,8 @@ internal class ReadTextWorker : ReadWorkerBase
         (string Repo, string Loca) address,
         out List<string> lines)
         => TryGetConfigLines(address, out lines);
+
+
 
     // read; config
     public object TryGetConfigKey(
@@ -296,9 +267,6 @@ internal class ReadTextWorker : ReadWorkerBase
         return "Folder";
     }
 
-    // read; config
-    
-
     // read; directory
     public int GetFolderLastNumber(
         (string Repo, string Loca) address)
@@ -318,16 +286,6 @@ internal class ReadTextWorker : ReadWorkerBase
         }
 
         return 0;
-    }
-
-    // read; directory
-    public List<(string, string)> GetSubAddresses(
-        (string Repo, string Loca) adrTuple)
-    {
-        var itemPath = _path.GetItemPath(adrTuple);
-        var dirs = _system.GetDirectories(itemPath);
-        var subAddresses = dirs.Select(x => (adrTuple.Repo, _memory.SelectDirToSection(adrTuple.Loca, x))).ToList();
-        return subAddresses;
     }
 
     // read; directory
@@ -365,21 +323,17 @@ internal class ReadTextWorker : ReadWorkerBase
         (string Repo, string Loca) adrTuple)
         => _body.GetBody(adrTuple);
     
-    private ItemModel CreateNewWithAddress(
+    private ItemModel TrySetAddress(
+        ItemModel item,
         (string Repo, string Loca) adrTuple)
     {
-        ItemModel item = new();
-        string address = _customOperations.UniAddress
-            .CreateAddresFromAdrTuple(adrTuple);
-        item.Address = address;
+        if (string.IsNullOrEmpty(item.Address))
+        {
+            string address = _customOperations.UniAddress
+                .CreateAddresFromAdrTuple(adrTuple);
+            item.Address = address;
+        }
+        
         return item;
     }
-    
-    // public List<string> GetTextLines(
-    //     (string repo, string loca) adrTuple)
-    // {
-    //     var item = GetItemBody(adrTuple);
-    //     var configLines = item.Body.ToString().Split(_sw.NewLine).ToList();
-    //     return configLines;
-    // }
 }

@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using SharpRepoServiceProg.Models;
 
-namespace SharpRepoServiceProg.Workers.Crud;
+namespace SharpRepoServiceProg.Workers.CrudReads;
 
 internal interface IReadWorker
 {
-    ItemModel GetItem(
+    ItemModel TryGetItem(
         (string Repo, string Loca) adrTuple,
         bool IncludeSubFolder = false);
 
@@ -84,7 +84,7 @@ internal interface IReadWorker
     string GetType(
         (string repo, string loca) adrTuple);
 
-    (string, string) GetAdrTupleByNames(
+    (string, string) GetAdrTupleBySequenceOfNames(
         (string Repo, string Loca) adrTuple,
         params string[] names);
 

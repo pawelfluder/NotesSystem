@@ -5,28 +5,14 @@ using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Workers.CrudReads;
 using SharpRepoServiceProg.Workers.System;
 
-namespace SharpRepoServiceProg.Workers.Crud;
+namespace SharpRepoServiceProg.Workers.CrudWrites;
 
-public class WriteTextWorker
+public class WriteTextWorker : WriteWorkerBase
 {
-    private readonly PathWorker pw;
-    private readonly SystemWorker _sw;
-    private readonly ConfigWorker _cw;
-    private readonly BodyWorker _bw;
-    private readonly ReadWorker _rw;
-    private readonly CustomOperationsService _customOperationsService;
-    private UniItemTypesEnum _myType = UniItemTypesEnum.Text;
-
-    public WriteTextWorker()
-    {
-        _rw = MyBorder.MyContainer.Resolve<ReadWorker>();
-        _bw = MyBorder.MyContainer.Resolve<BodyWorker>();
-        _cw = MyBorder.MyContainer.Resolve<ConfigWorker>();
-        _sw = MyBorder.MyContainer.Resolve<SystemWorker>();
-        _customOperationsService = MyBorder.MyContainer.Resolve<CustomOperationsService>();
-    }
+    private UniType _myType = UniType.Text;
 
     public ItemModel Put(
         string name,
@@ -36,8 +22,8 @@ public class WriteTextWorker
         ItemModel item = new();
 
         // config
-        string address = _customOperationsService.UniAddress
-            .CreateUrlFromAddress(adrTuple);
+        string address = _customOperations.UniAddress
+            .CreateAddresFromAdrTuple(adrTuple);
         item.Settings = new Dictionary<string, object>()
         {
             { FieldsForUniItem.Id, Guid.NewGuid().ToString() },
@@ -56,13 +42,13 @@ public class WriteTextWorker
     internal ItemModel Put(ItemModel item)
     {
         // directory
-        _sw.CreateDirectoryIfNotExists(item.AdrTuple);
+        _system.CreateDirectoryIfNotExists(item.AdrTuple);
 
         // config
-        _cw.CreateConfig(item.AdrTuple, item.Settings);
+        _config.PutConfig(item.AdrTuple, item.Settings);
 
         // body
-        _bw.CreateBody(item.AdrTuple, item.Body.ToString());
+        _body.CreateBody(item.AdrTuple, item.Body.ToString());
 
         return item;
     }
@@ -79,27 +65,27 @@ public class WriteTextWorker
         ItemModel item,
         string name,
         (string Repo, string Loca) adrTuple,
-        UniItemTypesEnum enumType)
+        UniType type)
     {
-        if (enumType != _myType)
+        if (type != _myType)
         {
             return item;
         }
         
-        (string, string) foundAdrTuple = _rw
+        (string, string) foundAdrTuple = _address
             .GetAdrTupleByName(adrTuple, name);
         if (foundAdrTuple != default)
         {
-            item = _rw.GetItemConfig(foundAdrTuple);
+            item = _migrate.GetItemWithConfig(foundAdrTuple);
             return item;
         }
 
-        int lastIndex = _rw.GetFolderLastNumber(adrTuple);
+        int lastIndex = _readFolder.GetFolderLastNumber(adrTuple);
         int newIndex = lastIndex + 1;
-        string newIndexString = _customOperationsService.Index
+        string newIndexString = _customOperations.Index
             .IndexToString(newIndex);
 
-        (string, string) newAdrTuple = _customOperationsService.Index
+        (string, string) newAdrTuple = _customOperations.Index
             .AdrTupleJoinLoca(adrTuple, newIndexString);
         item = PrepareItem(name, newAdrTuple, "");
         Put(item);
@@ -110,7 +96,9 @@ public class WriteTextWorker
         string content,
         (string Repo, string Loca) adrTuple)
     {
-        var item = _rw.GetItem(adrTuple);
+        ItemModel item = null;
+        item = _readFolder.TryGetItem(item, adrTuple);
+        item = _readText.TryGetItem(item, adrTuple);
         if (item == default)
         {
             throw new Exception();
@@ -125,15 +113,15 @@ public class WriteTextWorker
         string name,
         string content)
     {
-        var existingItem = _rw.GetAdrTupleByName(address, name);
+        var existingItem = _address.GetAdrTupleByName(address, name);
         if (existingItem != default)
         {
             Append(existingItem, content);
             return existingItem;
         }
 
-        var lastNumber = _rw.GetFolderLastNumber(address);
-        var newAddress = _customOperationsService.Index.SelectAddress(address, lastNumber + 1);
+        var lastNumber = _readFolder.GetFolderLastNumber(address);
+        var newAddress = _customOperations.Index.SelectAddress(address, lastNumber + 1);
         Put(name, newAddress, content);
         return newAddress;
     }
@@ -160,7 +148,7 @@ public class WriteTextWorker
             { FieldsForUniItem.Type, ItemTypeNames.Text },
             { FieldsForUniItem.Name, name },
         };
-        _cw.AddSettingsToModel(item, adrTuple, settings);
+        item.Settings = _migrate.GetConfigBeforeWrite(settings, adrTuple);
 
         // body
         item.Body = content;

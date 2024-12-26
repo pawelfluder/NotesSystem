@@ -14,7 +14,6 @@ using SharpRepoBackendProg.AAPublic;
 using SharpRepoBackendProg.Repetition;
 using SharpRepoServiceProg.AAPublic;
 using SharpRepoServiceProg.Workers.AAPublic;
-using SharpRepoServiceProg.Workers.Public;
 using SharpTtsServiceProg.AAPublic;
 using TextHeaderAnalyzerCoreProj.Service;
 
