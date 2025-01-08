@@ -20,15 +20,15 @@ public class JsonWorker
     private readonly ReadFolderWorker _readFolder;
     private readonly ReadMultiWorker _readMulti;
     private readonly ReadManyWorker _readMany;
-    private readonly BodyWorker bw;
-    private readonly PathWorker pw;
-    private readonly ConfigWorker cw;
-    private readonly SystemWorker sw;
+    private readonly BodyWorker _body;
+    private readonly PathWorker _path;
+    private readonly ConfigWorker _config;
+    private readonly SystemWorker _system;
     private readonly WriteTextWorker _writeText;
     private readonly WriteFolderWorker _writeFolder;
     private readonly IFileService _fileService;
     private ReadAddressWorker _address;
-    private WriteManyWorker _writeMany;
+    private WriteMultiWorker _writeMulti;
 
     public JsonWorker()
     {
@@ -40,12 +40,12 @@ public class JsonWorker
         _writeText = MyBorder.MyContainer.Resolve<WriteTextWorker>();
         _readMany = MyBorder.MyContainer.Resolve<ReadManyWorker>();
         _writeFolder = MyBorder.MyContainer.Resolve<WriteFolderWorker>();
-        _writeMany = MyBorder.MyContainer.Resolve<WriteManyWorker>();
+        _writeMulti = MyBorder.MyContainer.Resolve<WriteMultiWorker>();
         _address = MyBorder.MyContainer.Resolve<ReadAddressWorker>();
-        bw = MyBorder.MyContainer.Resolve<BodyWorker>();
-        pw = MyBorder.MyContainer.Resolve<PathWorker>();
-        cw = MyBorder.MyContainer.Resolve<ConfigWorker>();
-        sw = MyBorder.MyContainer.Resolve<SystemWorker>();
+        _body = MyBorder.MyContainer.Resolve<BodyWorker>();
+        _path = MyBorder.MyContainer.Resolve<PathWorker>();
+        _config = MyBorder.MyContainer.Resolve<ConfigWorker>();
+        _system = MyBorder.MyContainer.Resolve<SystemWorker>();
     }
 
     public List<string> GetManyItemByName(
@@ -54,8 +54,8 @@ public class JsonWorker
     {
         // ReadElemListByNames
         address = _address.GetAdrTupleBySequenceOfNames(address, names.ToArray());
-        var localPath = pw.GetItemPath(address);
-        var folders = sw.GetDirectories(localPath);
+        var localPath = _path.GetItemPath(address);
+        var folders = _system.GetDirectories(localPath);
         var tmp = folders.Select(x => Path.GetFileName(x));
 
         var contentsList = new List<string>();
@@ -64,7 +64,7 @@ public class JsonWorker
         {
             int index = _customOperationsService.Index.StringToIndex(tmp2);
             (string, string) newAddress = _customOperationsService.Index.SelectAddress(address, index);
-            var content = bw.GetBody(newAddress);
+            var content = _body.GetBody(newAddress);
             // todo - use read worker instead of body worker
             // ItemModel content = rw.GetItem(newAddress);
             // var body = content.Body.ToString();
@@ -95,8 +95,7 @@ public class JsonWorker
         string type,
         string name)
     {
-        var item = _writeMany.PostItem(address, type, name); 
-
+        ItemModel item = _writeMulti.PostItem(address, type, name);
         string result = JsonConvert.SerializeObject(item, Formatting.Indented);
         return result;
     }

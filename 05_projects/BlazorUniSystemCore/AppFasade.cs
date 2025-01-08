@@ -54,10 +54,10 @@ public class AppFasade
         
 #if DEBUG
     Builder.Environment.EnvironmentName = "Development";
-    Builder.WebHost.UseUrls("http://127.0.0.1:5501");
+    Builder.WebHost.UseUrls("http://127.0.0.1:5605");
 #else
     builder.Environment.EnvironmentName = "Production";
-    Builder.WebHost.UseUrls("http://127.0.0.1:5500");
+    Builder.WebHost.UseUrls("http://127.0.0.1:5505");
 #endif
         
         Container = new UniSystemCoreContainer(

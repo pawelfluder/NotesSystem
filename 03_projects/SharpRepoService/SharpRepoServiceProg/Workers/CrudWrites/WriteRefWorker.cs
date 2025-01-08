@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Operations;
-using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.Workers.CrudReads;
-using SharpRepoServiceProg.Workers.System;
 
 namespace SharpRepoServiceProg.Workers.CrudWrites;
 
-public class WriteTextWorker : WriteWorkerBase
+public class WriteRefWorker : WriteWorkerBase
 {
     private UniType _myType = UniType.Text;
 
@@ -66,10 +63,7 @@ public class WriteTextWorker : WriteWorkerBase
         (string Repo, string Loca) adrTuple,
         UniType type)
     {
-        if (type != _myType)
-        {
-            return item;
-        }
+        if (type != _myType) { return item; }
         
         (string, string) foundAdrTuple = _address
             .GetAdrTupleByName(adrTuple, name);

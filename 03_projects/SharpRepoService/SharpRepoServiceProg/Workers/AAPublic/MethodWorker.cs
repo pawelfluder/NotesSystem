@@ -4,7 +4,6 @@ using System.Linq;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.Workers.CrudReads;
@@ -20,12 +19,12 @@ public class MethodWorker
     private readonly IYamlOperations yamlOperations;
 
     private readonly ReadFolderWorker _readFolder;
-    private readonly MemoryWorker _mw;
-    private readonly JsonWorker _jw;
-    private readonly WriteFolderWorker _fww;
-    private readonly WriteTextWorker _tww;
-    private readonly PathWorker _pw;
-    private readonly ConfigWorker _cw;
+    private readonly MemoryWorker _many;
+    private readonly JsonWorker _json;
+    private readonly WriteFolderWorker _writeFolder;
+    private readonly WriteTextWorker _writeText;
+    private readonly PathWorker _path;
+    private readonly ConfigWorker _config;
 
     // char names
     private char slash = '/';
@@ -35,12 +34,11 @@ public class MethodWorker
     // private readonly LocalInfo localInfo;
 
     private string errorValue;
-    private string refGuidStr;
-    private string refLocaStr;
     private readonly CustomOperationsService _customOperationsService;
-    private ReadAddressWorker _address;
-    private ReadManyWorker _readMany;
-    private MigrationWorker _migrate;
+    private readonly ReadAddressWorker _address;
+    private readonly ReadManyWorker _readMany;
+    private readonly MigrationWorker _migrate;
+    private readonly ReadRefWorker _readRef;
 
     public MethodWorker(
         IFileService fileService)
@@ -51,38 +49,39 @@ public class MethodWorker
         _readFolder = MyBorder.MyContainer.Resolve<ReadFolderWorker>();
         _address = MyBorder.MyContainer.Resolve<ReadAddressWorker>();
         _readMany = MyBorder.MyContainer.Resolve<ReadManyWorker>();
-        _mw = MyBorder.MyContainer.Resolve<MemoryWorker>();
-        _jw = MyBorder.MyContainer.Resolve<JsonWorker>();
-        _fww = new WriteFolderWorker();
-        _tww = new WriteTextWorker();
-        _pw = MyBorder.MyContainer.Resolve<PathWorker>();
-        _cw = MyBorder.MyContainer.Resolve<ConfigWorker>();
+        _many = MyBorder.MyContainer.Resolve<MemoryWorker>();
+        _json = MyBorder.MyContainer.Resolve<JsonWorker>();
+        _writeFolder = new WriteFolderWorker();
+        _writeText = new WriteTextWorker();
+        _path = MyBorder.MyContainer.Resolve<PathWorker>();
+        _config = MyBorder.MyContainer.Resolve<ConfigWorker>();
         _migrate = MyBorder.MyContainer.Resolve<MigrationWorker>();
+        _readRef = MyBorder.MyContainer.Resolve<ReadRefWorker>();
     }
 
     public void CreateTextGenerate(
         (string Repo, string Loca) address,
         string name,
         string content)
-        => _tww.Put(name, address, content);
+        => _writeText.Put(name, address, content);
 
     public List<(string Repo, string Loca)> GetAllRepoAddresses(
         (string Repo, string Loca) adrTuple)
         => _readFolder.GetAllRepoAddresses(adrTuple.Repo);
 
     public void InitGroupsFromSearchPaths(List<string> searchPaths)
-        => _mw.InitGroupsFromSearchPaths(searchPaths);
+        => _many.InitGroupsFromSearchPaths(searchPaths);
     
     public (string Repos, string Loca) GetFirstRepo()
-        => _pw.GetFirstRepo();
+        => _path.GetFirstRepo();
 
     public int GetReposCount()
-        => _pw.GetRepoCount();
+        => _path.GetRepoCount();
 
     public string GetSectionFromPath(
         string repo,
         string path)
-        => _mw.GetSectionFromPath(repo, path);
+        => _many.GetSectionFromPath(repo, path);
 
     public string GetText2(
         (string Repo, string Loca) adrTuple)
@@ -91,7 +90,7 @@ public class MethodWorker
     public void CreateConfig(
         (string Repo, string Loca) adrTuple,
         Dictionary<string, object> dict)
-        => _cw.PutConfig(adrTuple, dict);
+        => _config.PutConfig(adrTuple, dict);
 
     public (string, string) GetAdrTupleByName(
         (string Repo, string Loca) adrTuple,
@@ -140,11 +139,11 @@ public class MethodWorker
 
     public string GetItem(
         (string repo, string loca) adrTuple)
-        => _jw.GetItem(adrTuple);
+        => _json.GetItem(adrTuple);
 
     public string GetItemList(
         (string repo, string loca) adrTuple)
-        => _jw.GetItemList(adrTuple);
+        => _json.GetItemList(adrTuple);
 
     public string GetLocalName(
         (string repo, string loca) adrTuple)
@@ -172,7 +171,7 @@ public class MethodWorker
     public string GetType(
         (string repo, string loca) adrTuple)
     {
-        var type = _readFolder.GetConfigKey(adrTuple, FieldsForUniItem.Type);
+        var type = _readFolder.GetConfigKey(adrTuple, ConfigKeys.Type);
         if(type == null)
         {
             var type2 = GuesTypeByFiles(adrTuple);
@@ -183,7 +182,7 @@ public class MethodWorker
 
     private string GuesTypeByFiles((string repo, string loca) adrTuple)
     {
-        var settingsFile = _pw.GetBodyPath(adrTuple);
+        var settingsFile = _path.GetBodyPath(adrTuple);
         if (File.Exists(settingsFile))
         {
             return UniItemTypes.Text;
@@ -249,9 +248,9 @@ public class MethodWorker
     //    (string repo, string loca) adrTuple)
     //    => jw.GetItemDict(adrTuple);
 
-    public (string repo, string newLoca) GetRefAdrTuple(
-        (string repo, string loca) adrTuple)
-        => _readFolder.GetRefAdrTuple(adrTuple);
+    // public (string repo, string newLoca) GetRefAdrTuple(
+    //     (string repo, string loca) adrTuple)
+    //     => _readRef.GetRefAdrTuple(adrTuple);
 
     public List<string> GetAllFoldersNames(
         (string repo, string loca) address)
@@ -366,17 +365,17 @@ public class MethodWorker
     // todo remove
     public string GetElemPath(
         (string Repo, string Loca) adrTuple)
-        => _pw.GetItemPath(adrTuple);
+        => _path.GetItemPath(adrTuple);
     
     public string GetBodyPath(
         (string Repo, string Loca) adrTuple)
-        => _pw.GetBodyPath(adrTuple);
+        => _path.GetBodyPath(adrTuple);
 
     public void CreateConfigKey(
         (string Repo, string Loca) address,
         string key,
         object value)
-        => _cw.CreateConfigKey(address, key, value);
+        => _config.CreateConfigKey(address, key, value);
 
     public void CreateManyText(
         (string Name, string Location) address,
@@ -414,21 +413,21 @@ public class MethodWorker
     public void PatchText(
         string content,
         (string Repo, string Loca) adrTuple)
-        => _tww.Patch(content, adrTuple);
+        => _writeText.Patch(content, adrTuple);
 
     public (string, string) PutText(
         (string Repo, string Loca) address,
         string name,
         string content = "")
     {
-        _tww.Put(name, address, content);
+        _writeText.Put(name, address, content);
         return address;
     }
 
     public (string, string) PostText(
         (string Repo, string Loca) adrTuple,
         string name)
-        => _tww.Post(name, adrTuple);
+        => _writeText.Post(name, adrTuple);
 
 
     //public (string Repo, string Loca) CreateFolder(
@@ -460,7 +459,7 @@ public class MethodWorker
     public (string Repo, string Loca) CreateChildFolder(
         (string Repo, string Loca) adrTuple,
         string name)
-        => _fww.Post(name, adrTuple);
+        => _writeFolder.Post(name, adrTuple);
 
 
     //public (string Repo, string Loca) CreateChildFolder(
@@ -566,13 +565,13 @@ public class MethodWorker
         var existingItem = GetExistingItem(address, name);
         if (existingItem != default)
         {
-            _tww.Put(name, existingItem, content);
+            _writeText.Put(name, existingItem, content);
             return existingItem;
         }
 
         var lastNumber = GetFolderLastNumber(address);
         var newAddress = _customOperationsService.Index.SelectAddress(address, lastNumber + 1);
-        _tww.Put(name, newAddress, content);
+        _writeText.Put(name, newAddress, content);
         return newAddress;
     }
 
@@ -580,7 +579,7 @@ public class MethodWorker
         (string Repo, string Loca) address,
         string content)
     {
-        _tww.Append(address, content);
+        _writeText.Append(address, content);
     }
 
 

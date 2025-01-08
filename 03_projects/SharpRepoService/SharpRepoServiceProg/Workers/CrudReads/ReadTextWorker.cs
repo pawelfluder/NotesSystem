@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Names;
-using SharpRepoServiceProg.Operations;
-using SharpRepoServiceProg.Registration;
-using SharpRepoServiceProg.Workers.System;
 
 namespace SharpRepoServiceProg.Workers.CrudReads;
 
@@ -41,42 +36,6 @@ internal class ReadTextWorker : ReadWorkerBase
         ItemModel item = CreateNewWithAddress(adrTuple);
         item.Body = _body.GetBody(adrTuple);
         return item;
-    }
-
-    // public object TryGetConfigValue(
-    //     (string Repo, string Loca) adrTuple,
-    //     string key)
-    // {
-    //     Dictionary<string, object> dict = _config.GetConfigDictionary(adrTuple);
-    //     bool exists = dict.TryGetValue(key, out var value);
-    //     if (exists)
-    //     {
-    //         return value;
-    //     }
-    //
-    //     return null;
-    // }
-
-    // read; config, body
-    public (string repo, string newLoca) GetRefAdrTuple(
-        (string repo, string loca) adrTuple)
-    {
-        var keyDict = GetConfigDict(adrTuple, SettingsKeys.RefLocaStr, SettingsKeys.RefGuidStr);
-        var guid = keyDict[SettingsKeys.RefGuidStr].ToString();
-        var newLoca = keyDict[SettingsKeys.RefLocaStr].ToString();
-
-        var newAdrTuple = (adrTuple.repo, newLoca);
-        var id = GetConfigKey(newAdrTuple, "id").ToString();
-
-        if (id == guid)
-        {
-            return newAdrTuple;
-        }
-
-        // todo implement guid search and cache
-        (string, string) id2 = default; // FindIdAdrTuple();
-
-        return id2;
     }
 
     // read; config, body

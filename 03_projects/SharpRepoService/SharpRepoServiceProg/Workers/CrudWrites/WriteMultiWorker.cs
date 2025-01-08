@@ -8,7 +8,7 @@ using SharpRepoServiceProg.Workers.System;
 
 namespace SharpRepoServiceProg.Workers.CrudWrites;
 
-public class WriteManyWorker
+public class WriteMultiWorker
 {
     private readonly PathWorker pw;
     private readonly SystemWorker _sw;
@@ -21,7 +21,7 @@ public class WriteManyWorker
     
     private UniType _myType = UniType.Text;
 
-    public WriteManyWorker()
+    public WriteMultiWorker()
     {
         _readFolder = MyBorder.MyContainer.Resolve<ReadFolderWorker>();
         _readText = MyBorder.MyContainer.Resolve<ReadTextWorker>();

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.Workers.System;
@@ -47,6 +46,13 @@ public class MigrationWorker
         return config;
     }
     
+    public Dictionary<string, object> GetConfigBeforeRef(
+        (string Repo, string Loca) adrTuple)
+    {
+        var config = _config.GetConfigDictionary(adrTuple);
+        return config;
+    }
+    
     private bool TryMigrateConfigAndSave(
         Dictionary<string, object> settings,
         (string Repo, string Loca) adrTuple)
@@ -67,23 +73,23 @@ public class MigrationWorker
     {
         string newAddress = _customOperations.UniAddress
             .CreateAddresFromAdrTuple(adrTuple);
-        settings[FieldsForUniItem.Address] = newAddress;
+        settings[ConfigKeys.Address] = newAddress;
         bool saveNeeded = false;
-        if (!settings.ContainsKey(FieldsForUniItem.Id))
+        if (!settings.ContainsKey(ConfigKeys.Id))
         {
-            settings[FieldsForUniItem.Id] = Guid.NewGuid().ToString();
+            settings[ConfigKeys.Id] = Guid.NewGuid().ToString();
             saveNeeded = true;
         }
-        if (!settings.ContainsKey(FieldsForUniItem.Type))
+        if (!settings.ContainsKey(ConfigKeys.Type))
         {
             string type = AssumeType(adrTuple);
-            settings[FieldsForUniItem.Type] = type;
+            settings[ConfigKeys.Type] = type;
             saveNeeded = true;
         }
-        if (!settings.ContainsKey(FieldsForUniItem.Address)
-            || settings[FieldsForUniItem.Address] != newAddress)
+        if (!settings.ContainsKey(ConfigKeys.Address)
+            || settings[ConfigKeys.Address] != newAddress)
         {
-            settings[FieldsForUniItem.Address] = newAddress;
+            settings[ConfigKeys.Address] = newAddress;
             saveNeeded = true;
         }
         return saveNeeded;

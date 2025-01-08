@@ -30,7 +30,7 @@ internal class Registration : RegistrationBase
             () => new WriteTextWorker());
         
         MyBorder.MyContainer.RegisterByFunc(
-            () => new WriteManyWorker());
+            () => new WriteMultiWorker());
     }
 
     private static void RegisterRead()
@@ -103,5 +103,8 @@ internal class Registration : RegistrationBase
         // FileService
         MyBorder.MyContainer.RegisterByFunc(
             () => new ReadManyWorker());
+        
+        MyBorder.MyContainer.RegisterByFunc(
+            () => new GuidWorker());
     }
 }

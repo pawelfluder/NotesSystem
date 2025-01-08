@@ -1,6 +1,6 @@
-﻿using SharpRepoServiceProg.Names;
-using SharpRepoServiceProg.Registration;
+﻿using SharpRepoServiceProg.Registration;
 using System.Collections.Generic;
+using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Operations;
 
 namespace SharpRepoServiceProg.Models;
@@ -46,9 +46,9 @@ public class ItemModel
     private void SetIndentificators(
         Dictionary<string, object> dict)
     {
-        Name = dict[FieldsForUniItem.Name].ToString();
-        Id = dict[FieldsForUniItem.Id].ToString();
-        Type = dict[FieldsForUniItem.Type].ToString();
-        Address = dict[FieldsForUniItem.Address].ToString();
+        Name = dict[ConfigKeys.Name].ToString();
+        Id = dict[ConfigKeys.Id].ToString();
+        Type = dict[ConfigKeys.Type].ToString();
+        Address = dict[ConfigKeys.Address].ToString();
     }
 }

@@ -5,7 +5,6 @@ using System.Linq;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
 
@@ -84,7 +83,7 @@ internal class ConfigWorker
         (string Repo, string Loca) adrTuple)
     {
         Dictionary<string, object> dict = GetConfigDictionary(adrTuple);
-        bool success = dict.TryGetValue(FieldsForUniItem.Type, out var type);
+        bool success = dict.TryGetValue(ConfigKeys.Type, out var type);
         return type?.ToString();
     }
 

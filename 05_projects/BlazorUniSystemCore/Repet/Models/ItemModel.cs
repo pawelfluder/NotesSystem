@@ -1,5 +1,6 @@
 ﻿using SharpOperationsProg.Operations.UniAddress;
-using SharpRepoServiceProg.Names;
+using SharpRepoServiceProg.AAPublic.Names;
+
 namespace BlazorNotesSystem.Repet.Models;
 
 public class ItemModel
@@ -42,9 +43,9 @@ public class ItemModel
     private void SetIndentificators(
         Dictionary<string, object> dict)
     {
-        Name = dict[FieldsForUniItem.Name].ToString();
-        Id = dict[FieldsForUniItem.Id].ToString();
-        Type = dict[FieldsForUniItem.Type].ToString();
-        Address = dict[FieldsForUniItem.Address].ToString();
+        Name = dict[ConfigKeys.Name].ToString();
+        Id = dict[ConfigKeys.Id].ToString();
+        Type = dict[ConfigKeys.Type].ToString();
+        Address = dict[ConfigKeys.Address].ToString();
     }
 }

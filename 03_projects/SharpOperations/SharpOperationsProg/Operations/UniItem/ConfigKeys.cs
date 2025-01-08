@@ -1,6 +1,6 @@
 namespace SharpOperationsProg.Operations.UniItem;
 
-public static class FieldsForUniItem
+internal static class ConfigKeys
 {
     public static string Type = "type";
     public static string Name = "name";

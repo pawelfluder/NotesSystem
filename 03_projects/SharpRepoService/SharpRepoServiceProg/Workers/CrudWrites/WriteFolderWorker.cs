@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.Workers.CrudReads;
@@ -24,9 +23,9 @@ public class WriteFolderWorker : WriteWorkerBase
         // config
         item.Settings = new Dictionary<string, object>()
         {
-            { FieldsForUniItem.Id, Guid.NewGuid().ToString() },
-            { FieldsForUniItem.Type, ItemTypeNames.Folder },
-            { FieldsForUniItem.Name, name }
+            { ConfigKeys.Id, Guid.NewGuid().ToString() },
+            { ConfigKeys.Type, ItemTypeNames.Folder },
+            { ConfigKeys.Name, name }
         };
         
         Put(item);
@@ -99,9 +98,9 @@ public class WriteFolderWorker : WriteWorkerBase
         // config
         var settings = new Dictionary<string, object>()
         {
-            { FieldsForUniItem.Id, Guid.NewGuid().ToString() },
-            { FieldsForUniItem.Type, ItemTypeNames.Folder },
-            { FieldsForUniItem.Name, name },
+            { ConfigKeys.Id, Guid.NewGuid().ToString() },
+            { ConfigKeys.Type, ItemTypeNames.Folder },
+            { ConfigKeys.Name, name },
         };
         item.Settings = _migrate.GetConfigBeforeWrite(settings, adrTuple);
         return item;

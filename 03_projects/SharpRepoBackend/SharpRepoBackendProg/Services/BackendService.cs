@@ -13,6 +13,7 @@ using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoBackendProg.AAPublic;
 using SharpRepoBackendProg.Repetition;
 using SharpRepoServiceProg.AAPublic;
+using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Workers.AAPublic;
 using SharpTtsServiceProg.AAPublic;
 using TextHeaderAnalyzerCoreProj.Service;
@@ -335,7 +336,7 @@ public class BackendService : IBackendService
     {
         var name = _repoService.Methods.GetLocalName(address);
         var id = _repoService.Methods.TryGetConfigValue(
-            address, ConfigKeys.googleDocId.ToString());
+            address, ConfigKeys.GoogleDocId.ToString());
         var documentExists = id != null;
 
         if (!documentExists)
@@ -343,7 +344,7 @@ public class BackendService : IBackendService
             var docIdQName = CreateNewDocBySheetService(name);
             id = docIdQName.id;
             _repoService.Methods.CreateConfigKey(
-                address, ConfigKeys.googleDocId.ToString(),
+                address, ConfigKeys.GoogleDocId.ToString(),
                 id);
             documentExists = true;
         }
@@ -357,22 +358,22 @@ public class BackendService : IBackendService
         return default;
     }
 
-    private string CreateGoogledoc((string repo, string loca) address)
+    private string CreateGoogledoc(
+        (string repo, string loca) adrTuple)
     {
-        var name = _repoService.Methods.GetLocalName(address);
+        var name = _repoService.Methods.GetLocalName(adrTuple);
         var id = _repoService.Methods.GetConfigKey(
-            address, ConfigKeys.googleDocId.ToString());
+            adrTuple, ConfigKeys.GoogleDocId.ToString());
         var documentExists = id != null;
 
         if (!documentExists)
         {
             //var docIdQName = CreateNewDocBySheetService(name);
             var docIdQName = CreateNewDocByDriveService(name);
-                
 
             id = docIdQName.id;
             _repoService.Methods.CreateConfigKey(
-                address, ConfigKeys.googleDocId.ToString(),
+                adrTuple, ConfigKeys.GoogleDocId.ToString(),
                 id);
             documentExists = true;
         }
@@ -380,7 +381,7 @@ public class BackendService : IBackendService
         if (documentExists)
         {
             _notesExporterService.ExportNotesToGoogleDoc(
-                address.repo, address.loca, id.ToString());
+                adrTuple.repo, adrTuple.loca, id.ToString());
 
             var url = $"https://docs.google.com/document/d/{id}";
             return url;

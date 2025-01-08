@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Names;
 using SharpRepoServiceProg.Operations;
 
 namespace SharpRepoServiceProg.Workers.CrudReads;
@@ -64,28 +63,6 @@ internal class ReadFolderWorker : ReadWorkerBase
         var item = GetItemBody(adrTuple);
         var configLines = item.Body.ToString().Split(_system.NewLine).ToList();
         return configLines;
-    }
-
-    // read; config, body
-    public (string repo, string newLoca) GetRefAdrTuple(
-        (string repo, string loca) adrTuple)
-    {
-        var keyDict = GetConfigDict(adrTuple, SettingsKeys.RefLocaStr, SettingsKeys.RefGuidStr);
-        var guid = keyDict[SettingsKeys.RefGuidStr].ToString();
-        var newLoca = keyDict[SettingsKeys.RefLocaStr].ToString();
-
-        var newAdrTuple = (adrTuple.repo, newLoca);
-        var id = GetConfigKey(newAdrTuple, "id").ToString();
-
-        if (id == guid)
-        {
-            return newAdrTuple;
-        }
-
-        // todo implement guid search and cache
-        (string, string) id2 = default; // FindIdAdrTuple();
-
-        return id2;
     }
 
     // read; config
