@@ -59,11 +59,11 @@ public class MethodWorker
         _readRef = MyBorder.MyContainer.Resolve<ReadRefWorker>();
     }
 
-    public void CreateTextGenerate(
-        (string Repo, string Loca) address,
-        string name,
-        string content)
-        => _writeText.Put(name, address, content);
+    // public void CreateTextGenerate(
+    //     (string Repo, string Loca) address,
+    //     string name,
+    //     string content)
+    //     => _writeText.Put(name, address, content);
 
     public List<(string Repo, string Loca)> GetAllRepoAddresses(
         (string Repo, string Loca) adrTuple)
@@ -78,19 +78,19 @@ public class MethodWorker
     public int GetReposCount()
         => _path.GetRepoCount();
 
-    public string GetSectionFromPath(
-        string repo,
-        string path)
-        => _many.GetSectionFromPath(repo, path);
-
+    // public string GetSectionFromPath(
+    //     string repo,
+    //     string path)
+    //     => _many.GetSectionFromPath(repo, path);
+    //
     public string GetText2(
         (string Repo, string Loca) adrTuple)
         => _readFolder.GetText2(adrTuple);
 
-    public void CreateConfig(
-        (string Repo, string Loca) adrTuple,
-        Dictionary<string, object> dict)
-        => _config.PutConfig(adrTuple, dict);
+    // public void CreateConfig(
+    //     (string Repo, string Loca) adrTuple,
+    //     Dictionary<string, object> dict)
+    //     => _config.PutConfig(adrTuple, dict);
 
     public (string, string) GetAdrTupleByName(
         (string Repo, string Loca) adrTuple,

@@ -1,7 +1,7 @@
 ﻿using SharpOperationsProg.Operations.UniAddress;
 using SharpRepoServiceProg.AAPublic.Names;
 
-namespace BlazorNotesSystem.Repet.Models;
+namespace BlazorUniSystemCore.Repet.Models;
 
 public class ItemModel
 {

@@ -7,24 +7,16 @@ public class DefaultContainerBase : IContainer4
 {
     private bool _isBuildDone;
     public IServiceCollection ServiceRegister { get; protected set; }
+
+    private IServiceProvider _serviceProvider;
+    private bool _isNothingRegistered = true;
+
     public IServiceProvider ServiceProvider { get; protected set; }
 
-    // public void RegisterSingleton<RegT>(
-    //     RegT obj)
-    //         where RegT : class
-    // {
-    //     ServiceRegister.AddSingleton<RegT>(sp => 
-    //         obj);
-    // }
-    
-    // public void RegisterSingleton<P1, RegT>(
-    //     Func<P1, RegT> regT,
-    //     P1 p1)
-    //     where RegT : class
-    // {
-    //     ServiceRegister.AddSingleton(regT.Invoke(p1));
-    // }
-    
+    public virtual void RegisterMocks()
+    {
+    }
+
     public void RegisterByFunc<RegT>(
         Func<RegT> func,
         int type = 0,
@@ -115,6 +107,10 @@ public class DefaultContainerBase : IContainer4
             return;
         }
 
+        if (ServiceRegister.Count == 0)
+        {
+            RegisterMocks();
+        }
         ServiceProvider = ServiceRegister.BuildServiceProvider();
     }
 }

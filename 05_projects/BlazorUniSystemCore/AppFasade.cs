@@ -1,7 +1,5 @@
-using BlazorNotesSystem.Client.Pages;
-using BlazorNotesSystem.Components;
-using BlazorNotesSystem.Registrations;
-using Microsoft.Fast.Components.FluentUI;
+using BlazorUniSystemCore.Components;
+using BlazorUniSystemCore.Registrations;
 
 namespace BlazorNotesSystem;
 
@@ -23,25 +21,31 @@ public class AppFasade
 
     private void InitApp()
     {
+        Builder = WebApplication.CreateBuilder();
+
+// Add services to the container.
+        Builder.Services.AddRazorComponents()
+            .AddInteractiveServerComponents();
+
         App = Builder.Build();
-        Container.SetServiceProvider(App.Services);
-        if (App.Environment.IsDevelopment())
-        {
-            App.UseWebAssemblyDebugging();
-        }
-        else
+
+// Configure the HTTP request pipeline.
+        if (!App.Environment.IsDevelopment())
         {
             App.UseExceptionHandler("/Error", createScopeForErrors: true);
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             App.UseHsts();
         }
 
         App.UseHttpsRedirection();
+
         App.UseStaticFiles();
         App.UseAntiforgery();
+
         App.MapRazorComponents<App>()
-            .AddInteractiveServerRenderMode()
-            .AddInteractiveWebAssemblyRenderMode()
-            .AddAdditionalAssemblies(typeof(Counter).Assembly);
+            .AddInteractiveServerRenderMode();
+
+        App.Run();
     }
 
     private void InitBuilder()
@@ -63,8 +67,7 @@ public class AppFasade
         Container = new UniSystemCoreContainer(
             Builder.Services);
         Builder.Services.AddRazorComponents()
-            .AddInteractiveServerComponents()
-            .AddInteractiveWebAssemblyComponents();
+            .AddInteractiveServerComponents();
         
         
         // Builder.Services.AddSyncfusionBlazor();
@@ -90,6 +93,6 @@ public class AppFasade
                         .Build();
                 });
         });
-        Builder.Services.AddFluentUIComponents();
+        //Builder.Services.AddFluentUIComponents();
     }
 }

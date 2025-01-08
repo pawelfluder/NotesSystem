@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using SharpContainerProg.AAPublic;
 
-namespace BlazorNotesSystem.Registrations;
+namespace BlazorUniSystemCore.Registrations;
 
 internal static class MyBorder
 {

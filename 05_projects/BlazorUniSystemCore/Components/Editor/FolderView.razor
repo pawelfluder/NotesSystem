@@ -1,10 +1,8 @@
-﻿@using BlazorNotesSystem.Repet.Models
-@using Microsoft.Extensions.DependencyInjection
-@* @using SharpArgsManagerProj.AAPublic *@
+﻿@using BlazorUniSystemCore.Registrations
+@using BlazorUniSystemCore.Repet.Models
 @using SharpOperationsProg.AAPublic.Operations
 @using SharpOperationsProg.Operations.UniAddress
 @using SharpRepoBackendProg.Services
-@inject IServiceProvider serviceProvider
 @rendermode InteractiveServer
 
 @* <iframe width="560" height="315" src="" frameborder="0" allowfullscreen></iframe> *@
@@ -48,6 +46,13 @@
 }
 *@
 @code {
+
+    public FolderView()
+    {
+        _operationsService = MyBorder.OutContainer.Resolve<IOperationsService>();
+        _backendService = MyBorder.OutContainer.Resolve<IBackendService>();
+    }
+    
     [Parameter]
     public ItemModel Item { get; set; }
 
@@ -62,16 +67,12 @@
     
     // services
 
-    private IOperationsService? _operationsService;
-    private IBackendService? _backendService;
+    private IOperationsService _operationsService;
+    private IBackendService _backendService;
     // private IArgsManagerService? _argsManager;
 
     protected override async Task OnInitializedAsync()
     {
-        _operationsService ??= serviceProvider.GetServices<IOperationsService>().Single();
-        // _argsManager ??= serviceProvider.GetServices<IArgsManagerService>().First();
-        _backendService ??= serviceProvider.GetServices<IBackendService>().First();
-
         myType = "Folder";
         formSelectedType = "Text";
         ReloadComponent();

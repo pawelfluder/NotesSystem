@@ -15,4 +15,9 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.2"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="bin\Debug\net8.0\BlazorUniComponents.deps.json" />
+      <_ContentIncludedByDefault Remove="bin\Debug\net8.0\BlazorUniComponents.staticwebassets.runtime.json" />
+    </ItemGroup>
+
 </Project>

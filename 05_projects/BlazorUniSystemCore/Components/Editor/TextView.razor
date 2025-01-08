@@ -1,11 +1,9 @@
-﻿@using BlazorNotesSystem.Registrations
-@using BlazorNotesSystem.Repet.Models
+﻿@using BlazorUniSystemCore.Registrations
+@using BlazorUniSystemCore.Repet.Models
 @using SharpOperationsProg.AAPublic.Operations
 @using SharpOperationsProg.Operations.UniAddress
 @using SharpRepoBackendProg.Services
-@using Toolbelt.Blazor.SpeechSynthesis
-@inject IOperationsService operationsService
-@inject IBackendService backendService
+
 @* @rendermode InteractiveServer *@
 @rendermode @(new InteractiveServerRenderMode(prerender: true))
 
@@ -60,9 +58,18 @@
 *@
 
 @code {
+    
+    IOperationsService _operationsService;
+    IBackendService _backendService;
     private string formAddType;
     private string formGoogleDocType;
     public ItemModel item;
+
+    public TextView()
+    {
+        _operationsService = MyBorder.OutContainer.Resolve<IOperationsService>();
+        _backendService = MyBorder.OutContainer.Resolve<IBackendService>();
+    }
 
     [Parameter]
     public ItemModel Item
@@ -121,21 +128,21 @@
     {
         var adrTuple = IUniAddressOperations
               .CreateAddressFromString(Item.Address);
-        var itemJson = backendService.CommandApi("OpenContent", adrTuple.Item1, adrTuple.Item2);
+        var itemJson = _backendService.CommandApi("OpenContent", adrTuple.Item1, adrTuple.Item2);
     }
 
     private void ConfigClicked()
     {
         var adrTuple = IUniAddressOperations
               .CreateAddressFromString(Item.Address);
-        var itemJson = backendService.CommandApi("OpenConfig", adrTuple.Item1, adrTuple.Item2);
+        var itemJson = _backendService.CommandApi("OpenConfig", adrTuple.Item1, adrTuple.Item2);
     }
 
     private void TerminalClicked()
     {
         var adrTuple = IUniAddressOperations
               .CreateAddressFromString(Item.Address);
-        var itemJson = backendService.CommandApi("OpenTerminal", adrTuple.Item1, adrTuple.Item2);
+        var itemJson = _backendService.CommandApi("OpenTerminal", adrTuple.Item1, adrTuple.Item2);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -156,7 +163,7 @@
         //SpeechSynthesis.Speak("hello");
         var adrTuple = IUniAddressOperations
             .CreateAddressFromString(Item.Address);
-        var itemJson = backendService.CommandApi("Tts", adrTuple.Item1, adrTuple.Item2);
+        var itemJson = _backendService.CommandApi("Tts", adrTuple.Item1, adrTuple.Item2);
     }
     
     private void GoogleDocClicked()
@@ -165,22 +172,22 @@
               .CreateAddressFromString(Item.Address);
         if (formGoogleDocType == "Open")
         {
-            var itemJson = backendService.CommandApi("OpenGoogleDoc", adrTuple.Item1, adrTuple.Item2);
+            var itemJson = _backendService.CommandApi("OpenGoogleDoc", adrTuple.Item1, adrTuple.Item2);
         }
         if (formGoogleDocType == "Recreate")
         {
-            var itemJson = backendService.CommandApi("RecreateGoogleDoc", adrTuple.Item1, adrTuple.Item2);
+            var itemJson = _backendService.CommandApi("RecreateGoogleDoc", adrTuple.Item1, adrTuple.Item2);
         }
     }
 
     private void OnBtnClicked(string idxString)
     {
-        var index = operationsService.Index.StringToIndex(idxString);
+        var index = _operationsService.Index.StringToIndex(idxString);
         var adrTuple = IUniAddressOperations
              .CreateAddressFromString(Item.Address);
-        var newAddress = operationsService.Index.JoinIndexWithLoca(adrTuple, index);
+        var newAddress = _operationsService.Index.JoinIndexWithLoca(adrTuple, index);
         var itemJString = GetItem(newAddress);
-        var itemObj = operationsService.Json.TryDeserializeObject<ItemModel>(itemJString);
+        var itemObj = _operationsService.Json.TryDeserializeObject<ItemModel>(itemJString);
 
         if (itemObj.Type != myType)
         {
@@ -211,13 +218,13 @@
     {
         var adrTuple = IUniAddressOperations
              .CreateAddressFromString(Item.Address);
-        var itemJson = backendService
+        var itemJson = _backendService
             .CommandApi("OpenFolder", adrTuple.Item1, adrTuple.Item2);
     }
 
     public string GetItem((string Repo, string Loca) address)
     {
-        var itemJson = backendService.CommandApi("GetItem", address.Repo, address.Loca);
+        var itemJson = _backendService.CommandApi("GetItem", address.Repo, address.Loca);
         return itemJson;
     }
 }

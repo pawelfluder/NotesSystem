@@ -1,18 +1,14 @@
 ﻿@page "/{UrlUniAddress}"
 @page "/"
 @using System.Text.RegularExpressions
-@using BlazorNotesSystem.Components.Editor
-@using BlazorNotesSystem.Registrations
-@using BlazorNotesSystem.Repet.Models
 @using SharpOperationsProg.AAPublic.Operations
 @using SharpOperationsProg.Operations.UniAddress
 @using SharpRepoBackendProg.Services
 @using SharpRepoServiceProg.AAPublic
 @using BlazorUniComponents
-
-@inject IBackendService backendService
-@inject IOperationsService operationsService
-@inject IRepoService repoService
+@using BlazorUniSystemCore.Registrations
+@using BlazorUniSystemCore.Repet.Models
+@using BlazorUniSystemCore.Components.Editor
 
 @rendermode InteractiveServer
 
@@ -23,7 +19,7 @@
     <ComboBox02
         Items="AllRepoNames"
         @bind-SelectedItem=@ComboBoxRepoName/>
-        @* OnValueChanged=@HandleValueChanged *@
+    @* OnValueChanged=@HandleValueChanged *@
     Loca::
     <input type="text" @bind=@inputLocaName />
 </div>
@@ -36,53 +32,59 @@
 
 <div class="menu-item">
     <TextView @bind-Item=@_item ReloadItem=@ReloadItem @ref="textView"></TextView>
-    <RefTextView @bind-Item=@_item ReloadItem=@ReloadItem @ref="refTextView"></RefTextView>
     <FolderView @bind-Item=@_item ReloadItem=@ReloadItem @ref="folderView"></FolderView>
 </div>
 
 @code {
+    IRepoService _repoService;
+    IOperationsService _operationsService;
+    IBackendService _backendService;
+    
     private ItemModel _item;
     private string inputLocaName = string.Empty;
-    
+
     private TextView textView;
     private FolderView folderView;
     private RefTextView refTextView;
-    
+
     [Parameter]
     public string? UrlUniAddress { get; set; }
-    
+
     public Home()
     {
-        IRepoService repoService2 = MyBorder.OutContainer.Resolve<IRepoService>();
-        AllRepoNames = repoService2.Methods.GetAllReposNames();
+        _repoService = MyBorder.OutContainer.Resolve<IRepoService>();
+        _operationsService = MyBorder.OutContainer.Resolve<IOperationsService>();
+        _backendService = MyBorder.OutContainer.Resolve<IBackendService>();
+        
+        AllRepoNames = _repoService.Methods.GetAllReposNames();
         if (_item == null)
         {
             string firstRepo = AllRepoNames.First();
             _item = new ItemModel { Address = firstRepo };
         }
     }
-    
+
     public List<string> AllRepoNames { get; set; }
 
     public string ComboBoxRepoName
     {
-        get; 
+        get;
         set;
     }
 
     protected override async Task OnInitializedAsync()
     {
-        AllRepoNames = repoService.Methods.GetAllReposNames();
+        AllRepoNames = _repoService.Methods.GetAllReposNames();
         (string, string) adrTuple = IUniAddressOperations
-            .CreateAddressFromString(_item.Address);
-        
+        .CreateAddressFromString(_item.Address);
+
         if (UrlUniAddress != null
-            && IsAdressCorrect(UrlUniAddress))
+        && IsAdressCorrect(UrlUniAddress))
         {
-            adrTuple = IUniAddressOperations
-                .CreateAddressFromUrlParameter(UrlUniAddress);
+        adrTuple = IUniAddressOperations
+        .CreateAddressFromUrlParameter(UrlUniAddress);
         }
-        
+
         ReloadItem(adrTuple);
     }
 
@@ -99,8 +101,8 @@
     protected void ReloadItem((string Repo, string Loca) address)
     {
         string itemJString = GetItem(address);
-        ItemModel? itemObj = operationsService.Json
-            .TryDeserializeObject<ItemModel>(itemJString);
+        ItemModel? itemObj = _operationsService.Json
+        .TryDeserializeObject<ItemModel>(itemJString);
         if (itemObj != null)
         {
             ReloadItem(itemObj);
@@ -111,7 +113,7 @@
     {
         _item = itemObj;
         (string, string) adrTuple = IUniAddressOperations
-            .CreateAddressFromString(_item.Address);
+        .CreateAddressFromString(_item.Address);
         inputLocaName = adrTuple.Item2;
 
         if (folderView != null)
@@ -131,10 +133,9 @@
     {
         _item = item;
         (string, string) adrTuple = IUniAddressOperations
-             .CreateAddressFromString(item.Address);
+        .CreateAddressFromString(item.Address);
         inputLocaName = adrTuple.Item2;
         
-
         if (folderView != null)
         {
             folderView.Item = item;
@@ -156,20 +157,20 @@
 
     public string GetItem((string Repo, string Loca) address)
     {
-        string itemJson = backendService
-            .CommandApi(
-                "GetItem", 
-                address.Repo,
-                address.Loca);
+        string itemJson = _backendService
+        .CommandApi(
+        "GetItem",
+        address.Repo,
+        address.Loca);
         return itemJson;
     }
 
     private async Task OnBackArrowBtnClicked(MouseEventArgs e)
     {
         string newAddress = IUniAddressOperations
-             .MoveOneLocaBack(_item.Address);
+        .MoveOneLocaBack(_item.Address);
         (string, string) newAdrTuple = IUniAddressOperations
-             .CreateAddressFromString(newAddress);
+        .CreateAddressFromString(newAddress);
         ReloadItem(newAdrTuple);
     }
 }
