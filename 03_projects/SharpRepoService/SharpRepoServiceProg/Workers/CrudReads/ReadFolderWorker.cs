@@ -4,20 +4,22 @@ using System.IO;
 using System.Linq;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Operations;
+using SharpRepoServiceProg.Registration;
 
 namespace SharpRepoServiceProg.Workers.CrudReads;
 
 internal class ReadFolderWorker : ReadWorkerBase
 {
     private readonly UniType _myType = UniType.Folder;
+    private bool _isInitialized;
+    private ReadFolderWorker _readMulti;
 
     // read; body
     public ItemModel GetItemBody(
         (string Repo, string Loca) adrTuple)
     {
-        var item = new ItemModel();
-        var address = _customOperations.UniAddress
+        ItemModel item = new();
+        string address = _customOperations.UniAddress
             .CreateAddresFromAdrTuple(adrTuple);
         item.Address = address;
         item.Body = _body.GetBody(adrTuple);
@@ -37,6 +39,21 @@ internal class ReadFolderWorker : ReadWorkerBase
         item.Settings = _migrate
             .GetConfigBeforeRead(adrTuple);
 
+        // body
+        item.Body = ListOfIndexesQNames(adrTuple);
+
+        return item;
+    }
+    
+    // read; config, body
+    public ItemModel TryGetItemBody(
+        ItemModel item,
+        (string Repo, string Loca) adrTuple,
+        UniType type = UniType.Folder,
+        bool addBody = true)
+    {
+        if (_myType != type) { return item; }
+        
         // body
         item.Body = ListOfIndexesQNames(adrTuple);
 
@@ -70,10 +87,10 @@ internal class ReadFolderWorker : ReadWorkerBase
         (string Repo, string Loca) address,
         params string[] keyArray)
     {
-        var text = _config.GetConfigText(address);
-        var success = _yamlOperations
+        string text = _config.GetConfigText(address);
+        bool success = _yamlOperations
             .TryDeserialize<Dictionary<string, object>>(text, out var configDict);
-        var resultDict = new Dictionary<string, object>();
+        Dictionary<string, object> resultDict = new();
 
         if (!success)
         {
@@ -116,6 +133,8 @@ internal class ReadFolderWorker : ReadWorkerBase
     public Dictionary<string, string> ListOfIndexesQNames(
         (string Repo, string Loca) adrTuple)
     {
+        TryInitialize();
+        
         List<ItemModel> items = _readMany
             .ListOfItemsWithConfig(adrTuple);
         var kv = items.Select(x => SelectIndexQName(x))
@@ -134,7 +153,20 @@ internal class ReadFolderWorker : ReadWorkerBase
             .GetLastLocaIndex(x.Address);
         string indexString = _customOperations.Index
             .IndexToString(index);
-        KeyValuePair<string, string> indexQName = new(indexString, x.Name);
+        Enum.TryParse<UniType>(x.Type, out var uniType);
+        KeyValuePair<string, string> indexQName;
+
+        if (uniType == UniType.Ref)
+        {
+            string realAddress = x.Settings[ConfigKeys.RefAddress].ToString();
+            (string RefRepo, string RefLoca) realAdrTuple = _customOperations
+                .UniAddress.CreateAddressFromString(realAddress);
+            ItemModel item = _readMulti.TryGetItem(new ItemModel(), realAdrTuple);
+            indexQName = new(indexString, item.Name);
+            return indexQName;
+        }
+        
+        indexQName = new(indexString, x.Name);
         return indexQName;
     }
 
@@ -155,20 +187,20 @@ internal class ReadFolderWorker : ReadWorkerBase
         string loca,
         string name)
     {
-        var adrTuple = (repo, loca);
-        var items = _readMany
+        (string repo, string loca) adrTuple = (repo, loca);
+        IEnumerable<ItemModel> items = _readMany
             .ListOfItemsWithConfig(adrTuple)
             .Where(x => x.Type == ItemTypeNames.Folder);
-        var found = items.SingleOrDefault(x => x.Name == name);
+        ItemModel found = items.SingleOrDefault(x => x.Name == name);
         if (found == default)
         {
             return default;
         }
 
-        var index = _customOperations.UniAddress
+        int index = _customOperations.UniAddress
             .GetLastLocaIndex(found.Address);
-        var indexString = _customOperations.Index.IndexToString(index);
-        var result = (indexString, found.Name);
+        string indexString = _customOperations.Index.IndexToString(index);
+        (string indexString, string Name) result = (indexString, found.Name);
         return result;
     }
 
@@ -182,8 +214,6 @@ internal class ReadFolderWorker : ReadWorkerBase
         (string Repo, string Loca) address,
         out List<string> lines)
         => TryGetConfigLines(address, out lines);
-
-
 
     // read; config
     public object TryGetConfigKey(
@@ -286,16 +316,6 @@ internal class ReadFolderWorker : ReadWorkerBase
         return repos;
     }
 
-    // todo
-    public List<string> GetAllRepoAddresses()
-    {
-        throw new Exception();
-
-        var repos = _path.GetAllReposPaths()
-            .Select(x => Path.GetFileName(x)).ToList();
-        return repos;
-    }
-
     public string GetText2(
         (string Repo, string Loca) adrTuple)
         => _body.GetBody(adrTuple);
@@ -312,5 +332,14 @@ internal class ReadFolderWorker : ReadWorkerBase
         }
         
         return item;
+    }
+    
+    private void TryInitialize()
+    {
+        if (!_isInitialized)
+        {
+            _readMulti = MyBorder.MyContainer.Resolve<ReadFolderWorker>();
+            _isInitialized = true;
+        }
     }
 }

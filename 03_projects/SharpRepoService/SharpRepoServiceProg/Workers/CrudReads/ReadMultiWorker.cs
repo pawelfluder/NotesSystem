@@ -34,10 +34,55 @@ internal class ReadMultiWorker : ReadWorkerBase
         {
             return item;
         }
-
+        
         item = _readFolder.TryGetItem(item, adrTuple, uniType);
         item = _readText.TryGetItem(item, adrTuple, uniType);
         item = _readRef.TryGetItem(item, adrTuple, uniType);
+        return item;
+    }
+    
+    public ItemModel GetItemWithoutRef(
+        (string Repo, string Loca) adrTuple,
+        string type = null)
+    {
+        if (type == null)
+        {
+            // todo prevent read of type if not needed!
+            type = _config.GetType(adrTuple);
+        }
+        
+        bool isKnownType = Enum.TryParse<UniType>(type, out var uniType);
+        ItemModel item = new();
+        if (!isKnownType)
+        {
+            return item;
+        }
+        
+        item = _readFolder.TryGetItem(item, adrTuple, uniType);
+        item = _readText.TryGetItem(item, adrTuple, uniType);
+        return item;
+    }
+    
+    public ItemModel GetItemBody(
+        (string Repo, string Loca) adrTuple,
+        string type = null)
+    {
+        if (type == null)
+        {
+            // todo prevent read of type if not needed!
+            type = _config.GetType(adrTuple);
+        }
+        
+        bool isKnownType = Enum.TryParse<UniType>(type, out var uniType);
+        ItemModel item = new();
+        if (!isKnownType)
+        {
+            return item;
+        }
+        
+        item = _readFolder.TryGetItemBody(item, adrTuple, uniType);
+        item = _readText.TryGetItemBody(item, adrTuple, uniType);
+        item = _readRef.TryGetItemBody(item, adrTuple, uniType);
         return item;
     }
 }

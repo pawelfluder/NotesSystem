@@ -28,6 +28,20 @@ internal class ReadTextWorker : ReadWorkerBase
 
         return item;
     }
+    
+    // 02; TryGetItem; read; config, body
+    public ItemModel TryGetItemBody(
+        ItemModel item,
+        (string Repo, string Loca) adrTuple,
+        UniType type = UniType.Text)
+    {
+        if (_myType != type) { return item; }
+        
+        // body
+        item.Body = _body.GetBody(adrTuple);
+        
+        return item;
+    }
 
     // 02; GetItemBody; read; body
     public ItemModel GetItemBody(

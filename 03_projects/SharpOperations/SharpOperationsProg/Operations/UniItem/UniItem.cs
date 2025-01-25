@@ -20,7 +20,7 @@ internal class UniItem
         set
         {
             _address = value;
-            var adrTuple = IUniAddressOperations.CreateAddressFromString(_address);
+            var adrTuple = IUniAddressOperations.CreateAdrTupleFromAddress(_address);
             AdrTuple = adrTuple;
         }
     }

@@ -127,21 +127,21 @@
     private void ContentClicked()
     {
         var adrTuple = IUniAddressOperations
-              .CreateAddressFromString(Item.Address);
+              .CreateAdrTupleFromAddress(Item.Address);
         var itemJson = _backendService.CommandApi("OpenContent", adrTuple.Item1, adrTuple.Item2);
     }
 
     private void ConfigClicked()
     {
         var adrTuple = IUniAddressOperations
-              .CreateAddressFromString(Item.Address);
+              .CreateAdrTupleFromAddress(Item.Address);
         var itemJson = _backendService.CommandApi("OpenConfig", adrTuple.Item1, adrTuple.Item2);
     }
 
     private void TerminalClicked()
     {
         var adrTuple = IUniAddressOperations
-              .CreateAddressFromString(Item.Address);
+              .CreateAdrTupleFromAddress(Item.Address);
         var itemJson = _backendService.CommandApi("OpenTerminal", adrTuple.Item1, adrTuple.Item2);
     }
 
@@ -162,14 +162,14 @@
     {
         //SpeechSynthesis.Speak("hello");
         var adrTuple = IUniAddressOperations
-            .CreateAddressFromString(Item.Address);
+            .CreateAdrTupleFromAddress(Item.Address);
         var itemJson = _backendService.CommandApi("Tts", adrTuple.Item1, adrTuple.Item2);
     }
     
     private void GoogleDocClicked()
     {
         var adrTuple = IUniAddressOperations
-              .CreateAddressFromString(Item.Address);
+              .CreateAdrTupleFromAddress(Item.Address);
         if (formGoogleDocType == "Open")
         {
             var itemJson = _backendService.CommandApi("OpenGoogleDoc", adrTuple.Item1, adrTuple.Item2);
@@ -184,7 +184,7 @@
     {
         var index = _operationsService.Index.StringToIndex(idxString);
         var adrTuple = IUniAddressOperations
-             .CreateAddressFromString(Item.Address);
+             .CreateAdrTupleFromAddress(Item.Address);
         var newAddress = _operationsService.Index.JoinIndexWithLoca(adrTuple, index);
         var itemJString = GetItem(newAddress);
         var itemObj = _operationsService.Json.TryDeserializeObject<ItemModel>(itemJString);
@@ -208,7 +208,7 @@
         }
 
         var adrTuple = IUniAddressOperations
-             .CreateAddressFromString(Item.Address);
+             .CreateAdrTupleFromAddress(Item.Address);
         // todo
         // var itemJson = backendService
         //     .CommandApi("CreateItem", adrTuple.Item1, adrTuple.Item2, formAddValue, "Folder");
@@ -217,7 +217,7 @@
     private void OnFolderClicked()
     {
         var adrTuple = IUniAddressOperations
-             .CreateAddressFromString(Item.Address);
+             .CreateAdrTupleFromAddress(Item.Address);
         var itemJson = _backendService
             .CommandApi("OpenFolder", adrTuple.Item1, adrTuple.Item2);
     }

@@ -4,7 +4,7 @@ using SharpOperationsProg.Service;
 
 namespace SharpOperationsProg.AAPublic;
 
-public class OutBorder
+public static class OutBorder
 {
     public static IOperationsService OperationsService(
         IFileService fileService)

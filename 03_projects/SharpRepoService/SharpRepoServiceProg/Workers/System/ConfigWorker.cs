@@ -69,6 +69,15 @@ internal class ConfigWorker
         var content = _yamlOperations.Serialize(dict);
         File.WriteAllText(nameFilePath, content);
     }
+    
+    // public void PatchConfig(
+    //     (string Repo, string Loca) adrTuple,
+    //     KeyValuePair<string, object> keyValue)
+    // {
+    //     var nameFilePath = _path.GetConfigPath(adrTuple);
+    //     var content = _yamlOperations.Serialize(dict);
+    //     File.WriteAllText(nameFilePath, content);
+    // }
 
     public void PutConfig(
         (string Repo, string Loca) adrTuple,

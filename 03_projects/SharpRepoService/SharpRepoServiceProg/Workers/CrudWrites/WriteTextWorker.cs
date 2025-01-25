@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Operations;
-using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.Workers.CrudReads;
-using SharpRepoServiceProg.Workers.System;
 
 namespace SharpRepoServiceProg.Workers.CrudWrites;
 
@@ -56,6 +53,13 @@ public class WriteTextWorker : WriteWorkerBase
         string name,
         (string Repo, string Loca) adrTuple)
     {
+        (string Repo, string Loca) foundAdrTuple = _address.GetAdrTupleByName(adrTuple, name);
+
+        if (foundAdrTuple != default)
+        {
+            return foundAdrTuple;
+        }
+        
         ItemModel item = TryInternalPost(null, name, adrTuple, _myType);
         return item.AdrTuple;
     }

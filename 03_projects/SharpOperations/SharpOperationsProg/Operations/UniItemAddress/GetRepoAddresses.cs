@@ -1,26 +1,24 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using SharpFileServiceProg.AAPublic;
-using SharpRepoServiceProg.Operations;
+using SharpOperationsProg.AAPublic.Operations;
+using SharpOperationsProg.Operations.Index;
 using SharpRepoServiceProg.Operations.Files;
 
-namespace SharpRepoServiceProg.Duplications.Operations.Files;
+namespace SharpOperationsProg.Operations.UniItemAddress;
 
 internal class GetRepoAddresses : IRepoAddressesObtainer
 {
-    private readonly CustomOperationsService _customOperationsService;
     private readonly IFileService _fileService;
     private List<string> locaList;
     private IParentVisit vdr;
     private string _repoName;
+    private readonly IIndexOperations _indexOperations;
 
     public GetRepoAddresses(
         IFileService fileService,
-        CustomOperationsService customOperationsService)
+        IIndexOperations indexOperations)
     {
         _fileService = fileService;
-        _customOperationsService = customOperationsService;
+        _indexOperations = indexOperations;
         ReInitialize();
     }
 
@@ -47,7 +45,7 @@ internal class GetRepoAddresses : IRepoAddressesObtainer
 
     private void FolderAction(DirectoryInfo directoryInfo)
     {
-        if (_customOperationsService.Index
+        if (_indexOperations
             .IsCorrectIndex(directoryInfo.FullName, out var index))
         {
             var parents = vdr.Parents;

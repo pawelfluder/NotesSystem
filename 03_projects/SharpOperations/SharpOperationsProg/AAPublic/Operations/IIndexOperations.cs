@@ -1,6 +1,6 @@
 namespace SharpOperationsProg.AAPublic.Operations;
 
-public interface IIndexWrk
+public interface IIndexOperations
 {
     string GetAddressString((string, string) adrTuple);
     (string, string) SelectAddress((string Repo, string Loca) address, int index);

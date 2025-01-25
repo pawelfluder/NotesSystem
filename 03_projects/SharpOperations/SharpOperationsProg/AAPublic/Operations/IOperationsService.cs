@@ -9,7 +9,7 @@ namespace SharpOperationsProg.AAPublic.Operations;
 public interface IOperationsService
 {
     IFileWrk File { get; }
-    IIndexWrk Index { get; }
+    IIndexOperations Index { get; }
     // IYamlWrk Yaml { get; }
     IPathsOperations Path { get; }
     HeadersOperations Header { get; }

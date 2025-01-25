@@ -1,4 +1,6 @@
-﻿namespace SharpOperationsProg.Operations.UniAddress;
+﻿using SharpOperationsProg.Operations.UniItemAddress;
+
+namespace SharpOperationsProg.Operations.UniAddress;
 
 public interface IUniAddressOperations
 {
@@ -34,7 +36,7 @@ public interface IUniAddressOperations
 
         return newAddress;
     }
-    static (string, string) CreateAddressFromString(string addressString)
+    static (string, string) CreateAdrTupleFromAddress(string addressString)
     {
         addressString = addressString.Trim('/').Replace("https://", "");
         var index = addressString.IndexOf('/');
@@ -77,4 +79,6 @@ public interface IUniAddressOperations
         var newLoca = loca.Replace(spliter, '/');
         return (repo, newLoca);
     }
+
+    public List<string> GetAllAddressesInOneRepo(string path);
 }

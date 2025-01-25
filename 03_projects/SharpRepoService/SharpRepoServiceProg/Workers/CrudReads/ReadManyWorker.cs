@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
@@ -7,6 +8,7 @@ using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.Workers.CrudWrites;
+using SharpRepoServiceProg.Workers.System;
 
 namespace SharpRepoServiceProg.Workers.CrudReads;
 
@@ -21,6 +23,7 @@ internal class ReadManyWorker
     private MigrationWorker _migrate;
     private bool isInitialized;
     private ReadHelper _helper;
+    private PathWorker _path;
 
     public ReadManyWorker()
     {
@@ -55,8 +58,28 @@ internal class ReadManyWorker
             _readText = MyBorder.MyContainer.Resolve<ReadTextWorker>();
             _address = MyBorder.MyContainer.Resolve<ReadAddressWorker>();
             _migrate = MyBorder.MyContainer.Resolve<MigrationWorker>();
+            _path = MyBorder.MyContainer.Resolve<PathWorker>();
             isInitialized = true;
         }
+    }
+    
+    public List<string> GetAllRepoAddresses()
+    {
+        var repos = _path.GetAllReposPaths()
+            .Select(x => Path.GetFileName(x)).ToList();
+        return repos;
+    }
+    
+    public List<(string Repo, string Loca)> GetAllRepoAddresses(
+        string repoName)
+    {
+        var adrTuple = (repoName, "");
+        var path = _path.GetItemPath(adrTuple);
+        var tmp = _customOperations.File.NewRepoAddressesObtainer().Visit(path);
+        var result = tmp
+            .Select(x => (adrTuple.Item1, _customOperations.UniAddress.JoinLoca(adrTuple.Item2, x)))
+            .ToList();
+        return result;
     }
 
     // read; config

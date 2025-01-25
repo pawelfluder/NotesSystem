@@ -21,7 +21,7 @@ public class ItemModel
         set
         {
             address = value;
-            (string, string) adrTuple = IUniAddressOperations.CreateAddressFromString(address);
+            (string, string) adrTuple = IUniAddressOperations.CreateAdrTupleFromAddress(address);
             AdrTuple = adrTuple;
         }
     }

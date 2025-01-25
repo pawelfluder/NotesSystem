@@ -146,7 +146,7 @@ public static class UnitItemExtensions
         string name)
     {
         var parentAdrTuple = IUniAddressOperations
-            .CreateAddressFromString(parentAddress);
+            .CreateAdrTupleFromAddress(parentAddress);
         var typeAdrTuple = repoService.Methods
             .GetAdrTupleByName(parentAdrTuple, name);
 

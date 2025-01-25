@@ -116,7 +116,7 @@
         }
 
         var adrTuple = IUniAddressOperations
-             .CreateAddressFromString(Item.Address);
+             .CreateAdrTupleFromAddress(Item.Address);
         var itemJson = _backendService
             .CommandApi("CreateItem", adrTuple.Item1, adrTuple.Item2, formSelectedType, formAddValue);
     }
@@ -124,7 +124,7 @@
     private void OnFolderClicked()
     {
         var adrTuple = IUniAddressOperations
-             .CreateAddressFromString(Item.Address);
+             .CreateAdrTupleFromAddress(Item.Address);
         var itemJson = _backendService
             .CommandApi("OpenFolder", adrTuple.Item1, adrTuple.Item2);
     }
@@ -132,7 +132,7 @@
     private void ConfigClicked()
     {
         var adrTuple = IUniAddressOperations
-              .CreateAddressFromString(Item.Address);
+              .CreateAdrTupleFromAddress(Item.Address);
         var itemJson = _backendService.CommandApi("OpenConfig", adrTuple.Item1, adrTuple.Item2);
     }
     
@@ -142,7 +142,7 @@
         //var voicesArray = await speechSynthesisService.GetVoicesAsync();
         
         var adrTuple = IUniAddressOperations
-            .CreateAddressFromString(Item.Address);
+            .CreateAdrTupleFromAddress(Item.Address);
         var itemJson = _backendService.CommandApi("OpenTerminal", adrTuple.Item1, adrTuple.Item2);
     }
 
@@ -150,7 +150,7 @@
     {
         var index = _operationsService.Index.StringToIndex(idxString);
         var adrTuple = IUniAddressOperations
-             .CreateAddressFromString(Item.Address);
+             .CreateAdrTupleFromAddress(Item.Address);
         var newAddress = _operationsService.Index.JoinIndexWithLoca(adrTuple, index);
         var itemJString = GetItem(newAddress);
         var itemObj = _operationsService.Json.TryDeserializeObject<ItemModel>(itemJString);

@@ -10,6 +10,7 @@ using SharpOperationsProg.Operations.Path;
 using SharpOperationsProg.Operations.Reflection;
 using SharpOperationsProg.Operations.UniAddress;
 using SharpOperationsProg.Operations.UniItem;
+using SharpOperationsProg.Operations.UniItemAddress;
 
 namespace SharpOperationsProg.Service;
 
@@ -17,7 +18,7 @@ internal class OperationService : IOperationsService
 {
     private readonly IFileService _fileService;
     public IFileWrk File { get; private set; }
-    public IIndexWrk Index { get; private set; }
+    public IIndexOperations Index { get; private set; }
     // public IYamlWrk Yaml { get; private set; }
     public IPathsOperations Path { get; private set; }
     public HeadersOperations Header { get; private set; }
@@ -39,7 +40,7 @@ internal class OperationService : IOperationsService
         // Yaml = new YamlWorker();
         Path = new PathsOperations();
         Header = new HeadersOperations();
-        UniAddress = new UniAddressOperations(Index);
+        UniAddress = new UniAddressOperations(fileService, Index);
         Credentials = new GoogleCredentialWorker();
         Reflection = new ReflectionOperations();
         Json = new JsonOperations();

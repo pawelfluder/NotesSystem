@@ -89,6 +89,14 @@ public class JsonWorker
         string jsonString = JsonConvert.SerializeObject(item, Formatting.Indented);
         return jsonString;
     }
+    
+    public string GetItemBody(
+        (string repo, string loca) adrTuple)
+    {
+        ItemModel item = _readMulti.GetItem(adrTuple);
+        string jsonString = JsonConvert.SerializeObject(item.Body, Formatting.Indented);
+        return jsonString;
+    }
 
     public string PostItem(
         (string repo, string loca) address,

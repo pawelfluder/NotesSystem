@@ -76,7 +76,7 @@
     {
         AllRepoNames = _repoService.Methods.GetAllReposNames();
         (string, string) adrTuple = IUniAddressOperations
-        .CreateAddressFromString(_item.Address);
+        .CreateAdrTupleFromAddress(_item.Address);
 
         if (UrlUniAddress != null
         && IsAdressCorrect(UrlUniAddress))
@@ -113,7 +113,7 @@
     {
         _item = itemObj;
         (string, string) adrTuple = IUniAddressOperations
-        .CreateAddressFromString(_item.Address);
+        .CreateAdrTupleFromAddress(_item.Address);
         inputLocaName = adrTuple.Item2;
 
         if (folderView != null)
@@ -131,9 +131,14 @@
         ItemModel item,
         bool reloadState)
     {
+        if (item == null)
+        {
+            return;
+        }
+        
         _item = item;
         (string, string) adrTuple = IUniAddressOperations
-        .CreateAddressFromString(item.Address);
+        .CreateAdrTupleFromAddress(item.Address);
         inputLocaName = adrTuple.Item2;
         
         if (folderView != null)
@@ -170,7 +175,7 @@
         string newAddress = IUniAddressOperations
         .MoveOneLocaBack(_item.Address);
         (string, string) newAdrTuple = IUniAddressOperations
-        .CreateAddressFromString(newAddress);
+        .CreateAdrTupleFromAddress(newAddress);
         ReloadItem(newAdrTuple);
     }
 }

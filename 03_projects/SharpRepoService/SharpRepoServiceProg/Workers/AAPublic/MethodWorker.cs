@@ -286,7 +286,7 @@ public class MethodWorker
         => _readFolder.GetAllReposNames();
 
     public List<string> GetAllReposPaths()
-        => _readFolder.GetAllRepoAddresses();
+        => _readMany.GetAllRepoAddresses();
 
     //public int GetReposCount()
     //{

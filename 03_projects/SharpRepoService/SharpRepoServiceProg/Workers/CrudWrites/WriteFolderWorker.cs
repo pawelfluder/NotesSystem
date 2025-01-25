@@ -21,11 +21,13 @@ public class WriteFolderWorker : WriteWorkerBase
         ItemModel item = new();
 
         // config
+        string address = _customOperations.UniAddress.CreateAddresFromAdrTuple(adrTuple);
         item.Settings = new Dictionary<string, object>()
         {
             { ConfigKeys.Id, Guid.NewGuid().ToString() },
             { ConfigKeys.Type, ItemTypeNames.Folder },
-            { ConfigKeys.Name, name }
+            { ConfigKeys.Name, name },
+            { ConfigKeys.Address, address },
         };
         
         Put(item);
@@ -47,20 +49,35 @@ public class WriteFolderWorker : WriteWorkerBase
         string name,
         (string Repo, string Loca) adrTuple)
     {
-        var foundAdrTuple = _address.GetAdrTupleByName(adrTuple, name);
+        string address = _customOperations.UniAddress.CreateAddresFromAdrTuple(adrTuple);
+        string oneBackAddress = _customOperations.UniAddress
+            .MoveOneLocaBack(address);
+        (string, string) oneBackAdrTuple = _customOperations.UniAddress.CreateAdrTupleFromAddress(oneBackAddress);
+        (string Repo, string Loca) foundAdrTuple = _address.GetAdrTupleByName(oneBackAdrTuple, name);
+        
         if (foundAdrTuple != default)
         {
-            Put(name, foundAdrTuple);
             return foundAdrTuple;
         }
 
-        var lastIndex = _readFolder.GetFolderLastNumber(adrTuple);
+        var lastIndex = _readFolder.GetFolderLastNumber(oneBackAdrTuple);
         var newIndex = lastIndex + 1;
         var newIndexString = _customOperations.Index.IndexToString(newIndex);
 
-        var newAdrTuple = _customOperations.Index.AdrTupleJoinLoca(adrTuple, newIndexString);
+        if (adrTuple.Loca == "00" && name == "hidden")
+        {
+            newIndexString = "00";
+        }
+        
+        var newAdrTuple = _customOperations.Index.AdrTupleJoinLoca(oneBackAdrTuple, newIndexString);
         Put(name, newAdrTuple);
         return newAdrTuple;
+    }
+
+    private void CreateHidden(
+        (string Repo, string Loca) adrTuple)
+    {
+        Put("hidden", adrTuple);
     }
 
     internal ItemModel TryInternalPost(

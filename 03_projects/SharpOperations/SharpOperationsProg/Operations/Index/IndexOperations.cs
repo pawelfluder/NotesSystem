@@ -2,7 +2,7 @@
 
 namespace SharpOperationsProg.Operations.Index;
 
-internal class IndexOperations : IIndexWrk
+internal class IndexOperations : IIndexOperations
 {
     private char slash = '/';
     public int GetLocaLast(string loca)

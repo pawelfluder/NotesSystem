@@ -1,14 +1,20 @@
-﻿using SharpOperationsProg.AAPublic.Operations;
+﻿using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
+using SharpOperationsProg.Operations.UniAddress;
 
-namespace SharpOperationsProg.Operations.UniAddress;
+namespace SharpOperationsProg.Operations.UniItemAddress;
 
 internal class UniAddressOperations : IUniAddressOperations
 {
-    private readonly IIndexWrk indexOperations;
+    private readonly IIndexOperations _indexOperations;
+    private readonly IFileService _fileService;
 
-    public UniAddressOperations(IIndexWrk indexOperations)
+    public UniAddressOperations(
+        IFileService fileService,
+        IIndexOperations indexOperations)
     {
-        this.indexOperations = indexOperations;
+        _indexOperations = indexOperations;
+        _fileService = fileService;
     }
 
     public (string, string) AdrTupleJoinLoca(
@@ -37,7 +43,7 @@ internal class UniAddressOperations : IUniAddressOperations
 
     public Uri CreateUriFromAddress((string Repo, string Loca) address, int index)
     {
-        var indexString = indexOperations.IndexToString(index);
+        var indexString = _indexOperations.IndexToString(index);
         if (address.Loca != string.Empty)
         {
             address = (address.Repo, address.Loca + "/" + indexString);
@@ -97,7 +103,15 @@ internal class UniAddressOperations : IUniAddressOperations
 
         var splited = addressString.Split("/").ToList();
         var lastIndexString = splited.Last();
-        var lastIndex = indexOperations.StringToIndex(lastIndexString);
+        var lastIndex = _indexOperations.StringToIndex(lastIndexString);
         return lastIndex;
+    }
+    
+    public List<string> GetAllAddressesInOneRepo(
+        string path)
+    {
+        List<string> repoAddressesList = new GetRepoAddresses(_fileService, _indexOperations)
+            .Visit(path);
+        return repoAddressesList;
     }
 }
