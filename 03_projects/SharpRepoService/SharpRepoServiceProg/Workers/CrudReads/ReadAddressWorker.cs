@@ -30,8 +30,7 @@ internal class ReadAddressWorker
         string name)
     {
         List<ItemModel> items = _readMany
-            .ListOfItemsWithConfig(adrTuple);
-        //List<ItemModel> items = _configWorker.GetConfigDictionary(adrTuple);
+            .ListOfOnlyConfigItems(adrTuple);
         ItemModel found = items.SingleOrDefault(x => 
             x.Name.ToString() == name);
         if (found == null)
@@ -62,7 +61,7 @@ internal class ReadAddressWorker
         return adrTuple;
     }
     
-    public List<(string, string)> GetSubAddresses(
+    public List<(string, string)> GetSubAdrTuples(
         (string Repo, string Loca) adrTuple)
     {
         string itemPath = _path.GetItemPath(adrTuple);
@@ -73,5 +72,4 @@ internal class ReadAddressWorker
             .ToList();
         return subAddresses;
     }
-    
 }

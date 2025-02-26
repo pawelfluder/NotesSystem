@@ -1,7 +1,5 @@
 ﻿@page "/{UrlUniAddress}"
 @page "/"
-@using System.Text.RegularExpressions
-@using SharpOperationsProg.AAPublic.Operations
 @using SharpOperationsProg.Operations.UniAddress
 @using SharpRepoBackendProg.Services
 @using SharpRepoServiceProg.AAPublic
@@ -9,6 +7,9 @@
 @using BlazorUniSystemCore.Registrations
 @using BlazorUniSystemCore.Repet.Models
 @using BlazorUniSystemCore.Components.Editor
+@using SharpOperationsProg.AAPublic
+
+@inject NavigationManager NavigationManager
 
 @rendermode InteractiveServer
 
@@ -25,7 +26,7 @@
 </div>
 
 <div class="menu-item">
-    <div>Address: @_item.Address</div>
+    <div>Address: @ConvAddress(_item.Address)</div>
     <div>Type: @_item.Type</div>
     <div>Name: @_item.Name</div>
 </div>
@@ -45,7 +46,7 @@
 
     private TextView textView;
     private FolderView folderView;
-    private RefTextView refTextView;
+    private readonly UrlAddressParser _urlParser;
 
     [Parameter]
     public string? UrlUniAddress { get; set; }
@@ -55,6 +56,7 @@
         _repoService = MyBorder.OutContainer.Resolve<IRepoService>();
         _operationsService = MyBorder.OutContainer.Resolve<IOperationsService>();
         _backendService = MyBorder.OutContainer.Resolve<IBackendService>();
+        _urlParser = new UrlAddressParser();
         
         AllRepoNames = _repoService.Methods.GetAllReposNames();
         if (_item == null)
@@ -74,46 +76,42 @@
 
     protected override async Task OnInitializedAsync()
     {
-        AllRepoNames = _repoService.Methods.GetAllReposNames();
-        (string, string) adrTuple = IUniAddressOperations
-        .CreateAdrTupleFromAddress(_item.Address);
-
-        if (UrlUniAddress != null
-        && IsAdressCorrect(UrlUniAddress))
+        ItemModel newItem = new();
+        _urlParser.GetItem(ref newItem, UrlUniAddress);
+        
+        bool pageReloadNeeded = _urlParser
+            .IsPageReloadNeeded(newItem, UrlUniAddress, out string newUrl);
+        if (pageReloadNeeded)
         {
-        adrTuple = IUniAddressOperations
-        .CreateAddressFromUrlParameter(UrlUniAddress);
+            NavigationManager.NavigateTo(newUrl);
         }
-
-        ReloadItem(adrTuple);
+        
+        bool itemReloadNeeded = _urlParser
+            .IsItemReloadNeeded(_item, newItem);
+        if (itemReloadNeeded)
+        {
+            ReloadItem(newItem);
+        }
     }
 
-    private bool IsAdressCorrect(
-        string urlUniAddress)
-    {
-        string pattern = "^[A-Za-z0-9]{1,13}(\\/(0[0-9]{1,2}|[1-9][0-9]{1,2}))*$\n";
-        Regex regex = new Regex(pattern);
-        Match match = regex.Match(urlUniAddress);
-        bool correct = match.Groups.Count > 0;
-        return correct;
-    }
-
-    protected void ReloadItem((string Repo, string Loca) address)
+    protected void ReloadItem(
+        (string Repo, string Loca) address)
     {
         string itemJString = GetItem(address);
         ItemModel? itemObj = _operationsService.Json
-        .TryDeserializeObject<ItemModel>(itemJString);
+            .TryDeserializeObject<ItemModel>(itemJString);
         if (itemObj != null)
         {
             ReloadItem(itemObj);
         }
     }
 
-    protected void ReloadItem(ItemModel itemObj)
+    protected void ReloadItem(
+        ItemModel itemObj)
     {
         _item = itemObj;
         (string, string) adrTuple = IUniAddressOperations
-        .CreateAdrTupleFromAddress(_item.Address);
+            .CreateAdrTupleFromAddress(_item.Address);
         inputLocaName = adrTuple.Item2;
 
         if (folderView != null)
@@ -138,7 +136,7 @@
         
         _item = item;
         (string, string) adrTuple = IUniAddressOperations
-        .CreateAdrTupleFromAddress(item.Address);
+            .CreateAdrTupleFromAddress(item.Address);
         inputLocaName = adrTuple.Item2;
         
         if (folderView != null)
@@ -160,22 +158,32 @@
         ReloadItem(address);
     }
 
-    public string GetItem((string Repo, string Loca) address)
+    public string GetItem(
+        (string Repo, string Loca) address)
     {
         string itemJson = _backendService
-        .CommandApi(
-        "GetItem",
-        address.Repo,
-        address.Loca);
+            .CommandApi(
+                "GetItem",
+                address.Repo,
+                address.Loca);
         return itemJson;
     }
 
-    private async Task OnBackArrowBtnClicked(MouseEventArgs e)
+    private async Task OnBackArrowBtnClicked(
+        MouseEventArgs e)
     {
         string newAddress = IUniAddressOperations
-        .MoveOneLocaBack(_item.Address);
+            .MoveOneLocaBack(_item.Address);
         (string, string) newAdrTuple = IUniAddressOperations
-        .CreateAdrTupleFromAddress(newAddress);
+            .CreateAdrTupleFromAddress(newAddress);
         ReloadItem(newAdrTuple);
+    }
+
+    private string ConvAddress(
+        string itemAddress)
+    {
+        string result = itemAddress
+            .Replace('/', '-');
+        return result;
     }
 }

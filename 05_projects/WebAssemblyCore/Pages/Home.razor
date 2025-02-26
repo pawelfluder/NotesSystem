@@ -1,0 +1,41 @@
+﻿@page "/"
+
+@inject NavigationManager NavigationManager
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+@* new component to extract *@
+@code {
+    private string inputLocaName = string.Empty;
+    
+    private async Task OnBackArrowBtnClicked(
+        MouseEventArgs e)
+    {
+        string newAddress = IUniAddressOperations
+            .MoveOneLocaBack(_item.Address);
+        (string, string) newAdrTuple = IUniAddressOperations
+            .CreateAdrTupleFromAddress(newAddress);
+        ReloadItem(newAdrTuple);
+    }
+    
+    public void OnGoBtnClicked(MouseEventArgs e)
+    {
+        (string, string) address = (ComboBoxRepoName, inputLocaName);
+        ReloadItem(address);
+    }
+}
+
+
+<div class="menu-item">
+    <input type="button" value="<" @onclick=@OnBackArrowBtnClicked />
+    <input type="button" value="Go" @onclick=@OnGoBtnClicked />
+    Repo::
+    <ComboBox02
+        Items="AllRepoNames"
+        @bind-SelectedItem=@ComboBoxRepoName/>
+    @* OnValueChanged=@HandleValueChanged *@
+    Loca::
+    <input type="text" @bind=@inputLocaName />
+</div>

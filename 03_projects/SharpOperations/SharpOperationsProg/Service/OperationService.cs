@@ -2,6 +2,7 @@
 using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpOperationsProg.Operations.Credentials;
+using SharpOperationsProg.Operations.Date;
 using SharpOperationsProg.Operations.Files;
 using SharpOperationsProg.Operations.Headers;
 using SharpOperationsProg.Operations.Index;
@@ -9,7 +10,6 @@ using SharpOperationsProg.Operations.Json;
 using SharpOperationsProg.Operations.Path;
 using SharpOperationsProg.Operations.Reflection;
 using SharpOperationsProg.Operations.UniAddress;
-using SharpOperationsProg.Operations.UniItem;
 using SharpOperationsProg.Operations.UniItemAddress;
 
 namespace SharpOperationsProg.Service;
@@ -22,6 +22,7 @@ internal class OperationService : IOperationsService
     // public IYamlWrk Yaml { get; private set; }
     public IPathsOperations Path { get; private set; }
     public HeadersOperations Header { get; private set; }
+    public IDateOperations Date { get; private set; }
     public IUniAddressOperations UniAddress { get; private set; }
     public IUnitItemOperations UniItem { get; }
     public IGoogleCredentialWorker Credentials { get; private set; }
@@ -37,6 +38,7 @@ internal class OperationService : IOperationsService
     {
         File = new FileWrk(fileService);
         Index = new IndexOperations();
+        Date = new DateOperations(Index);
         // Yaml = new YamlWorker();
         Path = new PathsOperations();
         Header = new HeadersOperations();

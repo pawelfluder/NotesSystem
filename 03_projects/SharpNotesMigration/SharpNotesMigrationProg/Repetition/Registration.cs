@@ -1,6 +1,7 @@
 ﻿using SharpConfigProg.AAPublic;
 using SharpConfigProg.Service;
 using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using Border1 = SharpFileServiceProg.AAPublic.OutBorder;
 using Border2 = SharpOperationsProg.AAPublic.OutBorder;

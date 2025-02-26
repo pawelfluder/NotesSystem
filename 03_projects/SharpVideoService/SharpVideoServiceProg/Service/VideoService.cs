@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using FFMpegCore;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpVideoServiceProg.AAPublic;
 

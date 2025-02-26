@@ -4,10 +4,11 @@ using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Registration;
 using SharpRepoServiceProg.Workers.Caches;
 using SharpRepoServiceProg.Workers.CrudWrites;
+using WriteTextWorker = SharpRepoServiceProg.Workers.CrudWrites.WriteTexts.WriteTextWorker;
 
 namespace SharpRepoServiceProg.Workers.CrudReads;
 
-public class GuidWorker : ReadWorkerBase
+internal class GuidWorker : ReadWorkerBase
 {
     private readonly Dictionary<string, PersistencyCache> _repoNameQCacheDict = new();
     private ReadTextWorker _readText;
@@ -19,7 +20,7 @@ public class GuidWorker : ReadWorkerBase
 
     public bool GetAdrTupleByGuid(
         string repoName,
-        string guid,
+        Guid guid,
         out (string, string) outAdrTuple)
     {
         TryInitialize();
@@ -45,12 +46,12 @@ public class GuidWorker : ReadWorkerBase
 
     private bool PrivateGetAdrTupleByGuid(
         string repoName,
-        string guid,
+        Guid guid,
         out PersistencyCache cache,
         out (string, string) foundAdrTuple)
     {
         cache = GetCache(repoName);
-        Dictionary<string, object> dict = cache.Get(guid);
+        Dictionary<string, object> dict = cache.Get(guid.ToString());
         if (dict != null)
         {
             foundAdrTuple = GetAdrTupleFromDict(dict);
@@ -70,7 +71,7 @@ public class GuidWorker : ReadWorkerBase
             return default;
         }
         
-        (string, string) adrTuple = _customOperations.UniAddress
+        (string, string) adrTuple = _operations.UniAddress
             .CreateAdrTupleFromAddress(address.ToString());
         return adrTuple;
     }
@@ -83,9 +84,10 @@ public class GuidWorker : ReadWorkerBase
         {
             return cache;
         }
-        
+
+        ItemModel item = new();
         (string Repo, string) hiddenAdrTuple = (repoName, "00");
-        _writeFolder.Post("hidden", hiddenAdrTuple);
+        _writeFolder.DirectPost(ref item,"hidden", hiddenAdrTuple);
         PersistencyCache newCache = new(hiddenAdrTuple);
         _repoNameQCacheDict.Add(repoName, newCache);
         return newCache;
@@ -107,14 +109,14 @@ public class GuidWorker : ReadWorkerBase
         PersistencyCache cache)
     {
         var gg = _readMany.GetAllRepoAddresses(cache.CacheAdrTuple.Repo);
-        var e = 0;
+        int e = 0;
         PersistencyCache newCache = new(cache.ParentAdrTuple, false);
         for (int i = 0; i < gg.Count; i++)
         {
             var adrTuple = gg[i];
             try
             {
-                ItemModel item = _readMulti.GetItemWithoutRef(adrTuple);
+                ItemModel item = _readMulti.GetItemExcludingRef(adrTuple);
                 item.Settings.Add(newCache.KeyString, item.Settings["id"]);
                 //item.Settings.Remove("id");
                 newCache.Put(item.Id, item.Settings);

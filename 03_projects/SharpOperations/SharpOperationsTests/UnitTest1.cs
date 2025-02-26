@@ -1,4 +1,6 @@
+using System.Text.RegularExpressions;
 using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpOperationsProg.Operations.UniAddress;
 
@@ -38,5 +40,21 @@ public class Tests
         List<string> addressesList = _uniAddress
             .GetAllAddressesInOneRepo(repoFolderPath);
         
+    }
+
+    [Test]
+    public void Test2()
+    {
+        string pattern = @"^\d{2}-(0[0-9]|1[0-2])-(0[0-9]|[12][0-9]|3[01])$";
+        Regex regex = new(pattern);
+
+        string[] testStrings = { "99-12-31", "20-00-15", "45-07-00", "99-13-10", "22-06-32", "10-10-10" };
+
+        foreach (var str in testStrings)
+        {
+            bool s01 = _operations.Date
+                .TryParse(str, out var result);
+            Console.WriteLine($"{str}: {regex.IsMatch(str)}");
+        }
     }
 }

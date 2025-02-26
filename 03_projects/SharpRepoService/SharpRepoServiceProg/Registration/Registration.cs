@@ -1,9 +1,12 @@
 ﻿using SharpContainerProg.AAPublic;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Workers.AAPublic;
+using SharpRepoServiceProg.Workers.APublic;
 using SharpRepoServiceProg.Workers.CrudReads;
 using SharpRepoServiceProg.Workers.CrudWrites;
 using SharpRepoServiceProg.Workers.System;
+using ItemWorker = SharpRepoServiceProg.Workers.APublic.ItemWorkers.ItemWorker;
+using WriteTextWorker = SharpRepoServiceProg.Workers.CrudWrites.WriteTexts.WriteTextWorker;
 
 namespace SharpRepoServiceProg.Registration;
 
@@ -18,7 +21,9 @@ internal class Registration : RegistrationBase
         RegisterWrite();
 
         MyBorder.MyContainer.RegisterByFunc(
-            () => new JsonWorker());
+            () => new ItemWorker());
+        MyBorder.MyContainer.RegisterByFunc(
+            () => new ManyItemsWorker());
     }
 
     private static void RegisterWrite()
@@ -28,6 +33,9 @@ internal class Registration : RegistrationBase
         
         MyBorder.MyContainer.RegisterByFunc(
             () => new WriteTextWorker());
+        
+        MyBorder.MyContainer.RegisterByFunc(
+            () => new WriteRefWorker());
         
         MyBorder.MyContainer.RegisterByFunc(
             () => new WriteMultiWorker());

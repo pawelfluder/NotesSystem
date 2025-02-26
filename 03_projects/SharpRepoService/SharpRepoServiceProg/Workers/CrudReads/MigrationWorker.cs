@@ -9,7 +9,7 @@ using SharpRepoServiceProg.Workers.System;
 
 namespace SharpRepoServiceProg.Workers.CrudReads;
 
-public class MigrationWorker
+internal class MigrationWorker
 {
     private readonly ConfigWorker _config;
     private readonly PathWorker _path;
@@ -22,7 +22,7 @@ public class MigrationWorker
         _path = MyBorder.MyContainer.Resolve<PathWorker>();
     }
     
-    public ItemModel GetItemWithConfig(
+    public ItemModel GetOnlyItemConfig(
         (string Repo, string Loca) adrTuple)
     {
         ItemModel item = new();
@@ -101,9 +101,9 @@ public class MigrationWorker
         string contentFilePath = _path.GetBodyPath(adrTuple);
         if (File.Exists(contentFilePath))
         {
-            return UniItemTypes.Text;
+            return UniType.Text.ToString();
         }
 
-        return UniItemTypes.Folder;
+        return UniType.Folder.ToString();
     }
 }

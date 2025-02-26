@@ -6,7 +6,6 @@
   <ItemGroup>
     <PackageReference Include="ceTe.DynamicPDF.Printing.NET" Version="4.19.0" />
     <PackageReference Include="PdfSharpCore" Version="1.2.12" />
-    <PackageReference Include="SumatraPDFWrapper" Version="1.0.4" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Template\GridOfferTemplate.xml">

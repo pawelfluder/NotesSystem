@@ -1,0 +1,35 @@
+﻿<div class="custom-dropdown">
+    <div class="dropdown-header" @onclick="ToggleDropdown">
+        @SelectedValue
+    </div>
+    @if (IsDropdownOpen)
+    {
+        <div class="dropdown-list">
+            @foreach (var item in Items)
+            {
+                <div class="dropdown-item" @onclick="(() => SelectItem(item))">
+                    @item
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<p>Wybrana wartość: @SelectedValue</p>
+
+@code {
+    private List<string> Items = new List<string> { "Opcja 1", "Opcja 2", "Opcja 3" };
+    private string SelectedValue { get; set; } = "Opcja 1";
+    private bool IsDropdownOpen { get; set; }
+
+    private void ToggleDropdown()
+    {
+        IsDropdownOpen = !IsDropdownOpen;
+    }
+
+    private void SelectItem(string item)
+    {
+        SelectedValue = item;
+        IsDropdownOpen = false;
+    }
+}

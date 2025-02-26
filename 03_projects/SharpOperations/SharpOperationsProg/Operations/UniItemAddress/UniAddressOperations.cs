@@ -76,6 +76,22 @@ internal class UniAddressOperations : IUniAddressOperations
         var url = address.Repo + "/" + address.Loca;
         return url;
     }
+    
+    public string CreateUrl(
+        (string Repo, string Loca) adrTuple)
+    {
+        //var url = baseAddress;
+        var url = string.Empty;
+        if (adrTuple.Loca == string.Empty)
+        {
+            url += adrTuple.Repo;
+            return url;
+        }
+
+        string loca = adrTuple.Loca.Replace('/', '-');
+        url = adrTuple.Repo + "-" + loca;
+        return url;
+    }
 
     public string MoveOneLocaBack(string adrString)
     {

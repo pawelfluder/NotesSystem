@@ -4,6 +4,8 @@ namespace SharpOperationsProg.Operations.UniAddress;
 
 public interface IUniAddressOperations
 {
+    public string CreateUrl(
+        (string Repo, string Loca) adrTuple);
     public string JoinLoca(string loca01, string loca02);
     public (string, string) AdrTupleJoinLoca((string Repo, string Loca) adrTuple, string loca);
     //(string, string) CreateAddressFromString(string addressString);

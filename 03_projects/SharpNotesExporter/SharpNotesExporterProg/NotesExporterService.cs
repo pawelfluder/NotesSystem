@@ -2,6 +2,7 @@
 using SharpFileServiceProg.AAPublic;
 using SharpGoogleDocsProg.AAPublic;
 using SharpNotesExporterProg.Register;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpOperationsProg.Operations.Headers;
 using SharpRepoServiceProg.AAPublic;

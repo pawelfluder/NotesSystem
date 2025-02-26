@@ -16,7 +16,6 @@ namespace SharpPdfServiceProg.Service;
 
 public class PdfExecutor2 : IPdfService2
 {
-
     public bool Export(
         List<(string type, int level, string text)> rows,
         string outputPath)
@@ -170,41 +169,5 @@ public class PdfExecutor2 : IPdfService2
             process.Kill();
             process.Dispose();
         }
-    }
-
-    public void PrintUsingSumatraPDF(string fullFilePathForPrintProcess, string printerName, CancellationToken cancellationToken)
-    {
-        var gg = new SumatraPDFWrapper.SumatraPDFWrapper();
-        gg.Print(fullFilePathForPrintProcess, printerName);
-
-        //PrintQueue print_queue = LocalPrintServer.GetDefaultPrintQueue();
-
-        //Process print = new Process();
-        //print.StartInfo.FileName = "sumatrapdf.exe";
-        //print.StartInfo.UseShellExecute = true;
-        //print.StartInfo.CreateNoWindow = true;
-        //print.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-        //print.StartInfo.Arguments = "-print-to \"" + printerName + "\" -exit-when-done \"" + fullFilePathForPrintProcess + "\"";
-        //print.Start();
-            
-        //PrintSystemJobInfo target_job = null;
-        //while (!print.HasExited && target_job == null && !cancellationToken.IsCancellationRequested)
-        //{
-        //    print_queue.Refresh();
-        //    PrintJobInfoCollection info = print_queue.GetPrintJobInfoCollection();
-        //    foreach (PrintSystemJobInfo job in info)
-        //    {
-        //        if (job.Name.Substring(job.Name.LastIndexOf("\\") + 1) == fullFilePathForPrintProcess)
-        //        {
-        //            target_job = job;
-        //        }
-        //    }
-        //    Thread.Sleep(50);
-        //}
-
-        //while (target_job != null && !target_job.IsCompleted && !cancellationToken.IsCancellationRequested)
-        //{
-        //    Thread.Sleep(50);
-        //}
     }
 }

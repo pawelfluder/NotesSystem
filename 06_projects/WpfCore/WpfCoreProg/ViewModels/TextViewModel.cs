@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Newtonsoft.Json;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoBackendProg.AAPublic;
 using SharpRepoBackendProg.Services;

@@ -9,6 +9,7 @@ using SharpFileServiceProg.AAPublic;
 using SharpGoogleDocsProg.AAPublic;
 using SharpGoogleDriveProg.AAPublic;
 using SharpNotesExporterProg;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoBackendProg.AAPublic;
 using SharpRepoBackendProg.Repetition;
@@ -128,7 +129,7 @@ public class BackendService : IBackendService
             // }
 
             // item
-            var address = (repo, loca);
+            var address = (Repo: repo, Loca: loca);
             if (cmdName == ApiMethods.Tts.ToString())
             {
                 object builder = _ttsService.Tts
@@ -147,7 +148,7 @@ public class BackendService : IBackendService
                 var type = args[2];
                 var name = args[3];
 
-                var item = _repoService.Item.PostItem(address, type, name);
+                var item = _repoService.Item.PostParentItem(address, type, name);
                 return item;
             }
 

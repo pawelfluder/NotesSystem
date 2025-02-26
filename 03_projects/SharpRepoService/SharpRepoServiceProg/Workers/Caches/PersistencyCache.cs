@@ -4,8 +4,11 @@ using System.Linq;
 using Newtonsoft.Json;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic;
+using SharpRepoServiceProg.AAPublic.Names;
+using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Workers.CrudWrites.WriteTexts;
 
 namespace SharpRepoServiceProg.Workers.Caches;
 
@@ -18,6 +21,7 @@ public class PersistencyCache : IPersistencyCache
     private (string, string) _cacheAdrTuple;
 
     private Dictionary<string, Dictionary<string, object>> _persistencyDict = new();
+    private readonly WriteTextWorker _writeText;
 
     public string KeyString => "key";
     public (string Repo, string Loca) ParentAdrTuple => _parentAdrTuple;
@@ -27,13 +31,19 @@ public class PersistencyCache : IPersistencyCache
         (string, string) parentAdrTuple,
         bool performLoad = true)
     {
-        _operationsService = MyBorder.OutContainer.Resolve<CustomOperationsService>();
+        _operationsService = MyBorder.MyContainer.Resolve<CustomOperationsService>();
         _fileService = MyBorder.OutContainer.Resolve<IFileService>();
         _repoService = MyBorder.OutContainer.Resolve<IRepoService>();
-        
+        _writeText = MyBorder.MyContainer.Resolve<WriteTextWorker>();
         _parentAdrTuple = parentAdrTuple;
-        _cacheAdrTuple = _repoService.Methods
-            .PostText(parentAdrTuple, "cache");
+
+        ItemModel cacheItem = new();
+        bool s01 = _writeText.IfMineParentPost(
+            ref cacheItem,
+            "cache",
+            _parentAdrTuple);
+        _cacheAdrTuple = cacheItem.AdrTuple;
+        
         if (performLoad)
         {
             Load();
@@ -148,7 +158,7 @@ public class PersistencyCache : IPersistencyCache
 
     private bool Load()
     {
-        string bodyJson = _repoService.Item.GetItemBody(_cacheAdrTuple);
+        string bodyJson = _repoService.Item.GetBody(_cacheAdrTuple);
         var body = JsonConvert.DeserializeObject<object>(bodyJson).ToString();
         
         bool success = _fileService.Yaml.Custom03
@@ -168,9 +178,13 @@ public class PersistencyCache : IPersistencyCache
     public bool Save()
     {
         List<Dictionary<string, object>> persistencyList = _persistencyDict.Values.ToList();
-        var text = _fileService.Yaml
+        string text = _fileService.Yaml
             .Custom03.Serialize(persistencyList);
-        _repoService.Methods.PutText(_cacheAdrTuple, "cache", text);
+        _repoService.Item.PutItem(
+            _cacheAdrTuple,
+            UniType.Text.ToString(),
+            "cache", 
+            text);
         return true;
     }
 }

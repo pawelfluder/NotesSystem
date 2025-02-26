@@ -19,7 +19,7 @@ internal class ReadFolderWorker : ReadWorkerBase
         (string Repo, string Loca) adrTuple)
     {
         ItemModel item = new();
-        string address = _customOperations.UniAddress
+        string address = _operations.UniAddress
             .CreateAddresFromAdrTuple(adrTuple);
         item.Address = address;
         item.Body = _body.GetBody(adrTuple);
@@ -27,13 +27,13 @@ internal class ReadFolderWorker : ReadWorkerBase
     }
 
     // read; config, body
-    public ItemModel TryGetItem(
-        ItemModel item,
+    public bool IfMineGetItem(
+        ref ItemModel item,
         (string Repo, string Loca) adrTuple,
         UniType type = UniType.Folder,
         bool addBody = true)
     {
-        if (_myType != type) { return item; }
+        if (_myType != type) { return false; }
         
         // config
         item.Settings = _migrate
@@ -42,22 +42,22 @@ internal class ReadFolderWorker : ReadWorkerBase
         // body
         item.Body = ListOfIndexesQNames(adrTuple);
 
-        return item;
+        return true;
     }
     
     // read; config, body
-    public ItemModel TryGetItemBody(
-        ItemModel item,
+    public bool IfMineGetBody(
+        ref ItemModel item,
         (string Repo, string Loca) adrTuple,
         UniType type = UniType.Folder,
         bool addBody = true)
     {
-        if (_myType != type) { return item; }
+        if (_myType != type) { return false; }
         
         // body
         item.Body = ListOfIndexesQNames(adrTuple);
 
-        return item;
+        return true;
     }
     
     public object TryGetConfigValue(
@@ -123,9 +123,9 @@ internal class ReadFolderWorker : ReadWorkerBase
         (string Repo, string Loca) adrTuple)
     {
         var items = _readMany
-            .ListOfItemsWithConfig(adrTuple);
+            .ListOfOnlyConfigItems(adrTuple);
         var result = items
-            .Select(x => (_customOperations.UniAddress.GetLastLocaIndex(x.Address), x.Name))
+            .Select(x => (_operations.UniAddress.GetLastLocaIndex(x.Address), x.Name))
             .ToList();
         return result;
     }
@@ -136,7 +136,7 @@ internal class ReadFolderWorker : ReadWorkerBase
         TryInitialize();
         
         List<ItemModel> items = _readMany
-            .ListOfItemsWithConfig(adrTuple);
+            .ListOfOnlyConfigItems(adrTuple);
         var kv = items.Select(x => SelectIndexQName(x))
             .ToList();
         
@@ -149,9 +149,9 @@ internal class ReadFolderWorker : ReadWorkerBase
     private KeyValuePair<string, string> SelectIndexQName(
         ItemModel x)
     {
-        int index = _customOperations.UniAddress
+        int index = _operations.UniAddress
             .GetLastLocaIndex(x.Address);
-        string indexString = _customOperations.Index
+        string indexString = _operations.Index
             .IndexToString(index);
         Enum.TryParse<UniType>(x.Type, out var uniType);
         KeyValuePair<string, string> indexQName;
@@ -159,9 +159,10 @@ internal class ReadFolderWorker : ReadWorkerBase
         if (uniType == UniType.Ref)
         {
             string realAddress = x.Settings[ConfigKeys.RefAddress].ToString();
-            (string RefRepo, string RefLoca) realAdrTuple = _customOperations
+            (string RefRepo, string RefLoca) realAdrTuple = _operations
                 .UniAddress.CreateAddressFromString(realAddress);
-            ItemModel item = _readMulti.TryGetItem(new ItemModel(), realAdrTuple);
+            ItemModel item = new();
+            bool s01 = _readMulti.IfMineGetItem(ref item, realAdrTuple);
             indexQName = new(indexString, item.Name);
             return indexQName;
         }
@@ -189,17 +190,17 @@ internal class ReadFolderWorker : ReadWorkerBase
     {
         (string repo, string loca) adrTuple = (repo, loca);
         IEnumerable<ItemModel> items = _readMany
-            .ListOfItemsWithConfig(adrTuple)
-            .Where(x => x.Type == ItemTypeNames.Folder);
+            .ListOfOnlyConfigItems(adrTuple)
+            .Where(x => x.Type == UniType.Folder.ToString());
         ItemModel found = items.SingleOrDefault(x => x.Name == name);
         if (found == default)
         {
             return default;
         }
 
-        int index = _customOperations.UniAddress
+        int index = _operations.UniAddress
             .GetLastLocaIndex(found.Address);
-        string indexString = _customOperations.Index.IndexToString(index);
+        string indexString = _operations.Index.IndexToString(index);
         (string indexString, string Name) result = (indexString, found.Name);
         return result;
     }
@@ -256,25 +257,45 @@ internal class ReadFolderWorker : ReadWorkerBase
     }
 
     // read; config
-    public string GetType(
-        (string repo, string loca) adrTuple)
-    {
-        var type = GetConfigKey(adrTuple, "type").ToString();
-        if (type == "RefText")
-        {
-            return "RefText";
-        }
-
-        var contentFilePath = _path.GetBodyPath(adrTuple);
-        if (File.Exists(contentFilePath))
-        {
-            return "Text";
-        }
-
-        return "Folder";
-    }
+    // public string GetType(
+    //     (string repo, string loca) adrTuple)
+    // {
+    //     var type = GetConfigKey(adrTuple, "type").ToString();
+    //     if (type == "Ref")
+    //     {
+    //         return "Ref";
+    //     }
+    //
+    //     var contentFilePath = _path.GetBodyPath(adrTuple);
+    //     if (File.Exists(contentFilePath))
+    //     {
+    //         return "Text";
+    //     }
+    //
+    //     return "Folder";
+    // }
 
     // read; directory
+
+    public (string, string) GetNextAdrTuple(
+        (string Repo, string Loca) parentAdrTuple)
+    {
+        string newIndexString = GetNextIndex(parentAdrTuple);
+        (string, string) newAdrTuple = _operations.Index
+            .AdrTupleJoinLoca(parentAdrTuple, newIndexString);
+        return newAdrTuple;
+    }
+
+    public string GetNextIndex(
+        (string Repo, string Loca) adrTuple)
+    {
+        int lastIndex = GetFolderLastNumber(adrTuple);
+        int newIndex = lastIndex + 1;
+        string newIndexString = _operations.Index
+            .IndexToString(newIndex);
+        return newIndexString;
+    }
+
     public int GetFolderLastNumber(
         (string Repo, string Loca) address)
     {
@@ -285,7 +306,7 @@ internal class ReadFolderWorker : ReadWorkerBase
         }
         
         var numbers = directories
-            .Select(x => _customOperations.Index.StringToIndex(Path.GetFileName(x)))
+            .Select(x => _operations.Index.StringToIndex(Path.GetFileName(x)))
             .ToList();
         if (numbers.Count != 0)
         {
@@ -301,9 +322,9 @@ internal class ReadFolderWorker : ReadWorkerBase
     {
         var adrTuple = (repoName, "");
         var path = _path.GetItemPath(adrTuple);
-        var tmp = _customOperations.File.NewRepoAddressesObtainer().Visit(path);
+        var tmp = _operations.File.NewRepoAddressesObtainer().Visit(path);
         var result = tmp
-            .Select(x => (adrTuple.Item1, _customOperations.UniAddress.JoinLoca(adrTuple.Item2, x)))
+            .Select(x => (adrTuple.Item1, _operations.UniAddress.JoinLoca(adrTuple.Item2, x)))
             .ToList();
         return result;
     }
@@ -326,7 +347,7 @@ internal class ReadFolderWorker : ReadWorkerBase
     {
         if (string.IsNullOrEmpty(item.Address))
         {
-            string address = _customOperations.UniAddress
+            string address = _operations.UniAddress
                 .CreateAddresFromAdrTuple(adrTuple);
             item.Address = address;
         }

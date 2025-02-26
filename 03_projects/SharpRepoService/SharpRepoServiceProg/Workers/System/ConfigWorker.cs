@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
-using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registration;
 
@@ -83,8 +81,8 @@ internal class ConfigWorker
         (string Repo, string Loca) adrTuple,
         List<string> contentLines)
     {
-        var nameFilePath = _path.GetConfigPath(adrTuple);
-        var content = string.Join(_system.NewLine, contentLines);
+        string nameFilePath = _path.GetConfigPath(adrTuple);
+        string content = string.Join(_system.NewLine, contentLines);
         File.WriteAllText(nameFilePath, content);
     }
 
@@ -95,13 +93,27 @@ internal class ConfigWorker
         bool success = dict.TryGetValue(ConfigKeys.Type, out var type);
         return type?.ToString();
     }
+    
+    public bool ItemExists(
+        (string Repo, string Loca) adrTuple,
+        out string type)
+    {
+        type = GetType(adrTuple);
+        if (string.IsNullOrEmpty(type))
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     public Dictionary<string, object> GetConfigDictionary(
         (string Repo, string Loca) adrTuple)
     {
         string configItemPath = _path.GetConfigPath(adrTuple);
-        Dictionary<string, object> dict = _yamlOperations.DeserializeFile<Dictionary<string, object>>(configItemPath);
-        return dict;
+        Dictionary<string, object> dict = _yamlOperations
+            .DeserializeFile<Dictionary<string, object>>(configItemPath);
+        return dict ?? new Dictionary<string, object>();
     }
 
     public void CreateConfigKey(
@@ -109,8 +121,8 @@ internal class ConfigWorker
         string key,
         object value)
     {
-        var dict = GetConfigDictionary(address);
-        var exists = dict.TryGetValue(key, out var tmp);
+        Dictionary<string, object> dict = GetConfigDictionary(address);
+        bool exists = dict.TryGetValue(key, out var tmp);
         if (exists)
         {
             dict[key] = value;

@@ -1,6 +1,7 @@
 ﻿using SharpNotesMigrationProg.AAPublic;
 using SharpNotesMigrationProg.Migrations;
 using SharpNotesMigrationProg.Service;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoServiceProg.AAPublic;
 

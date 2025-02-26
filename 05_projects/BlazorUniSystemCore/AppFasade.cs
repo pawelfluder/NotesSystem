@@ -60,7 +60,7 @@ public class AppFasade
     Builder.Environment.EnvironmentName = "Development";
     Builder.WebHost.UseUrls("http://127.0.0.1:5605");
 #else
-    builder.Environment.EnvironmentName = "Production";
+    Builder.Environment.EnvironmentName = "Production";
     Builder.WebHost.UseUrls("http://127.0.0.1:5505");
 #endif
         

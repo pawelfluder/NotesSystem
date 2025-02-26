@@ -24,6 +24,7 @@ internal class ReadManyWorker
     private bool isInitialized;
     private ReadHelper _helper;
     private PathWorker _path;
+    private ReadMultiWorker _readMulti;
 
     public ReadManyWorker()
     {
@@ -37,14 +38,22 @@ internal class ReadManyWorker
         (string Repo, string Loca) adrTuple)
     {
         TryInitialize();
-        List<(string, string)> adrTupleList = _address.GetSubAddresses(adrTuple);
+        List<(string, string)> adrTupleList = _address
+            .GetSubAdrTuples(adrTuple);
         List<ItemModel> items = new();
         foreach (var adr in adrTupleList)
         {
-            ItemModel item = null;
-            item = _readFolder.TryGetItem(item, adrTuple);
-            item = _readText.TryGetItem(item, adrTuple);
-            items.Add(item);
+            try
+            {
+                ItemModel item = new();
+                bool s01 = _readMulti.GetItem(ref item, adr);
+                if (s01)
+                {
+                    items.Add(item);
+                }
+            }
+            catch(Exception ex)
+            {}
         }
 
         return items;
@@ -59,6 +68,7 @@ internal class ReadManyWorker
             _address = MyBorder.MyContainer.Resolve<ReadAddressWorker>();
             _migrate = MyBorder.MyContainer.Resolve<MigrationWorker>();
             _path = MyBorder.MyContainer.Resolve<PathWorker>();
+            _readMulti = MyBorder.MyContainer.Resolve<ReadMultiWorker>();
             isInitialized = true;
         }
     }
@@ -83,11 +93,11 @@ internal class ReadManyWorker
     }
 
     // read; config
-    public List<ItemModel> ListOfItemsWithConfig(
+    public List<ItemModel> ListOfOnlyConfigItems(
         (string Repo, string Loca) adrTuple)
     {
         TryInitialize();
-        var adrTupleList = _address.GetSubAddresses(adrTuple);
+        var adrTupleList = _address.GetSubAdrTuples(adrTuple);
         var items = new List<ItemModel>();
         foreach (var adr in adrTupleList)
         {
@@ -95,7 +105,7 @@ internal class ReadManyWorker
             {
                 continue;
             }
-            ItemModel item = _migrate.GetItemWithConfig(adr);
+            ItemModel item = _migrate.GetOnlyItemConfig(adr);
             items.Add(item);
         }
 
@@ -116,7 +126,7 @@ internal class ReadManyWorker
     }
 
     // read; config, body
-    public List<string> GetManyText(
+    public List<string> GetManyItemsBody(
         (string Repo, string Loca) adrTuple)
     {
         TryInitialize();
@@ -125,7 +135,7 @@ internal class ReadManyWorker
 
         foreach (var item in items)
         {
-            if (item.Type == UniItemTypes.Text)
+            if (item.Type == UniType.Text.ToString())
             {
                 contentsList.Add(item.Body.ToString());
             }
@@ -144,7 +154,7 @@ internal class ReadManyWorker
 
         foreach (var item in items)
         {
-            if (item.Type == UniItemTypes.Text)
+            if (item.Type == UniType.Text.ToString())
             {
                 int index = _customOperations.UniAddress
                     .GetLastLocaIndex(item.Address);
@@ -162,7 +172,7 @@ internal class ReadManyWorker
     {
         (string, string) newAdrTuple = _address
             .GetAdrTupleBySequenceOfNames(adrTuple, names);
-        List<string> contentsList = GetManyText(newAdrTuple);
+        List<string> contentsList = GetManyItemsBody(newAdrTuple);
 
         return contentsList;
     }
@@ -171,7 +181,7 @@ internal class ReadManyWorker
         (string Repo, string Loca) adrTuple,
         string name)
     {
-        var items = ListOfItemsWithConfig(adrTuple);
+        var items = ListOfOnlyConfigItems(adrTuple);
         var found = items.SingleOrDefault(x => x.Name.ToString() == name);
         if (found == null)
         {

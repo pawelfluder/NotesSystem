@@ -22,7 +22,7 @@ public static class UnitItemExtensions
     {
         string name = typeof(T).Name;
         string? json = repoService.Item
-            .PostItem(mainAdrTuple, "Folder", name);
+            .PostParentItem(mainAdrTuple, "Folder", name);
         UniItem? uniItem = JsonConvert.DeserializeObject<UniItem>(json);
         if (uniItem == null) { return default; }
         (string Repo, string Loca) adrTuple = uniItem.AdrTuple;
@@ -34,7 +34,7 @@ public static class UnitItemExtensions
         string type,
         string name)
     {
-        string? json = repoService.Item.PostItem(parentAdrTuple, type, name);
+        string? json = repoService.Item.PostParentItem(parentAdrTuple, type, name);
         UniItem? uniItem = JsonConvert.DeserializeObject<UniItem>(json);
         return uniItem.AdrTuple;
     }
@@ -44,7 +44,7 @@ public static class UnitItemExtensions
         (string, string) parentAdrTuple,
         string name)
     {
-        string? json = repoService.Item.PostItem(parentAdrTuple, "Text", name);
+        string? json = repoService.Item.PostParentItem(parentAdrTuple, "Text", name);
         UniItem? uniItem = JsonConvert.DeserializeObject<UniItem>(json);
         return uniItem.AdrTuple;
     }
@@ -153,7 +153,7 @@ public static class UnitItemExtensions
         if (typeAdrTuple == default)
         {
             repoService.Item
-                .PostItem(parentAdrTuple, "Text", name);
+                .PostParentItem(parentAdrTuple, "Text", name);
         }
 
         var objectsList = repoService.GetItemList<T>(typeAdrTuple);
@@ -164,7 +164,7 @@ public static class UnitItemExtensions
         this IRepoService repoService,
         (string Repo, string Loca) adrTuple)
     {
-        string? json = repoService.Item.GetItemList(adrTuple);
+        string? json = repoService.ManyItems.GetList(adrTuple);
         List<T> itemList = IYamlDefaultOperations.Deserialize<List<T>>(json);
         return itemList;
     }

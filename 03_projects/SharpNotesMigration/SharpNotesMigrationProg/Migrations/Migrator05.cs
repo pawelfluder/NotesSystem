@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SharpFileServiceProg.AAPublic;
 using SharpNotesMigrationProg.AAPublic;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;

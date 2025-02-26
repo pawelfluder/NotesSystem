@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using Google.Apis.Drive.v3;
 using Google.Apis.Drive.v3.Data;
 using SharpGoogleDriveProg.Service;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using DriveFile = Google.Apis.Drive.v3.Data.File;
 using File = System.IO.File;

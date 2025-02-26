@@ -24,6 +24,15 @@ public interface IContainer4
         where RegT : class
         where P1 : class;
 
+    void RegisterByFunc<P1, P2, RegT>(
+        Func<P1, P2, RegT> regTfunc,
+        Func<P1> p1Tfunc,
+        Func<P2> p2Tfunc,
+        int type = 0,
+        Action endAction = null)
+        where RegT : class
+        where P1 : class;
+
     T Resolve<T>();
 
     object? Resolve(

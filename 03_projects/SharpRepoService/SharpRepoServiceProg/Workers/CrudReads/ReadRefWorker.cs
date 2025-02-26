@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Registration;
@@ -15,13 +16,13 @@ internal class ReadRefWorker : ReadWorkerBase
         _guidWorker = MyBorder.MyContainer.Resolve<GuidWorker>();
     }
 
-    public ItemModel TryGetItem(
-        ItemModel item,
+    public bool IfMineGetItem(
+        ref ItemModel item,
         (string Repo, string Loca) refItemAdrTuple,
         UniType uniType)
     {
+        if (_myType != uniType) { return false; }
         TryInitialize();
-        if (_myType != uniType) { return item; }
         
         // ref item config
         Dictionary<string, object> refItemSettings = _migrate
@@ -30,24 +31,25 @@ internal class ReadRefWorker : ReadWorkerBase
         string realGuidFromRefItem = refItemSettings[ConfigKeys.RefGuid].ToString();
         
         // real address
-        (string RefRepo, string RefLoca) realAdrTuple = _customOperations
+        (string RefRepo, string RefLoca) realAdrTuple = _operations
             .UniAddress.CreateAddressFromString(realAddress);
         
         // real config
         Dictionary<string, object> realSettings = _migrate
             .GetConfigBeforeRead(realAdrTuple);
-
-        string realGuid = realSettings[ConfigKeys.Id].ToString();
-        if (realGuidFromRefItem != realGuid)
+        string realGuidStr = realSettings[ConfigKeys.Id].ToString();
+        
+        if (realGuidFromRefItem != realGuidStr)
         {
+            Guid realGuid = Guid.Parse(realGuidStr);
             bool isFound = _guidWorker.GetAdrTupleByGuid(
                 realAdrTuple.RefRepo,
-                realGuidFromRefItem,
+                realGuid,
                 out var foundAdrTuple);
             if (isFound)
             {
                 realAdrTuple = foundAdrTuple;
-                var foundAddress = _customOperations
+                var foundAddress = _operations
                     .UniAddress.CreateAddresFromAdrTuple(foundAdrTuple);
                 refItemSettings[ConfigKeys.RefAddress] = foundAddress;
                 _config.PutConfig(refItemAdrTuple, refItemSettings);
@@ -55,9 +57,10 @@ internal class ReadRefWorker : ReadWorkerBase
         }
         
         // body
-        item = _multi.GetItem(realAdrTuple);
-
-        return item;
+        bool s02 = _multi.GetItem(
+            ref item,
+            realAdrTuple);
+        return s02;
     }
     
     public ItemModel TryGetItemBody(
@@ -75,19 +78,20 @@ internal class ReadRefWorker : ReadWorkerBase
         string refGuid = settings[ConfigKeys.RefGuid].ToString();
         
         // address
-        (string RefRepo, string RefLoca) refAdrTuple = _customOperations
+        (string RefRepo, string RefLoca) refAdrTuple = _operations
             .UniAddress.CreateAddressFromString(refAddress);
         
         // ref config
         Dictionary<string, object> realSettings = _migrate
             .GetConfigBeforeRead(refAdrTuple);
 
-        string realGuid = realSettings[ConfigKeys.Id].ToString();
-        if (refGuid != realGuid)
+        string realGuidStr = realSettings[ConfigKeys.Id].ToString();
+        if (refGuid != realGuidStr)
         {
+            Guid realGuid = Guid.Parse(realGuidStr);
             bool isFound = _guidWorker.GetAdrTupleByGuid(
                 refAdrTuple.RefRepo,
-                refGuid,
+                realGuid,
                 out var foundAdrTuple);
             if (isFound)
             {

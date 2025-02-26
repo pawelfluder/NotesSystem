@@ -4,11 +4,12 @@ public class RecursivelyLeaveOnlyInDictionaries
 {
     private Action<Dictionary<object, object>, string> otherAction;
 
-    private readonly List<string> keysToLeft;
+    private readonly List<string> _keysToLeft;
 
-    public RecursivelyLeaveOnlyInDictionaries(List<string> keysToLeft)
+    public RecursivelyLeaveOnlyInDictionaries(
+        List<string> keysToLeft)
     {
-        this.keysToLeft = keysToLeft;
+        _keysToLeft = keysToLeft;
         otherAction = (parent, key) =>
         {
             if (!keysToLeft.Any(x => x == key))
@@ -18,7 +19,8 @@ public class RecursivelyLeaveOnlyInDictionaries
         };
     }
 
-    public void Visit(Dictionary<object, object> dict)
+    public void Visit(
+        Dictionary<object, object> dict)
     {
         if (dict == null)
         {
@@ -27,9 +29,6 @@ public class RecursivelyLeaveOnlyInDictionaries
 
         foreach (var kv in dict)
         {
-            if (kv.Key.ToString() == "photos")
-            { }
-
             if (kv.Value is Dictionary<object, object> dict2)
             {
                 Visit(dict2);
@@ -44,7 +43,8 @@ public class RecursivelyLeaveOnlyInDictionaries
         }
     }
 
-    public void VisitList(List<object> list)
+    public void VisitList(
+        List<object> list)
     {
         foreach (var elem in list)
         {

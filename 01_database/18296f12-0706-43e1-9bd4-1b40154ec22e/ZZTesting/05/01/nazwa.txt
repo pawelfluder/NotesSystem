@@ -1,6 +1,0 @@
-"id": "ab8081c9-e1fd-4e81-959d-218cc2f32316"
-"type": "Ref"
-"name": "ref 01"
-"address": "ZZTesting/05/01"
-"refAddress": "Rama/07/06/01"
-"refGuid": ""

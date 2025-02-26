@@ -1,6 +1,4 @@
-﻿using SharpConfigProg.Service;
-
-namespace SharpConfigProg.AAPublic;
+﻿namespace SharpConfigProg.AAPublic;
 
 public interface IPreparer
 {

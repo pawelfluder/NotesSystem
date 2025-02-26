@@ -5,12 +5,14 @@ using SharpGoogleDocsProg.AAPublic;
 using SharpGoogleDriveProg.AAPublic;
 using SharpGoogleSheetProg.AAPublic;
 using SharpImageSplitterProg.Service;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoBackendProg.Services;
 using SharpRepoServiceProg.AAPublic;
 using SharpTtsServiceProg.AAPublic;
 using SharpVideoServiceProg.AAPublic;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
+using OutBorder1 = SharpOperationsProg.AAPublic.OutBorder;
 using OutBorder2 = SharpConfigProg.AAPublic.OutBorder;
 using OutBorder3 = SharpRepoServiceProg.AAPublic.OutBorder;
 using OutBorder4 = SharpGoogleDriveProg.AAPublic.OutBorder;
@@ -28,17 +30,15 @@ public class DefaultRegistration : RegistrationBase
     public Dictionary<string, object> SettingsDict { get; set; }
     public IFileService FileService { get; set; }
     public IOperationsService OperationsService { get; set; }
-    
     private IConfigService ConfigService { get; set; }
-
     public override void Registrations()
     {
-        OutContainer.RegisterByFunc<IFileService>(
-            () => FileService);
+        OutContainer.RegisterByFunc<IFileService>(() => 
+            FileService);
         
-        OutContainer.RegisterByFunc<IOperationsService>(
-            () => OperationsService);
-
+        OutContainer.RegisterByFunc<IOperationsService>(() => 
+            OperationsService);
+        
         ConfigService = OutBorder2.ConfigService(OperationsService);
         OutContainer.RegisterByFunc<IConfigService>(
             () => ConfigService);
@@ -48,6 +48,11 @@ public class DefaultRegistration : RegistrationBase
             () => OutContainer.Resolve<IFileService>(),
             0,
             InitGroupsFromSearchPaths);
+        
+        OutContainer.RegisterByFunc<IFileService, IRepoService, IRepoOperationsService>( 
+            (x, y) => OutBorder1.RepoOperationsService(x,y),
+            () => OutContainer.Resolve<IFileService>(),
+            () => OutContainer.Resolve<IRepoService>());
         
         OutContainer.RegisterByFunc<IGoogleDriveService>(
             () => OutBorder4.GoogleDriveService(

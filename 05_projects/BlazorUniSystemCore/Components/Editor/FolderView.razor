@@ -1,5 +1,6 @@
 ﻿@using BlazorUniSystemCore.Registrations
 @using BlazorUniSystemCore.Repet.Models
+@using SharpOperationsProg.AAPublic
 @using SharpOperationsProg.AAPublic.Operations
 @using SharpOperationsProg.Operations.UniAddress
 @using SharpRepoBackendProg.Services
@@ -21,7 +22,7 @@
         <select @bind="@formSelectedType">
             <option value="Text">Text</option>
             <option value="Folder">Folder</option>
-            <option value="RefText">RefText</option>
+            <option value="Ref">Ref</option>
         </select>
         <input type="text" @bind=@formAddValue>
     </div>

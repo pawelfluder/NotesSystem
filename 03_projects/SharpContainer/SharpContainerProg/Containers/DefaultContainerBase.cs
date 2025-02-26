@@ -77,6 +77,43 @@ public class DefaultContainerBase : IContainer4
             endAction.Invoke();
         }
     }
+    
+    public void RegisterByFunc<P1, P2, RegT>(
+        Func<P1, P2, RegT> regTfunc,
+        Func<P1> p1Tfunc,
+        Func<P2> p2Tfunc,
+        int type = 0,
+        Action endAction = null)
+        where RegT : class
+        where P1 : class
+    {
+        if (type == 0)
+        {
+            ServiceRegister.AddSingleton<RegT>(
+                sp => regTfunc.Invoke(
+                    p1Tfunc.Invoke(),
+                    p2Tfunc.Invoke()));
+        }
+        if (type == 1)
+        {
+            ServiceRegister.AddTransient<RegT>(
+                sp => regTfunc.Invoke(
+                    p1Tfunc.Invoke(),
+                    p2Tfunc.Invoke()));
+        }
+        if (type == 2)
+        {
+            ServiceRegister.AddScoped<RegT>(
+                sp => regTfunc.Invoke(
+                    p1Tfunc.Invoke(),
+                    p2Tfunc.Invoke()));
+        }
+        
+        if (endAction != null)
+        {
+            endAction.Invoke();
+        }
+    }
 
     public T Resolve<T>()
     {

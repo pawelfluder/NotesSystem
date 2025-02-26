@@ -11,7 +11,7 @@ namespace SharpRepoServiceProg.Workers.CrudReads;
 public class WriteWorkerBase
 {
     //internal readonly IFileService _fileService;
-    internal readonly CustomOperationsService _customOperations;
+    internal readonly CustomOperationsService _operations;
     // internal readonly IYamlOperations _yamlOperations;
     internal readonly PathWorker _path;
     internal readonly BodyWorker _body;
@@ -30,7 +30,7 @@ public class WriteWorkerBase
     public WriteWorkerBase()
     {
         // _fileService = MyBorder.OutContainer.Resolve<IFileService>();
-        _customOperations = MyBorder.MyContainer.Resolve<CustomOperationsService>();
+        _operations = MyBorder.MyContainer.Resolve<CustomOperationsService>();
         // _yamlOperations = _fileService.Yaml.Custom03;
         
         _system = MyBorder.MyContainer.Resolve<SystemWorker>();

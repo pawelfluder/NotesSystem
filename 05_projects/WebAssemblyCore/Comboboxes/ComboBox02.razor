@@ -1,0 +1,62 @@
+﻿<select @bind="SelectedItem" class="dropdown-down">
+    @foreach (var item in Items)
+    {
+        <option value="@item">@item</option>
+    }
+</select>
+
+@code {
+    // Parametr przekazywany z Home.razor
+
+    public ComboBox02()
+    {
+        
+    }
+
+    [Parameter]
+    public List<string> Items
+    {
+        get;
+        set;
+    } = new List<string>();
+    
+    [Parameter]
+    public EventCallback<string> SelectedItemChanged { get; set; }
+
+    // Wartość wybrana z ComboBoxa
+    private string _selectedItem;
+    [Parameter]
+    public string SelectedItem
+    {
+        get => _selectedItem;
+        set
+        {
+            string previous = _selectedItem;
+            _selectedItem = value;
+            if (previous != value)
+            {
+                SelectedItemChanged.InvokeAsync(SelectedItem);
+            }
+        }
+    }
+
+    [Parameter]
+    public Action<string> OnValueChanged { get; set; }
+
+    protected override void OnInitialized()
+    {
+        // Jeśli Items jest puste, ustawiamy domyślną wartość
+        if (Items != null && Items.Any())
+        {
+            SelectedItem = Items.FirstOrDefault();
+        }
+    }
+    
+    protected override void OnParametersSet()
+    {
+        // if (Items != null && Items.Any())
+        // {
+        //     SelectedItem = Items.FirstOrDefault();
+        // }
+    }
+}

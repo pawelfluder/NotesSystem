@@ -2,6 +2,7 @@
 using SharpVideoServiceProg.AAPublic;
 using System.Globalization;
 using System.Speech.Synthesis;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpTtsServiceProg.Worker;

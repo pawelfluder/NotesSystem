@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using Newtonsoft.Json;
 using SharpFileServiceProg.AAPublic;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Names;

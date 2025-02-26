@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using SharpNotesMigrationProg.AAPublic;
 using SharpNotesMigrationProg.Service;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoServiceProg.AAPublic;
 

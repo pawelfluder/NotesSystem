@@ -7,6 +7,7 @@ using SharpNotesMigrationProg.Migrations;
 using SharpRepoServiceProg.AAPublic;
 using SharpFileServiceProg.AAPublic;
 using SharpNotesMigrationProg.AAPublic;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpNotesMigrationProg.Service;

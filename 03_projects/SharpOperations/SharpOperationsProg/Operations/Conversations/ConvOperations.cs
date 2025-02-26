@@ -1,6 +1,8 @@
-﻿namespace SharpOperationsProg.Operations.Conversations;
+﻿using SharpOperationsProg.AAPublic.Operations;
 
-public partial class ConvOperations
+namespace SharpOperationsProg.Operations.Conversations;
+
+public class ConvOperations
 {
     public ConvOperationsWorker01 Worker01 { get; }
     public ConvOperationsWorker02 Worker02 { get; }

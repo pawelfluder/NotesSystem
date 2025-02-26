@@ -3,59 +3,39 @@ using System.Collections.Generic;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic;
 using SharpRepoServiceProg.Workers.AAPublic;
+using SharpRepoServiceProg.Workers.APublic;
+using ItemWorker = SharpRepoServiceProg.Workers.APublic.ItemWorkers.ItemWorker;
 
 namespace SharpRepoServiceProg.Service;
 
 internal class RepoService : IRepoService
 {
-    private readonly IFileService fileService;
-    private bool repoWorkerInit;
-    private bool itemWorkerInit;
-
-    private MethodWorker methods;
-    private JsonWorker item;
-
-    private bool isRepoInit;
+    private readonly IFileService _fileService;
+    private Lazy<ItemWorker> _item;
+    private Lazy<ManyItemsWorker> _manyItems;
+    private Lazy<MethodWorker> _methods;
+    public ItemWorker Item => _item.Value;
+    public ManyItemsWorker ManyItems => _manyItems.Value;
+    public MethodWorker Methods => _methods.Value;
 
     internal RepoService(
         IFileService fileService)
     {
-        this.fileService = fileService;
+        _fileService = fileService;
+        _item = new Lazy<ItemWorker>(
+            () => new ItemWorker());
+        _manyItems = new Lazy<ManyItemsWorker>(
+            () => new ManyItemsWorker());
+        _methods = new Lazy<MethodWorker>(
+            () => new MethodWorker(_fileService));
     }
 
-    public MethodWorker Methods
-    {
-        get
-        {
-            if (!isRepoInit)
-            {
-                methods = new MethodWorker(fileService);
-                isRepoInit = true;
-            }
-
-            return methods;
-        }
-    }
-
-    public JsonWorker Item
-    {
-        get
-        {
-            if (!itemWorkerInit)
-            {
-                item = new JsonWorker();
-                itemWorkerInit = true;
-            }
-
-            return item;
-        }
-    }
-
-    public void InitGroupsFromSearchPaths(List<string> searchPaths)
+    public void InitGroupsFromSearchPaths(
+        List<string> searchPaths)
     {
         Methods.InitGroupsFromSearchPaths(searchPaths);
 
-        if (!(methods.GetReposCount() > 0))
+        if (!(Methods.GetReposCount() > 0))
         {
             throw new Exception();
         }

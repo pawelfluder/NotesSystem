@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Operations;
@@ -8,10 +6,10 @@ using SharpRepoServiceProg.Workers.System;
 
 namespace SharpRepoServiceProg.Workers.CrudReads;
 
-public class ReadWorkerBase
+internal class ReadWorkerBase
 {
     internal readonly IFileService _fileService;
-    internal readonly CustomOperationsService _customOperations;
+    internal readonly CustomOperationsService _operations;
     internal readonly IYamlOperations _yamlOperations;
     
     internal readonly PathWorker _path;
@@ -28,7 +26,7 @@ public class ReadWorkerBase
     public ReadWorkerBase()
     {
         _fileService = MyBorder.OutContainer.Resolve<IFileService>();
-        _customOperations = MyBorder.MyContainer.Resolve<CustomOperationsService>();
+        _operations = MyBorder.MyContainer.Resolve<CustomOperationsService>();
         _yamlOperations = _fileService.Yaml.Custom03;
         
         _system = MyBorder.MyContainer.Resolve<SystemWorker>();
@@ -65,7 +63,7 @@ public class ReadWorkerBase
     {
         if (string.IsNullOrEmpty(item.Address))
         {
-            string address = _customOperations.UniAddress
+            string address = _operations.UniAddress
                 .CreateAddresFromAdrTuple(adrTuple);
             item.Address = address;
         }

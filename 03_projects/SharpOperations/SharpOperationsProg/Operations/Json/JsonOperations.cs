@@ -15,6 +15,22 @@ internal class JsonOperations : IJsonOperations
         return obj;
     }
 
+    public bool TryDeserializeObject<T>(
+        string jsonString,
+        out T? result) where T : class 
+    {
+        try
+        {
+            result = DeserializeObject<T>(jsonString);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            result = null;
+            return false;
+        }
+    }
+
     public string SerializeObject(object obj)
     {
         var jsonString = JsonConvert.SerializeObject(obj);

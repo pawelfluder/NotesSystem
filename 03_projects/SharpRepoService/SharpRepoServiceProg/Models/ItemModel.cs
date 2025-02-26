@@ -5,7 +5,7 @@ using SharpRepoServiceProg.Operations;
 
 namespace SharpRepoServiceProg.Models;
 
-public class ItemModel
+internal class ItemModel
 {
     private string address;
 

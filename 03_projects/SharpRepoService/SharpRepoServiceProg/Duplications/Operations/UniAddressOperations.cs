@@ -56,15 +56,24 @@ internal class UniAddressOperations
         return (repo, loca);
     }
 
-    public string MoveOneLocaBack(string adrString)
+    public (string Repo, string Loca) MoveOneLocaBack(
+        (string Repo, string Loca) adrTuple)
     {
-        var slashCount = adrString.Count(x => x == '/');
+        var address = CreateAddresFromAdrTuple(adrTuple);
+        var oneBackAddress = MoveOneLocaBack(address);
+        var oneBackAdrTuple = CreateAdrTupleFromAddress(oneBackAddress);
+        return oneBackAdrTuple;
+    }
+
+    public string MoveOneLocaBack(string address)
+    {
+        var slashCount = address.Count(x => x == '/');
         if (slashCount == 0)
         {
-            return adrString;
+            return address;
         }
 
-        var splited = adrString.Split("/").ToList();
+        var splited = address.Split("/").ToList();
         var lastItemIndex = splited.Count - 1;
         splited.RemoveAt(lastItemIndex);
         var newAddress = String.Join('/', splited);

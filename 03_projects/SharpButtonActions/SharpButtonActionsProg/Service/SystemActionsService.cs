@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using SharpButtonActionsProg.AAPublic;
 using SharpButtonActionsProg.Workers;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpButtonActionsProg.Service;

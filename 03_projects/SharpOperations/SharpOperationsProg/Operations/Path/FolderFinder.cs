@@ -198,7 +198,7 @@ public class FolderFinder
         string foundFolder = default;
         string[] directories = null;
 
-        if (max > 0)
+        if (max > 0 && !string.IsNullOrEmpty(folderPath))
         {
             directories = Directory.GetDirectories(folderPath);
             foundFolder = directories.SingleOrDefault(

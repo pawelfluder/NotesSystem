@@ -6,19 +6,17 @@ public class NewShape01
     {
         new RecursivelyLeaveOnlyInDictionaries(new List<string>()
         {
-            "photos",
-            "url",
-
             "id",
-            "name",
-            "birth_date",
-            "bio",
-
-            "person",
             "messages",
-            "message",
-            "from",
-            "sent_date",
+                "from",
+                "sent_date",
+            "person",
+                "bio",
+                "birth_date",
+                "name",
+                "photos",
+                    "url",
+                    "id",
         }).Visit(dict);
 
         new RecursivelyMoveInDictionaries(new Dictionary<string, int>
@@ -40,11 +38,11 @@ public class NewShape01
 
         new RecursivelyCheckRequiredKeysInDictionaries(new List<(string, string)>
         {
-            ("root", "url"),
             ("root", "id"),
             ("root", "name"),
             ("root", "birth_date"),
             ("root", "bio"),
+            ("root", "url"),
             ("root", "messages"),
             ("message", "sent_date"),
             ("message", "from"),

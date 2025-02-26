@@ -1,6 +1,7 @@
 using SharpNotesMigrationProg.AAPublic;
 using SharpNotesMigrationProg.Service;
 using SharpNotesMigrationTests.Registration;
+using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoServiceProg.AAPublic;
 using OutBorder01 = SharpSetup01Prog.AAPublic.OutBorder;
