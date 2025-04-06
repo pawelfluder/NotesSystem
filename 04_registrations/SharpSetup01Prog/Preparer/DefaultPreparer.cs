@@ -50,13 +50,23 @@ internal class DefaultPreparer : IPreparer
         string currentPath2 = Environment.CurrentDirectory;
         Console.WriteLine("currentPath2: " + currentPath2);
         
+        //
+        var expression = ""; // 5(0,1) 5(2,3) 0(3,3)
+#if (DEBUG)
+        expression = "5(2,3)";
+#elif (RELEASE)
+        expression = "0(3,3)";
+#endif
         
         // group paths, settings folder, database folder
         string settingsFolderPath = _operationsService
             .Path.FindFolder(
                 "02_settings",
                 currentPath,
-                "0(3,3)"); // 5(0,1) 5(2,3)
+                expression); 
+        
+        Console.WriteLine("settingsFolderPath: " + settingsFolderPath);
+        
         string databaseFolderPath = _operationsService
             .Path.FindFolder(
                 "01_database",

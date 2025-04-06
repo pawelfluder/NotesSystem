@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SharpSetup01Prog\SharpSetup01Prog.csproj" />
+    <ProjectReference Include="..\..\..\04_registrations\SharpSetup01Prog\SharpSetup01Prog.csproj" />
     <ProjectReference Include="..\SharpImageSplitterProg\SharpImageSplitterProg.csproj" />
   </ItemGroup>
 

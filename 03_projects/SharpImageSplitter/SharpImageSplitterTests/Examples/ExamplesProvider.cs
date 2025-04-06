@@ -23,7 +23,7 @@ internal partial class ExamplesProvider
         _recalculate = new RecalculateJob();
         RunMethods = new RunMethodsBase(this);
         _strategyBase = new StrategyBase<ISplitStrategy>();
-        OutBorder01.GetPreparer("PrivateNotesPreparer").Prepare();
+        OutBorder01.GetPreparer("DefaultPreparer").Prepare();
         _operations = MyBorder.OutContainer.Resolve<IOperationsService>();
         _binDebugNet80Path = _operations.Path.GetBinPath() + "/" + "/Debug/net8.0/";
     }

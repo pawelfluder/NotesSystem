@@ -13,10 +13,18 @@ public class AppFasade
     {
         InitBuilder();
     }
+    
     public void Start()
     {
-        InitApp();
-        App.Start();
+        try
+        {
+            InitApp();
+            App.Start();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Błąd podczas uruchamiania aplikacji: {ex.Message}");
+        }
     }
 
     private void InitApp()
@@ -60,8 +68,9 @@ public class AppFasade
     Builder.Environment.EnvironmentName = "Development";
     Builder.WebHost.UseUrls("http://127.0.0.1:5605");
 #else
-    Builder.Environment.EnvironmentName = "Production";
-    Builder.WebHost.UseUrls("http://127.0.0.1:5505");
+    // this should be set in environment variable
+    // ENV ASPNETCORE_HTTP_PORTS=5001
+    // EXPOSE 5001
 #endif
         
         Container = new UniSystemCoreContainer(

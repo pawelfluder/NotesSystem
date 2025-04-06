@@ -15,8 +15,9 @@ internal partial class ExamplesProvider
     public SplitInfo Example_00_02()
     {
         // arrange
-        string folderPath = "/Volumes/qnap/01_files_refrenced/2024/03_files_photos/13_scam_krypto/04_Formularz-zgłoszeniowy-Binance/02_raport";
-        string filename = "Scam-raport.PNG";
+        //string folderPath = "/Volumes/qnap/01_files_refrenced/2024/03_files_photos/13_scam_krypto/04_Formularz-zgłoszeniowy-Binance/02_raport";
+        string folderPath = "/Users/pawelfluder/03_synch/02_files_refrenced/01_files_photos/gotowe";
+        string filename = "gotowe.png";
         var splitterJob = new SplitterJob();
         var folderQfile = (folderPath, filename);
         string path = Path.Combine(folderPath, filename);
@@ -25,14 +26,14 @@ internal partial class ExamplesProvider
         Image image = Image.Load(options, imageStream);
         
         // act
-        string splitStrategyName = ISplitStrategyNames.Winder1Strategy;
+        string splitStrategyName = ISplitStrategyNames.FullPageStrategy;
         ISplitStrategy strategy = _strategyBase
             .GetNewStrategy(splitStrategyName);
         SplitInfo splitInfo = splitterJob.CreateSplitImages(
             folderQfile,
             strategy.HeightByWidth,
             strategy.Overlap,
-            802);
+            200);
 
         return splitInfo;
     }
