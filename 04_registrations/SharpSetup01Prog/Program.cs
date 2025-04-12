@@ -1,4 +1,6 @@
-﻿using SharpSetup01Prog.AAPublic;
+﻿using SharpConfigProg.AAPublic;
+using SharpSetup01Prog.Preparer;
+using OutBorder = SharpSetup01Prog.AAPublic.OutBorder;
 
 namespace SharpSetup01Prog
 {
@@ -6,7 +8,7 @@ namespace SharpSetup01Prog
     {
         static void Main(string[] args)
         {
-            var preparer = OutBorder.GetPreparer("PrivateNotesPreparer");
+            IPreparer preparer = OutBorder.GetPreparer(typeof(DefaultPreparer).Name);
             preparer.Prepare();
         }
     }

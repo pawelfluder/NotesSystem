@@ -31,13 +31,13 @@ public class AppFasade
     {
         Builder = WebApplication.CreateBuilder();
 
-// Add services to the container.
+        // Add services to the container.
         Builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
 
         App = Builder.Build();
 
-// Configure the HTTP request pipeline.
+        // Configure the HTTP request pipeline.
         if (!App.Environment.IsDevelopment())
         {
             App.UseExceptionHandler("/Error", createScopeForErrors: true);
@@ -53,6 +53,7 @@ public class AppFasade
         App.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode();
 
+        App.Urls.Add("http://*:5502");
         App.Run();
     }
 
@@ -64,20 +65,23 @@ public class AppFasade
             //WebRootPath = _rootPath
         });
         
-#if DEBUG
-    Builder.Environment.EnvironmentName = "Development";
-    Builder.WebHost.UseUrls("http://127.0.0.1:5605");
-#else
-    // this should be set in environment variable
-    // ENV ASPNETCORE_HTTP_PORTS=5001
-    // EXPOSE 5001
-#endif
+        // Builder.WebHost.ConfigureKestrel(options =>
+        // {
+        //     options.ListenAnyIP(5501); // HTTP
+        //     // options.ListenAnyIP(7001, listenOptions => listenOptions.UseHttps()); // HTTPS
+        // });
+
+        Builder.Environment.EnvironmentName = "Development";
+        Builder.WebHost.UseUrls("http://127.0.0.1:6602", "https://127.0.0.1:6603");
+        
+        // this should be set in environment variable
+        // ENV ASPNETCORE_HTTP_PORTS=5001
+        // EXPOSE 5001
         
         Container = new UniSystemCoreContainer(
             Builder.Services);
         Builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
-        
         
         // Builder.Services.AddSyncfusionBlazor();
         // Builder.Services.AddRazorPages();

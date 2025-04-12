@@ -23,7 +23,7 @@ publish_new
 # settings
 02_settings/*
 !02_settings/EverythingPublic.sln
-!02_settings/public_google-cloud-secrets.json
+!02_settings/google-cloud-secrets.json
 # settings
 ####################
 

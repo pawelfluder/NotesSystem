@@ -24,7 +24,7 @@ namespace SharpRepoServiceTests
             var count = repoService.Methods.GetReposCount();
 
             var adrTuple = ("Notes", "");
-            var json = repoService.Item.PostItem(adrTuple, "RefText", "Test01");
+            var json = repoService.Item.PostParentItem(adrTuple, "RefText", "Test01");
         }
     }
 }

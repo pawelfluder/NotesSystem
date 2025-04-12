@@ -64,7 +64,7 @@ internal class Migrator05 : IMigrator, IMigrator05
     {
         var type = _repoService.Methods.GetType(adrTuple);
 
-        if (type == UniItemTypes.Text)
+        if (type == UniType.Text.ToString())
         {
             var newText = RemoveTopEmptyLines(adrTuple);
             _repoService.Methods.PatchText(newText, adrTuple);

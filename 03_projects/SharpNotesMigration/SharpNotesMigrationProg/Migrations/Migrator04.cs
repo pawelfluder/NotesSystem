@@ -67,7 +67,7 @@ internal class Migrator04 : IMigrator, IMigrator04
 
         if (agree)
         {
-            _repoService.Methods.CreateConfig(adrTuple, dict);
+            //_repoService.Methods.CreateConfig(adrTuple, dict);
         }
     }
 

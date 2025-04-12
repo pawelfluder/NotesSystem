@@ -3,6 +3,7 @@ using SharpConfigProg.AAPublic;
 using SharpFileServiceProg.AAPublic;
 using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
+using SharpSetup01Prog.Models;
 using SharpSetup01Prog.Registrations;
 using OutBorder01 = SharpFileServiceProg.AAPublic.OutBorder;
 using OutBorder02 = SharpOperationsProg.AAPublic.OutBorder;
@@ -11,7 +12,7 @@ namespace SharpSetup01Prog.Preparer;
 internal class DefaultPreparer : IPreparer
 {
     private IGoogleCredentialWorker _credentials;
-    private Dictionary<string, object> _settingsDict;
+    private Dictionary<string, object> _settingsDict = new();
     private IOperationsService _operationsService;
     private IConfigService _configService;
     private bool _isPreparationDone;
@@ -42,66 +43,21 @@ internal class DefaultPreparer : IPreparer
 
     private void PrepareSettings()
     {
-        // currentPath
-        string currentPath = Directory.GetCurrentDirectory();
-        Console.WriteLine("currentPath: " + currentPath);
-        
-        // currentPath2
+        PrintStartPaths();
+        ConfigBase config = new ReleaseLocalConfig(_operationsService, _credentials);
+        config.AddRangeForSettings(_settingsDict);
+    }
+
+    private void PrintStartPaths()
+    {
+        string currentDirectoryPath = Directory.GetCurrentDirectory();
+        Console.WriteLine("CurrentDirectoryPath: " + currentDirectoryPath);
         string currentPath2 = Environment.CurrentDirectory;
-        Console.WriteLine("currentPath2: " + currentPath2);
+        Console.WriteLine("EnvCurrentDirectoryPath: " + currentPath2);
         
-        //
-        var expression = ""; // 5(0,1) 5(2,3) 0(3,3)
-#if (DEBUG)
-        expression = "5(2,3)";
-#elif (RELEASE)
-        expression = "0(3,3)";
-#endif
-        
-        // group paths, settings folder, database folder
-        string settingsFolderPath = _operationsService
-            .Path.FindFolder(
-                "02_settings",
-                currentPath,
-                expression); 
-        
-        Console.WriteLine("settingsFolderPath: " + settingsFolderPath);
-        
-        string databaseFolderPath = _operationsService
-            .Path.FindFolder(
-                "01_database",
-                settingsFolderPath,
-                "1(0,0)");
-        List<object> repoRootPaths = new()
-        {
-            databaseFolderPath
-        };
-        
-        // google cloud
-        string googleUserName = "abcdefgh@gmail.com";
-        string googleApplicationName = "ApplicationName";
-        
-        string jsonFilePath = "public_google-cloud-secrets.json";
-        string googleCloudCredentialsPath =
-            settingsFolderPath
-            + "/"
-            + jsonFilePath;
-        bool exists = File.Exists(googleCloudCredentialsPath);
-        if (!exists) { throw new FileNotFoundException("Google cloud credentials not found."); }
-        string jsonFileContent = File.ReadAllText(googleCloudCredentialsPath);
-        (string googleClientId, string googleClientSecret) = _credentials
-            .GetCredentials(jsonFileContent);
-        
-        _settingsDict= new();
-        // settings for google cloud
-        _settingsDict.Add(nameof(repoRootPaths), repoRootPaths);
-        _settingsDict.Add(nameof(settingsFolderPath), settingsFolderPath);
-        _settingsDict.Add(nameof(databaseFolderPath), databaseFolderPath);
-        // settings for group paths, settings folder, database folder
-        _settingsDict.Add(nameof(googleClientId), googleClientId);
-        _settingsDict.Add(nameof(googleClientSecret), googleClientSecret);
-        _settingsDict.Add(nameof(googleUserName), googleUserName);
-        _settingsDict.Add(nameof(googleApplicationName), googleApplicationName);
+        // system directory
+        string systemPath = Environment.SystemDirectory;
+        Console.WriteLine("systemPath: " + systemPath);
     }
 
     public List<object> GetRepoSearchPaths(

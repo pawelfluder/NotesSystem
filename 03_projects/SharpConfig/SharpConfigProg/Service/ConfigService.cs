@@ -1,4 +1,5 @@
-﻿using SharpConfigProg.AAPublic;
+﻿using System.Collections;
+using SharpConfigProg.AAPublic;
 using SharpConfigProg.OverrideConfig;
 using SharpConfigProg.Registrations;
 using SharpFileServiceProg.AAPublic;
@@ -43,8 +44,15 @@ internal class ConfigService : IConfigService
 
     public List<string> GetRepoSearchPaths()
     {
-        List<string?> repoRootPaths = (SettingsDict["repoRootPaths"] as List<object>)
-            .Select(x => x.ToString()).ToList();
+        object listObj = SettingsDict["repoRootPaths"];
+        List<string> repoRootPaths = new();
+
+        foreach (object? obj in listObj as IEnumerable)
+        {
+            string str = obj?.ToString();
+            repoRootPaths.Add(str);
+        }
+        
         return repoRootPaths;
     }
 
@@ -53,7 +61,6 @@ internal class ConfigService : IConfigService
         var tmp = yamlOperations.DeserializeFile<Dictionary<string, object>>(ConfigFilePath);
         SettingsDict = tmp;
     }
-
 
     public void Prepare()
     {
@@ -69,7 +76,7 @@ internal class ConfigService : IConfigService
     public void Prepare(IPreparer preparer)
     {
         preparer.SetConfigService(this);
-        SettingsDict = preparer.Prepare(); ;
+        SettingsDict = preparer.Prepare();
         Dictionary<string, object> newDict = new BeforeAfter(_operationsService)
             .Run(SettingsDict);
         SettingsDict = newDict;
