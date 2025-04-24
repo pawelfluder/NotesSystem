@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using SharpRepoServiceProg.Helpers;
 using SharpRepoServiceProg.Operations;
-using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Registrations;
 
 namespace SharpRepoServiceProg.Workers.System;
 

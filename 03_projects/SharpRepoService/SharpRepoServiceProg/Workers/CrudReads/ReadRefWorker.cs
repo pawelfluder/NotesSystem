@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Registrations;
 
 namespace SharpRepoServiceProg.Workers.CrudReads;
 internal class ReadRefWorker : ReadWorkerBase
@@ -25,35 +25,40 @@ internal class ReadRefWorker : ReadWorkerBase
         TryInitialize();
         
         // ref item config
-        Dictionary<string, object> refItemSettings = _migrate
-             .GetConfigBeforeRef(refItemAdrTuple);
-        string realAddress = refItemSettings[ConfigKeys.RefAddress].ToString();
-        string realGuidFromRefItem = refItemSettings[ConfigKeys.RefGuid].ToString();
+        ItemModel refItem = new();
+        _multi.GetItemConfig(refItem, refItemAdrTuple);
+        
+        bool wasUpdated = _guidWorker.UpdateRefItemIfNeeded(ref refItem);
+
+        string realAddress = refItem.Settings[ConfigKeys.RefAddress].ToString();
+        string realGuidFromRefItem = refItem.Settings[ConfigKeys.RefGuid].ToString();
         
         // real address
         (string RefRepo, string RefLoca) realAdrTuple = _operations
             .UniAddress.CreateAddressFromString(realAddress);
         
         // real config
+        
         Dictionary<string, object> realSettings = _migrate
             .GetConfigBeforeRead(realAdrTuple);
         string realGuidStr = realSettings[ConfigKeys.Id].ToString();
         
         if (realGuidFromRefItem != realGuidStr)
         {
-            Guid realGuid = Guid.Parse(realGuidStr);
-            bool isFound = _guidWorker.GetAdrTupleByGuid(
-                realAdrTuple.RefRepo,
-                realGuid,
-                out var foundAdrTuple);
-            if (isFound)
-            {
-                realAdrTuple = foundAdrTuple;
-                var foundAddress = _operations
-                    .UniAddress.CreateAddresFromAdrTuple(foundAdrTuple);
-                refItemSettings[ConfigKeys.RefAddress] = foundAddress;
-                _config.PutConfig(refItemAdrTuple, refItemSettings);
-            }
+            throw new Exception();
+            // Guid realGuid = Guid.Parse(realGuidStr);
+            // bool isFound = _guidWorker.GetAdrTupleByGuid(
+            //     realAdrTuple.RefRepo,
+            //     realGuid,
+            //     out var foundAdrTuple);
+            // if (isFound)
+            // {
+            //     realAdrTuple = foundAdrTuple;
+            //     var foundAddress = _operations
+            //         .UniAddress.CreateAddresFromAdrTuple(foundAdrTuple);
+            //     refItem.Settings[ConfigKeys.RefAddress] = foundAddress;
+            //     _config.PutConfig(refItem.AdrTuple, refItem);
+            // }
         }
         
         // body

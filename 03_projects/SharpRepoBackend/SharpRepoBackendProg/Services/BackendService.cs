@@ -10,7 +10,6 @@ using SharpGoogleDocsProg.AAPublic;
 using SharpGoogleDriveProg.AAPublic;
 using SharpNotesExporterProg;
 using SharpOperationsProg.AAPublic;
-using SharpOperationsProg.AAPublic.Operations;
 using SharpRepoBackendProg.AAPublic;
 using SharpRepoBackendProg.Repetition;
 using SharpRepoServiceProg.AAPublic;
@@ -110,8 +109,6 @@ public class BackendService : IBackendService
                 var json = GetOKJson();
                 return json;
             }
-            
-            
                 
             //content
             if (cmdName == ApiMethods.OpenContent.ToString())

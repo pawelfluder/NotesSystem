@@ -1,6 +1,6 @@
 ﻿//using SharpFileServiceProg.Service;
 //using SharpRepoServiceProg.Names;
-//using SharpRepoServiceProg.Registration;
+//using SharpRepoServiceProg.Registrations;
 //using SharpRepoServiceProg.Workers;
 //using System.Collections.Generic;
 //using System.IO;

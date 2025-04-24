@@ -1,7 +1,7 @@
 using BlazorUniSystemCore.Components;
 using BlazorUniSystemCore.Registrations;
 
-namespace BlazorNotesSystem;
+namespace BlazorUniSystemCore;
 
 public class AppFasade
 {
@@ -53,7 +53,12 @@ public class AppFasade
         App.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode();
 
-        App.Urls.Add("http://*:5502");
+        App.Urls.Add("http://*:6602");
+        App.Urls.Add("https://*:6603");
+        
+        // App.Urls.Add("http://*:5502");
+        // App.Urls.Add("https://*:5503");
+        
         App.Run();
     }
 

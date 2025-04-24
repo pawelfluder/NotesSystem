@@ -1,5 +1,5 @@
 ﻿using SharpRepoServiceProg.Operations;
-using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Registrations;
 using SharpRepoServiceProg.Workers.CrudReads;
 using SharpRepoServiceProg.Workers.System;
 

@@ -7,7 +7,7 @@ using SharpRepoServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Operations;
-using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Registrations;
 using SharpRepoServiceProg.Workers.CrudWrites.WriteTexts;
 
 namespace SharpRepoServiceProg.Workers.Caches;

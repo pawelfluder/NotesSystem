@@ -42,6 +42,20 @@ internal class ReadTextWorker : ReadWorkerBase
         
         return true;
     }
+    
+    public bool IfMineGetConfig(
+        ref ItemModel item,
+        (string Repo, string Loca) adrTuple,
+        UniType type = UniType.Text)
+    {
+        if (_myType != type) { return false; }
+        
+        // config
+        item.Settings = _migrate
+            .GetConfigBeforeRead(adrTuple);
+
+        return true;
+    }
 
     // 02; GetItemBody; read; body
     // public ItemModel GetItemBody(

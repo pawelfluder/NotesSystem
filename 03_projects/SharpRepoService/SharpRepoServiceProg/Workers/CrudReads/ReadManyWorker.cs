@@ -6,7 +6,7 @@ using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Operations;
-using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Registrations;
 using SharpRepoServiceProg.Workers.CrudWrites;
 using SharpRepoServiceProg.Workers.System;
 

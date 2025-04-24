@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Registrations;
 
 namespace SharpRepoServiceProg.Workers.System;
 

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Operations;
-using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Registrations;
 using SharpRepoServiceProg.Workers.CrudReads;
 using SharpRepoServiceProg.Workers.CrudWrites;
 using SharpRepoServiceProg.Workers.System;
@@ -12,7 +12,7 @@ using WriteTextWorker = SharpRepoServiceProg.Workers.CrudWrites.WriteTexts.Write
 
 namespace SharpRepoServiceProg.Workers.APublic;
 
-public class ManyItemsWorker
+public class ManyItemsWorker : IManyItemsWorker
 {
     private readonly CustomOperationsService _customOperationsService;
     private readonly ReadFolderWorker _readFolder;

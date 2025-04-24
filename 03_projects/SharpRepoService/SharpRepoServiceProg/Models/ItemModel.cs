@@ -1,4 +1,4 @@
-﻿using SharpRepoServiceProg.Registration;
+﻿using SharpRepoServiceProg.Registrations;
 using System.Collections.Generic;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Operations;

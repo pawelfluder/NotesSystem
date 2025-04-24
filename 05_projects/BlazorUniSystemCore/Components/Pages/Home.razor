@@ -12,17 +12,26 @@
 @inject NavigationManager NavigationManager
 
 @rendermode InteractiveServer
-
-<div class="menu-item">
-    <input type="button" value="<" @onclick=@OnBackArrowBtnClicked />
-    <input type="button" value="Go" @onclick=@OnGoBtnClicked />
+@* ↩ ↲ *@
+@* https://www.alt-codes.net/arrow_alt_codes.php *@
+@* ⟵.⟶ ◄.► ⬅.⮕ ⭠.? ?.➡ ?.⇉ *@
+<div>
     Repo::
     <ComboBox02
         Items="AllRepoNames"
         @bind-SelectedItem=@ComboBoxRepoName/>
     @* OnValueChanged=@HandleValueChanged *@
+</div>
+<div>
     Loca::
     <input type="text" @bind=@inputLocaName />
+</div>
+
+<div class="menu-item">
+    <input type="button" value="◄" @onclick=@OnBackArrowBtnClicked />
+    <input type="button" value="↩" @onclick=@OnBackArrowBtnClicked />
+    <input type="button" value="GO" @onclick=@OnGoBtnClicked />
+    <input type="button" value="►" @onclick=@OnBackArrowBtnClicked />
 </div>
 
 <div class="menu-item">

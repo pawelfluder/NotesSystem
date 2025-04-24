@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Registrations;
 
 namespace SharpRepoServiceProg.Workers.CrudReads;
 
@@ -13,6 +13,7 @@ internal class ReadFolderWorker : ReadWorkerBase
     private readonly UniType _myType = UniType.Folder;
     private bool _isInitialized;
     private ReadFolderWorker _readMulti;
+    private GuidWorker _guid;
 
     // read; body
     public ItemModel GetItemBody(
@@ -41,6 +42,21 @@ internal class ReadFolderWorker : ReadWorkerBase
 
         // body
         item.Body = ListOfIndexesQNames(adrTuple);
+
+        return true;
+    }
+    
+    // read; config, body
+    public bool IfMineGetConfig(
+        ref ItemModel item,
+        (string Repo, string Loca) adrTuple,
+        UniType type = UniType.Folder)
+    {
+        if (_myType != type) { return false; }
+        
+        // config
+        item.Settings = _migrate
+            .GetConfigBeforeRead(adrTuple);
 
         return true;
     }
@@ -158,10 +174,12 @@ internal class ReadFolderWorker : ReadWorkerBase
 
         if (uniType == UniType.Ref)
         {
+            _guid.UpdateRefItemIfNeeded(ref x);
             string realAddress = x.Settings[ConfigKeys.RefAddress].ToString();
             (string RefRepo, string RefLoca) realAdrTuple = _operations
                 .UniAddress.CreateAddressFromString(realAddress);
             ItemModel item = new();
+            
             bool s01 = _readMulti.IfMineGetItem(ref item, realAdrTuple);
             indexQName = new(indexString, item.Name);
             return indexQName;
@@ -360,6 +378,7 @@ internal class ReadFolderWorker : ReadWorkerBase
         if (!_isInitialized)
         {
             _readMulti = MyBorder.MyContainer.Resolve<ReadFolderWorker>();
+            _guid = MyBorder.MyContainer.Resolve<GuidWorker>();
             _isInitialized = true;
         }
     }

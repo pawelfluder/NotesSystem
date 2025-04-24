@@ -4,14 +4,15 @@ using System.Linq;
 using Newtonsoft.Json;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Operations;
-using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Registrations;
+using SharpRepoServiceProg.Registrations;
 using SharpRepoServiceProg.Workers.CrudReads;
 using SharpRepoServiceProg.Workers.CrudWrites;
 using SharpRepoServiceProg.Workers.System;
 
 namespace SharpRepoServiceProg.Workers.APublic.ItemWorkers;
 
-public partial class ItemWorker
+public partial class ItemWorker : IItemWorker
 {
     private readonly CustomOperationsService _customOperationsService;
     private readonly ReadMultiWorker _readMulti;

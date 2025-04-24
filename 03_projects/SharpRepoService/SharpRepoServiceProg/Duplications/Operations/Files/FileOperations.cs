@@ -1,6 +1,6 @@
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.Duplications.Operations.Files;
-using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Registrations;
 
 namespace SharpRepoServiceProg.Operations.Files;
 

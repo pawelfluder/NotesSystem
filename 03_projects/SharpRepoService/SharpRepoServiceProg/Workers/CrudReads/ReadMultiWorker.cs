@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Registrations;
 
 namespace SharpRepoServiceProg.Workers.CrudReads;
 
@@ -48,7 +48,7 @@ internal class ReadMultiWorker : ReadWorkerBase
         return s01 || s02 || s03;
     }
     
-    public ItemModel GetItemExcludingRef(
+    public ItemModel GetConfigExcludingRef(
         (string Repo, string Loca) adrTuple,
         string type = null)
     {
@@ -65,18 +65,17 @@ internal class ReadMultiWorker : ReadWorkerBase
             return item;
         }
         
-        bool s01 = _readFolder.IfMineGetItem(ref item, adrTuple, uniType);
-        bool s02 = _readText.IfMineGetItem(ref item, adrTuple, uniType);
+        bool s01 = _readFolder.IfMineGetConfig(ref item, adrTuple, uniType);
+        bool s02 = _readText.IfMineGetConfig(ref item, adrTuple, uniType);
         return item;
     }
 
-    public ItemModel GetItemConfig(
+    public void GetItemConfig(
+        ItemModel item,
         (string Repo, string Loca) adrTuple)
     {
-        ItemModel item = new();
         item.Settings = _config
             .GetConfigDictionary(adrTuple);
-        return item;
     }
 
     public ItemModel GetItemBody(

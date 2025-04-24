@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Registrations;
 using SharpRepoServiceProg.Workers.CrudReads;
 
 namespace SharpRepoServiceProg.Workers.CrudWrites;

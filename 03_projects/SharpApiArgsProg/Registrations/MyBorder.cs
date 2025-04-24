@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using SharpContainerProg.AAPublic;
 
-namespace SharpRepoServiceProg.Registration;
+namespace SharpApiArgsProg.Registrations;
 
 internal static class MyBorder
 {
@@ -12,7 +12,7 @@ internal static class MyBorder
         ContainerService.MyContainer(
             AssemblyName);
     
-    public static Registration Registration = new Registration();
+    public static Registration Registration = new SharpApiArgsProg.Registrations.Registration();
     public static bool IsRegistered = Registration.Start(IsRegistered);
     public static IContainer4 OutContainer => Registration.OutContainer;
 }

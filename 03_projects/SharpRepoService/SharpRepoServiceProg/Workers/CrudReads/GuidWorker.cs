@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Registration;
+using SharpRepoServiceProg.Registrations;
 using SharpRepoServiceProg.Workers.Caches;
 using SharpRepoServiceProg.Workers.CrudWrites;
 using WriteTextWorker = SharpRepoServiceProg.Workers.CrudWrites.WriteTexts.WriteTextWorker;
@@ -24,8 +25,14 @@ internal class GuidWorker : ReadWorkerBase
         out (string, string) outAdrTuple)
     {
         TryInitialize();
-        bool success = PrivateGetAdrTupleByGuid(repoName, guid, out var cache, out var foundAdrTuple);
-        if (success)
+        bool found = PrivateGetAdrTupleByGuid(repoName, guid, out var cache, out var foundAdrTuple);
+        bool exists = false;
+        if (found)
+        {
+            exists = _config.ItemExists(foundAdrTuple, out var type);
+        }
+        
+        if (exists)
         {
             outAdrTuple = foundAdrTuple;
             return true;
@@ -116,7 +123,7 @@ internal class GuidWorker : ReadWorkerBase
             var adrTuple = gg[i];
             try
             {
-                ItemModel item = _readMulti.GetItemExcludingRef(adrTuple);
+                ItemModel item = _readMulti.GetConfigExcludingRef(adrTuple);
                 item.Settings.Add(newCache.KeyString, item.Settings["id"]);
                 //item.Settings.Remove("id");
                 newCache.Put(item.Id, item.Settings);
@@ -141,5 +148,26 @@ internal class GuidWorker : ReadWorkerBase
             _readMulti = MyBorder.MyContainer.Resolve<ReadMultiWorker>();
             _isInitialized = true;
         }
+    }
+
+    public bool UpdateRefItemIfNeeded(
+        ref ItemModel item)
+    {
+        string realAddress = item.Settings[ConfigKeys.RefAddress].ToString();
+        (string RefRepo, string RefLoca) realAdrTuple = _operations
+            .UniAddress.CreateAddressFromString(realAddress);
+        bool exists = _config.ItemExists(realAdrTuple, out var type);
+        if (exists)
+        {
+            return false;
+        }
+
+        string guidStr = item.Settings[ConfigKeys.RefGuid].ToString();
+        Guid guid = Guid.Parse(guidStr);
+        GetAdrTupleByGuid(item.AdrTuple.Repo, guid, out var outAdrTuple);
+        string realAddress2 = _operations
+            .UniAddress.CreateAddresFromAdrTuple(outAdrTuple);
+        item.Settings[ConfigKeys.RefAddress] = realAddress2;
+        return true;
     }
 }

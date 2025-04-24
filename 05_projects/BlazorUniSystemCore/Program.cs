@@ -1,4 +1,3 @@
-using BlazorNotesSystem;
 using SharpContainerProg.AAPublic;
 using OutBorder01 = SharpSetup01Prog.AAPublic.OutBorder;
 
