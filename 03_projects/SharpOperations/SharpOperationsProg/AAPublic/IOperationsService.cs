@@ -3,6 +3,7 @@ using SharpOperationsProg.AAPublic.Operations;
 using SharpOperationsProg.Operations.Date;
 using SharpOperationsProg.Operations.Headers;
 using SharpOperationsProg.Operations.Path;
+using SharpOperationsProg.Operations.Reflection;
 using SharpOperationsProg.Operations.UniAddress;
 
 namespace SharpOperationsProg.AAPublic;
@@ -18,7 +19,8 @@ public interface IOperationsService
     IUniAddressOperations UniAddress { get; }
     IUnitItemOperations UniItem { get; }
     IGoogleCredentialWorker Credentials { get; }
-    IReflectionOperations Reflection { get; }
+    IReflectionOp Reflection { get; }
     IJsonOperations Json { get; }
     IFileService GetFileService();
+    static IReflectionOpV2 ReflectionV2 = new ReflectionOpV2();
 }

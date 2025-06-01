@@ -26,7 +26,7 @@ internal class OperationService : IOperationsService
     public IUniAddressOperations UniAddress { get; private set; }
     public IUnitItemOperations UniItem { get; }
     public IGoogleCredentialWorker Credentials { get; private set; }
-    public IReflectionOperations Reflection { get; private set; }
+    public IReflectionOp Reflection { get; private set; }
     public IJsonOperations Json { get; private set; }
     public IFileService GetFileService()
     {
@@ -44,7 +44,7 @@ internal class OperationService : IOperationsService
         Header = new HeadersOperations();
         UniAddress = new UniAddressOperations(fileService, Index);
         Credentials = new GoogleCredentialWorker();
-        Reflection = new ReflectionOperations();
+        Reflection = new ReflectionOp();
         Json = new JsonOperations();
         _fileService = fileService;
     }

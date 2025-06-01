@@ -44,7 +44,7 @@ public static class ContainerService
     public static void SetOutContainer(
         IContainer4 container)
     {
-        if (OutContainer == null)
+        if (_outContainer != null)
         {
             throw new Exception();
         }
@@ -54,11 +54,11 @@ public static class ContainerService
 
     public static void SetOutContainer()
     {
-        if (OutContainer != null)
+        if (_outContainer != null)
         {
             throw new Exception();
         }
 
-        OutContainer = new DefaultContainer();
+        _outContainer = new DefaultContainer();
     }
 }

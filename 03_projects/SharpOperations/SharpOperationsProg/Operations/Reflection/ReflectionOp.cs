@@ -4,7 +4,7 @@ using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpOperationsProg.Operations.Reflection;
 
-public class ReflectionOperations : IReflectionOperations
+public class ReflectionOp : IReflectionOp
 {
     public IEnumerable<(string, string)> GetPropTuples(object obj)
     {
@@ -40,5 +40,15 @@ public class ReflectionOperations : IReflectionOperations
         }
 
         return true;
+    }
+    
+    public static string GetInterface(
+        Type type)
+    {
+        var interfaces = type.GetInterfaces();
+        if (interfaces.Length == 0)
+            return "";
+        
+        return interfaces[0].Name;
     }
 }

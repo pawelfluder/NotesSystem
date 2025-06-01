@@ -2,7 +2,7 @@
 
 namespace SharpOperationsProg.AAPublic.Operations;
 
-public interface IReflectionOperations
+public interface IReflectionOp
 {
     IEnumerable<(string, string)> GetPropTuples(object obj);
     List<string> GetPropNames<T>(params string[] propArray);

@@ -2,7 +2,7 @@ using SharpApiArgsProg.Registrations;
 using SharpArgsManagerProj.AAPublic;
 using SharpRepoServiceProg.AAPublic;
 
-namespace SharpApiArgsProg;
+namespace SharpApiArgsProg.Services;
 
 public class ApiArgsService : IArgsManagerService
 {
@@ -22,14 +22,25 @@ public class ApiArgsService : IArgsManagerService
         };
         
         _storeOfServices = servicesList
-            .ToDictionary(x => x.ToString(), x => x);
+            .ToDictionary(x => GetInterface(x.GetType()), x => x);
+        
     }
 
-    public void Resolve(string[] args)
+    private string GetInterface(
+        Type type)
+    {
+        var interfaces = type.GetInterfaces();
+        if (interfaces.Length == 0)
+            return "";
+        
+        return interfaces[0].Name;
+    }
+
+    public string Resolve(string[] args)
     {
         if (args.Length == 0)
         {
-            return;
+            return "";
         }
 
         if (args.Length == 1)
@@ -37,41 +48,42 @@ public class ApiArgsService : IArgsManagerService
             PrintAvailableMethods();
         }
 
-        TryRunMethod(args);
+        var result = TryRunMethod(args);
+        return result;
     }
 
-    private void TryRunMethod(string[] args)
+    private string TryRunMethod(string[] args)
     {
-        List<string> services = _storeOfServices.Keys.ToList();
-        string? service = services.SingleOrDefault(x => x == args[0]);
+        var service = _storeOfServices[args[0]];
 
         if (service == null)
         {
-            return;
+            return "";
         }
         
-        var worker = _findWorker.Try(args);
+        var worker = _findWorker.Try(args, service);
         
         if (worker == null)
         {
-            return;
+            return "";
         }
         
-        var method = _findMethod.Try(args);
+        var method = _findMethod.Try(args, worker);
         
-        if (worker == null)
+        if (method == null)
         {
-            return;
+            return "";
         }
         
-        var parameters = _findParameters.Try(args);
+        var parameters = _findParameters.Try(args, method);
         
         if (parameters == null)
         {
-            return;
+            return "";
         }
 
         //method.Invoke(worker, parameters);
+        return "";
     }
 
     private void PrintAvailableMethods()

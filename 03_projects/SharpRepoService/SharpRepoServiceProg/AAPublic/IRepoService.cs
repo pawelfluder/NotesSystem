@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using SharpRepoServiceProg.Workers.AAPublic;
 using SharpRepoServiceProg.Workers.APublic;
+using SharpRepoServiceProg.Workers.APublic.ItemWorkers;
 using ItemWorker = SharpRepoServiceProg.Workers.APublic.ItemWorkers.ItemWorker;
 
 namespace SharpRepoServiceProg.AAPublic;
 
 public interface IRepoService
 {
-    ItemWorker Item { get; }
+    IItemWorker Item { get; }
     
     ManyItemsWorker ManyItems { get; }
     

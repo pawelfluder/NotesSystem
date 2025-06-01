@@ -9,6 +9,8 @@ public abstract class RegistrationBase
         ContainerService.OutContainer;
     
     private bool registrationStarted;
+    
+    public bool IsRegistered { get; private set; }
 
     public bool Start(bool isRegistered)
     {
@@ -17,7 +19,7 @@ public abstract class RegistrationBase
         {
             registrationStarted = true;
             Registrations();
-            isRegistered = true;
+            IsRegistered = true;
             registrationStarted = false;
         }
 

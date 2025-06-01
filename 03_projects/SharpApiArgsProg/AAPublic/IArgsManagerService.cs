@@ -2,5 +2,5 @@ namespace SharpArgsManagerProj.AAPublic;
 
 public interface IArgsManagerService
 {
-    void Resolve(string[] args);
+    string Resolve(string[] args);
 }

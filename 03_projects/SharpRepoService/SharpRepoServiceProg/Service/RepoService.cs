@@ -4,6 +4,7 @@ using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic;
 using SharpRepoServiceProg.Workers.AAPublic;
 using SharpRepoServiceProg.Workers.APublic;
+using SharpRepoServiceProg.Workers.APublic.ItemWorkers;
 using ItemWorker = SharpRepoServiceProg.Workers.APublic.ItemWorkers.ItemWorker;
 
 namespace SharpRepoServiceProg.Service;
@@ -14,7 +15,7 @@ internal class RepoService : IRepoService
     private Lazy<ItemWorker> _item;
     private Lazy<ManyItemsWorker> _manyItems;
     private Lazy<MethodWorker> _methods;
-    public ItemWorker Item => _item.Value;
+    public IItemWorker Item => _item.Value;
     public ManyItemsWorker ManyItems => _manyItems.Value;
     public MethodWorker Methods => _methods.Value;
 
