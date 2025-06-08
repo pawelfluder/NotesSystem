@@ -1,9 +1,12 @@
 ﻿@using BlazorUniSystemCore.Registrations
 @using BlazorUniSystemCore.Repet.Models
+@using SharpButtonActionsProg.AAPublic
 @using SharpOperationsProg.AAPublic
 @using SharpOperationsProg.AAPublic.Operations
 @using SharpOperationsProg.Operations.UniAddress
 @using SharpRepoBackendProg.Services
+@using SharpRepoServiceProg.AAPublic
+@using SharpRepoServiceProg.Workers.APublic.ItemWorkers
 @rendermode InteractiveServer
 
 @* <iframe width="560" height="315" src="" frameborder="0" allowfullscreen></iframe> *@
@@ -50,8 +53,8 @@
 
     public FolderView()
     {
-        _operationsService = MyBorder.OutContainer.Resolve<IOperationsService>();
-        _backendService = MyBorder.OutContainer.Resolve<IBackendService>();
+        _operations = MyBorder.OutContainer.Resolve<IOperationsService>();
+        _backend = MyBorder.OutContainer.Resolve<IBackendService>();
     }
     
     [Parameter]
@@ -68,8 +71,8 @@
     
     // services
 
-    private IOperationsService _operationsService;
-    private IBackendService _backendService;
+    private IOperationsService _operations;
+    private IBackendService _backend;
     // private IArgsManagerService? _argsManager;
 
     protected override async Task OnInitializedAsync()
@@ -98,7 +101,7 @@
     {
         if (Item.Type == myType)
         {
-            var tmp = _operationsService.Json.TryDeserializeObject<Dictionary<string, string>>(Item?.Body.ToString());
+            var tmp = _operations.Json.TryDeserializeObject<Dictionary<string, string>>(Item?.Body.ToString());
             if (tmp is Dictionary<string, string> dict)
             {
                 return dict;
@@ -118,43 +121,57 @@
 
         var adrTuple = IUniAddressOperations
              .CreateAdrTupleFromAddress(Item.Address);
-        var itemJson = _backendService
-            .CommandApi("CreateItem", adrTuple.Item1, adrTuple.Item2, formSelectedType, formAddValue);
+        var itemJson = _backend
+            .InvokeStringArgsApi("CreateItem", adrTuple.Item1, adrTuple.Item2, formSelectedType, formAddValue);
     }
-
+    
     private void OnFolderClicked()
     {
         var adrTuple = IUniAddressOperations
-             .CreateAdrTupleFromAddress(Item.Address);
-        var itemJson = _backendService
-            .CommandApi("OpenFolder", adrTuple.Item1, adrTuple.Item2);
-    }
-
-    private void ConfigClicked()
-    {
-        var adrTuple = IUniAddressOperations
-              .CreateAdrTupleFromAddress(Item.Address);
-        var itemJson = _backendService.CommandApi("OpenConfig", adrTuple.Item1, adrTuple.Item2);
+            .CreateAdrTupleFromAddress(Item.Address);
+        _backend
+            .InvokeStringArgsApi(
+                nameof(IMainButtonActionsService),
+                nameof(IFolderWorker),
+                nameof(IFolderWorker.Open),
+                adrTuple.Item1,
+                adrTuple.Item2);
     }
     
-    private async Task TerminalClicked()
+    private void ConfigClicked()
     {
-        //var speechSynthesisService = serviceProvider.GetRequiredService<ISpeechSynthesisService>();
-        //var voicesArray = await speechSynthesisService.GetVoicesAsync();
-        
-        var adrTuple = IUniAddressOperations
+        (string, string) adrTuple = IUniAddressOperations
             .CreateAdrTupleFromAddress(Item.Address);
-        var itemJson = _backendService.CommandApi("OpenTerminal", adrTuple.Item1, adrTuple.Item2);
+        _backend
+            .InvokeStringArgsApi(
+                nameof(IMainButtonActionsService),
+                nameof(IFileWorker),
+                nameof(IFileWorker.Open),
+                adrTuple.Item1,
+                adrTuple.Item2);
+    }
+    
+    private void TerminalClicked()
+    {
+        (string, string) adrTuple = IUniAddressOperations
+            .CreateAdrTupleFromAddress(Item.Address);
+        _backend
+            .InvokeStringArgsApi(
+                nameof(IMainButtonActionsService),
+                nameof(ITerminalWorker),
+                nameof(ITerminalWorker.Open),
+                adrTuple.Item1,
+                adrTuple.Item2);
     }
 
     private void OnBtnClicked(string idxString)
     {
-        var index = _operationsService.Index.StringToIndex(idxString);
+        var index = _operations.Index.StringToIndex(idxString);
         var adrTuple = IUniAddressOperations
              .CreateAdrTupleFromAddress(Item.Address);
-        var newAddress = _operationsService.Index.JoinIndexWithLoca(adrTuple, index);
+        var newAddress = _operations.Index.JoinIndexWithLoca(adrTuple, index);
         var itemJString = GetItem(newAddress);
-        var itemObj = _operationsService.Json.TryDeserializeObject<ItemModel>(itemJString);
+        var itemObj = _operations.Json.TryDeserializeObject<ItemModel>(itemJString);
 
         if (itemObj?.Type != myType)
         {
@@ -169,7 +186,13 @@
 
     public string GetItem((string Repo, string Loca) address)
     {
-        var itemJson = _backendService.CommandApi("GetItem", address.Repo, address.Loca);
+        string itemJson = _backend
+            .InvokeStringArgsApi(
+                nameof(IRepoService),
+                nameof(IItemWorker),
+                nameof(IItemWorker.GetItem),
+                address.Repo,
+                address.Loca);
         return itemJson;
     }
 

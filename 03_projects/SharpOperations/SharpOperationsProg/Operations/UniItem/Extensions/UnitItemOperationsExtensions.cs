@@ -72,9 +72,9 @@ public static class UnitItemExtensions
     
     public static Dictionary<string, object> GetSettings(
         this IRepoService repoService,
-        (string, string) adrTuple)
+        (string Repo, string Loca) adrTuple)
     {
-        var json = repoService.Item.GetItem(adrTuple);
+        var json = repoService.Item.GetItem(adrTuple.Repo, adrTuple.Loca);
         var item = JsonConvert.DeserializeObject<UniItem>(json);
         var setting = item.Settings;
         return setting;
@@ -101,18 +101,18 @@ public static class UnitItemExtensions
     
     public static string GetBody(
         this IRepoService repoService,
-        (string, string) adrTuple)
+        (string Repo, string Loca) adrTuple)
     {
-        var json = repoService.Item.GetItem(adrTuple);
+        var json = repoService.Item.GetItem(adrTuple.Repo, adrTuple.Loca);
         var item = JsonConvert.DeserializeObject<UniItem>(json);
         return item.Body.ToString();
     }
     
     public static (string, Dictionary<string, object>) GetBodyQSettings(
         this IRepoService repoService,
-        (string, string) adrTuple)
+        (string Repo, string Loca) adrTuple)
     {
-        var json = repoService.Item.GetItem(adrTuple);
+        var json = repoService.Item.GetItem(adrTuple.Repo, adrTuple.Loca);
         var item = JsonConvert.DeserializeObject<UniItem>(json);
         var bodyQsettings = (item.Body.ToString(), item.Settings);
         return bodyQsettings;

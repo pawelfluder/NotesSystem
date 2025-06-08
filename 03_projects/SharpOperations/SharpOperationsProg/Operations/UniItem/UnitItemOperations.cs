@@ -35,7 +35,7 @@ public class UnitItemOperations : IUnitItemOperations
         (string Repo, string Loca) adrTuple) where T : class
     {
         string json = _repoService.Item
-            .GetItem(adrTuple);
+            .GetItem(adrTuple.Repo, adrTuple.Loca);
         bool s01 = _json.TryDeserializeObject<T>(json,
             out item);
         return s01;

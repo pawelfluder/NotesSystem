@@ -1,9 +1,15 @@
 ﻿@using BlazorUniSystemCore.Registrations
 @using BlazorUniSystemCore.Repet.Models
+@using SharpButtonActionsProg.AAPublic
+@using SharpGoogleDocsProg.AAPublic
 @using SharpOperationsProg.AAPublic
 @using SharpOperationsProg.AAPublic.Operations
 @using SharpOperationsProg.Operations.UniAddress
 @using SharpRepoBackendProg.Services
+@using SharpRepoServiceProg.AAPublic
+@using SharpRepoServiceProg.Workers.APublic.ItemWorkers
+@using SharpTtsServiceProg.AAPublic
+@using SharpTtsServiceProg.Workers.Fasades
 
 @* @rendermode InteractiveServer *@
 @rendermode @(new InteractiveServerRenderMode(prerender: true))
@@ -38,7 +44,7 @@
 
 
     <div>
-        <textarea readonly style="resize:none; width:800px; height: 1200px;">@item.Body</textarea>
+        <CodeEditorTabs  Code="@item.Body.ToString()"></CodeEditorTabs>
     </div>
 }
 
@@ -60,16 +66,16 @@
 
 @code {
     
-    IOperationsService _operationsService;
-    IBackendService _backendService;
+    IOperationsService _operations;
+    IBackendService _backend;
     private string formAddType;
     private string formGoogleDocType;
     public ItemModel item;
 
     public TextView()
     {
-        _operationsService = MyBorder.OutContainer.Resolve<IOperationsService>();
-        _backendService = MyBorder.OutContainer.Resolve<IBackendService>();
+        _operations = MyBorder.OutContainer.Resolve<IOperationsService>();
+        _backend = MyBorder.OutContainer.Resolve<IBackendService>();
     }
 
     [Parameter]
@@ -129,21 +135,39 @@
     {
         var adrTuple = IUniAddressOperations
               .CreateAdrTupleFromAddress(Item.Address);
-        var itemJson = _backendService.CommandApi("OpenContent", adrTuple.Item1, adrTuple.Item2);
+        _backend
+            .InvokeStringArgsApi(
+                nameof(IMainButtonActionsService),
+                nameof(IFileWorker),
+                nameof(IFileWorker.Open),
+                adrTuple.Item1,
+                adrTuple.Item2);
     }
 
     private void ConfigClicked()
     {
-        var adrTuple = IUniAddressOperations
+        (string, string) adrTuple = IUniAddressOperations
               .CreateAdrTupleFromAddress(Item.Address);
-        var itemJson = _backendService.CommandApi("OpenConfig", adrTuple.Item1, adrTuple.Item2);
+        _backend
+            .InvokeStringArgsApi(
+                nameof(IMainButtonActionsService),
+                nameof(IFileWorker),
+                nameof(IFileWorker.Open),
+                adrTuple.Item1,
+                adrTuple.Item2);
     }
 
     private void TerminalClicked()
     {
-        var adrTuple = IUniAddressOperations
+        (string, string) adrTuple = IUniAddressOperations
               .CreateAdrTupleFromAddress(Item.Address);
-        var itemJson = _backendService.CommandApi("OpenTerminal", adrTuple.Item1, adrTuple.Item2);
+        _backend
+            .InvokeStringArgsApi(
+                nameof(IMainButtonActionsService),
+                nameof(ITerminalWorker),
+                nameof(ITerminalWorker.Open),
+                adrTuple.Item1,
+                adrTuple.Item2);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -164,31 +188,44 @@
         //SpeechSynthesis.Speak("hello");
         var adrTuple = IUniAddressOperations
             .CreateAdrTupleFromAddress(Item.Address);
-        var itemJson = _backendService.CommandApi("Tts", adrTuple.Item1, adrTuple.Item2);
+        _backend
+            .InvokeStringArgsApi(
+                nameof(ITtsService),
+                nameof(RepoTtsWorker),
+                nameof(RepoTtsWorker.PlStartNew),
+                adrTuple.Item1,
+                adrTuple.Item2);
     }
     
     private void GoogleDocClicked()
     {
-        var adrTuple = IUniAddressOperations
+        (string, string) adrTuple = IUniAddressOperations
               .CreateAdrTupleFromAddress(Item.Address);
         if (formGoogleDocType == "Open")
         {
-            var itemJson = _backendService.CommandApi("OpenGoogleDoc", adrTuple.Item1, adrTuple.Item2);
+            // _backend
+            //     .InvokeStringArgsApi(
+            //         nameof(IGoogleDocsService),
+            //         nameof(IGoogleDocsService.),
+            //         nameof(RepoTtsWorker.PlStartNew),
+            //         adrTuple.Item1,
+            //         adrTuple.Item2);
+            var itemJson = _backend.InvokeStringArgsApi("OpenGoogleDoc", adrTuple.Item1, adrTuple.Item2);
         }
         if (formGoogleDocType == "Recreate")
         {
-            var itemJson = _backendService.CommandApi("RecreateGoogleDoc", adrTuple.Item1, adrTuple.Item2);
+            var itemJson = _backend.InvokeStringArgsApi("RecreateGoogleDoc", adrTuple.Item1, adrTuple.Item2);
         }
     }
 
     private void OnBtnClicked(string idxString)
     {
-        var index = _operationsService.Index.StringToIndex(idxString);
+        var index = _operations.Index.StringToIndex(idxString);
         var adrTuple = IUniAddressOperations
              .CreateAdrTupleFromAddress(Item.Address);
-        var newAddress = _operationsService.Index.JoinIndexWithLoca(adrTuple, index);
+        var newAddress = _operations.Index.JoinIndexWithLoca(adrTuple, index);
         var itemJString = GetItem(newAddress);
-        var itemObj = _operationsService.Json.TryDeserializeObject<ItemModel>(itemJString);
+        var itemObj = _operations.Json.TryDeserializeObject<ItemModel>(itemJString);
 
         if (itemObj.Type != myType)
         {
@@ -208,26 +245,40 @@
             return;
         }
 
-        var adrTuple = IUniAddressOperations
+        (string, string) adrTuple = IUniAddressOperations
              .CreateAdrTupleFromAddress(Item.Address);
         
-        // _backendService.CommandApi()
-        // todo
-        // var itemJson = backendService
-        //     .CommandApi("CreateItem", adrTuple.Item1, adrTuple.Item2, formAddValue, "Folder");
+        string serviceName = nameof(IRepoService);
+        string workerName = nameof(IItemWorker);
+        string methodName = nameof(IItemWorker.AppendLine);
+        string param01 = adrTuple.Item1;
+        string param02 = adrTuple.Item2;
+        string param03 = formAddValue;
+        string param04 = "";
+        string item = _backend.InvokeStringArgsApi(
+        [serviceName, workerName, methodName,
+            param01,
+            param02,
+            param03,
+            param04]);
     }
 
     private void OnFolderClicked()
     {
-        var adrTuple = IUniAddressOperations
+        (string, string) adrTuple = IUniAddressOperations
              .CreateAdrTupleFromAddress(Item.Address);
-        var itemJson = _backendService
-            .CommandApi("OpenFolder", adrTuple.Item1, adrTuple.Item2);
+        _backend
+            .InvokeStringArgsApi(
+                nameof(IMainButtonActionsService),
+                nameof(IFolderWorker),
+                nameof(IFolderWorker.Open),
+                adrTuple.Item1,
+                adrTuple.Item2);
     }
 
     public string GetItem((string Repo, string Loca) address)
     {
-        var itemJson = _backendService.CommandApi("GetItem", address.Repo, address.Loca);
+        var itemJson = _backend.InvokeStringArgsApi("GetItem", address.Repo, address.Loca);
         return itemJson;
     }
 }

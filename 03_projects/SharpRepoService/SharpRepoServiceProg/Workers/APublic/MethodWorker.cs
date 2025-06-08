@@ -144,7 +144,7 @@ public class MethodWorker
 
     public string GetItem(
         (string Repo, string Loca) adrTuple)
-        => _item.GetItem(adrTuple);
+        => _item.GetItem(adrTuple.Repo, adrTuple.Loca);
 
     public string GetItemList(
         (string repo, string loca) adrTuple)

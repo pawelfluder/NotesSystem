@@ -1,4 +1,4 @@
-﻿namespace SharpTinderApiDataImport;
+﻿namespace SharpHttpRequesterProg;
 
 public static class Program
 {

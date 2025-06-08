@@ -19,6 +19,7 @@
     <ProjectReference Include="..\..\SharpTextHeaderAnalyzer\SharpTextHeaderAnalyzerProg\SharpTextHeaderAnalyzerProg.csproj" />
     <ProjectReference Include="..\..\SharpButtonActions\SharpButtonActionsProg\SharpButtonActionsProg.csproj" />
     <ProjectReference Include="..\..\SharpTtsService\SharpTtsServiceProg\SharpTtsServiceProg.csproj" />
+    <ProjectReference Include="..\..\StringArgsResolver\StringArgsResolver.csproj" />
   </ItemGroup>
 
 </Project>

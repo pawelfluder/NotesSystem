@@ -8,6 +8,7 @@
 @using BlazorUniSystemCore.Repet.Models
 @using BlazorUniSystemCore.Components.Editor
 @using SharpOperationsProg.AAPublic
+@using SharpRepoServiceProg.Workers.APublic.ItemWorkers
 
 @inject NavigationManager NavigationManager
 
@@ -77,11 +78,7 @@
 
     public List<string> AllRepoNames { get; set; }
 
-    public string ComboBoxRepoName
-    {
-        get;
-        set;
-    }
+    public string ComboBoxRepoName { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -171,14 +168,16 @@
         (string Repo, string Loca) address)
     {
         string itemJson = _backendService
-            .CommandApi(
-                "GetItem",
+            .InvokeStringArgsApi(
+                nameof(IRepoService),
+                nameof(IItemWorker),
+                nameof(IItemWorker.GetItem),
                 address.Repo,
                 address.Loca);
         return itemJson;
     }
 
-    private async Task OnBackArrowBtnClicked(
+    private void OnBackArrowBtnClicked(
         MouseEventArgs e)
     {
         string newAddress = IUniAddressOperations

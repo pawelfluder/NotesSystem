@@ -1,14 +1,17 @@
-﻿using SharpButtonActionsProg.Service;
+﻿using SharpButtonActionsProg.Services;
 using SharpOperationsProg.AAPublic;
-using SharpOperationsProg.AAPublic.Operations;
+using SharpRepoServiceProg.AAPublic;
 
 namespace SharpButtonActionsProg.AAPublic;
 
 public static class OutBorder
 {
-    public static ISystemActionsService SytemActionsService(
-        IOperationsService operationsService)
+    public static IMainButtonActionsService MainButtonActionsService(
+        IOperationsService operationsService,
+        IRepoService repoService)
     {
-        return new SystemActionsService(operationsService);
+        return new MainButtonActionsService(
+            operationsService,
+            repoService);
     }
 }

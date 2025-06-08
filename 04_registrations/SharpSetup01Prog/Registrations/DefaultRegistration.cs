@@ -1,4 +1,6 @@
-﻿using SharpConfigProg.AAPublic;
+﻿using SharpApiArgsProg.AAPublic;
+using SharpButtonActionsProg.AAPublic;
+using SharpConfigProg.AAPublic;
 using SharpContainerProg.AAPublic;
 using SharpFileServiceProg.AAPublic;
 using SharpGoogleDocsProg.AAPublic;
@@ -21,6 +23,8 @@ using OutBorder7 = SharpTtsServiceProg.AAPublic.OutBorder;
 using OutBorder8 = SharpVideoServiceProg.AAPublic.OutBorder;
 using OutBorder12 = SharpRepoBackendProg.AAPublic.OutBorder;
 using OutBorder13 = SharpImageSplitterProg.AAPublic.OutBorder;
+using OutBorder14 = SharpApiArgsProg.AAPublic.OutBorder;
+using OutBorder15 = SharpButtonActionsProg.AAPublic.OutBorder;
 
 namespace SharpSetup01Prog.Registrations;
 
@@ -41,10 +45,11 @@ public class DefaultRegistration : RegistrationBase
         ConfigService = OutBorder2.ConfigService(OperationsService);
         OutContainer.RegisterByFunc<IConfigService>(
             () => ConfigService);
-        
+
+        var repo = OutBorder3.RepoService(FileService);
         OutContainer.RegisterByFunc<IFileService, IRepoService>(
-            x => OutBorder3.RepoService(x),
-            () => OutContainer.Resolve<IFileService>(),
+            x => repo,
+            () => FileService,
             0,
             InitGroupsFromSearchPaths);
         
@@ -73,6 +78,12 @@ public class DefaultRegistration : RegistrationBase
         OutContainer.RegisterByFunc(
             (x) => OutBorder8.VideoService(x),
             () => OutContainer.Resolve<IOperationsService>());
+
+        // MAIN BUTTON ACTIONS MODULE
+        IMainButtonActionsService buttonActions = OutBorder15
+            .MainButtonActionsService(OperationsService, repo);
+        OutContainer.RegisterByFunc(
+            () => buttonActions);
         
         // OutContainer.RegisterByFunc(
         //     (x) => OutBorder7.TtsService(),
@@ -84,7 +95,19 @@ public class DefaultRegistration : RegistrationBase
             OutContainer.Resolve<IVideoService>());
         OutContainer.RegisterByFunc(() => ttsService);
         OutContainer.ServiceRegister.AddSpeechSynthesis();
+        
+        // STRING ARGS RESOLVER MODULE
+        List<object> servicesList =
+        [
+            OutContainer.Resolve<IRepoService>(),
+            OutContainer.Resolve<IMainButtonActionsService>()
+        ];
+        IStringArgsResolverService stringArgs = OutBorder14
+            .StringArgsResolverService(servicesList);
+        OutContainer.RegisterByFunc(
+            () => stringArgs);
 
+        // BACKEND MODULE
         IBackendService backend = OutBorder12.BackendService();
         OutContainer.RegisterByFunc(() => backend);
 
@@ -93,6 +116,8 @@ public class DefaultRegistration : RegistrationBase
         
         // OutContainer.ServiceRegister.AddSpeechSynthesisServices();
         OutContainer.ServiceRegister.AddSpeechSynthesis();
+        
+        
     }
 
     private void InitGroupsFromSearchPaths()

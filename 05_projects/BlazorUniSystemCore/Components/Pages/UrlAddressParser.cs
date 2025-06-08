@@ -8,16 +8,13 @@ namespace BlazorUniSystemCore.Components.Pages;
 
 public class UrlAddressParser
 {
-    private string sptr = "-";
     private IRepoService _repo;
-    //private readonly IOperationsService _operations;
     private readonly IRepoOperationsService _repoOp;
 
     public UrlAddressParser()
     {
         _repo = MyBorder.OutContainer.Resolve<IRepoService>();
         _repoOp = MyBorder.OutContainer.Resolve<IRepoOperationsService>();
-        //_operations = MyBorder.OutContainer.Resolve<IOperationsService>();
     }
 
     public bool IsItemReloadNeeded(
@@ -54,8 +51,9 @@ public class UrlAddressParser
         ref ItemModel item,
         string? UrlUniAddress)
     {
-        if (string.IsNullOrEmpty(UrlUniAddress) ||
-            UrlUniAddress.EndsWith(".css"))
+        if (string.IsNullOrEmpty(UrlUniAddress)
+            || UrlUniAddress.EndsWith(".css")
+            || UrlUniAddress.EndsWith(".png"))
         {
             return false;
         }

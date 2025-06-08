@@ -80,7 +80,8 @@ internal class ReadFolderWorker : ReadWorkerBase
         (string Repo, string Loca) adrTuple,
         string key)
     {
-        Dictionary<string, object> dict = _config.GetConfigDictionary(adrTuple);
+        Dictionary<string, object> dict = _config
+            .GetConfigDictionary(adrTuple);
         bool exists = dict.TryGetValue(key, out var value);
         if (exists)
         {

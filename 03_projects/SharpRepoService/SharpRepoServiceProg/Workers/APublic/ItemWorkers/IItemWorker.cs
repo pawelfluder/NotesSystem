@@ -9,8 +9,13 @@ public interface IItemWorker
         (string Repo, string Loca) address,
         List<string> names);
 
-    string GetItem(
-        (string Repo, string Loca) adrTuple);
+    string GetItem(string repo, string loca);
+
+    string AppendLine(
+        string repo,
+        string loca,
+        string content,
+        string position);
 
     string GetItemBySeqOfNames(
         (string Repo, string Loca) adrTuple,
