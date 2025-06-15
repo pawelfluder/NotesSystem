@@ -1,4 +1,4 @@
-﻿@page "/repo"
+﻿@page "/"
 @using BlazorComponent.Components
 
 <PageTitle>Login</PageTitle>
@@ -6,11 +6,11 @@
 <div class="auth-container">
     @if (showRegister)
     {
-    <RegisterForm OnSwitchToLogin="ShowLogin" />
+        <RegisterForm OnSwitchToLogin="ShowLogin" />
     }
     else
     {
-    <LoginForm OnSwitchToRegister="ShowRegister" />
+        <LoginForm OnSwitchToRegister="ShowRegister" />
     }
 </div>
 @code {
