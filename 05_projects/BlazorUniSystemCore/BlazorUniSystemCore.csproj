@@ -17,4 +17,13 @@
     <ProjectReference Include="..\BlazorUniComponents\BlazorUniComponents.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\bootstrap\bootstrap.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\bootstrap\bootstrap.min.css.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

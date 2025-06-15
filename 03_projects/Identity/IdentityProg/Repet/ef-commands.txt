@@ -1,0 +1,40 @@
+﻿
+//nuget
+   NuGet\Install-Package Microsoft.EntityFrameworkCore.Sqlite -Version 8.0.0
+   NuGet\Install-Package Microsoft.EntityFrameworkCore.Design -Version 8.0.0
+   NuGet\Install-Package Microsoft.EntityFrameworkCore.Tools -Version 8.0.0
+
+//current folder name
+   (Get-Item (Get-Location)).Name
+   (ls).Name
+
+//dotnet comands
+   dotnet tool install --global dotnet-ef
+   dotnet ef migrations add InitialMigration --startup-project SharpCountriesProg.csproj
+   (pamiętaj żeby zmienić folder cd przed migracją)
+   dotnet ef database update
+   dotnet tool update --global dotnet-ef
+   dotnet ef migrations remove
+   dotnet ef database update --migration Migration01Product
+   dotnet ef migrations add "Migration02SeedProductData"
+
+//package manager commands
+   Update-Database
+    
+
+//sqlite browser
+   https://sqlitebrowser.org/dl
+   C:\Program Files\DB Browser for SQLite\DB Browser for SQLite.exe
+
+//problem; 01
+	dotnet : Could not execute because the specified command or file was not found.
+   At line:1 char:1
+   + dotnet ef migrations add InitialMigration
+   + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       + CategoryInfo          : NotSpecified: (Could not execu... was not found.:String) [], RemoteException
+       + FullyQualifiedErrorId : NativeCommandError
+ 
+   Possible reasons for this include:
+     * You misspelled a built-in dotnet command.
+     * You intended to execute a .NET program, but dotnet-ef does not exist.
+     * You intended to run a global tool, but a dotnet-prefixed executable with this name could not be found on the PATH.

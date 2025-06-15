@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Globalization;
 using System.Text.Json.Nodes;
 using Newtonsoft.Json;
 using PdfService.PdfService;
@@ -11,7 +10,6 @@ using SharpGoogleDocsProg.AAPublic;
 using SharpGoogleDriveProg.AAPublic;
 using SharpNotesExporterProg;
 using SharpOperationsProg.AAPublic;
-using SharpRepoBackendProg.AAPublic;
 using SharpRepoBackendProg.Repetition;
 using SharpRepoServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
@@ -72,7 +70,8 @@ public class BackendService : IBackendService
         }
         catch
         {
-            var error = "Exception! Item not found";var result = new JsonObject();
+            var error = "Exception! Item not found";
+            var result = new JsonObject();
             result.Add("error", error);
             return result.ToJsonString();
         }

@@ -1,9 +1,8 @@
-﻿@using BlazorUniSystemCore.Registrations
+﻿@using BlazorUniSystemCore.Operations
+@using BlazorUniSystemCore.Registrations
 @using BlazorUniSystemCore.Repet.Models
 @using SharpButtonActionsProg.AAPublic
 @using SharpGoogleDocsProg.AAPublic
-@using SharpOperationsProg.AAPublic
-@using SharpOperationsProg.AAPublic.Operations
 @using SharpOperationsProg.Operations.UniAddress
 @using SharpRepoBackendProg.Services
 @using SharpRepoServiceProg.AAPublic
@@ -48,33 +47,14 @@
     </div>
 }
 
-@*
-<div>@item.Body</div>
-
-@if (Item?.Type == myType)
-{
-    <input type="button" value="Content" @onclick="ContentClicked" />
-    <input type="button" value="Config" @onclick="ConfigClicked" />
-    <input type="button" value="GoogleDoc" @onclick="GoogleDocClicked" />
-
-   @foreach (var line in linesList)
-   {
-       <div>@line</div>
-   }
-}
-*@
-
 @code {
-    
-    IOperationsService _operations;
-    IBackendService _backend;
+    private IBackendService _backend;
     private string formAddType;
     private string formGoogleDocType;
     public ItemModel item;
 
     public TextView()
     {
-        _operations = MyBorder.OutContainer.Resolve<IOperationsService>();
         _backend = MyBorder.OutContainer.Resolve<IBackendService>();
     }
 
@@ -172,15 +152,6 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // var _synth = MyBorder.OutContainer.Resolve<ISpeechSynthesisService>();
-        //
-        // var voicesArray = await _synth.GetVoicesAsync();
-        //
-        //
-        // var adrTuple = IUniAddressOperations
-        //     .CreateAddressFromString(Item.Address);
-        // var itemJson = backendService.CommandApi("Tts", adrTuple.Item1, adrTuple.Item2);
-
     }
 
     private void TtsClicked()
@@ -203,13 +174,13 @@
               .CreateAdrTupleFromAddress(Item.Address);
         if (formGoogleDocType == "Open")
         {
-            // _backend
-            //     .InvokeStringArgsApi(
-            //         nameof(IGoogleDocsService),
-            //         nameof(IGoogleDocsService.),
-            //         nameof(RepoTtsWorker.PlStartNew),
-            //         adrTuple.Item1,
-            //         adrTuple.Item2);
+            _backend
+                .InvokeStringArgsApi(
+                    nameof(IGoogleDocsService),
+                    nameof(IGoogleDocsService.),
+                    nameof(RepoTtsWorker.PlStartNew),
+                    adrTuple.Item1,
+                    adrTuple.Item2);
             var itemJson = _backend.InvokeStringArgsApi("OpenGoogleDoc", adrTuple.Item1, adrTuple.Item2);
         }
         if (formGoogleDocType == "Recreate")
@@ -218,7 +189,8 @@
         }
     }
 
-    private void OnBtnClicked(string idxString)
+    private void OnBtnClicked(
+        string idxString)
     {
         var index = _operations.Index.StringToIndex(idxString);
         var adrTuple = IUniAddressOperations
@@ -265,15 +237,15 @@
 
     private void OnFolderClicked()
     {
-        (string, string) adrTuple = IUniAddressOperations
+        (string Repo, string Loca) adrTuple = INoSqlAddressOperations
              .CreateAdrTupleFromAddress(Item.Address);
         _backend
             .InvokeStringArgsApi(
                 nameof(IMainButtonActionsService),
                 nameof(IFolderWorker),
                 nameof(IFolderWorker.Open),
-                adrTuple.Item1,
-                adrTuple.Item2);
+                adrTuple.Repo,
+                adrTuple.Loca);
     }
 
     public string GetItem((string Repo, string Loca) address)
