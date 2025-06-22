@@ -32,10 +32,10 @@ internal class PathWorker
         contentFileName = "lista.txt";
     }
 
-    public (string Repo, string Loca) GetFirstRepo()
+    public string[] GetFirstRepo()
     {
         string firstRepo = Path.GetFileName(reposPathsList.First());
-        return (firstRepo, "");
+        return [firstRepo, ""];
     }
 
     public string GetItemPath(

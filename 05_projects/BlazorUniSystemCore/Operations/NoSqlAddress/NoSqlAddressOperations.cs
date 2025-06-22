@@ -1,0 +1,98 @@
+namespace BlazorUniSystemCore.Operations.NoSqlAddress;
+
+public class NoSqlAddressOperations : INoSqlAddressOperations
+{
+    public string GetAddressString((string, string) adrTuple)
+    {
+        if (string.IsNullOrEmpty(adrTuple.Item2))
+        {
+            return adrTuple.Item1;
+        }
+
+        var address = adrTuple.Item1 + "/" + adrTuple.Item2;
+        return address;
+    }
+
+    public string MoveOneLocaBack(string adrString)
+    {
+        var slashCount = adrString.Count(x => x == '/');
+        if (slashCount == 0)
+        {
+            return adrString;
+        }
+
+        var splited = adrString.Split("/").ToList();
+        var lastItemIndex = splited.Count - 1;
+        splited.RemoveAt(lastItemIndex);
+        var newAddress = String.Join('/', splited);
+
+        return newAddress;
+    }
+    public (string, string) CreateAdrTupleFromAddress(
+        string addressString)
+    {
+        addressString = addressString.Trim('/').Replace("https://", "");
+        var index = addressString.IndexOf('/');
+        if (!addressString.Contains('/'))
+        {
+            return (addressString, "");
+        }
+
+        string repo = addressString.Substring(0, index);
+        string loca = addressString.Substring(index + 1, addressString.Length - index - 1);
+
+        if (loca.StartsWith('/'))
+        {
+            throw new Exception();
+        }
+
+        return (repo, loca);
+    }
+    
+    public (string, string) CreateAddressFromUrlParameter(
+        string addressString)
+    {
+        var spliter = '-';
+        if (!addressString.Contains(spliter))
+        {
+            return (addressString, "");
+        }
+        
+        addressString = addressString.Trim(spliter);
+        int index = addressString.IndexOf(spliter);
+
+        string repo = addressString.Substring(0, index);
+        string loca = addressString.Substring(index + 1, addressString.Length - index - 1);
+
+        if (!loca.Contains(spliter))
+        {
+            return (repo, loca);
+        }
+        
+        var newLoca = loca.Replace(spliter, '/');
+        return (repo, newLoca);
+    }
+    public (string, string) JoinIndexWithLoca(
+        (string Repo, string Loca) adrTuple,
+        int? index)
+    {
+        if (index == null) return adrTuple;
+
+        string idxString = IFrontendOperations.TwoDigitsStr.FromInt(index);
+
+        var newLoca = JoinLoca(adrTuple.Loca, idxString);
+        var newAdrTuple = (adrTuple.Repo, newLoca);
+        return newAdrTuple;
+    }
+    
+    public string JoinLoca(string loca01, string loca02)
+    {
+        if (loca01 == string.Empty)
+        {
+            return loca02;
+        }
+
+        var newLoca = loca01 + "/" + loca02;
+        return newLoca;
+    }
+}

@@ -1,21 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registrations;
-using SharpRepoServiceProg.Workers.APublic;
 using SharpRepoServiceProg.Workers.CrudReads;
 using SharpRepoServiceProg.Workers.CrudWrites;
 using SharpRepoServiceProg.Workers.System;
 using ItemWorker = SharpRepoServiceProg.Workers.APublic.ItemWorkers.ItemWorker;
 using WriteTextWorker = SharpRepoServiceProg.Workers.CrudWrites.WriteTexts.WriteTextWorker;
 
-namespace SharpRepoServiceProg.Workers.AAPublic;
+namespace SharpRepoServiceProg.Workers.APublic;
 
-public class MethodWorker
+public class MethodWorker : IMethodWorker
 {
     // services§
     private readonly IFileService fileService;
@@ -76,9 +76,19 @@ public class MethodWorker
 
     public void InitGroupsFromSearchPaths(List<string> searchPaths)
         => _many.InitGroupsFromSearchPaths(searchPaths);
+
+    public string GetFirstRepo()
+    {
+        string result = JsonSerializer.Serialize(_path.GetFirstRepo());
+        return result;
+    }
     
-    public (string Repos, string Loca) GetFirstRepo()
-        => _path.GetFirstRepo();
+    public string GetAllReposNames()
+    {
+        string result = JsonSerializer.Serialize(_readFolder.GetAllReposNames());
+        return result;
+    }
+    //=> _readFolder.GetAllReposNames();
 
     public int GetReposCount()
         => _path.GetRepoCount();
@@ -287,8 +297,7 @@ public class MethodWorker
         return result;
     }
 
-    public List<string> GetAllReposNames()
-        => _readFolder.GetAllReposNames();
+    
 
     public List<string> GetAllReposPaths()
         => _readMany.GetAllRepoAddresses();

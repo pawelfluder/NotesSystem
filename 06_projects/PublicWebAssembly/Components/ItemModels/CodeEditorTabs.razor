@@ -1,0 +1,73 @@
+﻿@code {
+    [Parameter]
+    public string Code { get; set; } = "";
+
+    [Parameter]
+    public EventCallback<string> CodeChanged { get; set; }
+
+    private string ActiveTab = "preview";
+
+    private void SwitchTab(string tabName)
+    {
+        ActiveTab = tabName;
+    }
+
+    private string GetTabClass(string tabName)
+    {
+        return tabName == ActiveTab ? "selected" : "";
+    }
+}
+
+<div class="tabs">
+    <button @onclick='() => SwitchTab("preview")' class='@GetTabClass("preview")'>🧾 Podgląd</button>
+    <button @onclick='() => SwitchTab("edit")' class='@GetTabClass("edit")'>✏️ Edytor</button>
+</div>
+
+<div class="tab-content">
+    @if (ActiveTab == "preview")
+    {
+        <textarea readonly class="code-area">@Code</textarea>
+    }
+    else if (ActiveTab == "edit")
+    {
+        <SimpleCodeEditor Code="@Code" CodeChanged="@CodeChanged" />
+    }
+</div>
+
+<style>
+    .tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .tabs button {
+        padding: 8px 16px;
+        border: none;
+        background-color: #eee;
+        cursor: pointer;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+    }
+
+    .tabs button.selected {
+        background-color: #fff;
+        border-bottom: 2px solid #0078d4;
+        font-weight: bold;
+    }
+
+    .tab-content {
+        margin-top: 10px;
+    }
+
+    .code-area {
+        width: 800px;
+        height: 400px;
+        resize: vertical;
+        font-family: Consolas, monospace;
+        font-size: 14px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+    }
+</style>

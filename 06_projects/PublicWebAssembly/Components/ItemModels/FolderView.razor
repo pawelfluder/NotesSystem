@@ -1,0 +1,202 @@
+﻿@using BackendAdapters.Models
+@using BackendAdapters.Names
+@using BackendAdapters.Operations
+@using BackendAdapters.Workers
+@* <iframe width="560" height="315" src="" frameborder="0" allowfullscreen></iframe> *@
+
+@if (Item?.Type == myType)
+{
+    <div>
+        <input type="button" value="Folder" @onclick="OnFolderClicked" />
+        <input type="button" value="Config" @onclick="ConfigClicked" />
+        <input type="button" value="Terminal" @onclick="TerminalClicked" />
+        <input type="button" value="Script" @onclick="ScriptClicked" />
+    </div>
+
+    <div>
+        <input type="button" value="Add" @onclick="OnAddClicked" />
+        <select @bind="@formSelectedType">
+            <option value="Text">Text</option>
+            <option value="Folder">Folder</option>
+            <option value="Ref">Ref</option>
+        </select>
+        <input type="text" @bind=@formAddValue>
+    </div>
+
+   @foreach (var indexQname in GetIndexQnameDict())
+   {
+       <div>
+           @indexQname.Key
+           <input type="button" value="@indexQname.Value" @onclick="() => OnBtnClicked(indexQname.Key)" />
+       </div>
+   }
+}
+
+@*
+@foreach (var indexQname in GetIndexQnameDict())
+{
+    <tr>
+        <td>@indexQname.Key</td>
+        <!-- <td><a @onclick=@OnUrlClicked() href="#"></a></td> -->
+        <input type="button" value="@indexQname.Value" @onclick="() => OnBtnClicked(indexQname.Key)" />
+    </tr>
+}
+*@
+@code {
+    [Inject]
+    private BackendAdapter Backend { get; set; }
+    
+    [Parameter]
+    public ItemModel Item { get; set; }
+
+    [Parameter]
+    public Action<ItemModel, bool> ReloadItem { get; set; }
+
+    private string formAddValue;
+    private string formSelectedType;
+
+    private Dictionary<string, string> indexQnameDict;
+    private string myType = "Folder";
+    
+    // private IArgsManagerService? _argsManager;
+
+    protected override async Task OnInitializedAsync()
+    {
+        myType = "Folder";
+        formSelectedType = "Text";
+        ReloadComponent();
+    }
+
+    //private EventCallback<ItemModel2> itemChanged;
+
+    [Parameter]
+    public EventCallback<ItemModel> ItemChanged { get; set; }
+
+    void ItemChangeHandler(ItemModel item)
+    {
+
+    }
+
+    private void ReloadComponent()
+    {
+        indexQnameDict = GetIndexQnameDict();
+    }
+
+    private Dictionary<string, string> GetIndexQnameDict()
+    {
+        if (Item.Type == myType)
+        {
+            var tmp = IFrontendOperations.Json
+                .TryDeserializeObject<Dictionary<string, string>>(
+                    Item?.Body.ToString());
+            if (tmp is Dictionary<string, string> dict)
+            {
+                return dict;
+            }
+        }
+
+        return default;
+    }
+
+    
+    private void OnAddClicked()
+    {
+        if (string.IsNullOrEmpty(formAddValue))
+        {
+            return;
+        }
+
+        var adrTuple = IFrontendOperations.NoSqlAddress
+             .CreateAdrTupleFromAddress(Item.Address);
+        var itemJson = Backend
+            .InvokeStringArgsApi("CreateItem", adrTuple.Item1, adrTuple.Item2, formSelectedType, formAddValue);
+    }
+    
+    private void OnFolderClicked()
+    {
+        var adrTuple = IFrontendOperations.NoSqlAddress
+            .CreateAdrTupleFromAddress(Item.Address);
+        Backend
+            .InvokeStringArgsApi(
+                SNames.MainButtonActionsService,
+                SNames.FolderWorker,
+                SNames.Open,
+                adrTuple.Item1,
+                adrTuple.Item2);
+    }
+    
+    private void ConfigClicked()
+    {
+        (string, string) adrTuple = IFrontendOperations
+            .NoSqlAddress
+            .CreateAdrTupleFromAddress(Item.Address);
+        Backend
+            .InvokeStringArgsApi(
+                SNames.MainButtonActionsService,
+                SNames.FileWorker,
+                SNames.Open,
+                adrTuple.Item1,
+                adrTuple.Item2);
+    }
+    
+    private void TerminalClicked()
+    {
+        (string, string) adrTuple = IFrontendOperations
+            .NoSqlAddress
+            .CreateAdrTupleFromAddress(Item.Address);
+        Backend
+            .InvokeStringArgsApi(
+                SNames.MainButtonActionsService,
+                SNames.TerminalWorker,
+                SNames.Open,
+                adrTuple.Item1,
+                adrTuple.Item2);
+    }
+
+    private async Task OnBtnClicked(string idxString)
+    {
+        var index = IFrontendOperations
+            .TwoDigitsStr.TryToInt(idxString);
+        var adrTuple = IFrontendOperations
+            .NoSqlAddress
+            .CreateAdrTupleFromAddress(Item.Address);
+        var newAddress = IFrontendOperations
+            .NoSqlAddress
+            .JoinIndexWithLoca(adrTuple, index);
+        var itemJString = await GetItem(newAddress);
+        ItemModel? itemObj = IFrontendOperations
+            .Json
+            .TryDeserializeObject<ItemModel>(itemJString);
+
+        if (itemObj?.Type != myType)
+        {
+            ReloadItem(itemObj, true);
+            return;
+        }
+
+        ReloadItem(itemObj, false);
+        Item = itemObj;
+        ReloadComponent();
+    }
+
+    public async Task<string> GetItem(
+        (string Repo, string Loca) address)
+    {
+        string itemJson = await Backend.InvokeStringArgsApi(
+        [SNames.RepoService, SNames.ItemWorker, SNames.GetItem,
+            address.Repo,
+            address.Loca]);
+        return itemJson;
+    }
+
+    private void ScriptClicked()
+    {
+        // string[] args =
+        // [
+        //     nameof(IScriptForGameActive),
+        //     nameof(IScriptForGameActive.GameSynchService),
+        //     "2024"
+        // ];
+        // _argsManager.Resolve(args);
+    }
+}

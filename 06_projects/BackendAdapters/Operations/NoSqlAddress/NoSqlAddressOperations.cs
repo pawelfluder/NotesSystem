@@ -1,16 +1,8 @@
-namespace BlazorUniSystemCore.Operations;
+namespace BackendAdapters.Operations.NoSqlAddress;
 
-public interface INoSqlAddressOperations
+public class NoSqlAddressOperations : INoSqlAddressOperations
 {
-    public string CreateUrl(
-        (string Repo, string Loca) adrTuple);
-    public string JoinLoca(string loca01, string loca02);
-    public (string, string) AdrTupleJoinLoca((string Repo, string Loca) adrTuple, string loca);
-    //(string, string) CreateAddressFromString(string addressString);
-    Uri CreateUriFromAddress((string Repo, string Loca) address, int index);
-    string CreateUrlFromAddress((string Repo, string Loca) address);
-    int GetLastLocaIndex(string addressString);
-    static string GetAddressString((string, string) adrTuple)
+    public string GetAddressString((string, string) adrTuple)
     {
         if (string.IsNullOrEmpty(adrTuple.Item2))
         {
@@ -21,7 +13,7 @@ public interface INoSqlAddressOperations
         return address;
     }
 
-    static string MoveOneLocaBack(string adrString)
+    public string MoveOneLocaBack(string adrString)
     {
         var slashCount = adrString.Count(x => x == '/');
         if (slashCount == 0)
@@ -36,7 +28,7 @@ public interface INoSqlAddressOperations
 
         return newAddress;
     }
-    static (string, string) CreateAdrTupleFromAddress(
+    public (string, string) CreateAdrTupleFromAddress(
         string addressString)
     {
         addressString = addressString.Trim('/').Replace("https://", "");
@@ -46,8 +38,8 @@ public interface INoSqlAddressOperations
             return (addressString, "");
         }
 
-        var repo = addressString.Substring(0, index);
-        var loca = addressString.Substring(index + 1, addressString.Length - index - 1);
+        string repo = addressString.Substring(0, index);
+        string loca = addressString.Substring(index + 1, addressString.Length - index - 1);
 
         if (loca.StartsWith('/'))
         {
@@ -57,7 +49,7 @@ public interface INoSqlAddressOperations
         return (repo, loca);
     }
     
-    static (string, string) CreateAddressFromUrlParameter(
+    public (string, string) CreateAddressFromUrlParameter(
         string addressString)
     {
         var spliter = '-';
@@ -80,6 +72,43 @@ public interface INoSqlAddressOperations
         var newLoca = loca.Replace(spliter, '/');
         return (repo, newLoca);
     }
+    public (string, string) JoinIndexWithLoca(
+        (string Repo, string Loca) adrTuple,
+        int? index)
+    {
+        if (index == null) return adrTuple;
 
-    public List<string> GetAllAddressesInOneRepo(string path);
+        string idxString = IFrontendOperations.TwoDigitsStr.FromInt(index);
+
+        var newLoca = JoinLoca(adrTuple.Loca, idxString);
+        var newAdrTuple = (adrTuple.Repo, newLoca);
+        return newAdrTuple;
+    }
+    
+    public string JoinLoca(string loca01, string loca02)
+    {
+        if (loca01 == string.Empty)
+        {
+            return loca02;
+        }
+
+        var newLoca = loca01 + "/" + loca02;
+        return newLoca;
+    }
+    
+    public string CreateUrl(
+        (string Repo, string Loca) adrTuple)
+    {
+        //var url = baseAddress;
+        var url = string.Empty;
+        if (adrTuple.Loca == string.Empty)
+        {
+            url += adrTuple.Repo;
+            return url;
+        }
+
+        string loca = adrTuple.Loca.Replace('/', '-');
+        url = adrTuple.Repo + "-" + loca;
+        return url;
+    }
 }

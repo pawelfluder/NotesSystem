@@ -174,14 +174,14 @@
               .CreateAdrTupleFromAddress(Item.Address);
         if (formGoogleDocType == "Open")
         {
-            _backend
-                .InvokeStringArgsApi(
-                    nameof(IGoogleDocsService),
-                    nameof(IGoogleDocsService.),
-                    nameof(RepoTtsWorker.PlStartNew),
-                    adrTuple.Item1,
-                    adrTuple.Item2);
-            var itemJson = _backend.InvokeStringArgsApi("OpenGoogleDoc", adrTuple.Item1, adrTuple.Item2);
+            // _backend
+            //     .InvokeStringArgsApi(
+            //         nameof(IGoogleDocsService),
+            //         nameof(IGoogleDocsService),
+            //         nameof(RepoTtsWorker.PlStartNew),
+            //         adrTuple.Item1,
+            //         adrTuple.Item2);
+            // var itemJson = _backend.InvokeStringArgsApi("OpenGoogleDoc", adrTuple.Item1, adrTuple.Item2);
         }
         if (formGoogleDocType == "Recreate")
         {
@@ -192,12 +192,15 @@
     private void OnBtnClicked(
         string idxString)
     {
-        var index = _operations.Index.StringToIndex(idxString);
-        var adrTuple = IUniAddressOperations
+        var index = IFrontendOperations.TwoDigitsStr
+            .TryToInt(idxString);
+        var adrTuple = IFrontendOperations.NoSqlAddress
              .CreateAdrTupleFromAddress(Item.Address);
-        var newAddress = _operations.Index.JoinIndexWithLoca(adrTuple, index);
+        var newAddress = IFrontendOperations.NoSqlAddress
+            .JoinIndexWithLoca(adrTuple, index);
         var itemJString = GetItem(newAddress);
-        var itemObj = _operations.Json.TryDeserializeObject<ItemModel>(itemJString);
+        var itemObj = IFrontendOperations.Json
+            .TryDeserializeObject<ItemModel>(itemJString);
 
         if (itemObj.Type != myType)
         {
@@ -237,7 +240,7 @@
 
     private void OnFolderClicked()
     {
-        (string Repo, string Loca) adrTuple = INoSqlAddressOperations
+        (string Repo, string Loca) adrTuple = IFrontendOperations.NoSqlAddress
              .CreateAdrTupleFromAddress(Item.Address);
         _backend
             .InvokeStringArgsApi(
@@ -248,9 +251,11 @@
                 adrTuple.Loca);
     }
 
-    public string GetItem((string Repo, string Loca) address)
+    public string GetItem(
+        (string Repo, string Loca) address)
     {
-        var itemJson = _backend.InvokeStringArgsApi("GetItem", address.Repo, address.Loca);
+        var itemJson = _backend
+            .InvokeStringArgsApi("GetItem", address.Repo, address.Loca);
         return itemJson;
     }
 }

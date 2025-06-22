@@ -13,7 +13,7 @@ using SharpOperationsProg.AAPublic;
 using SharpRepoBackendProg.Repetition;
 using SharpRepoServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
-using SharpRepoServiceProg.Workers.AAPublic;
+using SharpRepoServiceProg.Workers.APublic;
 using SharpRepoServiceProg.Workers.APublic.ItemWorkers;
 using SharpTtsServiceProg.AAPublic;
 using TextHeaderAnalyzerCoreProj.Service;

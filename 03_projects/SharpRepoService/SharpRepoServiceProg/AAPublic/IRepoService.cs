@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SharpRepoServiceProg.Workers.AAPublic;
 using SharpRepoServiceProg.Workers.APublic;
 using SharpRepoServiceProg.Workers.APublic.ItemWorkers;
 using ItemWorker = SharpRepoServiceProg.Workers.APublic.ItemWorkers.ItemWorker;
@@ -12,9 +11,9 @@ public interface IRepoService
     
     ManyItemsWorker ManyItems { get; }
     
-    MethodWorker Methods { get; }
+    IMethodWorker Methods { get; }
 
     void InitGroupsFromSearchPaths(List<string> searchPaths);
 
-    (string Repo, string Loca) GetFirstRepo();
+    //(string Repo, string Loca) GetFirstRepo();
 }

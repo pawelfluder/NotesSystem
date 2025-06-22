@@ -1,5 +1,4 @@
 using SharpRepoServiceProg.AAPublic;
-using SharpRepoServiceProg.Workers.AAPublic;
 using SharpRepoServiceProg.Workers.APublic;
 using SharpRepoServiceProg.Workers.APublic.ItemWorkers;
 using ItemWorker = SharpRepoServiceProg.Workers.APublic.ItemWorkers.ItemWorker;

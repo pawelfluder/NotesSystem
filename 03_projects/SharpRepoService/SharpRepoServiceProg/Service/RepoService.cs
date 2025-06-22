@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic;
-using SharpRepoServiceProg.Workers.AAPublic;
 using SharpRepoServiceProg.Workers.APublic;
 using SharpRepoServiceProg.Workers.APublic.ItemWorkers;
 using ItemWorker = SharpRepoServiceProg.Workers.APublic.ItemWorkers.ItemWorker;
@@ -17,7 +16,7 @@ internal class RepoService : IRepoService
     private Lazy<MethodWorker> _methods;
     public IItemWorker Item => _item.Value;
     public ManyItemsWorker ManyItems => _manyItems.Value;
-    public MethodWorker Methods => _methods.Value;
+    public IMethodWorker Methods => _methods.Value;
 
     internal RepoService(
         IFileService fileService)
@@ -42,9 +41,9 @@ internal class RepoService : IRepoService
         }
     }
     
-    public (string Repo, string Loca) GetFirstRepo()
-    {
-        (string Repos, string Loca) adrTuple = Methods.GetFirstRepo();
-        return adrTuple;
-    }
+    // public (string Repo, string Loca) GetFirstRepo()
+    // {
+    //     var adrTuple = Methods.GetFirstRepo();
+    //     return adrTuple;
+    // }
 }
