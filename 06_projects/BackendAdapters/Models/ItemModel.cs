@@ -10,7 +10,7 @@ public class ItemModel
 
     public string Name { get; set; }
     public string Type { get; set; }
-    internal string Id { get; set; }
+    public string Id { get; set; }
 
     public string Address
     {

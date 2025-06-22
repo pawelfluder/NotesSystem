@@ -1,6 +1,6 @@
 namespace BackendAdapters.Models;
 
-internal static class ConfigKeys
+public static class ConfigKeys
 {
     public static string Type = "type";
     public static string Name = "name";

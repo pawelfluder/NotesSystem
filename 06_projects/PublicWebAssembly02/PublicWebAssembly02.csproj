@@ -4,6 +4,9 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <GenerateResource>true</GenerateResource>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <RootNamespace>PublicWebAssembly</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -11,6 +14,10 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" PrivateAssets="all"/>
         <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.0"/>
         <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.11.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
     </ItemGroup>
 
     <ItemGroup>

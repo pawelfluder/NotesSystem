@@ -1,3 +1,4 @@
+using System.Globalization;
 using BackendAdapters.Workers;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -9,6 +10,13 @@ WebAssemblyHostBuilder builder = WebAssemblyHostBuilder
     .CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
+
+//CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
+
+
+
+CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
 builder.Services.AddScoped(sp =>
     new HttpClient());
