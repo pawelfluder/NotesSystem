@@ -97,10 +97,11 @@ public class NoSqlAddressOperations : INoSqlAddressOperations
     }
     
     public string CreateUrl(
-        (string Repo, string Loca) adrTuple)
+        (string Repo, string Loca) adrTuple,
+        string baseName)
     {
         //var url = baseAddress;
-        var url = string.Empty;
+        var url = baseName + "/";
         if (adrTuple.Loca == string.Empty)
         {
             url += adrTuple.Repo;
@@ -108,7 +109,7 @@ public class NoSqlAddressOperations : INoSqlAddressOperations
         }
 
         string loca = adrTuple.Loca.Replace('/', '-');
-        url = adrTuple.Repo + "-" + loca;
+        url += adrTuple.Repo + "-" + loca;
         return url;
     }
 }

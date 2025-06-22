@@ -17,4 +17,15 @@
       <ProjectReference Include="..\BackendAdapters\BackendAdapters.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AdditionalFiles Include="Components\ComboBox02.razor" />
+      <AdditionalFiles Include="Components\ItemModels\CodeEditorTabs.razor" />
+      <AdditionalFiles Include="Components\ItemModels\FolderView.razor" />
+      <AdditionalFiles Include="Components\ItemModels\LoginForm.razor" />
+      <AdditionalFiles Include="Components\ItemModels\RefTextView.razor" />
+      <AdditionalFiles Include="Components\ItemModels\RegisterForm.razor" />
+      <AdditionalFiles Include="Components\ItemModels\SimpleCodeEditor.razor" />
+      <AdditionalFiles Include="Components\ItemModels\TextView.razor" />
+    </ItemGroup>
+
 </Project>

@@ -18,5 +18,6 @@ public interface INoSqlAddressOperations
     string JoinLoca(string loca01, string loca02);
 
     public string CreateUrl(
-        (string Repo, string Loca) adrTuple);
+        (string Repo, string Loca) adrTuple,
+        string baseName);
 }

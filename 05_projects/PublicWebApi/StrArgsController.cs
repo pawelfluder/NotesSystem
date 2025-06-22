@@ -20,6 +20,11 @@ public class StrArgsApiController : ControllerBase
     {
         Init();
         string jsonStr = _backend.InvokeStringArgsApi(args);
+        if (string.IsNullOrEmpty(jsonStr))
+        {
+            return Ok("");
+        }
+            
         object? jsonObj = JsonSerializer.Deserialize<object>(jsonStr);
         return Ok(jsonObj);
     }
