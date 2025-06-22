@@ -36,7 +36,7 @@ public class UrlAddressParser
         }
         
         newUrl = IFrontendOperations.NoSqlAddress
-            .CreateUrl(item.AdrTuple, "Repos");
+            .CreateUrl(item.AdrTuple, "repos");
         if (newUrl == browserCurrentUrl)
         {
             return false;
