@@ -60,8 +60,9 @@
     [Parameter]
     public string? UrlUniAddress { get; set; }
 
-    public Repos()
+    public Repos(RepoAdapter repo)
     {
+        Repo = repo;
         SetAllRepos().GetAwaiter().GetResult();
     }
 
@@ -71,10 +72,9 @@
         // _urlParser = new UrlAddressParser(repo);
         //
         //
-        // var repoNamesJson = await repo
-        //     .GetAllReposNames();
+        
 
-        string[] repoNamesJson = ["Notki"];
+        string[] repoNamesJson = ["Temp01", "Temp02"];
         AllRepoNames = repoNamesJson.ToList();
         
         if (_item == null)
@@ -90,6 +90,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var repoNamesJson2 = await Repo
+            .GetAllReposNames();
+        AllRepoNames = repoNamesJson2.ToList();
+        
         // await SetAllRepos();
         _urlParser = new UrlAddressParser(Repo);
         
