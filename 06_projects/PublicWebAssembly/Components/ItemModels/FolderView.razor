@@ -46,6 +46,12 @@
     [Inject]
     private BackendAdapter Backend { get; set; }
     
+    [Inject]
+    private RepoAdapter Repo { get; set; }
+    
+    [Inject]
+    private ButtonActionsAdapter ButtonActions { get; set; }
+    
     [Parameter]
     public ItemModel Item { get; set; }
 
@@ -112,45 +118,28 @@
             .InvokeStringArgsApi("CreateItem", adrTuple.Item1, adrTuple.Item2, formSelectedType, formAddValue);
     }
     
-    private void OnFolderClicked()
-    {
-        var adrTuple = IFrontendOperations.NoSqlAddress
-            .CreateAdrTupleFromAddress(Item.Address);
-        Backend
-            .InvokeStringArgsApi(
-                SNames.MainButtonActionsService,
-                SNames.FolderWorker,
-                SNames.Open,
-                adrTuple.Item1,
-                adrTuple.Item2);
-    }
-    
-    private void ConfigClicked()
+    private async Task OnFolderClicked()
     {
         (string, string) adrTuple = IFrontendOperations
             .NoSqlAddress
             .CreateAdrTupleFromAddress(Item.Address);
-        Backend
-            .InvokeStringArgsApi(
-                SNames.MainButtonActionsService,
-                SNames.FileWorker,
-                SNames.Open,
-                adrTuple.Item1,
-                adrTuple.Item2);
+        await ButtonActions.OpenItemFolder(adrTuple);
     }
     
-    private void TerminalClicked()
+    private async Task ConfigClicked()
     {
         (string, string) adrTuple = IFrontendOperations
             .NoSqlAddress
             .CreateAdrTupleFromAddress(Item.Address);
-        Backend
-            .InvokeStringArgsApi(
-                SNames.MainButtonActionsService,
-                SNames.TerminalWorker,
-                SNames.Open,
-                adrTuple.Item1,
-                adrTuple.Item2);
+        await ButtonActions.OpenConfig(adrTuple);
+    }
+    
+    private async Task TerminalClicked()
+    {
+        (string, string) adrTuple = IFrontendOperations
+            .NoSqlAddress
+            .CreateAdrTupleFromAddress(Item.Address);
+        await ButtonActions.OpenTerminal(adrTuple);
     }
 
     private async Task OnBtnClicked(string idxString)
@@ -163,10 +152,7 @@
         var newAddress = IFrontendOperations
             .NoSqlAddress
             .JoinIndexWithLoca(adrTuple, index);
-        var itemJString = await GetItem(newAddress);
-        ItemModel? itemObj = IFrontendOperations
-            .Json
-            .TryDeserializeObject<ItemModel>(itemJString);
+        (bool s01, ItemModel itemObj)  = await Repo.GetItem(newAddress);
 
         if (itemObj?.Type != myType)
         {
@@ -177,16 +163,6 @@
         ReloadItem(itemObj, false);
         Item = itemObj;
         ReloadComponent();
-    }
-
-    public async Task<string> GetItem(
-        (string Repo, string Loca) address)
-    {
-        string itemJson = await Backend.InvokeStringArgsApi(
-        [SNames.RepoService, SNames.ItemWorker, SNames.GetItem,
-            address.Repo,
-            address.Loca]);
-        return itemJson;
     }
 
     private void ScriptClicked()

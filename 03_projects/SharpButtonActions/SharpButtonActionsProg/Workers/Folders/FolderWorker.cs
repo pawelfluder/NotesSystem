@@ -24,7 +24,7 @@ public class FolderWorker : IFolderWorker
         string loca)
     {
         string? path = _repo.Methods
-            .GetBodyPath((repo, loca));
+            .GetItemPath((repo, loca));
         _mac.TryOpenFolder(path);
         _windows.TryOpenFolder(path);
     }
