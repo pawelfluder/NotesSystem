@@ -17,7 +17,8 @@
     Repo::
     <ComboBox02
         Items="AllRepoNames"
-        @bind-SelectedItem=@ComboBoxRepoName/>
+        SelectedItemChanged=@SelectedRepoNameChanged />
+        @* @bind-SelectedItem=@SelectedRepoName/> *@
     @* OnValueChanged=@HandleValueChanged *@
 </div>
 <div>
@@ -86,7 +87,7 @@
 
     public List<string> AllRepoNames { get; set; }
 
-    public string ComboBoxRepoName { get; set; } = string.Empty;
+    public string SelectedRepoName { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -177,7 +178,7 @@
 
     public async Task OnGoBtnClicked(MouseEventArgs e)
     {
-        (string, string) address = (ComboBoxRepoName, inputLocaName);
+        (string, string) address = (SelectedRepoName, inputLocaName);
         await ReloadItem(address);
     }
 
@@ -210,4 +211,11 @@
             .Replace('/', '-');
         return result;
     }
+
+    private void SelectedRepoNameChanged(
+        string name)
+    {
+        SelectedRepoName = name;
+    }
+
 }

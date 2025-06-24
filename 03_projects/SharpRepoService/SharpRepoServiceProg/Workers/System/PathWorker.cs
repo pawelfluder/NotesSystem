@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using SharpRepoServiceProg.Helpers;
 using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registrations;

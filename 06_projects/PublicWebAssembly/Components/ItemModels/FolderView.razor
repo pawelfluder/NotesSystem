@@ -144,12 +144,12 @@
 
     private async Task OnBtnClicked(string idxString)
     {
-        var index = IFrontendOperations
+        int index = IFrontendOperations
             .TwoDigitsStr.TryToInt(idxString);
-        var adrTuple = IFrontendOperations
+        (string, string) adrTuple = IFrontendOperations
             .NoSqlAddress
             .CreateAdrTupleFromAddress(Item.Address);
-        var newAddress = IFrontendOperations
+        (string, string) newAddress = IFrontendOperations
             .NoSqlAddress
             .JoinIndexWithLoca(adrTuple, index);
         (bool s01, ItemModel itemObj)  = await Repo.GetItem(newAddress);
