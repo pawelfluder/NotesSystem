@@ -26,6 +26,8 @@
       <AdditionalFiles Include="Components\ItemModels\RegisterForm.razor" />
       <AdditionalFiles Include="Components\ItemModels\SimpleCodeEditor.razor" />
       <AdditionalFiles Include="Components\ItemModels\TextView.razor" />
+      <AdditionalFiles Include="Components\Logins\LoginForm.razor" />
+      <AdditionalFiles Include="Components\Logins\RegisterForm.razor" />
     </ItemGroup>
 
 </Project>
