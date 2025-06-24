@@ -15,12 +15,12 @@ public class FindMethod
     }
 
     private MethodInfo GetMethod(
-        object service,
+        object worker,
         string propName)
     {
-        var infoList = service.GetType().GetMethods();
+        MethodInfo[] infoList = worker.GetType().GetMethods();
         MethodInfo? foundInfo = default;
-        foreach (var info in infoList)
+        foreach (MethodInfo info in infoList)
         {
             if (info.Name == propName)
             {

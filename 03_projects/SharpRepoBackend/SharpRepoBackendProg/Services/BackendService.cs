@@ -408,7 +408,7 @@ public class BackendService : IBackendService
 
     private string CreatePdf((string Repo, string Loca) address)
     {
-        var itemPath = _repoService.Methods.GetElemPath(address);
+        var itemPath = _repoService.Methods.GetItemPath(address);
         var pdfService = MyBorder.OutContainer.Resolve<IPdfService2>();
         var textLines = _repoService.Methods.GetTextLines((address.Repo, address.Loca));
         var elementsList = _headerNotesService.GetElements2(textLines.ToArray());

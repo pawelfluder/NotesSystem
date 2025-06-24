@@ -24,7 +24,7 @@ public class TerminalWorker : ITerminalWorker
         string loca)
     {
         string? path = _repo.Methods
-            .GetBodyPath((repo, loca));
+            .GetItemPath((repo, loca));
         _mac.TryOpenTerminal(path);
         _windows.TryOpenTerminal(path);
     }

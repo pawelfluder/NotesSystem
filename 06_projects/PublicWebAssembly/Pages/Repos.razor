@@ -175,10 +175,10 @@
         StateHasChanged();
     }
 
-    public void OnGoBtnClicked(MouseEventArgs e)
+    public async Task OnGoBtnClicked(MouseEventArgs e)
     {
         (string, string) address = (ComboBoxRepoName, inputLocaName);
-        ReloadItem(address);
+        await ReloadItem(address);
     }
 
     public async Task<string> GetItem(
@@ -191,8 +191,8 @@
         return itemJson;
     }
 
-    private void OnBackArrowBtnClicked(
-    MouseEventArgs e)
+    private async Task OnBackArrowBtnClicked(
+        MouseEventArgs e)
     {
         string newAddress = IFrontendOperations
             .NoSqlAddress
@@ -200,7 +200,7 @@
         (string, string) newAdrTuple = IFrontendOperations
             .NoSqlAddress
             .CreateAdrTupleFromAddress(newAddress);
-        ReloadItem(newAdrTuple);
+        await ReloadItem(newAdrTuple);
     }
 
     private string ConvAddress(

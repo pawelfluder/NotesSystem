@@ -72,7 +72,7 @@ internal class Migrator02 : IMigrator, IMigrator02
 
     private bool TryCorrect((string Repo, string Loca) address)
     {
-        var path = repoService.Methods.GetElemPath(address);
+        var path = repoService.Methods.GetItemPath(address);
         var files = Directory.GetFiles(path);
         var directories = Directory.GetDirectories(path);
         var indexFolders = directories

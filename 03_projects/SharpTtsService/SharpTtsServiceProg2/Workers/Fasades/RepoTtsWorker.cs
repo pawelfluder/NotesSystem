@@ -109,7 +109,7 @@ public class RepoTtsWorker : MethodRunner
     {
         var culture = new CultureInfo("pl-PL");
         var builder = GetBuilder(adrTuple, culture);
-        var elemPath = repoService.Methods.GetElemPath(adrTuple);
+        var elemPath = repoService.Methods.GetItemPath(adrTuple);
 
         await ttsWorker.SaveAudioFile(elemPath, fileName, builder);
         return elemPath;
@@ -119,7 +119,7 @@ public class RepoTtsWorker : MethodRunner
     {
         var culture = new CultureInfo("en-GB");
         var builder = GetBuilder(adrTuple, culture);
-        var elemPath = repoService.Methods.GetElemPath(adrTuple);
+        var elemPath = repoService.Methods.GetItemPath(adrTuple);
 
         await ttsWorker.SaveAudioFile(elemPath, fileName, builder);
         return elemPath;
@@ -127,7 +127,7 @@ public class RepoTtsWorker : MethodRunner
 
     public async Task VoiceToVideo((string Repo, string Loca) adrTuple)
     {
-        var folderPath = repoService.Methods.GetElemPath(adrTuple);
+        var folderPath = repoService.Methods.GetItemPath(adrTuple);
         //var folderPath = await PlSaveAudio(adrTuple);
         var audioFilePath = folderPath + "/" + fileName + ".wav";
         var imageFilePath = "Output/background.png";

@@ -101,10 +101,13 @@ public interface IMethodWorker
         (string Repo, string Loca) address,
         out List<string> lines);
 
-    string GetElemPath(
+    string GetItemPath(
         (string Repo, string Loca) adrTuple);
 
     string GetBodyPath(
+        (string Repo, string Loca) adrTuple);
+    
+    string GetConfigPath(
         (string Repo, string Loca) adrTuple);
 
     void CreateConfigKey(

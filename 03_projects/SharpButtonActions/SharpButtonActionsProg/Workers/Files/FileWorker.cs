@@ -19,12 +19,22 @@ public class FileWorker : IFileWorker
         _windows = new WindowsFileWorker();
     }
     
-    public void Open(
+    public void OpenBody(
         string repo,
         string loca)
     {
         string? path = _repo.Methods
             .GetBodyPath((repo, loca));
+        _mac.TryOpenFile(path);
+        _windows.TryOpenFile(path);
+    }
+    
+    public void OpenConfig(
+        string repo,
+        string loca)
+    {
+        string? path = _repo.Methods
+            .GetConfigPath((repo, loca));
         _mac.TryOpenFile(path);
         _windows.TryOpenFile(path);
     }

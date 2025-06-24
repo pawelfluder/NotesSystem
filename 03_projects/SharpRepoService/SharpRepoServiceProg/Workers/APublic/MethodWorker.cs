@@ -377,13 +377,17 @@ public class MethodWorker : IMethodWorker
     // CREATE
 
     // todo remove
-    public string GetElemPath(
+    public string GetItemPath(
         (string Repo, string Loca) adrTuple)
         => _path.GetItemPath(adrTuple);
     
     public string GetBodyPath(
         (string Repo, string Loca) adrTuple)
         => _path.GetBodyPath(adrTuple);
+    
+    public string GetConfigPath(
+        (string Repo, string Loca) adrTuple)
+        => _path.GetConfigPath(adrTuple);
 
     public void CreateConfigKey(
         (string Repo, string Loca) address,

@@ -15,8 +15,10 @@ public static class SNames
     //     = "Open";
     public static string FileWorker
         = "IFileWorker";
-    // public static string Open
-    //     = "Open";
+    public static string OpenConfig
+        = "OpenConfig";
+    public static string OpenBody
+        = "OpenBody";
     
     // SERVICE
     public static string RepoService
