@@ -36,40 +36,52 @@ public class DefaultRegistration : RegistrationBase
     private IConfigService ConfigService { get; set; }
     public override void Registrations()
     {
-        OutContainer.RegisterByFunc<IFileService>(() => 
-            FileService);
+        // MODULE SERVICE
+        OutContainer.RegisterByFunc<IFileService>(
+            () => FileService);
         
+        // MODULE SERVICE
         OutContainer.RegisterByFunc<IOperationsService>(() => 
             OperationsService);
         
+        // MODULE SERVICE
         ConfigService = OutBorder2.ConfigService(OperationsService);
         OutContainer.RegisterByFunc<IConfigService>(
             () => ConfigService);
 
-        var repo = OutBorder3.RepoService(FileService);
+        // MODULE SERVICE
+        IRepoService repo = OutBorder3.RepoService(FileService);
         OutContainer.RegisterByFunc<IFileService, IRepoService>(
             x => repo,
             () => FileService,
             0,
             InitGroupsFromSearchPaths);
-        
-        OutContainer.RegisterByFunc<IFileService, IRepoService, IRepoOperationsService>( 
-            (x, y) => OutBorder1.RepoOperationsService(x,y),
-            () => OutContainer.Resolve<IFileService>(),
-            () => OutContainer.Resolve<IRepoService>());
-        
-        OutContainer.RegisterByFunc<IGoogleDriveService>(
-            () => OutBorder4.GoogleDriveService(
-                ConfigService.SettingsDict,
-                OutContainer.Resolve<IOperationsService>()));
-        
-        OutContainer.RegisterByFunc<IGoogleDocsService>(
-            () => OutBorder5.GoogleDocsService(
-                ConfigService.SettingsDict));
 
-        IGoogleSheetService sheetService = OutBorder6
-            .GoogleSheetService(ConfigService.SettingsDict);
-        OutContainer.RegisterByFunc(() => sheetService);
+        // MODULE SERVICE
+        IRepoOperationsService repoOp = OutBorder1.RepoOperationsService(
+            FileService,
+            repo);
+        OutContainer.RegisterByFunc<IRepoOperationsService>( 
+            () => repoOp);
+        
+        // MODULE SERVICE
+        IGoogleDriveService googleDrive = OutBorder4.GoogleDriveService(
+            ConfigService.SettingsDict,
+            OperationsService);
+        OutContainer.RegisterByFunc<IGoogleDriveService>(
+            () => googleDrive);
+        
+        // MODULE SERVICE
+        IGoogleDocsService googleDoc = OutBorder5.GoogleDocsService(
+            ConfigService.SettingsDict);
+        OutContainer.RegisterByFunc<IGoogleDocsService>(
+            () => googleDoc);
+
+        // MODULE SERVICE
+        IGoogleSheetService googleSheet = OutBorder6.GoogleSheetService(
+            ConfigService.SettingsDict);
+        OutContainer.RegisterByFunc(
+            () => googleSheet);
         
         // var argsManager = OutBorder11.ArgsManagerService();
         // OutContainer.RegisterByFunc<IArgsManagerService>(

@@ -17,7 +17,6 @@ internal class DefaultPreparer : IPreparer
     private IConfigService _configService;
     private bool _isPreparationDone;
     private IFileService _fileService;
-    private IContainer _container;
 
     public Dictionary<string, object> Prepare()
     {
@@ -70,11 +69,5 @@ internal class DefaultPreparer : IPreparer
         IConfigService configService)
     {
         _configService = configService;
-    }
-    
-    public void SetContainer(
-        IContainer container)
-    {
-        _container = container;
     }
 }
