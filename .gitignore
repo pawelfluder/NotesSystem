@@ -10,6 +10,15 @@ publish_new
 /*.png
 **/.git
 **/.gitmodules
+####################
+
+
+####################
+# 08_projects
+08_projects/*
+!08_projects/.gitkeep
+####################
+
 
 ####################
 # 01_database
