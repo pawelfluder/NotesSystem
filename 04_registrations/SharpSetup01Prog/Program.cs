@@ -1,5 +1,5 @@
 ﻿using SharpConfigProg.AAPublic;
-using SharpSetup01Prog.Preparer;
+using SharpSetup01Prog.Preparations.Default;
 using OutBorder = SharpSetup01Prog.AAPublic.OutBorder;
 
 namespace SharpSetup01Prog
@@ -8,8 +8,8 @@ namespace SharpSetup01Prog
     {
         static void Main(string[] args)
         {
-            IPreparer preparer = OutBorder.GetPreparer(typeof(DefaultPreparer).Name);
-            preparer.Prepare();
+            // IPreparer preparer = OutBorder.DefaultPreparer(typeof(DefaultPreparer).Name);
+            // preparer.Prepare();
         }
     }
 }

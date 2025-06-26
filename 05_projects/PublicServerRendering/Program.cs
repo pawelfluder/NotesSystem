@@ -11,7 +11,7 @@ public static class Program
     {
         AppFasade app = new AppFasade();
         ContainerService.SetOutContainer(app.Container);
-        IPreparer preparer = OutBorder01.GetPreparer("DefaultPreparer");
+        IPreparer preparer = OutBorder01.DefaultPreparer("DefaultPreparer");
         preparer.Prepare();
         app.Start();
         Console.ReadLine();

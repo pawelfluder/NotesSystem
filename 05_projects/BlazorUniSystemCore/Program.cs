@@ -9,7 +9,7 @@ public static class Program
     {
         AppFasade app = new AppFasade();
         ContainerService.SetOutContainer(app.Container);
-        OutBorder01.GetPreparer("DefaultPreparer").Prepare();
+        OutBorder01.DefaultPreparer().Prepare();
         app.Start();
         Console.ReadLine();
     }

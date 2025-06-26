@@ -26,7 +26,7 @@ using OutBorder13 = SharpImageSplitterProg.AAPublic.OutBorder;
 using OutBorder14 = SharpApiArgsProg.AAPublic.OutBorder;
 using OutBorder15 = SharpButtonActionsProg.AAPublic.OutBorder;
 
-namespace SharpSetup01Prog.Registrations;
+namespace SharpSetup01Prog.Preparations.Default;
 
 public class DefaultRegistration : RegistrationBase
 {
@@ -41,8 +41,8 @@ public class DefaultRegistration : RegistrationBase
             () => FileService);
         
         // MODULE SERVICE
-        OutContainer.RegisterByFunc<IOperationsService>(() => 
-            OperationsService);
+        OutContainer.RegisterByFunc<IOperationsService>(
+            () => OperationsService);
         
         // MODULE SERVICE
         ConfigService = OutBorder2.ConfigService(OperationsService);
@@ -128,8 +128,6 @@ public class DefaultRegistration : RegistrationBase
         
         // OutContainer.ServiceRegister.AddSpeechSynthesisServices();
         OutContainer.ServiceRegister.AddSpeechSynthesis();
-        
-        
     }
 
     private void InitGroupsFromSearchPaths()

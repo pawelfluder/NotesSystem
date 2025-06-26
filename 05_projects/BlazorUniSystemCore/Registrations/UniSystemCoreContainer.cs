@@ -20,6 +20,6 @@ public class UniSystemCoreContainer
 
     public override void RegisterMocks()
     {
-        OutBorder01.GetPreparer("DefaultPreparer").Prepare();
+        OutBorder01.DefaultPreparer("DefaultPreparer").Prepare();
     }
 }

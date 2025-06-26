@@ -43,4 +43,6 @@ public class GuidFolderPreparer : IPreparer
     {
         this.configService = configService;
     }
+
+    public IAppFasade AppFasade { get; }
 }

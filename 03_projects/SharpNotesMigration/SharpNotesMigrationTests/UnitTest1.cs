@@ -13,7 +13,7 @@ public class UnitTest1
 {
     public UnitTest1()
     {
-        OutBorder01.GetPreparer("PrivateNotesPreparer").Prepare();
+        OutBorder01.DefaultPreparer("PrivateNotesPreparer").Prepare();
         var configService = MyBorder.OutContainer.Resolve<IConfigService>();
         configService.Prepare();
         var repoService = MyBorder.OutContainer.Resolve<IRepoService>();

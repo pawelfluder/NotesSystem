@@ -10,7 +10,7 @@ public class Migrator05Tests
 {
     public Migrator05Tests()
     {
-        OutBorder01.GetPreparer("PrivateNotesPreparer").Prepare();
+        OutBorder01.DefaultPreparer("PrivateNotesPreparer").Prepare();
     }
 
     [TestMethod]

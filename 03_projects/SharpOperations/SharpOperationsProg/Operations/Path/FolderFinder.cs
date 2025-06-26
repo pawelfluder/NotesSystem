@@ -2,7 +2,7 @@
 
 namespace SharpOperationsProg.Operations.Path;
 
-public class FolderFinder
+public class FolderFinder : IFolderFinder
 {
     public string FindFolder(
         string searchFolderName,
@@ -10,20 +10,20 @@ public class FolderFinder
         string expression)
     {
         // expression="3(2,2) - all positive numbers"
-        var success = FindRange(expression, out int move,
+        bool success = FindRange(expression, out int move,
             out (int left, int right) range);
 
-        var success2 = AreAllNumbersPositive(move, range.left, range.right);
+        bool success2 = AreAllNumbersPositive(move, range.left, range.right);
 
-        var s1 = MoveDirectoriesUp(inputFolderPath, move, out var inputFolderPath2);
+        bool s1 = MoveDirectoriesUp(inputFolderPath, move, out var inputFolderPath2);
 
-        var gg1 = FindFolderInRangeDown(searchFolderName, inputFolderPath2, range.right + 1);
+        string? gg1 = FindFolderInRangeDown(searchFolderName, inputFolderPath2, range.right + 1);
         if (gg1 != default)
         {
             return gg1;
         }
 
-        var gg2 = FindFolderInRangeUp(searchFolderName, inputFolderPath2, (range.left) + 1);
+        string? gg2 = FindFolderInRangeUp(searchFolderName, inputFolderPath2, (range.left) + 1);
 
         if (gg2 != default)
         {
@@ -46,7 +46,7 @@ public class FolderFinder
         return true;
     }
 
-    public bool MoveDirectoriesUp(
+    private bool MoveDirectoriesUp(
         string inputFolderPath,
         int level,
         out string outputFolderPath)
@@ -70,7 +70,7 @@ public class FolderFinder
         return true;
     }
 
-    public bool FindRange(
+    private bool FindRange(
         string expression,
         out int move,
         out (int left, int right) range)
@@ -152,7 +152,7 @@ public class FolderFinder
         return false;
     }
 
-    public string FindFolderInRangeUp(
+    private string FindFolderInRangeUp(
         string folderName,
         string folderPath,
         int max)
@@ -190,7 +190,7 @@ public class FolderFinder
         return default;
     }
 
-    public string FindFolderInRangeDown(
+    private string FindFolderInRangeDown(
         string folderName,
         string folderPath,
         int max)
@@ -226,7 +226,7 @@ public class FolderFinder
         return default;
     }
 
-    public bool IsSpecial(string folderPath)
+    private bool IsSpecial(string folderPath)
     {
         if (folderPath == "Config.Msi" ||
             folderPath == "$RECYCLE.BIN")
@@ -236,5 +236,4 @@ public class FolderFinder
 
         return false;
     }
-
 }

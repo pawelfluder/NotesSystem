@@ -14,7 +14,7 @@ public class MigratorAllTests
 {
     public MigratorAllTests()
     {
-        OutBorder01.GetPreparer("PrivateNotesPreparer").Prepare();
+        OutBorder01.DefaultPreparer("PrivateNotesPreparer").Prepare();
         var operationService = MyBorder.OutContainer.Resolve<IOperationsService>();
         var repoService = MyBorder.OutContainer.Resolve<IRepoService>();
         var migrationService = OutBorder02.MigrationService(operationService, repoService);

@@ -1,19 +1,14 @@
 ﻿using SharpConfigProg.AAPublic;
-using SharpSetup01Prog.Preparer;
+using SharpSetup01Prog.Preparations.Default;
 
 namespace SharpSetup01Prog.AAPublic
 {
     public static class OutBorder
     {
-        public static IPreparer GetPreparer(string name)
+        public static IPreparer DefaultPreparer()
         {
-            if (name == typeof(DefaultPreparer).Name)
-            {
-                DefaultPreparer preparer = new();
-                return preparer;
-            }
-
-            return default;
+            DefaultPreparer preparer = new();
+            return preparer;
         }
     }
 }

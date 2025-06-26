@@ -14,7 +14,7 @@ namespace SharpRepoServiceTests
 
         public PostRefTextTests()
         {
-            OutBorder03.GetPreparer("DefaultPreparer").Prepare();
+            OutBorder03.DefaultPreparer("DefaultPreparer").Prepare();
             repoService = MyBorder.OutContainer.Resolve<IRepoService>();
         }
 

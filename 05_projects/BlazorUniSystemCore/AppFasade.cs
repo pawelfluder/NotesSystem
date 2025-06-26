@@ -1,5 +1,6 @@
 using BlazorUniSystemCore.Components;
 using BlazorUniSystemCore.Registrations;
+using SharpContainerProg.AAPublic;
 
 namespace BlazorUniSystemCore;
 
@@ -8,7 +9,7 @@ public class AppFasade
     private string _rootPath;
     public WebApplication App { get; private set; }
     public WebApplicationBuilder Builder { get; private set; }
-    public UniSystemCoreContainer Container { get; private set; }
+    public IContainer4 Container { get; private set; }
     public AppFasade()
     {
         InitBuilder();

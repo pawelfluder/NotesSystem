@@ -14,7 +14,7 @@ public class Migrator04Tests
 {
     public Migrator04Tests()
     {
-        OutBorder01.GetPreparer("DefaultPreparer").Prepare();
+        OutBorder01.DefaultPreparer("DefaultPreparer").Prepare();
         var operationService = MyBorder.OutContainer.Resolve<IOperationsService>();
         var repoService = MyBorder.OutContainer.Resolve<IRepoService>();
         var migrationService = OutBorder02.MigrationService(operationService, repoService);
