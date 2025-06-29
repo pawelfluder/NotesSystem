@@ -9,25 +9,17 @@ namespace SharpIdentityProg.Repet
             string inputFolderPath,
             string expression)
         {
-            var success = FindRange(expression, out int move,
+            bool s01 = FindRange(expression, out int move,
                 out (int left, int right) range);
+            bool s02 = MoveDirectoriesUp(inputFolderPath, -move, out var inputFolderPath2);
 
-            var s1 = MoveDirectoriesUp(inputFolderPath, -move, out var inputFolderPath2);
+            string? gg1 = FindFolderInRangeDown(searchFolderName, inputFolderPath2, range.right + 1);
+            if (!string.IsNullOrEmpty(gg1)) return gg1;
 
-            var gg1 = FindFolderInRangeDown(searchFolderName, inputFolderPath2, range.right + 1);
-            if (gg1 != default)
-            {
-                return gg1;
-            }
+            string? gg2 = FindFolderInRangeUp(searchFolderName, inputFolderPath2, -range.left + 1);
+            if (!string.IsNullOrEmpty(gg2)) return gg2;
 
-            var gg2 = FindFolderInRangeUp(searchFolderName, inputFolderPath2, -range.left + 1);
-
-            if (gg2 != default)
-            {
-                return gg2;
-            }
-
-            return "";
+            return string.Empty;
         }
 
         public bool MoveDirectoriesUp(

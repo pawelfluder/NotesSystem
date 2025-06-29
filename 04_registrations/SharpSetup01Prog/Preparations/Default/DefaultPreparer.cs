@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using SharpConfigProg;
 using SharpConfigProg.AAPublic;
 using SharpFileServiceProg.AAPublic;
+using SharpIdentityProg.AAPublic;
 using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpSetup01Prog.Models;
@@ -32,9 +33,7 @@ internal class DefaultPreparer : IPreparer
         WebAppActions();
         
         // IDENTITY
-        OutBorder03.AddIdentity(AppFasade.Builder);
-        AppFasade.WebAppActionsList.Add(x => 
-            OutBorder03.UseIdentity(x));
+        AddIdentity();
         
         _fileService = OutBorder01.FileService();
         _operationsService = OutBorder02.OperationsService(_fileService);
@@ -49,6 +48,15 @@ internal class DefaultPreparer : IPreparer
 
         _isPreparationDone = true;
         return _settingsDict;
+    }
+
+    private void AddIdentity()
+    {
+        OutBorder03.AddIdentity(AppFasade.Builder);
+        AppFasade.Builder.Services.AddSingleton<IIdentityDbConnectionString>(
+            sp => new IdentityDbConnectionString("3(2,1)"));
+        AppFasade.WebAppActionsList.Add(x => 
+            OutBorder03.UseIdentity(x));
     }
 
     private void WebAppActions()

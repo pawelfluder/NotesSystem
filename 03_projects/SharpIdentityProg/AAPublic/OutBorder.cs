@@ -6,11 +6,19 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SharpIdentityProg.Data;
 using System.Security.Claims;
+using SharpIdentityProg.Services;
 
 namespace SharpIdentityProg.AAPublic
 {
     public static class OutBorder
     {
+        public static IIdentityService IdentityService(
+            IIdentityDbConnectionString connectionString)
+        {
+            IIdentityService service = new IdentityService(connectionString);
+            return service;
+        }
+        
         public static void AddIdentity(
             this IHostApplicationBuilder builder)
         {

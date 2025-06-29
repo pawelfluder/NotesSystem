@@ -18,7 +18,8 @@ internal class PathsOperations : IPathsOperations
         => folderFinder.FindFolder(
             searchFolderName,
             inputFolderPath,
-            expression);
+            expression,
+            GetType());
 
     public string MoveDirectoriesUp(string path, int level)
     {

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using SharpImageSplitterProg.AAPublic.Strategies;
 using SharpOperationsProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 

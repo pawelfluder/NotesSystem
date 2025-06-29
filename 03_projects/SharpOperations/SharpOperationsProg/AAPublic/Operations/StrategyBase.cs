@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace SharpOperationsProg.AAPublic;
+namespace SharpOperationsProg.AAPublic.Operations;
 
 public class StrategyBase<T>
 {

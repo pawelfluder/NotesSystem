@@ -13,10 +13,6 @@ public class DefaultContainerBase : IContainer4
 
     public IServiceProvider ServiceProvider { get; protected set; }
 
-    public virtual void RegisterMocks()
-    {
-    }
-
     public void RegisterByFunc<RegT>(
         Func<RegT> func,
         int type = 0,
@@ -143,11 +139,7 @@ public class DefaultContainerBase : IContainer4
         {
             return;
         }
-
-        if (ServiceRegister.Count == 0)
-        {
-            RegisterMocks();
-        }
+        
         ServiceProvider = ServiceRegister.BuildServiceProvider();
     }
 }

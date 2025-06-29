@@ -1,4 +1,4 @@
-﻿namespace SharpOperationsProg.AAPublic;
+﻿namespace SharpOperationsProg.AAPublic.Operations;
 
 public interface IJsonOperations
 {

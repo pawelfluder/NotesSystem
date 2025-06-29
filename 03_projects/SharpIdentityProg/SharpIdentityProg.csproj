@@ -24,6 +24,11 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SharpOperations\SharpOperationsProg\SharpOperationsProg.csproj" />
   </ItemGroup>
 
 </Project>

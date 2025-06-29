@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SharpConfigProg.AAPublic;
-using SharpConfigProg.Service;
+﻿using SharpConfigProg.AAPublic;
 using SharpNotesMigrationProg.Migrations;
 using SharpRepoServiceProg.AAPublic;
 using SharpFileServiceProg.AAPublic;
 using SharpNotesMigrationProg.AAPublic;
 using SharpOperationsProg.AAPublic;
-using SharpOperationsProg.AAPublic.Operations;
 
 namespace SharpNotesMigrationProg.Service;
 
@@ -29,7 +24,7 @@ public class MigrationService : IMigrationService
         _repoService = repoService;
         _fileService = _operationsService.GetFileService();
 
-        migratorsList = new List<IMigrator>()
+        migratorsList = new List<IMigrator>
         {
             new Migrator03(_operationsService, repoService),
             new Migrator04(_operationsService, repoService),
@@ -40,7 +35,7 @@ public class MigrationService : IMigrationService
     // todo move to OperationsService
     private IEnumerable<Type> Method()
     {
-        var type = typeof(IMigrator);
+        Type type = typeof(IMigrator);
         IEnumerable<Type> types = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(s => s.GetTypes())
             .Where(p => type.IsAssignableFrom(p));
@@ -52,7 +47,9 @@ public class MigrationService : IMigrationService
         (string Repo, string Loca) address,
         bool agree)
     {
-        var found = migratorsList.SingleOrDefault(x => x.GetType().GetInterfaces().Contains(migratorType));
+        IMigrator? found = migratorsList
+            .SingleOrDefault(x => x.GetType()
+                .GetInterfaces().Contains(migratorType));
 
         if (found != null)
         {
@@ -66,7 +63,9 @@ public class MigrationService : IMigrationService
         (string Repo, string Loca) address,
         bool agree)
     {
-        var found = migratorsList.SingleOrDefault(x => x.GetType().GetInterfaces().Contains(migratorType));
+        IMigrator? found = migratorsList
+            .SingleOrDefault(x => x.GetType()
+                .GetInterfaces().Contains(migratorType));
 
         if (found != null)
         {
@@ -80,7 +79,8 @@ public class MigrationService : IMigrationService
         string repoName,
         bool agree)
     {
-        var found = migratorsList.SingleOrDefault(x => x.GetType() == migratorType);
+        IMigrator? found = migratorsList
+            .SingleOrDefault(x => x.GetType() == migratorType);
 
         if (found != null)
         {
@@ -90,7 +90,8 @@ public class MigrationService : IMigrationService
 
     public void MigrateAllRepos(Type migratorType)
     {
-        var found = migratorsList.SingleOrDefault(x => x.GetType() == migratorType);
+        IMigrator? found = migratorsList
+            .SingleOrDefault(x => x.GetType() == migratorType);
 
         if (found != null)
         {

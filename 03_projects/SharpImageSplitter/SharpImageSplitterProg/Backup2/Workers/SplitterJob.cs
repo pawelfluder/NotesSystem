@@ -3,6 +3,7 @@ using SharpImageSplitterProg.AAPublic.Strategies;
 using SharpImageSplitterProg.Models;
 using SharpImageSplitterProg.Workers;
 using SharpOperationsProg.AAPublic;
+using SharpOperationsProg.AAPublic.Operations;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 

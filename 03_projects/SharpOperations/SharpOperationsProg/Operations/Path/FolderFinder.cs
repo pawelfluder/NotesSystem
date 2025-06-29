@@ -1,36 +1,79 @@
 ﻿using System.Text.RegularExpressions;
+using SharpContainerProg.AAPublic;
 
 namespace SharpOperationsProg.Operations.Path;
 
 public class FolderFinder : IFolderFinder
 {
+    private bool _ommitLogs;
+    private bool _isInit;
+    
+    private void Init()
+    {
+        _ommitLogs = true;
+        _isInit = true;
+    }
+    
     public string FindFolder(
         string searchFolderName,
         string inputFolderPath,
-        string expression)
+        string expression,
+        Type callerObjectType)
     {
+        Init();
+        inputFolderPath = System.IO.Path.GetFullPath(inputFolderPath);
+        LogBegin(expression, searchFolderName, callerObjectType, inputFolderPath);
+        
         // expression="3(2,2) - all positive numbers"
         bool success = FindRange(expression, out int move,
             out (int left, int right) range);
-
         bool success2 = AreAllNumbersPositive(move, range.left, range.right);
-
-        bool s1 = MoveDirectoriesUp(inputFolderPath, move, out var inputFolderPath2);
-
-        string? gg1 = FindFolderInRangeDown(searchFolderName, inputFolderPath2, range.right + 1);
+        bool s1 = MoveDirectoriesUp(inputFolderPath, move, out var startingPositionFolderPath);
+        
+        LogStartingPosition(startingPositionFolderPath);
+        
+        string? gg1 = FindFolderInRangeDown(searchFolderName, startingPositionFolderPath, range.right + 1);
         if (gg1 != default)
         {
+            LogEnd(true, gg1);
             return gg1;
         }
 
-        string? gg2 = FindFolderInRangeUp(searchFolderName, inputFolderPath2, (range.left) + 1);
+        string? gg2 = FindFolderInRangeUp(searchFolderName, startingPositionFolderPath, (range.left) + 1);
 
         if (gg2 != default)
         {
+            LogEnd(true, gg2);
             return gg2;
         }
 
+        LogEnd(false, "");
         return "";
+    }
+
+    private void LogBegin(
+        string expression,
+        string searchFolderName,
+        Type callerObjectType,
+        string inputFolderPath)
+    {
+        string consoleMsg = $"{expression}, {searchFolderName}, from {callerObjectType.Name}, {inputFolderPath}";
+        StaticOkAndError.Ok(consoleMsg, _ommitLogs);
+    }
+
+    private void LogStartingPosition(
+        string startingPositionFolderPath)
+    {
+        string consoleMsg = $"FindFolder starting position: {startingPositionFolderPath}";
+        StaticOkAndError.Ok(consoleMsg, _ommitLogs);
+    }
+    
+    private void LogEnd(
+        bool success,
+        string foundPath)
+    {
+        string consoleMsg = $"Success: {success}, Path: {foundPath}";
+        StaticOkAndError.Ok(consoleMsg, _ommitLogs);
     }
 
     private bool AreAllNumbersPositive(params int[] numbersArray)
@@ -46,7 +89,7 @@ public class FolderFinder : IFolderFinder
         return true;
     }
 
-    private bool MoveDirectoriesUp(
+    public bool MoveDirectoriesUp(
         string inputFolderPath,
         int level,
         out string outputFolderPath)
@@ -70,7 +113,7 @@ public class FolderFinder : IFolderFinder
         return true;
     }
 
-    private bool FindRange(
+    public bool FindRange(
         string expression,
         out int move,
         out (int left, int right) range)
@@ -83,8 +126,8 @@ public class FolderFinder : IFolderFinder
             return false;
         }
 
-        var regex01 = "^(-?[0-9]\\d*)\\((-?[0-9]\\d*),(-?[0-9]\\d*)\\)$";
-        var match01 = Regex.Match(expression, regex01);
+        string regex01 = "^(-?[0-9]\\d*)\\((-?[0-9]\\d*),(-?[0-9]\\d*)\\)$";
+        Match match01 = Regex.Match(expression, regex01);
         if (match01.Groups.Count == (3 + 1))
         {
             var success01 = int.TryParse(
@@ -152,7 +195,7 @@ public class FolderFinder : IFolderFinder
         return false;
     }
 
-    private string FindFolderInRangeUp(
+    public string FindFolderInRangeUp(
         string folderName,
         string folderPath,
         int max)
@@ -190,7 +233,7 @@ public class FolderFinder : IFolderFinder
         return default;
     }
 
-    private string FindFolderInRangeDown(
+    public string FindFolderInRangeDown(
         string folderName,
         string folderPath,
         int max)
@@ -226,7 +269,7 @@ public class FolderFinder : IFolderFinder
         return default;
     }
 
-    private bool IsSpecial(string folderPath)
+    public bool IsSpecial(string folderPath)
     {
         if (folderPath == "Config.Msi" ||
             folderPath == "$RECYCLE.BIN")

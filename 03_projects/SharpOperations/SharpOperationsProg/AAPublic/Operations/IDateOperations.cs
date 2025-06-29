@@ -1,4 +1,4 @@
-namespace SharpOperationsProg.Operations.Date;
+namespace SharpOperationsProg.AAPublic.Operations;
 
 public interface IDateOperations
 {

@@ -16,4 +16,8 @@
       <ProjectReference Include="..\..\04_registrations\SharpSetup01Prog\SharpSetup01Prog.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="TemporaryName.db" />
+    </ItemGroup>
+
 </Project>

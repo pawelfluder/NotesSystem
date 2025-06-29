@@ -1,6 +1,4 @@
-﻿using SharpOperationsProg.Operations.UniItemAddress;
-
-namespace SharpOperationsProg.Operations.UniAddress;
+﻿namespace SharpOperationsProg.Operations.UniItemAddress;
 
 public interface IUniAddressOperations
 {

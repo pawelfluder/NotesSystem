@@ -5,5 +5,6 @@ public interface IFolderFinder
     string FindFolder(
         string searchFolderName,
         string inputFolderPath,
-        string expression);
+        string expression,
+        Type callerObjectType);
 }
