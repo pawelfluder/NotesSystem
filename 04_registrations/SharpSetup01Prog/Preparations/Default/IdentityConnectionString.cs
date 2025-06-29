@@ -4,45 +4,50 @@ using SharpOperationsProg.Operations.Path;
 
 namespace SharpSetup01Prog.Preparations.Default;
 
-public class IdentityDbConnectionString : IIdentityDbConnectionString
+public class IdentityDbConnectionProvider : IIdentityDbConnectionProvider
 {
     private readonly IFolderFinder _folderFinderOp;
-    private readonly string _searchExpression;
-    private string? _dbFolderPath;
-
-    public IdentityDbConnectionString(
-        string dbSearchExpression)
+    private string _dbFolderPath;
+    public IdentityDbConnectionProvider()
     {
-        _searchExpression  = dbSearchExpression;
+        _dbFolderPath = string.Empty;
         _folderFinderOp = IBackendOperations.FolderFinder;
+        GetDbFolderPath();
     }
 
     public string GetConnStr()
     {
-        string dbFilePath = GetDbFilePath();
-        string connectionString = "Data Source=" + dbFilePath;
+        string connectionString = "Data Source=" + GetDbFilePath();
         return connectionString;
     }
 
     public string GetDbFilePath()
     {
-        string dbFilePath = GetDbFolderPath() + "/" + GetDbFileName();
+        string dbFilePath = _dbFolderPath + "/" + DbFileName;
         return dbFilePath;
     }
 
     public string GetDbFolderPath()
     {
-        if (_dbFolderPath != null)
+        if (!string.IsNullOrEmpty(_dbFolderPath))
             return _dbFolderPath;
         
-        string folderName = "IdentityDatabase";
+        string folderName01 = "01_database";
+        string path01 = _folderFinderOp.FindFolder(
+            folderName01, 
+            Environment.CurrentDirectory,
+            "2(0,1)",
+            GetType());
+        
+        string folderName02 = "IdentityDatabase";
         _dbFolderPath = _folderFinderOp.FindFolder(
-            folderName, 
-            Environment.CurrentDirectory, _searchExpression,
+            folderName02,
+            path01,
+            "0(0,1)",
             GetType());
         _dbFolderPath = _dbFolderPath.Replace('\\', '/');
         return _dbFolderPath;
     }
 
-    public string GetDbFileName() => "IdentityDatabase.db";
+    public string DbFileName => "IdentityDatabase.db";
 }

@@ -5,8 +5,8 @@ namespace SharpConfigProg;
 
 public interface IAppFasade
 {
-    WebApplicationBuilder Builder { get; }
-    WebApplication App { get; }
+    WebApplicationBuilder WebAppBuilder { get; }
+    WebApplication WebApp { get; }
     IContainer4 Container { get; }
     List<Action<WebApplication>> WebAppActionsList { get; }
     void Run();

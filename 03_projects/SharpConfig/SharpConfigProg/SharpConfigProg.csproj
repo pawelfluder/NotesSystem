@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\SharpContainer\SharpContainerProg\SharpContainerProg.csproj" />
     <ProjectReference Include="..\..\SharpFileService\SharpFileServiceProg\SharpFileServiceProg.csproj" />
+    <ProjectReference Include="..\..\SharpIdentityProg\SharpIdentityProg.csproj" />
     <ProjectReference Include="..\..\SharpOperations\SharpOperationsProg\SharpOperationsProg.csproj" />
     <ProjectReference Include="..\..\SharpRepoService\SharpRepoServiceProg\SharpRepoServiceProg.csproj" />
   </ItemGroup>
@@ -22,6 +23,9 @@
   <ItemGroup>
     <Reference Include="Microsoft.AspNetCore">
       <HintPath>..\..\..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\8.0.2\Microsoft.AspNetCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Identity">
+      <HintPath>..\..\..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\8.0.2\Microsoft.AspNetCore.Identity.dll</HintPath>
     </Reference>
   </ItemGroup>
 

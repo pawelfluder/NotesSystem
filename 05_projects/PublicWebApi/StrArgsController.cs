@@ -1,7 +1,6 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using PublicWebApi.Registrations;
-using SharpApiArgsProg.AAPublic;
 using SharpRepoBackendProg.Services;
 
 namespace PublicWebApi;
@@ -24,9 +23,19 @@ public class StrArgsApiController : ControllerBase
         {
             return Ok("");
         }
-            
-        object? jsonObj = JsonSerializer.Deserialize<object>(jsonStr);
+
+        Type type = GetDeserializeType(jsonStr);
+        object? jsonObj = JsonSerializer.Deserialize(jsonStr, type);
         return Ok(jsonObj);
+    }
+
+    private Type GetDeserializeType(
+        string jsonStr)
+    {
+        bool s01 = bool.TryParse(jsonStr, out bool boolResult);
+        if (s01) return typeof(bool);
+
+        return typeof(object);
     }
 
     private void Init()

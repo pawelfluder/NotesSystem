@@ -18,8 +18,8 @@ namespace SharpIdentityProg.Data
 
         public ApplicationDbContext()
         {
-            IIdentityDbConnectionString dbConnectionStr = MyBorder.OutContainer
-                .Resolve<IIdentityDbConnectionString>();
+            IIdentityDbConnectionProvider dbConnectionStr = MyBorder.OutContainer
+                .Resolve<IIdentityDbConnectionProvider>();
             _connectionString = dbConnectionStr.GetConnStr();
         }
 

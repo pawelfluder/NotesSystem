@@ -7,6 +7,17 @@ public class DefaultContainer : DefaultContainerBase
 {
     public DefaultContainer()
     {
-        ServiceRegister = new ServiceCollection();
+        ServiceCollection = new ServiceCollection();
+    }
+    
+    public DefaultContainer(IServiceCollection serviceCollection)
+    {
+        ServiceCollection = serviceCollection;
+    }
+    
+    public void SetServiceProvider(
+        IServiceProvider serviceProvider)
+    {
+        ServiceProvider = serviceProvider;
     }
 }

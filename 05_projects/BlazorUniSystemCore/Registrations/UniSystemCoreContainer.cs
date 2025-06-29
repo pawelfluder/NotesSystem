@@ -9,7 +9,7 @@ public class UniSystemCoreContainer
     public UniSystemCoreContainer(
         IServiceCollection serviceCollection)
     {
-        ServiceRegister = serviceCollection;
+        ServiceCollection = serviceCollection;
     }
 
     public void SetServiceProvider(

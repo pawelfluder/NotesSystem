@@ -24,57 +24,33 @@ namespace SharpRepoBackendProg.Services;
 public class BackendService : IBackendService
 {
     // MODULES SERVICES
-    private readonly IPdfService2 _pdfService;
-    private readonly IGoogleDriveService _driveService;
-    private readonly IGoogleDocsService _docsService;
-    private readonly IRepoService _repoService;
-    private readonly IConfigService _configService;
-    private readonly HeaderNotesService _headerNotesService;
-    private readonly MainButtonActionsService buttonActionActionService;
-    private readonly NotesExporterService _notesExporterService;
-    private readonly IFileService _fileService;
-    private readonly ITtsService _ttsService;
+    // private readonly IPdfService2 _pdfService;
+    // private readonly IGoogleDriveService _driveService;
+    // private readonly IGoogleDocsService _docsService;
+    // private readonly IRepoService _repoService;
+    // private readonly IConfigService _configService;
+    // private readonly HeaderNotesService _headerNotesService;
+    // private readonly MainButtonActionsService buttonActionActionService;
+    // private readonly NotesExporterService _notesExporterService;
+    // private readonly IFileService _fileService;
+    // private readonly ITtsService _ttsService;
     private readonly IStringArgsResolverService _stringArgs;
 
     public BackendService()
     {
-        IOperationsService operationsService = MyBorder.OutContainer.Resolve<IOperationsService>();
-        _fileService = operationsService.GetFileService();
-        _ttsService = MyBorder.OutContainer.Resolve<ITtsService>();
-        _pdfService = MyBorder.OutContainer.Resolve<IPdfService2>();
-        _configService = MyBorder.OutContainer.Resolve<IConfigService>();
-        _driveService = MyBorder.OutContainer.Resolve<IGoogleDriveService>();
-        _docsService = MyBorder.OutContainer.Resolve<IGoogleDocsService>();
-        _repoService = MyBorder.OutContainer.Resolve<IRepoService>();
-        _headerNotesService = new HeaderNotesService();
-        buttonActionActionService = new MainButtonActionsService(operationsService, _repoService);
-        _notesExporterService = new NotesExporterService(_repoService);
+        // IOperationsService operationsService = MyBorder.OutContainer.Resolve<IOperationsService>();
+        // _fileService = operationsService.GetFileService();
+        // _ttsService = MyBorder.OutContainer.Resolve<ITtsService>();
+        // _pdfService = MyBorder.OutContainer.Resolve<IPdfService2>();
+        // _configService = MyBorder.OutContainer.Resolve<IConfigService>();
+        // _driveService = MyBorder.OutContainer.Resolve<IGoogleDriveService>();
+        // _docsService = MyBorder.OutContainer.Resolve<IGoogleDocsService>();
+        // _repoService = MyBorder.OutContainer.Resolve<IRepoService>();
+        // _headerNotesService = new HeaderNotesService();
+        // buttonActionActionService = new MainButtonActionsService(operationsService, _repoService);
+        // _notesExporterService = new NotesExporterService(_repoService);
         
         _stringArgs = MyBorder.OutContainer.Resolve<IStringArgsResolverService>();
-    }
-
-    public string RepoApi(string repo, string inputLoca)
-    {
-        string loca = inputLoca.Replace("-", "/");
-        try
-        {
-            string serviceName = nameof(IRepoService);
-            string workerName = nameof(IItemWorker);
-            string methodName = nameof(IItemWorker.GetItem);
-            string param01 = repo;
-            string param02 = loca;
-            string itemJson = _stringArgs.Invoke(
-            [serviceName, workerName, methodName,
-                param01, param02]);
-            return itemJson;
-        }
-        catch
-        {
-            var error = "Exception! Item not found";
-            var result = new JsonObject();
-            result.Add("error", error);
-            return result.ToJsonString();
-        }
     }
     
     public string InvokeStringArgsApi(
@@ -83,6 +59,30 @@ public class BackendService : IBackendService
         string itemJson = _stringArgs.Invoke(args);
         return itemJson;
     }
+
+    // public string RepoApi(string repo, string inputLoca)
+    // {
+    //     string loca = inputLoca.Replace("-", "/");
+    //     try
+    //     {
+    //         string serviceName = nameof(IRepoService);
+    //         string workerName = nameof(IItemWorker);
+    //         string methodName = nameof(IItemWorker.GetItem);
+    //         string param01 = repo;
+    //         string param02 = loca;
+    //         string itemJson = _stringArgs.Invoke(
+    //         [serviceName, workerName, methodName,
+    //             param01, param02]);
+    //         return itemJson;
+    //     }
+    //     catch
+    //     {
+    //         var error = "Exception! Item not found";
+    //         var result = new JsonObject();
+    //         result.Add("error", error);
+    //         return result.ToJsonString();
+    //     }
+    // }
 
     // public string CommandApi2(
     //     string cmdName,
@@ -229,12 +229,12 @@ public class BackendService : IBackendService
     //     return JsonConvert.SerializeObject("bad request - method not found!");
     // }
 
-    private string GetOKJson()
-    {
-        var result = "200; OK";
-        var json = JsonConvert.SerializeObject(result);
-        return json;
-    }
+    // private string GetOKJson()
+    // {
+    //     var result = "200; OK";
+    //     var json = JsonConvert.SerializeObject(result);
+    //     return json;
+    // }
 
     // public string CommandApi(string cmdName, string[] args)
     // {
@@ -339,120 +339,120 @@ public class BackendService : IBackendService
     //     return JsonConvert.SerializeObject("completed!");
     // }
 
-    private void OpenGoogledoc(string url)
-    {
-        Process.Start(new ProcessStartInfo
-        {
-            FileName = url,
-            UseShellExecute = true
-        });
-    }
-
-    private string OpenGoogledoc((string repo, string loca) address)
-    {
-        var name = _repoService.Methods.GetLocalName(address);
-        var id = _repoService.Methods.TryGetConfigValue(
-            address, ConfigKeys.GoogleDocId.ToString());
-        var documentExists = id != null;
-
-        if (!documentExists)
-        {
-            var docIdQName = CreateNewDocBySheetService(name);
-            id = docIdQName.id;
-            _repoService.Methods.CreateConfigKey(
-                address, ConfigKeys.GoogleDocId.ToString(),
-                id);
-            documentExists = true;
-        }
-
-        if (documentExists)
-        {
-            var url = $"https://docs.google.com/document/d/{id}";
-            return url;
-        }
-
-        return default;
-    }
-
-    private string CreateGoogledoc(
-        (string repo, string loca) adrTuple)
-    {
-        var name = _repoService.Methods.GetLocalName(adrTuple);
-        var id = _repoService.Methods.GetConfigKey(
-            adrTuple, ConfigKeys.GoogleDocId.ToString());
-        var documentExists = id != null;
-
-        if (!documentExists)
-        {
-            //var docIdQName = CreateNewDocBySheetService(name);
-            var docIdQName = CreateNewDocByDriveService(name);
-
-            id = docIdQName.id;
-            _repoService.Methods.CreateConfigKey(
-                adrTuple, ConfigKeys.GoogleDocId.ToString(),
-                id);
-            documentExists = true;
-        }
-
-        if (documentExists)
-        {
-            _notesExporterService.ExportNotesToGoogleDoc(
-                adrTuple.repo, adrTuple.loca, id.ToString());
-
-            var url = $"https://docs.google.com/document/d/{id}";
-            return url;
-        }
-
-        return default;
-    }
-
-    private string CreatePdf((string Repo, string Loca) address)
-    {
-        var itemPath = _repoService.Methods.GetItemPath(address);
-        var pdfService = MyBorder.OutContainer.Resolve<IPdfService2>();
-        var textLines = _repoService.Methods.GetTextLines((address.Repo, address.Loca));
-        var elementsList = _headerNotesService.GetElements2(textLines.ToArray());
-        var pdfFilePath = itemPath + "/" + "lista.pdf";
-        var pdfCreated = pdfService.Export(elementsList, pdfFilePath);
-        return pdfFilePath;
-    }
-
-    private (string id, string name) CreateNewDocBySheetService(string title)
-    {
-        var document = _docsService.Stack.CreateDocFile(title);
-        var permission = _driveService.Composite.AddReadPermissionForAnyone(document.DocumentId);
-        var docIdQName = (document.DocumentId, document.Title);            
-        return docIdQName;
-    }
-
-    private (string id, string name) CreateNewDocByDriveService(string title)
-    {
-        var docId = _driveService.Composite.CreateDocFile(title);
-        var permission = _driveService.Composite.AddReadPermissionForAnyone(docId);
-        var docIdQName = (docId, title);
-        return docIdQName;
-    }
-
-    private (string id, string name) SetDocFileName(string fileName)
-    {
-        // todo
-        return (default, default);
-    }
-
-    public string RepoApi(string methodName, params string[] args)
-    {
-        try
-        {
-            var methodList = typeof(MethodWorker).GetMethods().Where(x => x.Name == methodName);
-            var method = methodList.SingleOrDefault(x => x.GetParameters().Length == args.Length);
-
-            var result = method.Invoke(
-                _repoService.Methods,
-                args);
-            return result.ToString();
-        }
-        catch { }
-
-        return default;
-    }
+    // private void OpenGoogledoc(string url)
+    // {
+    //     Process.Start(new ProcessStartInfo
+    //     {
+    //         FileName = url,
+    //         UseShellExecute = true
+    //     });
+    // }
+    //
+    // private string OpenGoogledoc((string repo, string loca) address)
+    // {
+    //     var name = _repoService.Methods.GetLocalName(address);
+    //     var id = _repoService.Methods.TryGetConfigValue(
+    //         address, ConfigKeys.GoogleDocId.ToString());
+    //     var documentExists = id != null;
+    //
+    //     if (!documentExists)
+    //     {
+    //         var docIdQName = CreateNewDocBySheetService(name);
+    //         id = docIdQName.id;
+    //         _repoService.Methods.CreateConfigKey(
+    //             address, ConfigKeys.GoogleDocId.ToString(),
+    //             id);
+    //         documentExists = true;
+    //     }
+    //
+    //     if (documentExists)
+    //     {
+    //         var url = $"https://docs.google.com/document/d/{id}";
+    //         return url;
+    //     }
+    //
+    //     return default;
+    // }
+    //
+    // private string CreateGoogledoc(
+    //     (string repo, string loca) adrTuple)
+    // {
+    //     var name = _repoService.Methods.GetLocalName(adrTuple);
+    //     var id = _repoService.Methods.GetConfigKey(
+    //         adrTuple, ConfigKeys.GoogleDocId.ToString());
+    //     var documentExists = id != null;
+    //
+    //     if (!documentExists)
+    //     {
+    //         //var docIdQName = CreateNewDocBySheetService(name);
+    //         var docIdQName = CreateNewDocByDriveService(name);
+    //
+    //         id = docIdQName.id;
+    //         _repoService.Methods.CreateConfigKey(
+    //             adrTuple, ConfigKeys.GoogleDocId.ToString(),
+    //             id);
+    //         documentExists = true;
+    //     }
+    //
+    //     if (documentExists)
+    //     {
+    //         _notesExporterService.ExportNotesToGoogleDoc(
+    //             adrTuple.repo, adrTuple.loca, id.ToString());
+    //
+    //         var url = $"https://docs.google.com/document/d/{id}";
+    //         return url;
+    //     }
+    //
+    //     return default;
+    // }
+    //
+    // private string CreatePdf((string Repo, string Loca) address)
+    // {
+    //     var itemPath = _repoService.Methods.GetItemPath(address);
+    //     var pdfService = MyBorder.OutContainer.Resolve<IPdfService2>();
+    //     var textLines = _repoService.Methods.GetTextLines((address.Repo, address.Loca));
+    //     var elementsList = _headerNotesService.GetElements2(textLines.ToArray());
+    //     var pdfFilePath = itemPath + "/" + "lista.pdf";
+    //     var pdfCreated = pdfService.Export(elementsList, pdfFilePath);
+    //     return pdfFilePath;
+    // }
+    //
+    // private (string id, string name) CreateNewDocBySheetService(string title)
+    // {
+    //     var document = _docsService.Stack.CreateDocFile(title);
+    //     var permission = _driveService.Composite.AddReadPermissionForAnyone(document.DocumentId);
+    //     var docIdQName = (document.DocumentId, document.Title);            
+    //     return docIdQName;
+    // }
+    //
+    // private (string id, string name) CreateNewDocByDriveService(string title)
+    // {
+    //     var docId = _driveService.Composite.CreateDocFile(title);
+    //     var permission = _driveService.Composite.AddReadPermissionForAnyone(docId);
+    //     var docIdQName = (docId, title);
+    //     return docIdQName;
+    // }
+    //
+    // private (string id, string name) SetDocFileName(string fileName)
+    // {
+    //     // todo
+    //     return (default, default);
+    // }
+    //
+    // public string RepoApi(string methodName, params string[] args)
+    // {
+    //     try
+    //     {
+    //         var methodList = typeof(MethodWorker).GetMethods().Where(x => x.Name == methodName);
+    //         var method = methodList.SingleOrDefault(x => x.GetParameters().Length == args.Length);
+    //
+    //         var result = method.Invoke(
+    //             _repoService.Methods,
+    //             args);
+    //         return result.ToString();
+    //     }
+    //     catch { }
+    //
+    //     return default;
+    // }
 }

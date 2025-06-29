@@ -6,12 +6,18 @@ namespace SharpContainerProg.Containers;
 public class DefaultContainerBase : IContainer4
 {
     private bool _isBuildDone;
-    public IServiceCollection ServiceRegister { get; protected set; }
+    public IServiceCollection ServiceCollection { get; protected set; }
 
     private IServiceProvider _serviceProvider;
     private bool _isNothingRegistered = true;
 
     public IServiceProvider ServiceProvider { get; protected set; }
+
+    public void SetServiceProvider(
+        IServiceProvider serviceProvider)
+    {
+        ServiceProvider = serviceProvider;
+    }
 
     public void RegisterByFunc<RegT>(
         Func<RegT> func,
@@ -21,17 +27,17 @@ public class DefaultContainerBase : IContainer4
     {
         if (type == 0)
         {
-            ServiceRegister.AddSingleton<RegT>(
+            ServiceCollection.AddSingleton<RegT>(
                 func.Invoke());
         }
         if (type == 1)
         {
-            ServiceRegister.AddTransient<RegT>(sp => 
+            ServiceCollection.AddTransient<RegT>(sp => 
                 func.Invoke());
         }
         if (type == 2)
         {
-            ServiceRegister.AddScoped<RegT>(sp => 
+            ServiceCollection.AddScoped<RegT>(sp => 
                 func.Invoke());
         }
         
@@ -51,19 +57,19 @@ public class DefaultContainerBase : IContainer4
     {
         if (type == 0)
         {
-            ServiceRegister.AddSingleton<RegT>(
+            ServiceCollection.AddSingleton<RegT>(
                 sp => regTfunc.Invoke(
                     p1Tfunc.Invoke()));
         }
         if (type == 1)
         {
-            ServiceRegister.AddTransient<RegT>(
+            ServiceCollection.AddTransient<RegT>(
                 sp => regTfunc.Invoke(
                     p1Tfunc.Invoke()));
         }
         if (type == 2)
         {
-            ServiceRegister.AddScoped<RegT>(
+            ServiceCollection.AddScoped<RegT>(
                 sp => regTfunc.Invoke(
                     p1Tfunc.Invoke()));
         }
@@ -85,21 +91,21 @@ public class DefaultContainerBase : IContainer4
     {
         if (type == 0)
         {
-            ServiceRegister.AddSingleton<RegT>(
+            ServiceCollection.AddSingleton<RegT>(
                 sp => regTfunc.Invoke(
                     p1Tfunc.Invoke(),
                     p2Tfunc.Invoke()));
         }
         if (type == 1)
         {
-            ServiceRegister.AddTransient<RegT>(
+            ServiceCollection.AddTransient<RegT>(
                 sp => regTfunc.Invoke(
                     p1Tfunc.Invoke(),
                     p2Tfunc.Invoke()));
         }
         if (type == 2)
         {
-            ServiceRegister.AddScoped<RegT>(
+            ServiceCollection.AddScoped<RegT>(
                 sp => regTfunc.Invoke(
                     p1Tfunc.Invoke(),
                     p2Tfunc.Invoke()));
@@ -128,7 +134,7 @@ public class DefaultContainerBase : IContainer4
     
     public bool IsRegistered<T>()
     {
-        bool isRegistered = ServiceRegister
+        bool isRegistered = ServiceCollection
             .Any(sd => sd.ServiceType == typeof(T));
         return isRegistered;
     }
@@ -140,6 +146,6 @@ public class DefaultContainerBase : IContainer4
             return;
         }
         
-        ServiceProvider = ServiceRegister.BuildServiceProvider();
+        ServiceProvider = ServiceCollection.BuildServiceProvider();
     }
 }

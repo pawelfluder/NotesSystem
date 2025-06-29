@@ -1,9 +1,9 @@
 namespace SharpIdentityProg.AAPublic;
 
-public interface IIdentityDbConnectionString
+public interface IIdentityDbConnectionProvider
 {
     string GetConnStr();
     string GetDbFilePath();
     string GetDbFolderPath();
-    string GetDbFileName();
+    string DbFileName { get; }
 }

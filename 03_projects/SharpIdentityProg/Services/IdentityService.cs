@@ -1,46 +1,56 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using SharpIdentityProg.AAPublic;
+using SharpIdentityProg.Data;
+using SharpIdentityProg.Registrations;
 
 namespace SharpIdentityProg.Services;
 
 public class IdentityService : IIdentityService
 {
-    public IdentityService(
-        IIdentityDbConnectionString connectionString)
+    private ApplicationDbContext _dbContext;
+    private readonly IServiceProvider _serviceProvider;
+
+    private IApiRegister _apiRegister;
+    private bool _isInit;
+
+    public IdentityService()
     {
+        ApiRegister = MyBorder.MyContainer.Resolve<IApiRegister>();
+        _serviceProvider = MyBorder.MyContainer.ServiceProvider;
     }
 
-    public async Task<bool> SignUp(
-        string inputEmail,
-        string inputPassword)
+    public IApiRegister ApiRegister
     {
-        // var userManager = sp.GetRequiredService<UserManager<TUser>>();
-        //
-        // if (!userManager.SupportsUserEmail)
-        // {
-        //     throw new NotSupportedException($"{nameof(MapIdentityApi)} requires a user store with email support.");
-        // }
-        //
-        // var userStore = sp.GetRequiredService<IUserStore<TUser>>();
-        // var emailStore = (IUserEmailStore<TUser>)userStore;
-        // var email = registration.Email;
-        //
-        // if (string.IsNullOrEmpty(email) || !_emailAddressAttribute.IsValid(email))
-        // {
-        //     return CreateValidationProblem(IdentityResult.Failed(userManager.ErrorDescriber.InvalidEmail(email)));
-        // }
-        //
-        // var user = new TUser();
-        // await userStore.SetUserNameAsync(user, email, CancellationToken.None);
-        // await emailStore.SetEmailAsync(user, email, CancellationToken.None);
-        // var result = await userManager.CreateAsync(user, registration.Password);
-        //
-        // if (!result.Succeeded)
-        // {
-        //     return CreateValidationProblem(result);
-        // }
-        //
-        // await SendConfirmationEmailAsync(user, userManager, context, email);
-        // return TypedResults.Ok();
-        return false;
+        get
+        {
+            Init().GetAwaiter().GetResult();
+            return _apiRegister;
+        }
+        set => _apiRegister = value;
+    }
+    
+    private async Task Init()
+    {
+        if (_isInit) return;
+        
+        _dbContext = MyBorder.OutContainer.Resolve<ApplicationDbContext>();
+            
+        // ApplicationDbContext _dbContext = _serviceProvider
+        //     .GetRequiredService<ApplicationDbContext>();
+        List<string> pending = _dbContext.Database
+            .GetPendingMigrations()
+            .ToList();
+        if (pending.Any())
+        {
+            _dbContext.Database.Migrate();
+        }
+            
+        using (var scope = _serviceProvider.CreateScope())
+        {
+            await SeedData.InitializeAsync(scope.ServiceProvider);
+        }
+        
+        _isInit = true;
     }
 }

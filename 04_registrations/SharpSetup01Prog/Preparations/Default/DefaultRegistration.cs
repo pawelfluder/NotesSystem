@@ -6,6 +6,7 @@ using SharpFileServiceProg.AAPublic;
 using SharpGoogleDocsProg.AAPublic;
 using SharpGoogleDriveProg.AAPublic;
 using SharpGoogleSheetProg.AAPublic;
+using SharpIdentityProg.AAPublic;
 using SharpImageSplitterProg.Service;
 using SharpOperationsProg.AAPublic;
 using SharpRepoBackendProg.Services;
@@ -25,6 +26,7 @@ using OutBorder12 = SharpRepoBackendProg.AAPublic.OutBorder;
 using OutBorder13 = SharpImageSplitterProg.AAPublic.OutBorder;
 using OutBorder14 = SharpApiArgsProg.AAPublic.OutBorder;
 using OutBorder15 = SharpButtonActionsProg.AAPublic.OutBorder;
+using OutBorder16 = SharpIdentityProg.AAPublic.OutBorder;
 
 namespace SharpSetup01Prog.Preparations.Default;
 
@@ -49,7 +51,7 @@ public class DefaultRegistration : RegistrationBase
         OutContainer.RegisterByFunc<IConfigService>(
             () => ConfigService);
 
-        // MODULE SERVICE
+        // BACKEND MODULE - RepoService
         IRepoService repo = OutBorder3.RepoService(FileService);
         OutContainer.RegisterByFunc<IFileService, IRepoService>(
             x => repo,
@@ -106,28 +108,36 @@ public class DefaultRegistration : RegistrationBase
             OutContainer.Resolve<IRepoService>(),
             OutContainer.Resolve<IVideoService>());
         OutContainer.RegisterByFunc(() => ttsService);
-        OutContainer.ServiceRegister.AddSpeechSynthesis();
+        OutContainer.ServiceCollection.AddSpeechSynthesis();
         
-        // STRING ARGS RESOLVER MODULE
-        List<object> servicesList =
-        [
-            OutContainer.Resolve<IRepoService>(),
-            OutContainer.Resolve<IMainButtonActionsService>()
-        ];
-        IStringArgsResolverService stringArgs = OutBorder14
-            .StringArgsResolverService(servicesList);
-        OutContainer.RegisterByFunc(
-            () => stringArgs);
-
+        
+        
         // BACKEND MODULE
-        IBackendService backend = OutBorder12.BackendService();
-        OutContainer.RegisterByFunc(() => backend);
+        IIdentityService identity = OutBorder16.IdentityService();
+        OutContainer.RegisterByFunc(
+            () => identity);
 
         IImageSpliterService imageSpliter = OutBorder13.ImageSpliterService();
         OutContainer.RegisterByFunc(() => imageSpliter);
         
         // OutContainer.ServiceRegister.AddSpeechSynthesisServices();
-        OutContainer.ServiceRegister.AddSpeechSynthesis();
+        OutContainer.ServiceCollection.AddSpeechSynthesis();
+        
+        // BACKEND MODULE - StringArgsResolver Service
+        List<object> servicesList =
+        [
+            repo,
+            buttonActions,
+            identity
+        ];
+        IStringArgsResolverService stringArgs = OutBorder14
+            .StringArgsResolverService(servicesList);
+        OutContainer.RegisterByFunc(
+            () => stringArgs);
+        
+        // BACKEND MODULE - Backend Service
+        IBackendService backend = OutBorder12.BackendService();
+        OutContainer.RegisterByFunc(() => backend);
     }
 
     private void InitGroupsFromSearchPaths()

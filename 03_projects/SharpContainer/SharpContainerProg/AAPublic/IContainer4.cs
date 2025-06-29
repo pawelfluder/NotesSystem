@@ -3,13 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 namespace SharpContainerProg.AAPublic;
 public interface IContainer4
 {
-    IServiceCollection ServiceRegister { get; }
+    IServiceCollection ServiceCollection { get; }
     IServiceProvider ServiceProvider { get; }
-
-    // void RegisterSingleton<RegT>(
-    //     RegT obj)
-    //     where RegT : class;
-
+    void SetServiceProvider(
+        IServiceProvider serviceProvider);
     void RegisterByFunc<RegT>(
         Func<RegT> func,
         int type = 0,

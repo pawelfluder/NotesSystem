@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SharpConfigProg;
 using SharpConfigProg.AAPublic;
+using SharpContainerProg.AAPublic;
+using SharpContainerProg.Containers;
 using SharpFileServiceProg.AAPublic;
 using SharpIdentityProg.AAPublic;
 using SharpOperationsProg.AAPublic;
@@ -27,8 +29,10 @@ internal class DefaultPreparer : IPreparer
     public Dictionary<string, object> Prepare()
     {
         if (_isPreparationDone) return _settingsDict;
-        
+
         AppFasade = new AppFasade();
+        ContainerService.SetOutContainer(AppFasade.Container);
+        
         BuilderActions();
         WebAppActions();
         
@@ -52,9 +56,10 @@ internal class DefaultPreparer : IPreparer
 
     private void AddIdentity()
     {
-        OutBorder03.AddIdentity(AppFasade.Builder);
-        AppFasade.Builder.Services.AddSingleton<IIdentityDbConnectionString>(
-            sp => new IdentityDbConnectionString("3(2,1)"));
+        //AppFasade.WebAppBuilder.Services.AddHttpContextAccessor();
+        OutBorder03.AddIdentity(AppFasade.WebAppBuilder);
+        AppFasade.WebAppBuilder.Services.AddSingleton<IIdentityDbConnectionProvider>(
+            sp => new IdentityDbConnectionProvider());
         AppFasade.WebAppActionsList.Add(x => 
             OutBorder03.UseIdentity(x));
     }
@@ -76,25 +81,30 @@ internal class DefaultPreparer : IPreparer
             x.MapControllers());
         AppFasade.WebAppActionsList.Add(x => 
             x.UseCors());
+        
+        AppFasade.WebAppActionsList.Add(x => 
+            x.Urls.Add("http://localhost:6602"));
+        AppFasade.WebAppActionsList.Add(x => 
+            x.Urls.Add("https://localhost:6603"));
     }
 
     private void BuilderActions()
     {
-        AppFasade.Builder.Services.AddEndpointsApiExplorer();
-        AppFasade.Builder.Services.AddSwaggerGen();
-        AppFasade.Builder.Services.AddCors(options =>
+        AppFasade.WebAppBuilder.Services.AddEndpointsApiExplorer();
+        AppFasade.WebAppBuilder.Services.AddSwaggerGen();
+        AppFasade.WebAppBuilder.Services.AddCors(options =>
         {
             options.AddDefaultPolicy(policy =>
             {
                 policy
-                    .WithOrigins("https://localhost:7132")
-                    .WithOrigins("http://localhost:5092")
+                    .WithOrigins("https://localhost:7262")
+                    .WithOrigins("http://localhost:5156")
                     
                     .AllowAnyHeader()
                     .AllowAnyMethod();
             });
         });
-        AppFasade.Builder.Services.AddControllers();
+        AppFasade.WebAppBuilder.Services.AddControllers();
     }
 
     private void PrepareSettings()
