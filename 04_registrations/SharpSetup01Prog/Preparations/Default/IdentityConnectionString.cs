@@ -35,7 +35,7 @@ public class IdentityDbConnectionString : IIdentityDbConnectionString
         if (_dbFolderPath != null)
             return _dbFolderPath;
         
-        string folderName = "IdentityDb";
+        string folderName = "IdentityDatabase";
         _dbFolderPath = _folderFinderOp.FindFolder(
             folderName, 
             Environment.CurrentDirectory, _searchExpression,
