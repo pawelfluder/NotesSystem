@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SharpCountriesProg.Models;
+using SharpIdentityProg.AAPublic;
+using SharpIdentityProg.Registrations;
 using SharpFileServiceProg.AAPublic;
 using SharpIdentityProg.AAPublic;
 using SharpIdentityProg.Registrations;
