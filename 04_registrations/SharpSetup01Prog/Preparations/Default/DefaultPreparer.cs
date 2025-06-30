@@ -246,7 +246,7 @@ internal class DefaultPreparer : IPreparer
                     .AllowAnyMethod();
             });
         });
-        AppFasade.WebAppBuilder.Services.AddControllers();
+        //AppFasade.WebAppBuilder.Services.AddControllers();
     }
 
     private void PrepareSettings()
@@ -270,14 +270,14 @@ internal class DefaultPreparer : IPreparer
         Console.WriteLine("systemPath: " + systemPath);
     }
 
-    public List<object> GetRepoSearchPaths(
-        string settingsFolderPath)
-    {
-        return new List<object>
-        {
-            settingsFolderPath
-        };
-    }
+    // public List<object> GetRepoSearchPaths(
+    //     string settingsFolderPath)
+    // {
+    //     return new List<object>
+    //     {
+    //         settingsFolderPath
+    //     };
+    // }
 
     public void SetConfigService(
         IConfigService configService)
