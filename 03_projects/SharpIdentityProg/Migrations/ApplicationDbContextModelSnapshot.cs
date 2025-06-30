@@ -7,7 +7,7 @@ using SharpIdentityProg.Data;
 
 #nullable disable
 
-namespace SharpIdentityProg.Migrations
+namespace WebApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -15,7 +15,7 @@ namespace SharpIdentityProg.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -145,7 +145,7 @@ namespace SharpIdentityProg.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SharpIdentityProg.Data.ApplicationUser", b =>
+            modelBuilder.Entity("WebApi.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -153,8 +153,15 @@ namespace SharpIdentityProg.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -163,6 +170,14 @@ namespace SharpIdentityProg.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
@@ -207,24 +222,6 @@ namespace SharpIdentityProg.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    // b.HasData(
-                    //     new
-                    //     {
-                    //         Id = "ce8613d0-eb5a-44e4-b163-ed82953efaed",
-                    //         AccessFailedCount = 0,
-                    //         ConcurrencyStamp = "48f54203-7dbd-4ddf-ad56-ddbd1f1201fe",
-                    //         Email = "admin@admin.com",
-                    //         EmailConfirmed = false,
-                    //         LockoutEnabled = true,
-                    //         NormalizedEmail = "ADMIN@ADMIN.COM",
-                    //         NormalizedUserName = "ADMIN@ADMIN.COM",
-                    //         PasswordHash = "AQAAAAIAAYagAAAAEOz5jotj3wCA6wtIcmJDXvnjuzn9kUGLlhGSS3Jn+x4y1feHOrKU946epjVy7isIBw==",
-                    //         PhoneNumberConfirmed = false,
-                    //         SecurityStamp = "RRJP55XYEE2V3GWWPPQ76ECWXQCPIN7G",
-                    //         TwoFactorEnabled = false,
-                    //         UserName = "admin@admin.com"
-                    //     });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -238,7 +235,7 @@ namespace SharpIdentityProg.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("SharpIdentityProg.Data.ApplicationUser", null)
+                    b.HasOne("WebApi.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -247,7 +244,7 @@ namespace SharpIdentityProg.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("SharpIdentityProg.Data.ApplicationUser", null)
+                    b.HasOne("WebApi.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -262,7 +259,7 @@ namespace SharpIdentityProg.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SharpIdentityProg.Data.ApplicationUser", null)
+                    b.HasOne("WebApi.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -271,7 +268,7 @@ namespace SharpIdentityProg.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("SharpIdentityProg.Data.ApplicationUser", null)
+                    b.HasOne("WebApi.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

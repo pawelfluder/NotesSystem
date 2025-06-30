@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using SharpIdentityProg.Data;
+using SharpIdentityProg.Models;
 
 namespace SharpIdentityProg.Services;
 

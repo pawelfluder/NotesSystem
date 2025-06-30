@@ -1,4 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SharpConfigProg;
@@ -7,6 +14,9 @@ using SharpContainerProg.AAPublic;
 using SharpContainerProg.Containers;
 using SharpFileServiceProg.AAPublic;
 using SharpIdentityProg.AAPublic;
+using SharpIdentityProg.Data;
+using SharpIdentityProg.Models;
+using SharpIdentityProg.Services;
 using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpSetup01Prog.Models;
@@ -58,11 +68,143 @@ internal class DefaultPreparer : IPreparer
     {
         //AppFasade.WebAppBuilder.Services.AddHttpContextAccessor();
         OutBorder03.AddIdentity(AppFasade.WebAppBuilder);
+        
+        var provider = new IdentityDbConnectionProvider();
         AppFasade.WebAppBuilder.Services.AddSingleton<IIdentityDbConnectionProvider>(
-            sp => new IdentityDbConnectionProvider());
-        AppFasade.WebAppActionsList.Add(x => 
-            OutBorder03.UseIdentity(x));
+            sp => provider);
+        // AppFasade.WebAppActionsList.Add(x => 
+        //     OutBorder03.UseIdentity(x));
+
+        // AppFasade.WebAppBuilder.Services.AddControllers();
+        AppFasade.WebAppBuilder.Services.AddDbContext<ApplicationDbContext>(options =>
+        {
+            string connStr = provider.GetConnStr();
+            options.UseSqlite(connStr);
+        });
+        AppFasade.WebAppBuilder.Services.AddAuthorization();
+        AppFasade.WebAppBuilder.Services.AddIdentityApiEndpoints<ApplicationUser>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
+
+        AppFasade.WebAppActionsList.Add(x => x.MapIdentityApi<ApplicationUser>());
+        AppFasade.WebAppActionsList.Add(x => x.UseAuthorization());
+        // AppFasade.WebAppActionsList.Add(x => x.MapControllers());
+
+        AddEndpoints();
+        SeedData2();
     }
+
+    private void SeedData2()
+    {
+        var _dbContext = AppFasade.Container.Resolve<ApplicationDbContext>();
+            
+        // ApplicationDbContext _dbContext = _serviceProvider
+        //     .GetRequiredService<ApplicationDbContext>();
+        List<string> pending = _dbContext.Database
+            .GetPendingMigrations()
+            .ToList();
+        if (pending.Any())
+        {
+            _dbContext.Database.Migrate();
+        }
+
+        AppFasade.WebAppActionsList.Add(async x =>
+        {
+            using (var scope = x.Services.CreateScope())
+            {
+                await SeedData.InitializeAsync(scope.ServiceProvider);
+            }
+        });
+    }
+
+    public void AddEndpoints()
+        {
+            AppFasade.WebAppActionsList.Add(x =>
+                 x.MapGet("/api/account", (ClaimsPrincipal user) =>
+            {
+                if (!user.Identity?.IsAuthenticated ?? true)
+                    return Results.Ok("You are NOT authenticated");
+
+                return Results.Ok("You are authenticated");
+            }));
+
+            AppFasade.WebAppActionsList.Add(x =>
+            x.MapGet("/api/account/Profile", async (
+                    UserManager<ApplicationUser> userManager,
+                    ClaimsPrincipal user) =>
+                {
+                    var currentUser = await userManager.GetUserAsync(user);
+                    if (currentUser == null)
+                        return Results.BadRequest();
+
+                    var userRoles = await userManager.GetRolesAsync(currentUser);
+
+                    var userProfile = new UserProfile
+                    {
+                        Id = currentUser.Id,
+                        Name = currentUser.UserName ?? "",
+                        Email = currentUser.Email ?? "",
+                        PhoneNumber = currentUser.PhoneNumber ?? "",
+                        FirstName = currentUser.FirstName,
+                        LastName = currentUser.LastName,
+                        Address = currentUser.Address,
+                        CreatedAt = currentUser.CreatedAt,
+                        Role = string.Join(",", userRoles)
+                    };
+
+                    return Results.Ok(userProfile);
+                })
+                .RequireAuthorization()
+                .WithName("GetUserProfile")
+                .WithTags("Account"));
+
+            AppFasade.WebAppActionsList.Add(x =>
+            x.MapPost("/signup", async (
+                UserManager<ApplicationUser> userManager,
+                [FromBody] RegisterDto registerDto
+            ) =>
+            {
+                var user = new ApplicationUser
+                {
+                    FirstName = registerDto.FirstName,
+                    LastName = registerDto.LastName,
+                    UserName = registerDto.Email,
+                    Email = registerDto.Email,
+                    PhoneNumber = registerDto.PhoneNumber,
+                    Address = registerDto.Address ?? "",
+                    CreatedAt = DateTime.Now
+                };
+
+                var result = await userManager.CreateAsync(user, registerDto.Password);
+
+                if (!result.Succeeded)
+                {
+                    var errors = result.Errors
+                        .GroupBy(e => e.Code)
+                        .ToDictionary(g => g.Key, g => g.Select(e => e.Description).ToArray());
+
+                    return Results.BadRequest(new ValidationProblemDetails(errors));
+                }
+
+                await userManager.AddToRoleAsync(user, "client");
+                return Results.Ok();
+            }));
+
+            AppFasade.WebAppActionsList.Add(x =>
+            x.MapGet("/api/account/AdminRoute", () =>
+            {
+                return Results.Ok("Hello Admin");
+            })
+            .RequireAuthorization(new AuthorizeAttribute { Roles = "admin" }));
+
+            AppFasade.WebAppActionsList.Add(x =>
+            x.MapGet("/api/account/ClientRoute", () =>
+            {
+                return Results.Ok("Hello Client");
+            })
+            .RequireAuthorization(new AuthorizeAttribute { Roles = "client" }));
+
+        }
 
     private void WebAppActions()
     {

@@ -1,6 +1,7 @@
 using SharpContainerProg.AAPublic;
 using SharpIdentityProg.AAPublic;
 using SharpIdentityProg.Data;
+using SharpIdentityProg.Models;
 using SharpIdentityProg.Workers;
 
 namespace SharpIdentityProg.Registrations;

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SharpContainerProg.AAPublic;
 using SharpContainerProg.Containers;
 using SharpIdentityProg.Data;
+using SharpIdentityProg.Models;
 
 namespace SharpConfigProg;
 

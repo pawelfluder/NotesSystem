@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApi.Models
+namespace SharpIdentityProg.Models
 {
     public class RegisterDto
     {

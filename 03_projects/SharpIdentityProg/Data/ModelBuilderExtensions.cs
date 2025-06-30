@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SharpIdentityProg.Data;
 
-namespace SharpCountriesProg.Models
+namespace SharpIdentityProg.Data
 {
     public static class ModelBuilderExtensions
     {

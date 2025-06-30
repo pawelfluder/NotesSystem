@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using SharpCountriesProg.Models;
 using SharpIdentityProg.AAPublic;
 using SharpIdentityProg.Registrations;
 using SharpFileServiceProg.AAPublic;
 using SharpIdentityProg.AAPublic;
+using SharpIdentityProg.Models;
 using SharpIdentityProg.Registrations;
 
 namespace SharpIdentityProg.Data
@@ -13,8 +13,14 @@ namespace SharpIdentityProg.Data
         : IdentityDbContext<ApplicationUser>
     {
         private string _connectionString = "Data Source=TemporaryName.db";
+        private readonly DbContextOptions _dbOptions;
 
         public string ConnectionString => _connectionString;
+        
+        public ApplicationDbContext(DbContextOptions options) : base(options)
+        {
+            _dbOptions = options;
+        }
 
         public ApplicationDbContext()
         {
@@ -26,17 +32,17 @@ namespace SharpIdentityProg.Data
         protected override void OnConfiguring(
             DbContextOptionsBuilder optionsBuilder)
         {
-            if (_connectionString.StartsWith("Server="))
-            {
-                optionsBuilder.UseSqlServer(_connectionString);
-                return;
-            }
-
-            if (_connectionString.StartsWith("Data Source="))
-            {
-                optionsBuilder.UseSqlite(_connectionString);
-                return;
-            }
+            // if (_connectionString.StartsWith("Server="))
+            // {
+            //     optionsBuilder.UseSqlServer(_connectionString);
+            //     return;
+            // }
+            //
+            // if (_connectionString.StartsWith("Data Source="))
+            // {
+            //     optionsBuilder.UseSqlite(_connectionString);
+            //     return;
+            // }
         }
 
         protected override void OnModelCreating(

@@ -1,4 +1,4 @@
-﻿namespace WebApi.Models
+﻿namespace SharpIdentityProg.Models
 {
     public class UserProfile
     {
