@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +20,7 @@ using SharpIdentityProg.Models;
 using SharpIdentityProg.Services;
 using SharpOperationsProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
+using SharpRepoBackendProg.Services;
 using SharpSetup01Prog.Models;
 using OutBorder01 = SharpFileServiceProg.AAPublic.OutBorder;
 using OutBorder02 = SharpOperationsProg.AAPublic.OutBorder;
@@ -49,6 +51,9 @@ internal class DefaultPreparer : IPreparer
         // IDENTITY
         AddIdentity();
         
+        //
+        AddStrApiArgs();
+        
         _fileService = OutBorder01.FileService();
         _operationsService = OutBorder02.OperationsService(_fileService);
         _credentials = _operationsService.Credentials;
@@ -62,6 +67,26 @@ internal class DefaultPreparer : IPreparer
 
         _isPreparationDone = true;
         return _settingsDict;
+    }
+
+    private void AddStrApiArgs()
+    {
+        AppFasade.WebAppActionsList.Add(x=>
+            
+        x.MapMethods("/StrArgsApi", new[] { "PATCH" }, (string[] args) =>
+        {
+            var backend = AppFasade.Container.Resolve<IBackendService>();
+
+            string jsonStr = backend.InvokeStringArgsApi(args);
+            if (string.IsNullOrEmpty(jsonStr))
+            {
+                return Results.Ok("");
+            }
+
+            //Type type = GetDeserializeType(jsonStr);
+            object? jsonObj = JsonSerializer.Deserialize(jsonStr, typeof(object));
+            return Results.Ok(jsonObj);
+        }));
     }
 
     private void AddIdentity()
@@ -219,8 +244,8 @@ internal class DefaultPreparer : IPreparer
         
         AppFasade.WebAppActionsList.Add(x =>
             x.UseHttpsRedirection());
-        AppFasade.WebAppActionsList.Add(x => 
-            x.MapControllers());
+        // AppFasade.WebAppActionsList.Add(x => 
+        //     x.MapControllers());
         AppFasade.WebAppActionsList.Add(x => 
             x.UseCors());
         
