@@ -5,7 +5,7 @@ using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Registrations;
 using SharpRepoServiceProg.Workers.CrudReads;
 
-namespace SharpRepoServiceProg.Workers.CrudWrites;
+namespace SharpRepoServiceProg.Workers.CrudWrites.WriteFolders;
 
 internal partial class WriteFolderWorker : WriteWorkerBase
 {

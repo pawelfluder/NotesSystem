@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
 using SharpRepoServiceProg.Registrations;
 using SharpRepoServiceProg.Workers.CrudReads;
 
-namespace SharpRepoServiceProg.Workers.CrudWrites;
+namespace SharpRepoServiceProg.Workers.CrudWrites.WriteRefs;
 
 internal class WriteRefWorker : WriteWorkerBase
 {

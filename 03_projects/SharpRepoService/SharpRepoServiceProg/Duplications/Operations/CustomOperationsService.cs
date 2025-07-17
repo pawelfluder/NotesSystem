@@ -1,6 +1,6 @@
-using SharpRepoServiceProg.Operations.Files;
+using SharpRepoServiceProg.Duplications.Operations.Files;
 
-namespace SharpRepoServiceProg.Operations;
+namespace SharpRepoServiceProg.Duplications.Operations;
 
 internal class CustomOperationsService
 {

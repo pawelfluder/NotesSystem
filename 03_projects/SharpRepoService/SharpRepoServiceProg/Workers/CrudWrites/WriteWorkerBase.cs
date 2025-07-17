@@ -1,12 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
-using SharpFileServiceProg.AAPublic;
-using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Operations;
+using SharpRepoServiceProg.Duplications.Operations;
 using SharpRepoServiceProg.Registrations;
+using SharpRepoServiceProg.Workers.CrudReads;
 using SharpRepoServiceProg.Workers.System;
 
-namespace SharpRepoServiceProg.Workers.CrudReads;
+namespace SharpRepoServiceProg.Workers.CrudWrites;
 
 public class WriteWorkerBase
 {

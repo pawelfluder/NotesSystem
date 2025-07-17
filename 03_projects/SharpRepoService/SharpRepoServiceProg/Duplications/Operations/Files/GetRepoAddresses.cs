@@ -2,8 +2,6 @@
 using System.IO;
 using System.Linq;
 using SharpFileServiceProg.AAPublic;
-using SharpRepoServiceProg.Operations;
-using SharpRepoServiceProg.Operations.Files;
 
 namespace SharpRepoServiceProg.Duplications.Operations.Files;
 

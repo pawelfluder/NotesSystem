@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SharpFileServiceProg.AAPublic;
+using SharpRepoServiceProg.Duplications.Operations;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registrations;
 using SharpRepoServiceProg.Workers.System;
 

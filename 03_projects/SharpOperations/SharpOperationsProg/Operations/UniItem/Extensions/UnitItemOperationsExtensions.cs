@@ -22,7 +22,7 @@ public static class UnitItemExtensions
     {
         string name = typeof(T).Name;
         string? json = repoService.Item
-            .PostParentItem(mainAdrTuple, "Folder", name);
+            .PostParentItem(mainAdrTuple.Repo, mainAdrTuple.Loca, "Folder", name);
         UniItem? uniItem = JsonConvert.DeserializeObject<UniItem>(json);
         if (uniItem == null) { return default; }
         (string Repo, string Loca) adrTuple = uniItem.AdrTuple;
@@ -34,17 +34,17 @@ public static class UnitItemExtensions
         string type,
         string name)
     {
-        string? json = repoService.Item.PostParentItem(parentAdrTuple, type, name);
+        string? json = repoService.Item.PostParentItem(parentAdrTuple.Item1, parentAdrTuple.Item2, type, name);
         UniItem? uniItem = JsonConvert.DeserializeObject<UniItem>(json);
         return uniItem.AdrTuple;
     }
     
     public static (string, string) PostText(
         this IRepoService repoService,
-        (string, string) parentAdrTuple,
+        (string Repo, string Loca) parentAdrTuple,
         string name)
     {
-        string? json = repoService.Item.PostParentItem(parentAdrTuple, "Text", name);
+        string? json = repoService.Item.PostParentItem(parentAdrTuple.Repo, parentAdrTuple.Loca, "Text", name);
         UniItem? uniItem = JsonConvert.DeserializeObject<UniItem>(json);
         return uniItem.AdrTuple;
     }
@@ -145,7 +145,7 @@ public static class UnitItemExtensions
         string parentAddress,
         string name)
     {
-        var parentAdrTuple = IUniAddressOperations
+        (string Repo, string Loca) parentAdrTuple = IUniAddressOperations
             .CreateAdrTupleFromAddress(parentAddress);
         var typeAdrTuple = repoService.Methods
             .GetAdrTupleByName(parentAdrTuple, name);
@@ -153,7 +153,7 @@ public static class UnitItemExtensions
         if (typeAdrTuple == default)
         {
             repoService.Item
-                .PostParentItem(parentAdrTuple, "Text", name);
+                .PostParentItem(parentAdrTuple.Repo, parentAdrTuple.Loca, "Text", name);
         }
 
         var objectsList = repoService.GetItemList<T>(typeAdrTuple);

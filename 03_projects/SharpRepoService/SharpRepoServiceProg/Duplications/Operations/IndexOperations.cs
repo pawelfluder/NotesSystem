@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace SharpRepoServiceProg.Operations;
+namespace SharpRepoServiceProg.Duplications.Operations;
 
 internal class IndexOperations
 {

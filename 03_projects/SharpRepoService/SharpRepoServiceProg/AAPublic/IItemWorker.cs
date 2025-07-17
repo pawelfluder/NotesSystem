@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SharpRepoServiceProg.Workers.APublic.ItemWorkers;
+namespace SharpRepoServiceProg.AAPublic;
 
 public interface IItemWorker
 {
@@ -39,7 +39,8 @@ public interface IItemWorker
         Guid guid);
 
     string PostParentItem(
-        (string Repo, string Loca) adrTuple,
+        string repo,
+        string loca,
         string type,
         string name);
 }

@@ -24,7 +24,7 @@ public class RepoOperations
         string name) where T : class
     {
         string json = _repo.Item
-            .PostParentItem(adrTuple, type, name);
+            .PostParentItem(adrTuple.Repo, adrTuple.Loca, type, name);
         bool s01 = _operations.Json.TryDeserializeObject<T>(json,
             out item);
         return s01;

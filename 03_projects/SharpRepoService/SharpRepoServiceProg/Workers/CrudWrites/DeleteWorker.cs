@@ -1,4 +1,4 @@
-﻿using SharpRepoServiceProg.Operations;
+﻿using SharpRepoServiceProg.Duplications.Operations;
 using SharpRepoServiceProg.Registrations;
 using SharpRepoServiceProg.Workers.CrudReads;
 using SharpRepoServiceProg.Workers.System;

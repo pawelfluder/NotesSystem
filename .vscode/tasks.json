@@ -42,6 +42,18 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "build; PublicWebApi",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/05_projects/PublicWebApi/PublicWebApi.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary",
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "build; SharpImageSplitter",
             "command": "dotnet",
             "type": "process",

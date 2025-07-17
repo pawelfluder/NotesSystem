@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
-using SharpRepoServiceProg.Operations;
+using SharpRepoServiceProg.Duplications.Operations;
 using SharpRepoServiceProg.Registrations;
 
 namespace SharpRepoServiceProg.Workers.System;

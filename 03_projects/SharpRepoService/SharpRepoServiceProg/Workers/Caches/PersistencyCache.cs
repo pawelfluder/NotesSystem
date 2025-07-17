@@ -5,8 +5,8 @@ using Newtonsoft.Json;
 using SharpFileServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic;
 using SharpRepoServiceProg.AAPublic.Names;
+using SharpRepoServiceProg.Duplications.Operations;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registrations;
 using SharpRepoServiceProg.Workers.CrudWrites.WriteTexts;
 

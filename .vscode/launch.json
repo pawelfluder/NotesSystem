@@ -2,13 +2,13 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        {
-            "name": "Launch Firefox",
-            "type": "firefox",
-            "request": "launch",
-            "url": "https://localhost:5000",
-            "webRoot": "${workspaceFolder}/Binaries/BlazorNotesSystem/bin/Debug/net8.0/BlazorNotesSystem.dll"
-          },
+        // {
+        //     "name": "Launch Firefox",
+        //     "type": "firefox",
+        //     "request": "launch",
+        //     "url": "https://localhost:5000",
+        //     "webRoot": "${workspaceFolder}/Binaries/BlazorNotesSystem/bin/Debug/net8.0/BlazorNotesSystem.dll"
+        //   },
           {
             "name": "Launch Chrome",
             "type": "chrome",
@@ -43,6 +43,17 @@
             "request": "launch",
             "preLaunchTask": "build; SharpButtonActionsProg",
             "program": "${workspaceFolder}/Binaries/SharpButtonActionsProg/bin/Debug/net8.0/SharpButtonActionsProg.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "run; PublicWebApi",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build; PublicWebApi",
+            "program": "${workspaceFolder}/Binaries/PublicWebApi/bin/Debug/net8.0/PublicWebApi.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

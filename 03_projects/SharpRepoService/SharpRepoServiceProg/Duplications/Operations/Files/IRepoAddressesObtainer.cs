@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SharpRepoServiceProg.Operations.Files;
+namespace SharpRepoServiceProg.Duplications.Operations.Files;
 
 public interface IRepoAddressesObtainer
 {

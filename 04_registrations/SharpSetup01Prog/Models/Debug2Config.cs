@@ -13,12 +13,13 @@ public class Debug2Config : ConfigBase
         currentDirectoryPath = Directory.GetCurrentDirectory();
         
         // repoSearchPath01
-        string expression01 = "5(2,3)";
-        repoSearchPath01 = operations
-            .Path.FindFolder(
+        string expression01 = "0(1,2)";
+        repoSearchPath01 = IBackendOperations.FolderFinder
+            .FindFolder(
                 "01_database",
                 currentDirectoryPath,
-                expression01);
+                expression01,
+                GetType());
         
         // repoSearchPath02
         string dropboxPath = "/Users/pawelfluder/Dropbox";
@@ -26,11 +27,12 @@ public class Debug2Config : ConfigBase
         
         // settings path
         string expression02 = "0(0,0)";
-        settingsFolderPath = operations
-            .Path.FindFolder(
+        settingsFolderPath = IBackendOperations.FolderFinder
+            .FindFolder(
                 "02_settings",
                 repoSearchPath02,
-                expression02);
+                expression02,
+                GetType());
         
         // root paths
         repoRootPaths = new List<string>

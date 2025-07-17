@@ -1,7 +1,7 @@
 using SharpFileServiceProg.AAPublic;
 using SharpOperationsProg.AAPublic.Operations;
 using SharpOperationsProg.Operations.Index;
-using SharpRepoServiceProg.Operations.Files;
+using SharpRepoServiceProg.Duplications.Operations.Files;
 
 namespace SharpOperationsProg.Operations.UniItemAddress;
 

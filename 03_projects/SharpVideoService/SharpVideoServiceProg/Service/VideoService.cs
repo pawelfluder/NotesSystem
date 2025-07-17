@@ -88,10 +88,14 @@ internal class VideoService : IVideoService
         var expression = "5(2,2)";
         try
         {
-            var folderPath = operationsService.Path
-                .FindFolder(searchFolderName, Environment.CurrentDirectory, expression);
-            var inputFilePath1 = folderPath + "/" + fileName1;
-            var inputFilePath2 = folderPath + "/" + fileName2;
+            string folderPath = IBackendOperations.FolderFinder
+                .FindFolder(
+                    searchFolderName, 
+                    Environment.CurrentDirectory,
+                    expression,
+                    GetType());
+            string inputFilePath1 = folderPath + "/" + fileName1;
+            string inputFilePath2 = folderPath + "/" + fileName2;
 
             File.Copy(inputFilePath1, outputFilePath1, true);
             File.Copy(inputFilePath2, outputFilePath2, true);

@@ -1,7 +1,7 @@
 ﻿using SharpRepoServiceProg.Registrations;
 using System.Collections.Generic;
 using SharpRepoServiceProg.AAPublic.Names;
-using SharpRepoServiceProg.Operations;
+using SharpRepoServiceProg.Duplications.Operations;
 
 namespace SharpRepoServiceProg.Models;
 

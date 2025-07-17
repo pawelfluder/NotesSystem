@@ -1,8 +1,10 @@
 ﻿using SharpContainerProg.AAPublic;
-using SharpRepoServiceProg.Operations;
+using SharpRepoServiceProg.Duplications.Operations;
 using SharpRepoServiceProg.Workers.APublic;
 using SharpRepoServiceProg.Workers.CrudReads;
 using SharpRepoServiceProg.Workers.CrudWrites;
+using SharpRepoServiceProg.Workers.CrudWrites.WriteFolders;
+using SharpRepoServiceProg.Workers.CrudWrites.WriteRefs;
 using SharpRepoServiceProg.Workers.System;
 using ItemWorker = SharpRepoServiceProg.Workers.APublic.ItemWorkers.ItemWorker;
 using WriteTextWorker = SharpRepoServiceProg.Workers.CrudWrites.WriteTexts.WriteTextWorker;

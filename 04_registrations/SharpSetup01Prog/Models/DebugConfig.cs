@@ -14,19 +14,21 @@ public class DebugConfig : ConfigBase
         
         // repoSearchPath01
         string expression01 = "5(2,3)";
-        repoSearchPath01 = operations
-            .Path.FindFolder(
+        repoSearchPath01 = IBackendOperations.FolderFinder
+            .FindFolder(
                 "01_database",
                 currentDirectoryPath,
-                expression01);
+                expression01,
+                GetType());
         
         // settings path
         string expression02 = "1(0,0)";
-        settingsFolderPath = operations
-            .Path.FindFolder(
+        settingsFolderPath = IBackendOperations.FolderFinder
+            .FindFolder(
                 "02_settings",
                 repoSearchPath01,
-                expression02);
+                expression02,
+                GetType());
         
         // root paths
         repoRootPaths = new List<string>

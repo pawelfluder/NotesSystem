@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using SharpRepoServiceProg.AAPublic.Names;
+using SharpRepoServiceProg.Duplications.Operations;
 using SharpRepoServiceProg.Models;
-using SharpRepoServiceProg.Operations;
 using SharpRepoServiceProg.Registrations;
 using SharpRepoServiceProg.Workers.System;
 

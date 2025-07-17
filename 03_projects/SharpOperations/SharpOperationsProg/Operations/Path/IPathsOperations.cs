@@ -2,7 +2,7 @@
 
 public interface IPathsOperations
 {
-    string FindFolder(string searchFolderName, string inputFolderPath, string expression);
+    //string FindFolder(string searchFolderName, string inputFolderPath, string expression);
     string MoveDirectoriesUp(string path, int level);
     string GetBinPath();
     List<(string, string)> GetFolderQFileList(string path);

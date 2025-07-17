@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SharpRepoServiceProg.AAPublic.Names;
 using SharpRepoServiceProg.Models;
 
-namespace SharpRepoServiceProg.Workers.CrudWrites;
+namespace SharpRepoServiceProg.Workers.CrudWrites.WriteFolders;
 
 internal partial class WriteFolderWorker
 {

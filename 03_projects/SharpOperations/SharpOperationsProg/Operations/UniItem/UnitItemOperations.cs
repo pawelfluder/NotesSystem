@@ -24,7 +24,7 @@ public class UnitItemOperations : IUnitItemOperations
         string name) where T : class
     {
         string json = _repoService.Item
-            .PostParentItem(adrTuple, type, name);
+            .PostParentItem(adrTuple.Repo, adrTuple.Loca, type, name);
         bool s01 = _json.TryDeserializeObject<T>(json,
             out item);
         return s01;

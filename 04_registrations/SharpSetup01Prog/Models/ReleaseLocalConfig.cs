@@ -10,16 +10,18 @@ public class ReleaseLocalConfig : ConfigBase
         IGoogleCredentialWorker googleCredentials)
     {
         // repoSearchPath02
-        string dropboxPath = "/Users/pawelfluder/Dropbox";
+        string dropboxPath2 = "/Users/pawelfluder/Dropbox";
+        string dropboxPath = "C:/03_Synch/Dropbox";
         repoSearchPath02 = dropboxPath;
         
         // settings path
         string expression02 = "0(0,0)";
-        settingsFolderPath = operations
-            .Path.FindFolder(
+        settingsFolderPath = IBackendOperations.FolderFinder
+            .FindFolder(
                 "02_settings",
                 repoSearchPath02,
-                expression02);
+                expression02,
+                GetType());
         
         // root paths
         repoRootPaths = new List<string>

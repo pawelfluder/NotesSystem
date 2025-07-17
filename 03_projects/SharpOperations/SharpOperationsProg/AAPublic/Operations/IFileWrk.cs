@@ -1,5 +1,5 @@
 using SharpFileServiceProg.AAPublic;
-using SharpRepoServiceProg.Operations.Files;
+using SharpRepoServiceProg.Duplications.Operations.Files;
 
 namespace SharpOperationsProg.AAPublic.Operations;
 
